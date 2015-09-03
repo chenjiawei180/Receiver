@@ -1,0 +1,40 @@
+C51 COMPILER V9.00   MAIN                                                                  09/03/2015 12:18:01 PAGE 1   
+
+
+C51 COMPILER V9.00, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN main.obj
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE Receiver\main.c LARGE BROWSE INCDIR(.\Receiver) DEBUG OBJECTEXTEND PRINT(.\
+                    -main.lst) TABS(2) OBJECT(main.obj)
+
+line level    source
+
+   1          #include "STC15F2K60S2.H"
+   2          #include "usart.h"
+   3          #include "key.h"
+   4          
+   5          void main()
+   6          { 
+   7   1        UsartInit();  //´®¿Ú³õÊ¼»¯
+   8   1      #ifdef DEBUG
+   9   1        uart_printf("UsartInit Complete! \r\n");
+  10   1      #endif
+  11   1      
+  12   1        while (1)
+  13   1        {
+  14   2          KeyDecoder();
+  15   2        }
+  16   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     17    ----
+   CONSTANT SIZE    =     23    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

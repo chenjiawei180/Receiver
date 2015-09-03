@@ -1,0 +1,6 @@
+"STARTUP.obj",
+"main.obj",
+"usart.obj",
+"key.obj" 
+TO "Receiver_keil" 
+RAMSIZE(256) 

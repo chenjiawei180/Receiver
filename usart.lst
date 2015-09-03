@@ -1,0 +1,153 @@
+C51 COMPILER V9.00   USART                                                                 09/03/2015 12:18:01 PAGE 1   
+
+
+C51 COMPILER V9.00, COMPILATION OF MODULE USART
+OBJECT MODULE PLACED IN usart.obj
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE Receiver\usart.c LARGE BROWSE INCDIR(.\Receiver) DEBUG OBJECTEXTEND PRINT(.
+                    -\usart.lst) TABS(2) OBJECT(usart.obj)
+
+line level    source
+
+   1          /***********************************************************
+   2          **************************************************************/
+   3          #include "usart.h"
+   4          bit busy;
+   5          
+   6          /*----------------------------
+   7          UART 中断服务程序
+   8          -----------------------------*/
+   9          void Uart() interrupt 4 using 1
+  10          {
+  11   1          if (RI)
+  12   1          {
+  13   2              RI = 0;                 //清除RI位
+  14   2            //  computer_send_data_to_mcu();
+  15   2            //  P0 = SBUF;              //P0显示串口数据
+  16   2            //  P22 = RB8;              //P2.2显示校验位
+  17   2          }
+  18   1          if (TI)
+  19   1          {
+  20   2              TI = 0;                 //清除TI位
+  21   2              busy = 0;               //清忙标志
+  22   2          }
+  23   1      }
+  24          
+  25          /*----------------------------
+  26          发送串口数据with 8 bits
+  27          ----------------------------*/
+  28          void SendData(BYTE dat)
+  29          {
+  30   1          while (busy);               //等待前面的数据发送完成
+  31   1          ACC = dat;                  //获取校验位P (PSW.0)
+  32   1          if (P)                      //根据P来设置校验位
+  33   1          {
+  34   2      #if (PARITYBIT == ODD_PARITY)
+                      TB8 = 0;                //设置校验位为0
+              #elif (PARITYBIT == EVEN_PARITY)
+                      TB8 = 1;                //设置校验位为1
+              #endif
+  39   2          }
+  40   1          else
+  41   1          {
+  42   2      #if (PARITYBIT == ODD_PARITY)
+                      TB8 = 1;                //设置校验位为1
+              #elif (PARITYBIT == EVEN_PARITY)
+                      TB8 = 0;                //设置校验位为0
+              #endif
+  47   2          }
+  48   1          busy = 1;
+  49   1          SBUF = ACC;                 //写数据到UART数据寄存器
+  50   1      }
+  51          
+  52          /*----------------------------
+  53          发送字符串
+  54          ----------------------------*/
+C51 COMPILER V9.00   USART                                                                 09/03/2015 12:18:01 PAGE 2   
+
+  55          void SendString(char *s)
+  56          {
+  57   1          while (*s)                  //检测字符串结束标志
+  58   1          {
+  59   2              SendData(*s++);         //发送当前字符
+  60   2          }
+  61   1      }
+  62          
+  63          /*uart init with baud settings----transfer mode-----open serial port*/
+  64          void UsartInit(void)
+  65          {
+  66   1          ACC = P_SW1;
+  67   1          ACC &= ~(S1_S0 | S1_S1);    //S1_S0=0 S1_S1=0
+  68   1          P_SW1 = ACC;                //(P3.0/RxD, P3.1/TxD)
+  69   1          
+  70   1      //  ACC = P_SW1;
+  71   1      //  ACC &= ~(S1_S0 | S1_S1);    //S1_S0=1 S1_S1=0
+  72   1      //  ACC |= S1_S0;               //(P3.6/RxD_2, P3.7/TxD_2)
+  73   1      //  P_SW1 = ACC;  
+  74   1      //  
+  75   1      //  ACC = P_SW1;
+  76   1      //  ACC &= ~(S1_S0 | S1_S1);    //S1_S0=0 S1_S1=1
+  77   1      //  ACC |= S1_S1;               //(P1.6/RxD_3, P1.7/TxD_3)
+  78   1      //  P_SW1 = ACC;  
+  79   1      
+  80   1      #if (PARITYBIT == NONE_PARITY)
+  81   1          SCON = 0x50;                //8位可变波特率
+  82   1      #elif (PARITYBIT == ODD_PARITY) || (PARITYBIT == EVEN_PARITY) || (PARITYBIT == MARK_PARITY)
+                  SCON = 0xda;                //9位可变波特率,校验位初始为1
+              #elif (PARITYBIT == SPACE_PARITY)
+                  SCON = 0xd2;                //9位可变波特率,校验位初始为0
+              #endif
+  87   1          T2L = (65536 - (FOSC/4/BAUD));   //设置波特率重装值
+  88   1          T2H = (65536 - (FOSC/4/BAUD))>>8;
+  89   1          AUXR = 0x14;                //T2为1T模式, 并启动定时器2
+  90   1          AUXR |= 0x01;               //选择定时器2为串口1的波特率发生器
+  91   1          ES = 1;                     //使能串口中断
+  92   1          EA = 1;
+  93   1      
+  94   1          //SendString("STC15F2K60S2\r\nUart Test !\r\n");
+  95   1        
+  96   1      }
+  97          
+  98          void uart_printf(const char *fmt, ...)
+  99          {
+ 100   1        va_list ap;
+ 101   1        char xdata string[1024];//访问内部拓展RAM，非访问外部RAM，不能超过内部拓展RAM大小(此处为1024)  
+ 102   1      
+ 103   1        va_start(ap, fmt);
+ 104   1        vsprintf(string, fmt, ap);//此处也可以使用sprintf函数，用法差不多，稍加修改即可，此处略去  
+ 105   1        SendString(string);
+ 106   1        va_end(ap);
+ 107   1      }
+ 108          
+ 109          ///*Switch to uart2 port by hardware*/
+ 110          //void usart2_SendData(void)
+ 111          //{
+ 112          //  ACC = P_SW1;
+ 113          //  ACC &= ~(S1_S0 | S1_S1);    //S1_S0=0 S1_S1=1
+ 114          //  ACC |= S1_S1;               //(P1.6/RxD_3, P1.7/TxD_3)
+ 115          //  P_SW1 = ACC; 
+ 116          //}
+C51 COMPILER V9.00   USART                                                                 09/03/2015 12:18:01 PAGE 3   
+
+ 117          //
+ 118          ///*Switch to uart1 port by hardware*/
+ 119          //void usart1_SendData(void)
+ 120          //{
+ 121          //    ACC = P_SW1;
+ 122          //    ACC &= ~(S1_S0 | S1_S1);    //S1_S0=0 S1_S1=0
+ 123          //    P_SW1 = ACC;                //(P3.0/RxD, P3.1/TxD)
+ 124          //}
+ 125          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    184    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    1073
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =      1    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
