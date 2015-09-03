@@ -380,6 +380,11 @@
               <FileType>1</FileType>
               <FilePath>.\Receiver\key.c</FilePath>
             </File>
+            <File>
+              <FileName>tm1629.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Receiver\tm1629.c</FilePath>
+            </File>
           </Files>
         </Group>
       </Groups>

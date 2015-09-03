@@ -1,0 +1,194 @@
+C51 COMPILER V9.00   TM1629                                                                09/03/2015 16:06:51 PAGE 1   
+
+
+C51 COMPILER V9.00, COMPILATION OF MODULE TM1629
+OBJECT MODULE PLACED IN tm1629.obj
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE Receiver\tm1629.c LARGE BROWSE INCDIR(.\Receiver) DEBUG OBJECTEXTEND PRINT(
+                    -.\tm1629.lst) TABS(2) OBJECT(tm1629.obj)
+
+line level    source
+
+   1          #include "tm1629.h"
+   2          
+   3          unsigned char const CODE[] = { 0x3F, 0x06, 0x5B, 0x4F, 0x66, 0x6D, 0x7D, 0x07, 0x7F, 0x6F, 0x77, 0x7C, 0x3
+             -9, 0x5E, 0x79, 0x71, 0x76, 0x38, 0x5c, 0x73, 0x3e };//0-9 abcdef 显示器码数组
+   4          unsigned char const INIT_CODE[] = { 0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80 };//逐段点亮数码管数组
+   5          unsigned char const SHANGSHUO[] = { 0x40, 0x00 }; // 点亮数码管中间段以及灭
+   6          unsigned char buf_display[6][8] = { 0 }; //3个TM1629显存数组
+   7          unsigned char display_ram[240] = { 0 }; //程序运行时记录显示数据的内存 
+   8          
+   9          void writeDataTo1629(unsigned char p) //写数据给第一个TM1629
+  10          {
+  11   1        unsigned int i;
+  12   1        TM1629_STB = 0;
+  13   1        for (i = 0; i<8; i++)
+  14   1        {
+  15   2          TM1629_CLK = 0;
+  16   2          if (p & 0x01)
+  17   2            TM1629_DIO = 1;
+  18   2          else
+  19   2            TM1629_DIO = 0;
+  20   2          _nop_();
+  21   2          _nop_();
+  22   2          _nop_();
+  23   2          _nop_();
+  24   2          TM1629_CLK = 1;
+  25   2          p = p >> 1;
+  26   2        }
+  27   1        TM1629_CLK = 0;
+  28   1        TM1629_DIO = 0;
+  29   1      }
+  30          
+  31          void writeDataTo1629_2(unsigned char p) //写数据给第二个TM1629
+  32          {
+  33   1        unsigned int i;
+  34   1        TM1629_STB2 = 0;
+  35   1        for (i = 0; i<8; i++)
+  36   1        {
+  37   2          TM1629_CLK = 0;
+  38   2          if (p & 0x01)
+  39   2            TM1629_DIO = 1;
+  40   2          else
+  41   2            TM1629_DIO = 0;
+  42   2          _nop_();
+  43   2          _nop_();
+  44   2          _nop_();
+  45   2          _nop_();
+  46   2          TM1629_CLK = 1;
+  47   2          p = p >> 1;
+  48   2        }
+  49   1        TM1629_CLK = 0;
+  50   1        TM1629_DIO = 0;
+  51   1      }
+  52          
+  53          void writeDataTo1629_3(unsigned char p) //写数据给第三个TM1629
+C51 COMPILER V9.00   TM1629                                                                09/03/2015 16:06:51 PAGE 2   
+
+  54          {
+  55   1        unsigned int i;
+  56   1        TM1629_STB3 = 0;
+  57   1        for (i = 0; i<8; i++)
+  58   1        {
+  59   2          TM1629_CLK = 0;
+  60   2          if (p & 0x01)
+  61   2            TM1629_DIO = 1;
+  62   2          else
+  63   2            TM1629_DIO = 0;
+  64   2          _nop_();
+  65   2          _nop_();
+  66   2          _nop_();
+  67   2          _nop_();
+  68   2          TM1629_CLK = 1;
+  69   2          p = p >> 1;
+  70   2        }
+  71   1        TM1629_CLK = 0;
+  72   1        TM1629_DIO = 0;
+  73   1      }
+  74          
+  75          void send_command(unsigned char word) //写命令给第一个TM1629
+  76          {
+  77   1        TM1629_STB = 1;
+  78   1        nop;
+  79   1        TM1629_STB = 0;
+  80   1        writeDataTo1629(word);
+  81   1      }
+  82          
+  83          void send_command_2(unsigned char word) //写命令给第二个TM1629
+  84          {
+  85   1        TM1629_STB2 = 1;
+  86   1        nop;
+  87   1        TM1629_STB2 = 0;
+  88   1        writeDataTo1629_2(word);
+  89   1      }
+  90          
+  91          void send_command_3(unsigned char word) //写命令给第三个TM1629
+  92          {
+  93   1        TM1629_STB3 = 1;
+  94   1        nop;
+  95   1        TM1629_STB3 = 0;
+  96   1        writeDataTo1629_3(word);
+  97   1      }
+  98          
+  99          void display(void) //3个TM1629显示函数
+ 100          {
+ 101   1        unsigned char i;
+ 102   1        send_command(0x40); //设置数据命令:普通模式、地址自增1，写数据到显存
+ 103   1        send_command(0xc0); //设置显示地址命令：从00H开始
+ 104   1        for (i = 0; i<8; i++) //发送16字节的显存数据
+ 105   1        {
+ 106   2          writeDataTo1629(buf_display[0][i]);
+ 107   2          writeDataTo1629(buf_display[1][i]);
+ 108   2        }
+ 109   1        send_command(0x8C); //设置显示控制命令：打开显示，并设置为11/16.
+ 110   1        TM1629_STB = 1;
+ 111   1      
+ 112   1        send_command_2(0x40); //设置数据命令:普通模式、地址自增1，写数据到显存
+ 113   1        send_command_2(0xc0); //设置显示地址命令：从00H开始
+ 114   1        for (i = 0; i<8; i++) //发送16字节的显存数据
+ 115   1        {
+C51 COMPILER V9.00   TM1629                                                                09/03/2015 16:06:51 PAGE 3   
+
+ 116   2          writeDataTo1629_2(buf_display[2][i]);
+ 117   2          writeDataTo1629_2(buf_display[3][i]);
+ 118   2        }
+ 119   1        send_command_2(0x8C); //设置显示控制命令：打开显示，并设置为11/16.
+ 120   1        TM1629_STB2 = 1;
+ 121   1      
+ 122   1        send_command_3(0x40); //设置数据命令:普通模式、地址自增1，写数据到显存
+ 123   1        send_command_3(0xc0); //设置显示地址命令：从00H开始
+ 124   1        for (i = 0; i<8; i++) //发送16字节的显存数据
+ 125   1        {
+ 126   2          writeDataTo1629_3(buf_display[4][i]);
+ 127   2          writeDataTo1629_3(buf_display[5][i]);
+ 128   2        }
+ 129   1        send_command_3(0x8C); //设置显示控制命令：打开显示，并设置为11/16.
+ 130   1        TM1629_STB3 = 1;
+ 131   1      }
+ 132          
+ 133          void tm1629_init(void) //TM1629开机初始化函数
+ 134          {
+ 135   1        unsigned char i, j, k;    //k控制显示的具体数字，i和j控制buf_display的刷新
+ 136   1        for (k = 0; k<8; k++)
+ 137   1        {
+ 138   2          for (i = 0; i<6; i++)
+ 139   2          {
+ 140   3            for (j = 0; j<8; j++)
+ 141   3            {
+ 142   4              buf_display[i][j] = INIT_CODE[k];
+ 143   4            }
+ 144   3          }
+ 145   2          display();
+ 146   2          Tm1629_delay(30);
+ 147   2        }
+ 148   1      }
+ 149          
+ 150          
+ 151          void Tm1629_delay(unsigned char k) //延时函数
+ 152          {
+ 153   1        unsigned char i, j;
+ 154   1        for (; k>0; k--)
+ 155   1        {
+ 156   2          for (i = 255; i>0; i--)
+ 157   2          {
+ 158   3            for (j = 255; j>0; j--)
+ 159   3            {
+ 160   4              ;
+ 161   4      
+ 162   4            }
+ 163   3          }
+ 164   2        }
+ 165   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    430    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =    319       1
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

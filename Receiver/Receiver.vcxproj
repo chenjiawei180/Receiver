@@ -66,10 +66,13 @@
   <ItemGroup>
     <ClCompile Include="key.c" />
     <ClCompile Include="main.c" />
+    <ClCompile Include="tm1629.c" />
     <ClCompile Include="usart.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="key.h" />
+    <ClInclude Include="menu.h" />
+    <ClInclude Include="tm1629.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

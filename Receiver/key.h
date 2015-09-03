@@ -25,6 +25,7 @@ typedef struct
 extern unsigned int KeyScan(void);//Keyboard scan function
 extern void delay10ms(void);// Delay 10 ms function
 extern unsigned char KeyDecoder(void);//解码函数
+extern void KeyProcess(void);//按键处理函数
 
 #endif
 

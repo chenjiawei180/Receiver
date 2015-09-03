@@ -24,9 +24,18 @@
     <ClCompile Include="key.c">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="tm1629.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="key.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="tm1629.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="menu.h">
       <Filter>源文件</Filter>
     </ClInclude>
   </ItemGroup>

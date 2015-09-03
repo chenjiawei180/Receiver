@@ -1,4 +1,4 @@
-C51 COMPILER V9.00   MAIN                                                                  09/03/2015 12:18:01 PAGE 1   
+C51 COMPILER V9.00   MAIN                                                                  09/03/2015 16:06:51 PAGE 1   
 
 
 C51 COMPILER V9.00, COMPILATION OF MODULE MAIN
@@ -11,24 +11,30 @@ line level    source
    1          #include "STC15F2K60S2.H"
    2          #include "usart.h"
    3          #include "key.h"
-   4          
-   5          void main()
-   6          { 
-   7   1        UsartInit();  //串口初始化
-   8   1      #ifdef DEBUG
-   9   1        uart_printf("UsartInit Complete! \r\n");
-  10   1      #endif
-  11   1      
-  12   1        while (1)
-  13   1        {
-  14   2          KeyDecoder();
-  15   2        }
-  16   1      }
+   4          #include "tm1629.h"
+   5          
+   6          void main()
+   7          { 
+   8   1        UsartInit();  //串口初始化
+   9   1      #ifdef DEBUG
+  10   1        uart_printf("UsartInit Complete! \r\n");
+  11   1      #endif
+  12   1        tm1629_init();
+  13   1      #ifdef DEBUG
+  14   1        uart_printf("tm1629_init Complete! \r\n");
+  15   1      #endif
+  16   1      
+  17   1        while (1)
+  18   1        {
+  19   2          KeyDecoder();
+  20   2        }
+  21   1      }
+  22          
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =     17    ----
-   CONSTANT SIZE    =     23    ----
+   CODE SIZE        =     29    ----
+   CONSTANT SIZE    =     48    ----
    XDATA SIZE       =   ----    ----
    PDATA SIZE       =   ----    ----
    DATA SIZE        =   ----    ----

@@ -1,6 +1,7 @@
 "STARTUP.obj",
 "main.obj",
 "usart.obj",
-"key.obj" 
+"key.obj",
+"tm1629.obj" 
 TO "Receiver_keil" 
 RAMSIZE(256) 

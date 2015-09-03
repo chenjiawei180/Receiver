@@ -1,12 +1,29 @@
 #include "key.h"
 #include "usart.h"
+#include "tm1629.h"
+#include "menu.h"
 
 unsigned char func_index = 0; //多级菜单索引变量
 void(*current_operation_index)();// 多级菜单函数指针
 
 key_table code table[100] =
-{
-	{ 0, 0, 0, 0, 0, (*delay10ms) },
+{	// 目标索引		    上				下          确认		 退出         函数
+	{ MENU_STANDBY, MENU_STANDBY, MENU_STANDBY, MENU_STANDBY, MENU_STANDBY, (*fun0) }, //待机
+
+	{ ONE_MENU_F0, ONE_MENU_F9, ONE_MENU_F1, 0, MENU_STANDBY, (*fun1) }, //F0-F9
+	{ ONE_MENU_F1, ONE_MENU_F0, ONE_MENU_F2, 0, MENU_STANDBY, (*fun2) },
+	{ ONE_MENU_F2, ONE_MENU_F1, ONE_MENU_F3, 0, MENU_STANDBY, (*fun3) },
+	{ ONE_MENU_F3, ONE_MENU_F2, ONE_MENU_F4, 0, MENU_STANDBY, (*fun4) },
+	{ ONE_MENU_F4, ONE_MENU_F3, ONE_MENU_F5, 0, MENU_STANDBY, (*fun5) },
+	{ ONE_MENU_F5, ONE_MENU_F4, ONE_MENU_F6, 0, MENU_STANDBY, (*fun6) },
+	{ ONE_MENU_F6, ONE_MENU_F5, ONE_MENU_F7, 0, MENU_STANDBY, (*fun7) },
+	{ ONE_MENU_F7, ONE_MENU_F6, ONE_MENU_F8, 0, MENU_STANDBY, (*fun8) },
+	{ ONE_MENU_F8, ONE_MENU_F7, ONE_MENU_F9, 0, MENU_STANDBY, (*fun9) },
+	{ ONE_MENU_F9, ONE_MENU_F8, ONE_MENU_F0, 0, MENU_STANDBY, (*fun10) },
+
+	{ ONE_MENU_FH, ONE_MENU_FH, ONE_MENU_FH, 0, MENU_STANDBY, (*fun2) }, //FH
+
+
 };
 
 unsigned int KeyScan(void)  //Keyboard scan function
@@ -98,6 +115,22 @@ unsigned char KeyDecoder(void)
 	case 0x1e78:return KEY_FUNC; break;//5 按下相应的键显示相对应的码值
 	default:return 0xff; break;
 	}
+}
+
+void KeyProcess(void)
+{
+	unsigned char key_value;
+	key_value = KeyDecoder();
+	switch (key_value)
+	{
+		case KEY_FUNC:		func_index = table[func_index].enter; break;
+		case KEY_RETURN:	func_index = table[func_index].esc; break;
+		case KEY_UP:		func_index = table[func_index].up; break;
+		case KEY_DOWN:		func_index = table[func_index].down; break;
+		default:break;
+	}
+	current_operation_index = table[func_index].index_operation;
+	(*current_operation_index)();//执行当前操作函数
 }
 
 void delay10ms(void)   //误差 -0.054253472222us
