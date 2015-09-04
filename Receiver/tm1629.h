@@ -33,7 +33,7 @@ extern void tm1629_display_buff_clear(void);
 extern void tm1629_load(void);
 
 extern void tm1629_f(unsigned char f_number);
-
+extern void tm1629_E(unsigned char f_number);
 
 extern void fun0(void);
 extern void fun1(void);
@@ -74,6 +74,7 @@ extern void fun35(void);
 extern void fun36(void);
 extern void fun37(void);
 extern void fun38(void);
+extern void fun39(void);
 extern void fun40(void);
 extern void fun41(void);
 extern void fun42(void);

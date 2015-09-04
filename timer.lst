@@ -1,4 +1,4 @@
-C51 COMPILER V9.00   TIMER                                                                 09/04/2015 15:08:00 PAGE 1   
+C51 COMPILER V9.00   TIMER                                                                 09/04/2015 16:30:54 PAGE 1   
 
 
 C51 COMPILER V9.00, COMPILATION OF MODULE TIMER
@@ -62,7 +62,7 @@ line level    source
   50          
   51          unsigned char return_await_number_table(void) //返回await_number_table变量的值
   52          {
-C51 COMPILER V9.00   TIMER                                                                 09/04/2015 15:08:00 PAGE 2   
+C51 COMPILER V9.00   TIMER                                                                 09/04/2015 16:30:54 PAGE 2   
 
   53   1        unsigned char await_number_table_temp=0;
   54   1        await_number_table_temp = await_number_table;

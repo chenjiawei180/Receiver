@@ -1,4 +1,4 @@
-C51 COMPILER V9.00   TM1629                                                                09/04/2015 15:08:00 PAGE 1   
+C51 COMPILER V9.00   TM1629                                                                09/04/2015 16:30:54 PAGE 1   
 
 
 C51 COMPILER V9.00, COMPILATION OF MODULE TM1629
@@ -62,7 +62,7 @@ line level    source
   51   2          p = p >> 1;
   52   2        }
   53   1        TM1629_CLK = 0;
-C51 COMPILER V9.00   TM1629                                                                09/04/2015 15:08:00 PAGE 2   
+C51 COMPILER V9.00   TM1629                                                                09/04/2015 16:30:54 PAGE 2   
 
   54   1        TM1629_DIO = 0;
   55   1      }
@@ -126,7 +126,7 @@ line level    source
  113   1        send_command(0x8C); //设置显示控制命令：打开显示，并设置为11/16.
  114   1        TM1629_STB = 1;
  115   1      
-C51 COMPILER V9.00   TM1629                                                                09/04/2015 15:08:00 PAGE 3   
+C51 COMPILER V9.00   TM1629                                                                09/04/2015 16:30:54 PAGE 3   
 
  116   1        send_command_2(0x40); //设置数据命令:普通模式、地址自增1，写数据到显存
  117   1        send_command_2(0xc0); //设置显示地址命令：从00H开始
@@ -190,7 +190,7 @@ line level    source
  175   1        {
  176   2          for (j = 0; j<8; j++)
  177   2          {
-C51 COMPILER V9.00   TM1629                                                                09/04/2015 15:08:00 PAGE 4   
+C51 COMPILER V9.00   TM1629                                                                09/04/2015 16:30:54 PAGE 4   
 
  178   3            buf_display[i][j] = 0x00;
  179   3          }
@@ -254,189 +254,328 @@ line level    source
  237   1        display();
  238   1      }
  239          
-C51 COMPILER V9.00   TM1629                                                                09/04/2015 15:08:00 PAGE 5   
+C51 COMPILER V9.00   TM1629                                                                09/04/2015 16:30:54 PAGE 5   
 
- 240          void fun0(void) //待机显示函数
+ 240          void tm1629_E(unsigned char f_number) //第一行倒数二个显示F,倒数第一个显示f_number
  241          {
- 242   1        //tm1629_await();
- 243   1        Display_time();
- 244   1      }
- 245          
- 246          void fun1(void) //一级菜单F0
- 247          {
- 248   1        tm1629_f(0x00);
- 249   1      }
- 250          
- 251          void fun2(void) //一级菜单F1
- 252          {
- 253   1        tm1629_f(0x01);
- 254   1      }
- 255          
- 256          void fun3(void) //一级菜单F2
- 257          {
- 258   1        tm1629_f(0x02);
- 259   1      }
- 260          
- 261          void fun4(void) //一级菜单F3
- 262          {
- 263   1        tm1629_f(0x03);
- 264   1      }
- 265          
- 266          void fun5(void) //一级菜单F4
- 267          {
- 268   1        tm1629_f(0x04);
- 269   1      }
- 270          
- 271          void fun6(void) //一级菜单F5
- 272          {
- 273   1        tm1629_f(0x05);
- 274   1      }
- 275          
- 276          void fun7(void) //一级菜单F6
- 277          {
- 278   1        tm1629_f(0x06);
- 279   1      }
- 280          
- 281          void fun8(void) //一级菜单F7
- 282          {
- 283   1        tm1629_f(0x07);
- 284   1      }
- 285          
- 286          void fun9(void) //一级菜单F8
- 287          {
- 288   1        tm1629_f(0x08);
- 289   1      }
- 290          
- 291          void fun10(void) //一级菜单F9
- 292          {
- 293   1        tm1629_f(0x09);
- 294   1      }
- 295          
- 296          void fun11(void) //一级菜单FA
- 297          {
- 298   1        tm1629_f(0x0a);
- 299   1      }
- 300          
- 301          void fun12(void) //一级菜单Fb
-C51 COMPILER V9.00   TM1629                                                                09/04/2015 15:08:00 PAGE 6   
+ 242   1        tm1629_clear();
+ 243   1        buf_display[0][1] = CODE[0x0E];
+ 244   1        buf_display[0][0] = CODE[f_number];
+ 245   1        display();
+ 246   1      }
+ 247          
+ 248          void fun0(void) //待机显示函数
+ 249          {
+ 250   1        //tm1629_await();
+ 251   1        Display_time();
+ 252   1      }
+ 253          
+ 254          void fun1(void) //一级菜单F0
+ 255          {
+ 256   1        tm1629_f(0x00);
+ 257   1      }
+ 258          
+ 259          void fun2(void) //一级菜单F1
+ 260          {
+ 261   1        tm1629_f(0x01);
+ 262   1      }
+ 263          
+ 264          void fun3(void) //一级菜单F2
+ 265          {
+ 266   1        tm1629_f(0x02);
+ 267   1      }
+ 268          
+ 269          void fun4(void) //一级菜单F3
+ 270          {
+ 271   1        tm1629_f(0x03);
+ 272   1      }
+ 273          
+ 274          void fun5(void) //一级菜单F4
+ 275          {
+ 276   1        tm1629_f(0x04);
+ 277   1      }
+ 278          
+ 279          void fun6(void) //一级菜单F5
+ 280          {
+ 281   1        tm1629_f(0x05);
+ 282   1      }
+ 283          
+ 284          void fun7(void) //一级菜单F6
+ 285          {
+ 286   1        tm1629_f(0x06);
+ 287   1      }
+ 288          
+ 289          void fun8(void) //一级菜单F7
+ 290          {
+ 291   1        tm1629_f(0x07);
+ 292   1      }
+ 293          
+ 294          void fun9(void) //一级菜单F8
+ 295          {
+ 296   1        tm1629_f(0x08);
+ 297   1      }
+ 298          
+ 299          void fun10(void) //一级菜单F9
+ 300          {
+ 301   1        tm1629_f(0x09);
+C51 COMPILER V9.00   TM1629                                                                09/04/2015 16:30:54 PAGE 6   
 
- 302          {
- 303   1        tm1629_f(0x0b);
- 304   1      }
- 305          
- 306          void fun13(void) //一级菜单FC
- 307          {
- 308   1        tm1629_f(0x0c);
- 309   1      }
- 310          
- 311          void fun14(void) //设置年份
- 312          {
- 313   1        if (return_await_number_table() == 1)
- 314   1        {
- 315   2          Display_time();
- 316   2          set_await_number_table(2);
- 317   2        }
- 318   1        if (return_await_number_table() == 3)
- 319   1        {
- 320   2          buf_display[1][7] = 0;
- 321   2          buf_display[1][6] = 0;
- 322   2          buf_display[1][5] = 0;
- 323   2          buf_display[1][4] = 0;
- 324   2          display();
- 325   2          set_await_number_table(0);
- 326   2        }
- 327   1        Ds1302_Write_Time();
- 328   1      }
- 329          
- 330          void fun15(void) //设置月份
- 331          {
- 332   1        if (return_await_number_table() == 1)
- 333   1        {
- 334   2          Display_time();
- 335   2          set_await_number_table(2);
- 336   2        }
- 337   1        if (return_await_number_table() == 3)
- 338   1        {
- 339   2          buf_display[1][2] = 0;
- 340   2          buf_display[1][1] = 0;
- 341   2          display();
- 342   2          set_await_number_table(0);
- 343   2        }
- 344   1        Ds1302_Write_Time();
- 345   1      }
- 346          
- 347          void fun16(void) //设置日期
- 348          {
- 349   1        if (return_await_number_table() == 1)
- 350   1        {
- 351   2          Display_time();
- 352   2          set_await_number_table(2);
- 353   2        }
- 354   1        if (return_await_number_table() == 3)
- 355   1        {
- 356   2          buf_display[0][7] = 0;
- 357   2          buf_display[0][6] = 0;
- 358   2          display();
- 359   2          set_await_number_table(0);
- 360   2        }
- 361   1        Ds1302_Write_Time();
- 362   1      }
- 363          
-C51 COMPILER V9.00   TM1629                                                                09/04/2015 15:08:00 PAGE 7   
+ 302   1      }
+ 303          
+ 304          void fun11(void) //一级菜单FA
+ 305          {
+ 306   1        tm1629_f(0x0a);
+ 307   1      }
+ 308          
+ 309          void fun12(void) //一级菜单Fb
+ 310          {
+ 311   1        tm1629_f(0x0b);
+ 312   1      }
+ 313          
+ 314          void fun13(void) //一级菜单FC
+ 315          {
+ 316   1        tm1629_f(0x0c);
+ 317   1      }
+ 318          
+ 319          void fun14(void) //设置年份
+ 320          {
+ 321   1        if (return_await_number_table() == 1)
+ 322   1        {
+ 323   2          Display_time();
+ 324   2          set_await_number_table(2);
+ 325   2        }
+ 326   1        if (return_await_number_table() == 3)
+ 327   1        {
+ 328   2          buf_display[1][7] = 0;
+ 329   2          buf_display[1][6] = 0;
+ 330   2          buf_display[1][5] = 0;
+ 331   2          buf_display[1][4] = 0;
+ 332   2          display();
+ 333   2          set_await_number_table(0);
+ 334   2        }
+ 335   1        Ds1302_Write_Time();
+ 336   1      }
+ 337          
+ 338          void fun15(void) //设置月份
+ 339          {
+ 340   1        if (return_await_number_table() == 1)
+ 341   1        {
+ 342   2          Display_time();
+ 343   2          set_await_number_table(2);
+ 344   2        }
+ 345   1        if (return_await_number_table() == 3)
+ 346   1        {
+ 347   2          buf_display[1][2] = 0;
+ 348   2          buf_display[1][1] = 0;
+ 349   2          display();
+ 350   2          set_await_number_table(0);
+ 351   2        }
+ 352   1        Ds1302_Write_Time();
+ 353   1      }
+ 354          
+ 355          void fun16(void) //设置日期
+ 356          {
+ 357   1        if (return_await_number_table() == 1)
+ 358   1        {
+ 359   2          Display_time();
+ 360   2          set_await_number_table(2);
+ 361   2        }
+ 362   1        if (return_await_number_table() == 3)
+ 363   1        {
+C51 COMPILER V9.00   TM1629                                                                09/04/2015 16:30:54 PAGE 7   
 
- 364          void fun17(void) //设置星期
- 365          {
- 366   1        if (return_await_number_table() == 1)
- 367   1        {
- 368   2          Display_time();
- 369   2          set_await_number_table(2);
- 370   2        }
- 371   1        if (return_await_number_table() == 3)
- 372   1        {
- 373   2          buf_display[0][5] = 0;
- 374   2          display();
- 375   2          set_await_number_table(0);
- 376   2        }
- 377   1        Ds1302_Write_Time();
- 378   1      }
- 379          
- 380          void fun18(void) //设置小时
- 381          {
- 382   1        if (return_await_number_table() == 1)
- 383   1        {
- 384   2          Display_time();
- 385   2          set_await_number_table(2);
- 386   2        }
- 387   1        if (return_await_number_table() == 3)
- 388   1        {
- 389   2          buf_display[0][3] = 0;
- 390   2          buf_display[0][2] = 0;
- 391   2          display();
- 392   2          set_await_number_table(0);
- 393   2        }
- 394   1        Ds1302_Write_Time();
- 395   1      }
- 396          
- 397          void fun19(void) //设置小时
- 398          {
- 399   1        if (return_await_number_table() == 1)
- 400   1        {
- 401   2          Display_time();
- 402   2          set_await_number_table(2);
- 403   2        }
- 404   1        if (return_await_number_table() == 3)
- 405   1        {
- 406   2          buf_display[0][1] = 0;
- 407   2          buf_display[0][0] = 0;
- 408   2          display();
- 409   2          set_await_number_table(0);
- 410   2        }
- 411   1        Ds1302_Write_Time();
- 412   1      }
+ 364   2          buf_display[0][7] = 0;
+ 365   2          buf_display[0][6] = 0;
+ 366   2          display();
+ 367   2          set_await_number_table(0);
+ 368   2        }
+ 369   1        Ds1302_Write_Time();
+ 370   1      }
+ 371          
+ 372          void fun17(void) //设置星期
+ 373          {
+ 374   1        if (return_await_number_table() == 1)
+ 375   1        {
+ 376   2          Display_time();
+ 377   2          set_await_number_table(2);
+ 378   2        }
+ 379   1        if (return_await_number_table() == 3)
+ 380   1        {
+ 381   2          buf_display[0][5] = 0;
+ 382   2          display();
+ 383   2          set_await_number_table(0);
+ 384   2        }
+ 385   1        Ds1302_Write_Time();
+ 386   1      }
+ 387          
+ 388          void fun18(void) //设置小时
+ 389          {
+ 390   1        if (return_await_number_table() == 1)
+ 391   1        {
+ 392   2          Display_time();
+ 393   2          set_await_number_table(2);
+ 394   2        }
+ 395   1        if (return_await_number_table() == 3)
+ 396   1        {
+ 397   2          buf_display[0][3] = 0;
+ 398   2          buf_display[0][2] = 0;
+ 399   2          display();
+ 400   2          set_await_number_table(0);
+ 401   2        }
+ 402   1        Ds1302_Write_Time();
+ 403   1      }
+ 404          
+ 405          void fun19(void) //设置小时
+ 406          {
+ 407   1        if (return_await_number_table() == 1)
+ 408   1        {
+ 409   2          Display_time();
+ 410   2          set_await_number_table(2);
+ 411   2        }
+ 412   1        if (return_await_number_table() == 3)
+ 413   1        {
+ 414   2          buf_display[0][1] = 0;
+ 415   2          buf_display[0][0] = 0;
+ 416   2          display();
+ 417   2          set_await_number_table(0);
+ 418   2        }
+ 419   1        Ds1302_Write_Time();
+ 420   1      }
+ 421          
+ 422          void fun20(void) //二级菜单F1-E1
+ 423          {
+ 424   1        tm1629_E(0x01);
+ 425   1      }
+C51 COMPILER V9.00   TM1629                                                                09/04/2015 16:30:54 PAGE 8   
+
+ 426          
+ 427          void fun21(void) //二级菜单F1-E2
+ 428          {
+ 429   1        tm1629_E(0x02);
+ 430   1      }
+ 431          
+ 432          void fun22(void) //二级菜单F1-E3
+ 433          {
+ 434   1        tm1629_E(0x03);
+ 435   1      }
+ 436          
+ 437          void fun23(void) //二级菜单F1-E4
+ 438          {
+ 439   1        tm1629_E(0x04);
+ 440   1      }
+ 441          
+ 442          void fun24(void) //二级菜单F2-E1
+ 443          {
+ 444   1        tm1629_E(0x01);
+ 445   1      }
+ 446          
+ 447          void fun25(void) //二级菜单F2-E2
+ 448          {
+ 449   1        tm1629_E(0x02);
+ 450   1      }
+ 451          
+ 452          void fun26(void) //二级菜单F2-E3
+ 453          {
+ 454   1        tm1629_E(0x03);
+ 455   1      }
+ 456          
+ 457          void fun27(void) //二级菜单F2-E4
+ 458          {
+ 459   1        tm1629_E(0x04);
+ 460   1      }
+ 461          
+ 462          void fun28(void) //二级菜单F3-E1
+ 463          {
+ 464   1        tm1629_E(0x01);
+ 465   1      }
+ 466          
+ 467          void fun29(void) //二级菜单F3-E2
+ 468          {
+ 469   1        tm1629_E(0x02);
+ 470   1      }
+ 471          
+ 472          void fun30(void) //二级菜单F4
+ 473          {
+ 474   1        tm1629_f(0x0f);
+ 475   1      }
+ 476          
+ 477          void fun31(void) //二级菜单F5
+ 478          {
+ 479   1        tm1629_f(0x0f);
+ 480   1      }
+ 481          
+ 482          void fun32(void) //二级菜单F6-E1
+ 483          {
+ 484   1        tm1629_E(0x01);
+ 485   1      }
+ 486          
+ 487          void fun33(void) //二级菜单F6-E2
+C51 COMPILER V9.00   TM1629                                                                09/04/2015 16:30:54 PAGE 9   
+
+ 488          {
+ 489   1        tm1629_E(0x02);
+ 490   1      }
+ 491          
+ 492          void fun34(void) //二级菜单F6-E3
+ 493          {
+ 494   1        tm1629_E(0x03);
+ 495   1      }
+ 496          
+ 497          void fun35(void) //二级菜单F6-E4
+ 498          {
+ 499   1        tm1629_E(0x04);
+ 500   1      }
+ 501          
+ 502          void fun36(void) //二级菜单F6-E5
+ 503          {
+ 504   1        tm1629_E(0x05);
+ 505   1      }
+ 506          
+ 507          void fun37(void) //二级菜单F7
+ 508          {
+ 509   1        tm1629_f(0x0f);
+ 510   1      }
+ 511          
+ 512          void fun38(void) //二级菜单F8
+ 513          {
+ 514   1        tm1629_f(0x0f);
+ 515   1      }
+ 516          
+ 517          void fun39(void) //二级菜单F9-E1
+ 518          {
+ 519   1        tm1629_E(0x01);
+ 520   1      }
+ 521          
+ 522          void fun40(void) //二级菜单F9-E2
+ 523          {
+ 524   1        tm1629_E(0x02);
+ 525   1      }
+ 526          
+ 527          void fun41(void) //二级菜单FA-E1
+ 528          {
+ 529   1        tm1629_E(0x01);
+ 530   1      }
+ 531          
+ 532          void fun42(void) //二级菜单FA-E2
+ 533          {
+ 534   1        tm1629_E(0x02);
+ 535   1      }
+ 536          
+ 537          void fun43(void) //二级菜单Fb
+ 538          {
+ 539   1        tm1629_f(0x0f);
+ 540   1      }
+ 541          
+ 542          void fun44(void) //二级菜单FC
+ 543          {
+ 544   1        tm1629_f(0x0f);
+ 545   1      }
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =   1170    ----
+   CODE SIZE        =   1326    ----
+C51 COMPILER V9.00   TM1629                                                                09/04/2015 16:30:54 PAGE 10  
+
    CONSTANT SIZE    =   ----    ----
    XDATA SIZE       =    320       1
    PDATA SIZE       =   ----    ----
