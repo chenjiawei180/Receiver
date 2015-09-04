@@ -1,4 +1,4 @@
-C51 COMPILER V9.00   MAIN                                                                  09/03/2015 16:06:51 PAGE 1   
+C51 COMPILER V9.00   MAIN                                                                  09/04/2015 10:18:58 PAGE 1   
 
 
 C51 COMPILER V9.00, COMPILATION OF MODULE MAIN
@@ -12,29 +12,34 @@ line level    source
    2          #include "usart.h"
    3          #include "key.h"
    4          #include "tm1629.h"
-   5          
-   6          void main()
-   7          { 
-   8   1        UsartInit();  //串口初始化
-   9   1      #ifdef DEBUG
-  10   1        uart_printf("UsartInit Complete! \r\n");
-  11   1      #endif
-  12   1        tm1629_init();
-  13   1      #ifdef DEBUG
-  14   1        uart_printf("tm1629_init Complete! \r\n");
-  15   1      #endif
-  16   1      
-  17   1        while (1)
-  18   1        {
-  19   2          KeyDecoder();
-  20   2        }
-  21   1      }
-  22          
+   5          #include "timer.h"
+   6          
+   7          void main()
+   8          { 
+   9   1        UsartInit();  //串口初始化
+  10   1      #ifdef DEBUG
+  11   1        uart_printf("UsartInit Complete! \r\n");
+  12   1      #endif
+  13   1        tm1629_init();
+  14   1      #ifdef DEBUG
+  15   1        uart_printf("tm1629_init Complete! \r\n");
+  16   1      #endif
+  17   1        Init_Timer0();
+  18   1      #ifdef DEBUG
+  19   1        uart_printf("Init_Timer0 Complete! \r\n");
+  20   1      #endif
+  21   1      
+  22   1        while (1)
+  23   1        {
+  24   2          KeyProcess();
+  25   2        }
+  26   1      }
+  27          
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =     29    ----
-   CONSTANT SIZE    =     48    ----
+   CODE SIZE        =     41    ----
+   CONSTANT SIZE    =     73    ----
    XDATA SIZE       =   ----    ----
    PDATA SIZE       =   ----    ----
    DATA SIZE        =   ----    ----

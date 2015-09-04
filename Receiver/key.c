@@ -21,7 +21,7 @@ key_table code table[100] =
 	{ ONE_MENU_F8, ONE_MENU_F7, ONE_MENU_F9, 0, MENU_STANDBY, (*fun9) },
 	{ ONE_MENU_F9, ONE_MENU_F8, ONE_MENU_F0, 0, MENU_STANDBY, (*fun10) },
 
-	{ ONE_MENU_FH, ONE_MENU_FH, ONE_MENU_FH, 0, MENU_STANDBY, (*fun2) }, //FH
+	{ ONE_MENU_FH, ONE_MENU_FH, ONE_MENU_FH, 0, MENU_STANDBY, (*fun11) }, //FH
 
 
 };
@@ -140,4 +140,11 @@ void delay10ms(void)   //Îó²î -0.054253472222us
 	for (b = 52; b>0; b--)
 	for (a = 220; a>0; a--);
 	_nop_();  //if Keil,require use intrins.h
+}
+
+unsigned char return_func_index(void)
+{
+	unsigned char func_index_temp = 0;
+	func_index_temp = func_index;
+	return func_index_temp;
 }

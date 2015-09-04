@@ -13,9 +13,8 @@ compiling main.c...
 compiling usart.c...
 compiling key.c...
 compiling tm1629.c...
+compiling timer.c...
 linking...
-*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
-    SEGMENT: ?PR?KEYPROCESS?KEY
 *** WARNING L1: UNRESOLVED EXTERNAL SYMBOL
     SYMBOL:  FUN4
     MODULE:  key.obj (KEY)
@@ -38,7 +37,7 @@ linking...
     SYMBOL:  FUN10
     MODULE:  key.obj (KEY)
 *** WARNING L1: UNRESOLVED EXTERNAL SYMBOL
-    SYMBOL:  FUN0
+    SYMBOL:  FUN11
     MODULE:  key.obj (KEY)
 *** WARNING L1: UNRESOLVED EXTERNAL SYMBOL
     SYMBOL:  FUN1
@@ -49,10 +48,6 @@ linking...
 *** WARNING L1: UNRESOLVED EXTERNAL SYMBOL
     SYMBOL:  FUN3
     MODULE:  key.obj (KEY)
-*** WARNING L2: REFERENCE MADE TO UNRESOLVED EXTERNAL
-    SYMBOL:  FUN0
-    MODULE:  key.obj (KEY)
-    ADDRESS: 03A3H
 *** WARNING L2: REFERENCE MADE TO UNRESOLVED EXTERNAL
     SYMBOL:  FUN1
     MODULE:  key.obj (KEY)
@@ -94,41 +89,40 @@ linking...
     MODULE:  key.obj (KEY)
     ADDRESS: 03F3H
 *** WARNING L2: REFERENCE MADE TO UNRESOLVED EXTERNAL
-    SYMBOL:  FUN2
+    SYMBOL:  FUN11
     MODULE:  key.obj (KEY)
     ADDRESS: 03FBH
-Program Size: data=15.2 xdata=1441 code=3578
+Program Size: data=15.2 xdata=1444 code=3852
 creating hex file from "Receiver_keil"...
-"Receiver_keil" - 0 Error(s), 24 Warning(s).
+"Receiver_keil" - 0 Error(s), 22 Warning(s).
 </pre>
 </body>
 </html>
-ver\main.c - 0 Error(s), 0 Warning(s).
+), 0 Warning(s).
+ REFERENCE MADE TO UNRESOLVED EXTERNAL
+    SYMBOL:  FUN10
+    MODULE:  key.obj (KEY)
+    ADDRESS: 03F3H
+*** WARNING L2: REFERENCE MADE TO UNRESOLVED EXTERNAL
+    SYMBOL:  FUN11
+    MODULE:  key.obj (KEY)
+    ADDRESS: 03FBH
+*** WARNING L1: UNRESOLVED EXTERNAL SYMBOL
+    SYMBOL:  _SET_AWAIT_NUMBER_TABLE
+    MODULE:  tm1629.obj (TM1629)
+*** WARNING L1: UNRESOLVED EXTERNAL SYMBOL
+    SYMBOL:  RETURN_AWAIT_NUMBER_TABLE
+    MODULE:  tm1629.obj (TM1629)
+*** WARNING L2: REFERENCE MADE TO UNRESOLVED EXTERNAL
+    SYMBOL:  RETURN_AWAIT_NUMBER_TABLE
+    MODULE:  tm1629.obj (TM1629)
+    ADDRESS: 0CFCH
+*** WARNING L2: REFERENCE MADE TO UNRESOLVED EXTERNAL
+    SYMBOL:  _SET_AWAIT_NUMBER_TABLE
+    MODULE:  tm1629.obj (TM1629)
+    ADDRESS: 0D1EH
+Program Size: data=15.2 xdata=1442 code=3719
+creating hex file from "Receiver_keil"...
+"Receiver_keil" - 0 Error(s), 30 Warning(s).
 compiling key.c...
 Receiver\key.c - 0 Error(s), 0 Warning(s).
- error C132: 'i': not in formal parameter list
-RECEIVER\TM1629.C(12): error C244: 'TM1629_STB': can't initialize, bad type or class
-RECEIVER\TM1629.C(12): error C132: 'TM1629_STB': not in formal parameter list
-RECEIVER\TM1629.C(13): error C141: syntax error near 'for'
-RECEIVER\TM1629.C(13): error C141: syntax error near '=', expected ')'
-RECEIVER\TM1629.C(13): error C129: missing ';' before '<'
-Receiver\tm1629.c(148): warning C322: unknown identifier
-Receiver\tm1629.c - 19 Error(s), 1 Warning(s).
-compiling tm1629.c...
-RECEIVER\TM1629.C(3): error C244: 'CODE': can't initialize, bad type or class
-RECEIVER\TM1629.C(3): error C132: 'CODE': not in formal parameter list
-RECEIVER\TM1629.C(4): error C244: 'INIT_CODE': can't initialize, bad type or class
-RECEIVER\TM1629.C(4): error C132: 'INIT_CODE': not in formal parameter list
-RECEIVER\TM1629.C(5): error C244: 'SHANGSHUO': can't initialize, bad type or class
-RECEIVER\TM1629.C(5): error C132: 'SHANGSHUO': not in formal parameter list
-RECEIVER\TM1629.C(6): error C244: 'buf_display': can't initialize, bad type or class
-RECEIVER\TM1629.C(6): error C132: 'buf_display': not in formal parameter list
-RECEIVER\TM1629.C(7): error C244: 'display_ram': can't initialize, bad type or class
-RECEIVER\TM1629.C(7): error C132: 'display_ram': not in formal parameter list
-RECEIVER\TM1629.C(168): error C141: syntax error near ''
-Receiver\tm1629.c - 11 Error(s), 0 Warning(s).
-compiling tm1629.c...
-Receiver\tm1629.c - 0 Error(s), 0 Warning(s).
-compiling tm1629.c...
-Receiver\tm1629.c(148): warning C322: unknown identifier
-Receiver\tm1629.c - 0 Error(s), 1 Warning(s).

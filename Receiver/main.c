@@ -2,6 +2,7 @@
 #include "usart.h"
 #include "key.h"
 #include "tm1629.h"
+#include "timer.h"
 
 void main()
 {	
@@ -13,10 +14,14 @@ void main()
 #ifdef DEBUG
 	uart_printf("tm1629_init Complete! \r\n");
 #endif
+	Init_Timer0();
+#ifdef DEBUG
+	uart_printf("Init_Timer0 Complete! \r\n");
+#endif
 
 	while (1)
 	{
-		KeyDecoder();
+		KeyProcess();
 	}
 }
 

@@ -2,6 +2,7 @@
 "main.obj",
 "usart.obj",
 "key.obj",
-"tm1629.obj" 
+"tm1629.obj",
+"timer.obj" 
 TO "Receiver_keil" 
 RAMSIZE(256) 

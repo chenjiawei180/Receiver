@@ -27,5 +27,7 @@ extern void delay10ms(void);// Delay 10 ms function
 extern unsigned char KeyDecoder(void);//解码函数
 extern void KeyProcess(void);//按键处理函数
 
+extern unsigned char return_func_index(void);
+
 #endif
 

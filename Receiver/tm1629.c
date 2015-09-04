@@ -1,10 +1,13 @@
 #include "tm1629.h"
+#include "timer.h"
+#include "usart.h"
 
 unsigned char const CODE[] = { 0x3F, 0x06, 0x5B, 0x4F, 0x66, 0x6D, 0x7D, 0x07, 0x7F, 0x6F, 0x77, 0x7C, 0x39, 0x5E, 0x79, 0x71, 0x76, 0x38, 0x5c, 0x73, 0x3e };//0-9 abcdef 显示器码数组
 unsigned char const INIT_CODE[] = { 0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80 };//逐段点亮数码管数组
 unsigned char const SHANGSHUO[] = { 0x40, 0x00 }; // 点亮数码管中间段以及灭
 unsigned char buf_display[6][8] = { 0 }; //3个TM1629显存数组
 unsigned char display_ram[240] = { 0 }; //程序运行时记录显示数据的内存 
+unsigned char await_time_table= 0 ;//用于记录待机显示横杠数码管次数 
 
 void writeDataTo1629(unsigned char p) //写数据给第一个TM1629
 {
@@ -162,4 +165,40 @@ void Tm1629_delay(unsigned char k) //延时函数
 			}
 		}
 	}
+}
+
+void tm1629_clear(void)//全部归零
+{
+	unsigned char i, j;
+	for (i = 0; i<6; i++)
+	{
+		for (j = 0; j<8; j++)
+		{
+			buf_display[i][j] = 0x00;
+		}
+	}
+}
+
+void tm1629_await(void)
+{
+	unsigned char i;	//k控制显示的具体数字，i和j控制buf_display的刷新
+	unsigned char await_number_table_temp = 0;
+	await_number_table_temp = return_await_number_table();
+	if (await_number_table_temp == 1)
+	{
+		//GD5800_select_chapter(0x0008)	;
+		tm1629_clear();
+		i = await_time_table & 0x03;
+		buf_display[0][i] = 0x40;
+		display();
+		set_await_number_table(0);
+		await_time_table++;
+		if (await_time_table == 4)
+			await_time_table = 0;
+	}
+}
+
+void fun0(void) //待机显示函数
+{
+	tm1629_await();
 }
