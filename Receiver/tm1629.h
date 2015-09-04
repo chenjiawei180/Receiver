@@ -31,13 +31,8 @@ extern void tm1629_await(void);
 extern void tm1629_clear(void);
 extern void tm1629_display_buff_clear(void);
 extern void tm1629_load(void);
+
 extern void tm1629_f(unsigned char f_number);
-extern void tm1629_f0(unsigned char f_number);
-extern void tm1629_f4(unsigned char f_number);
-extern void tm1629_f1_1(void);
-extern void tm1629_f2_1(void);
-extern void tm1629_f1_2(void);
-extern void tm1629_f2_2(void);
 
 
 extern void fun0(void);

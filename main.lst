@@ -1,4 +1,4 @@
-C51 COMPILER V9.00   MAIN                                                                  09/04/2015 10:18:58 PAGE 1   
+C51 COMPILER V9.00   MAIN                                                                  09/04/2015 15:07:59 PAGE 1   
 
 
 C51 COMPILER V9.00, COMPILATION OF MODULE MAIN
@@ -13,33 +13,39 @@ line level    source
    3          #include "key.h"
    4          #include "tm1629.h"
    5          #include "timer.h"
-   6          
-   7          void main()
-   8          { 
-   9   1        UsartInit();  //串口初始化
-  10   1      #ifdef DEBUG
-  11   1        uart_printf("UsartInit Complete! \r\n");
-  12   1      #endif
-  13   1        tm1629_init();
-  14   1      #ifdef DEBUG
-  15   1        uart_printf("tm1629_init Complete! \r\n");
-  16   1      #endif
-  17   1        Init_Timer0();
-  18   1      #ifdef DEBUG
-  19   1        uart_printf("Init_Timer0 Complete! \r\n");
-  20   1      #endif
-  21   1      
-  22   1        while (1)
-  23   1        {
-  24   2          KeyProcess();
-  25   2        }
-  26   1      }
-  27          
+   6          #include "ds1302.h"
+   7          
+   8          void main()
+   9          { 
+  10   1        UsartInit();  //串口初始化
+  11   1      #ifdef DEBUG
+  12   1        uart_printf("UsartInit Complete! \r\n");
+  13   1      #endif
+  14   1        tm1629_init();
+  15   1      #ifdef DEBUG
+  16   1        uart_printf("tm1629_init Complete! \r\n");
+  17   1      #endif
+  18   1        Init_Timer0();
+  19   1      #ifdef DEBUG
+  20   1        uart_printf("Init_Timer0 Complete! \r\n");
+  21   1      #endif
+  22   1        Ds1302_Init();
+  23   1      #ifdef DEBUG
+  24   1        uart_printf("Ds1302_Init Complete! \r\n");
+  25   1      #endif
+  26   1        //Ds1302_Write_Time();
+  27   1      
+  28   1        while (1)
+  29   1        {
+  30   2          KeyProcess();
+  31   2        }
+  32   1      }
+  33          
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =     41    ----
-   CONSTANT SIZE    =     73    ----
+   CODE SIZE        =     53    ----
+   CONSTANT SIZE    =     98    ----
    XDATA SIZE       =   ----    ----
    PDATA SIZE       =   ----    ----
    DATA SIZE        =   ----    ----

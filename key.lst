@@ -1,4 +1,4 @@
-C51 COMPILER V9.00   KEY                                                                   09/04/2015 10:18:58 PAGE 1   
+C51 COMPILER V9.00   KEY                                                                   09/04/2015 15:07:59 PAGE 1   
 
 
 C51 COMPILER V9.00, COMPILATION OF MODULE KEY
@@ -12,74 +12,91 @@ line level    source
    2          #include "usart.h"
    3          #include "tm1629.h"
    4          #include "menu.h"
-   5          
-   6          unsigned char func_index = 0; //多级菜单索引变量
-   7          void(*current_operation_index)();// 多级菜单函数指针
-   8          
-   9          key_table code table[100] =
-  10          { // 目标索引       上        下          确认     退出         函数
-  11            { MENU_STANDBY, MENU_STANDBY, MENU_STANDBY, MENU_STANDBY, MENU_STANDBY, (*fun0) }, //待机
-  12          
-  13            { ONE_MENU_F0, ONE_MENU_F9, ONE_MENU_F1, 0, MENU_STANDBY, (*fun1) }, //F0-F9
-  14            { ONE_MENU_F1, ONE_MENU_F0, ONE_MENU_F2, 0, MENU_STANDBY, (*fun2) },
-  15            { ONE_MENU_F2, ONE_MENU_F1, ONE_MENU_F3, 0, MENU_STANDBY, (*fun3) },
-  16            { ONE_MENU_F3, ONE_MENU_F2, ONE_MENU_F4, 0, MENU_STANDBY, (*fun4) },
-  17            { ONE_MENU_F4, ONE_MENU_F3, ONE_MENU_F5, 0, MENU_STANDBY, (*fun5) },
-  18            { ONE_MENU_F5, ONE_MENU_F4, ONE_MENU_F6, 0, MENU_STANDBY, (*fun6) },
-  19            { ONE_MENU_F6, ONE_MENU_F5, ONE_MENU_F7, 0, MENU_STANDBY, (*fun7) },
-  20            { ONE_MENU_F7, ONE_MENU_F6, ONE_MENU_F8, 0, MENU_STANDBY, (*fun8) },
-  21            { ONE_MENU_F8, ONE_MENU_F7, ONE_MENU_F9, 0, MENU_STANDBY, (*fun9) },
-  22            { ONE_MENU_F9, ONE_MENU_F8, ONE_MENU_F0, 0, MENU_STANDBY, (*fun10) },
-  23          
-  24            { ONE_MENU_FH, ONE_MENU_FH, ONE_MENU_FH, 0, MENU_STANDBY, (*fun11) }, //FH
+   5          #include "timer.h"
+   6          #include "ds1302.h"
+   7          
+   8          unsigned char func_index = 0; //多级菜单索引变量
+   9          void(*current_operation_index)();// 多级菜单函数指针
+  10          
+  11          key_table code table[100] =
+  12          { // 目标索引       上        下          确认     退出         函数
+  13            { MENU_STANDBY, MENU_STANDBY, MENU_STANDBY, MENU_STANDBY, MENU_STANDBY, (*fun0) }, //待机
+  14          
+  15            { ONE_MENU_F0, ONE_MENU_FC, ONE_MENU_F1, TWO_MENU_F0_YEAR , MENU_STANDBY, (*fun1) }, //F0-F9
+  16            { ONE_MENU_F1, ONE_MENU_F0, ONE_MENU_F2, 0, MENU_STANDBY, (*fun2) },
+  17            { ONE_MENU_F2, ONE_MENU_F1, ONE_MENU_F3, 0, MENU_STANDBY, (*fun3) },
+  18            { ONE_MENU_F3, ONE_MENU_F2, ONE_MENU_F4, 0, MENU_STANDBY, (*fun4) },
+  19            { ONE_MENU_F4, ONE_MENU_F3, ONE_MENU_F5, 0, MENU_STANDBY, (*fun5) },
+  20            { ONE_MENU_F5, ONE_MENU_F4, ONE_MENU_F6, 0, MENU_STANDBY, (*fun6) },
+  21            { ONE_MENU_F6, ONE_MENU_F5, ONE_MENU_F7, 0, MENU_STANDBY, (*fun7) },
+  22            { ONE_MENU_F7, ONE_MENU_F6, ONE_MENU_F8, 0, MENU_STANDBY, (*fun8) },
+  23            { ONE_MENU_F8, ONE_MENU_F7, ONE_MENU_F9, 0, MENU_STANDBY, (*fun9) },
+  24            { ONE_MENU_F9, ONE_MENU_F8, ONE_MENU_FA, 0, MENU_STANDBY, (*fun10) },
   25          
-  26          
-  27          };
-  28          
-  29          unsigned int KeyScan(void)  //Keyboard scan function
-  30          {
-  31   1        unsigned int Val = 0;
-  32   1        HKeyPort |= 0x1f;//Row height
-  33   1        LKeyPort &= 0x07;
-  34   1        if ((HKeyPort & 0x1f) != 0x1f)//Press button
-  35   1        {
-  36   2          delay10ms();  //Remove jitter
-  37   2          if ((HKeyPort & 0x1f) != 0x1f)   //Press button
-  38   2          {
-  39   3            HKeyPort |= 0x1f; //检测第一列
-  40   3            LKeyPort |= 0xf8;
-  41   3            LKeyPort &= 0x7f;
-  42   3            if ((HKeyPort & 0x1f) != 0x1f)
-  43   3            {
-  44   4              //  return_standby_time=0;
-  45   4              //  sound_table=1;
-  46   4              Val = HKeyPort & 0x1f;
-  47   4              Val <<= 8;
-  48   4              Val += (LKeyPort & 0xf8);
-  49   4              if (Val == 0x1e78)
-  50   4              {
-  51   5                //    main_press_time=0;
-  52   5                //    main_press_time_table=1;
-  53   5              }
-  54   4              while ((HKeyPort & 0x1f) != 0x1f);
-C51 COMPILER V9.00   KEY                                                                   09/04/2015 10:18:58 PAGE 2   
+  26            { ONE_MENU_FA, ONE_MENU_F9, ONE_MENU_Fb, 0, MENU_STANDBY, (*fun11) }, //FA
+  27            { ONE_MENU_Fb, ONE_MENU_FA, ONE_MENU_FC, 0, MENU_STANDBY, (*fun12) }, //Fb
+  28            { ONE_MENU_FC, ONE_MENU_Fb, ONE_MENU_F0, 0, MENU_STANDBY, (*fun13) }, //FC
+  29          
+  30            { TWO_MENU_F0_YEAR  , TWO_MENU_F0_YEAR  , TWO_MENU_F0_YEAR  , TWO_MENU_F0_MOUTH , ONE_MENU_F0, (*fun14) }
+             -, //万年历 年
+  31            { TWO_MENU_F0_MOUTH , TWO_MENU_F0_MOUTH , TWO_MENU_F0_MOUTH , TWO_MENU_F0_DAY   , ONE_MENU_F0, (*fun15) }
+             -, //万年历 月
+  32            { TWO_MENU_F0_DAY   , TWO_MENU_F0_DAY   , TWO_MENU_F0_DAY   , TWO_MENU_F0_WEEK  , ONE_MENU_F0, (*fun16) }
+             -, //万年历 日
+  33            { TWO_MENU_F0_WEEK  , TWO_MENU_F0_WEEK  , TWO_MENU_F0_WEEK  , TWO_MENU_F0_HOUR  , ONE_MENU_F0, (*fun17) }
+             -, //万年历 周
+  34            { TWO_MENU_F0_HOUR  , TWO_MENU_F0_HOUR  , TWO_MENU_F0_HOUR  , TWO_MENU_F0_MINUTE, ONE_MENU_F0, (*fun18) }
+             -, //万年历 小时
+  35            { TWO_MENU_F0_MINUTE, TWO_MENU_F0_MINUTE, TWO_MENU_F0_MINUTE, TWO_MENU_F0_YEAR  , ONE_MENU_F0, (*fun19) }
+             -, //万年历 分钟
+  36          
+  37          
+  38          };
+  39          
+  40          unsigned int KeyScan(void)  //Keyboard scan function
+  41          {
+  42   1        unsigned int Val = 0;
+  43   1        HKeyPort |= 0x1f;//Row height
+  44   1        LKeyPort &= 0x07;
+  45   1        if ((HKeyPort & 0x1f) != 0x1f)//Press button
+  46   1        {
+  47   2          delay10ms();  //Remove jitter
+  48   2          if ((HKeyPort & 0x1f) != 0x1f)   //Press button
+C51 COMPILER V9.00   KEY                                                                   09/04/2015 15:07:59 PAGE 2   
 
-  55   4              delay10ms();
-  56   4              while ((HKeyPort & 0x1f) != 0x1f);
-  57   4              //  main_press_time_table=0;
-  58   4              return Val;
-  59   4            }
-  60   3          }
-  61   2        }
-  62   1        return 0x0fff;
-  63   1      }
-  64          
-  65          unsigned char KeyDecoder(void)
-  66          {
-  67   1        unsigned int key_val = 0;
-  68   1      
-  69   1        key_val = KeyScan();
-  70   1      #if 0   
+  49   2          {
+  50   3            HKeyPort |= 0x1f; //检测第一列
+  51   3            LKeyPort |= 0xf8;
+  52   3            LKeyPort &= 0x7f;
+  53   3            if ((HKeyPort & 0x1f) != 0x1f)
+  54   3            {
+  55   4              //  return_standby_time=0;
+  56   4              //  sound_table=1;
+  57   4              Val = HKeyPort & 0x1f;
+  58   4              Val <<= 8;
+  59   4              Val += (LKeyPort & 0xf8);
+  60   4              if (Val == 0x1e78)
+  61   4              {
+  62   5                clear_main_press_time();  //清除菜单键按下的时间计算变量
+  63   5                set_main_press_time_table(1); //设置相应的标志位，开始计算时间
+  64   5              }
+  65   4              while ((HKeyPort & 0x1f) != 0x1f);
+  66   4              delay10ms();
+  67   4              while ((HKeyPort & 0x1f) != 0x1f);
+  68   4              set_main_press_time_table(0);//按键释放，清除相应的标志位
+  69   4              return Val;
+  70   4            }
+  71   3          }
+  72   2        }
+  73   1        return 0x0fff;
+  74   1      }
+  75          
+  76          unsigned char KeyDecoder(void)
+  77          {
+  78   1        unsigned int key_val = 0;
+  79   1      
+  80   1        key_val = KeyScan();
+  81   1      #if 0   
                 if (key_val == 0x0fff) /*do not key press*/
                 {
                   /*sjz 有注册管理器标志*/
@@ -109,65 +126,141 @@ line level    source
                     case 0x02:key_val = 0x1b78; break;
                     case 0x04:key_val = 0x1d78; break;
                     case 0x08:key_val = 0x1e78; break;
+C51 COMPILER V9.00   KEY                                                                   09/04/2015 15:07:59 PAGE 3   
+
                     default:break;
                     }
                   }
                 }
               #endif   
- 105   1      
- 106   1      #ifdef DEBUG
- 107   1        if (key_val != 0x0fff)
- 108   1        uart_printf("key_val is %x .\r\n", key_val); //测试按键键值
- 109   1      #endif
- 110   1        switch (key_val)
- 111   1        {
- 112   2        case 0x1778:return KEY_RETURN; break;//1 按下相应的键显示相对应的码值
- 113   2        case 0x1d78:return KEY_DOWN; break;//2  
- 114   2        case 0x1b78:return KEY_UP; break;//4
- 115   2        case 0x1e78:return KEY_FUNC; break;//5 按下相应的键显示相对应的码值
- 116   2        default:return 0xff; break;
-C51 COMPILER V9.00   KEY                                                                   09/04/2015 10:18:58 PAGE 3   
+ 116   1      
+ 117   1      #ifdef DEBUG
+ 118   1        if (key_val != 0x0fff)
+ 119   1        uart_printf("key_val is %x .\r\n", key_val); //测试按键键值
+ 120   1      #endif
+ 121   1        switch (key_val)
+ 122   1        {
+ 123   2        case 0x1778:return KEY_RETURN; break;//1 按下相应的键显示相对应的码值
+ 124   2        case 0x1d78:return KEY_DOWN; break;//2  
+ 125   2        case 0x1b78:return KEY_UP; break;//4
+ 126   2        case 0x1e78:return KEY_FUNC; break;//5 按下相应的键显示相对应的码值
+ 127   2        default:return 0xff; break;
+ 128   2        }
+ 129   1      }
+ 130          
+ 131          void KeyProcess(void)
+ 132          {
+ 133   1        unsigned char key_value = 0, main_press_time_temp = 0;
+ 134   1        main_press_time_temp = return_main_press_time();
+ 135   1        key_value = KeyDecoder();
+ 136   1        switch (key_value)
+ 137   1        {
+ 138   2          case KEY_FUNC:
+ 139   2            if (func_index == MENU_STANDBY )  //如果索引==0  则要1秒以上进入菜单
+ 140   2            {
+ 141   3              if (main_press_time_temp >= 20)
+ 142   3              {
+ 143   4                func_index = ONE_MENU_F0;
+ 144   4                clear_main_press_time();
+ 145   4              }
+ 146   3            }
+ 147   2            else
+ 148   2            {
+ 149   3              func_index = table[func_index].enter;
+ 150   3            }
+ 151   2             break;
+ 152   2          case KEY_RETURN:  func_index = table[func_index].esc; break;
+ 153   2          case KEY_UP:
+ 154   2            switch (func_index)
+ 155   2            {
+ 156   3            case TWO_MENU_F0_YEAR: 
+ 157   3              if (time_buf1[1] == 99) time_buf1[1] = 0; //设置万年历 年
+ 158   3                         else time_buf1[1]++;
+ 159   3              break;
+ 160   3            case TWO_MENU_F0_MOUTH:
+ 161   3              if (time_buf1[2] == 12) time_buf1[2] = 1; //设置万年历 月
+ 162   3              else time_buf1[2]++;
+ 163   3              break;
+ 164   3            case TWO_MENU_F0_DAY:
+ 165   3              if (time_buf1[3] == 31) time_buf1[3] = 1; //设置万年历 日
+ 166   3              else time_buf1[3]++;
+ 167   3              break;
+ 168   3            case TWO_MENU_F0_WEEK:
+ 169   3              if (time_buf1[7] == 7) time_buf1[7] = 1;  //设置万年历 星期
+ 170   3              else time_buf1[7]++;
+ 171   3              break;
+ 172   3            case TWO_MENU_F0_HOUR:
+C51 COMPILER V9.00   KEY                                                                   09/04/2015 15:07:59 PAGE 4   
 
- 117   2        }
- 118   1      }
- 119          
- 120          void KeyProcess(void)
- 121          {
- 122   1        unsigned char key_value;
- 123   1        key_value = KeyDecoder();
- 124   1        switch (key_value)
- 125   1        {
- 126   2          case KEY_FUNC:    func_index = table[func_index].enter; break;
- 127   2          case KEY_RETURN:  func_index = table[func_index].esc; break;
- 128   2          case KEY_UP:    func_index = table[func_index].up; break;
- 129   2          case KEY_DOWN:    func_index = table[func_index].down; break;
- 130   2          default:break;
- 131   2        }
- 132   1        current_operation_index = table[func_index].index_operation;
- 133   1        (*current_operation_index)();//执行当前操作函数
- 134   1      }
- 135          
- 136          void delay10ms(void)   //误差 -0.054253472222us
- 137          {
- 138   1        unsigned char a, b, c;
- 139   1        for (c = 4; c>0; c--)
- 140   1        for (b = 52; b>0; b--)
- 141   1        for (a = 220; a>0; a--);
- 142   1        _nop_();  //if Keil,require use intrins.h
- 143   1      }
- 144          
- 145          unsigned char return_func_index(void)
- 146          {
- 147   1        unsigned char func_index_temp = 0;
- 148   1        func_index_temp = func_index;
- 149   1        return func_index_temp;
- 150   1      }
+ 173   3              if (time_buf1[4] == 23) time_buf1[4] = 0; //设置万年历 小时
+ 174   3              else time_buf1[4]++;
+ 175   3              break;
+ 176   3            case TWO_MENU_F0_MINUTE:
+ 177   3              if (time_buf1[5] == 59) time_buf1[5] = 0; //设置万年历 分钟
+ 178   3              else time_buf1[5]++;
+ 179   3              break;
+ 180   3              default:break;
+ 181   3            } 
+ 182   2            func_index = table[func_index].up; break;
+ 183   2          case KEY_DOWN:
+ 184   2            switch (func_index)
+ 185   2            {
+ 186   3            case TWO_MENU_F0_YEAR:
+ 187   3              if (time_buf1[1] == 0) time_buf1[1] = 99; //设置万年历 年
+ 188   3              else time_buf1[1]--;
+ 189   3              break;
+ 190   3            case TWO_MENU_F0_MOUTH:
+ 191   3              if (time_buf1[2] == 1) time_buf1[2] = 12; //设置万年历 月
+ 192   3              else time_buf1[2]--;
+ 193   3              break;
+ 194   3            case TWO_MENU_F0_DAY:
+ 195   3              if (time_buf1[3] == 1) time_buf1[3] = 31; //设置万年历 日
+ 196   3              else time_buf1[3]--;
+ 197   3              break;
+ 198   3            case TWO_MENU_F0_WEEK:
+ 199   3              if (time_buf1[7] == 1) time_buf1[7] = 7;  //设置万年历 星期
+ 200   3              else time_buf1[7]--;
+ 201   3              break;
+ 202   3            case TWO_MENU_F0_HOUR:
+ 203   3              if (time_buf1[4] == 0) time_buf1[4] = 23; //设置万年历 小时
+ 204   3              else time_buf1[4]--;
+ 205   3              break;
+ 206   3            case TWO_MENU_F0_MINUTE:
+ 207   3              if (time_buf1[5] == 0) time_buf1[5] = 59; //设置万年历 分钟
+ 208   3              else time_buf1[5]--;
+ 209   3              break;
+ 210   3              default:break;
+ 211   3            }
+ 212   2            func_index = table[func_index].down; break;
+ 213   2          default:break;
+ 214   2        }
+ 215   1        current_operation_index = table[func_index].index_operation;
+ 216   1        (*current_operation_index)();//执行当前操作函数
+ 217   1      }
+ 218          
+ 219          void delay10ms(void)   //误差 -0.054253472222us
+ 220          {
+ 221   1        unsigned char a, b, c;
+ 222   1        for (c = 4; c>0; c--)
+ 223   1        for (b = 52; b>0; b--)
+ 224   1        for (a = 220; a>0; a--);
+ 225   1        _nop_();  //if Keil,require use intrins.h
+ 226   1      }
+ 227          
+ 228          unsigned char return_func_index(void)
+ 229          {
+ 230   1        unsigned char func_index_temp = 0;
+ 231   1        func_index_temp = func_index;
+ 232   1        return func_index_temp;
+ 233   1      }
+
+C51 COMPILER V9.00   KEY                                                                   09/04/2015 15:07:59 PAGE 5   
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =    375    ----
+   CODE SIZE        =    688    ----
    CONSTANT SIZE    =    818    ----
-   XDATA SIZE       =      4       4
+   XDATA SIZE       =      4       5
    PDATA SIZE       =   ----    ----
    DATA SIZE        =   ----    ----
    IDATA SIZE       =   ----    ----

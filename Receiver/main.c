@@ -3,6 +3,7 @@
 #include "key.h"
 #include "tm1629.h"
 #include "timer.h"
+#include "ds1302.h"
 
 void main()
 {	
@@ -18,6 +19,11 @@ void main()
 #ifdef DEBUG
 	uart_printf("Init_Timer0 Complete! \r\n");
 #endif
+	Ds1302_Init();
+#ifdef DEBUG
+	uart_printf("Ds1302_Init Complete! \r\n");
+#endif
+	//Ds1302_Write_Time();
 
 	while (1)
 	{

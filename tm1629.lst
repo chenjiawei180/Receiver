@@ -1,4 +1,4 @@
-C51 COMPILER V9.00   TM1629                                                                09/04/2015 10:18:59 PAGE 1   
+C51 COMPILER V9.00   TM1629                                                                09/04/2015 15:08:00 PAGE 1   
 
 
 C51 COMPILER V9.00, COMPILATION OF MODULE TM1629
@@ -11,218 +11,432 @@ line level    source
    1          #include "tm1629.h"
    2          #include "timer.h"
    3          #include "usart.h"
-   4          
-   5          unsigned char const CODE[] = { 0x3F, 0x06, 0x5B, 0x4F, 0x66, 0x6D, 0x7D, 0x07, 0x7F, 0x6F, 0x77, 0x7C, 0x3
+   4          #include "ds1302.h"
+   5          
+   6          unsigned char const CODE[] = { 0x3F, 0x06, 0x5B, 0x4F, 0x66, 0x6D, 0x7D, 0x07, 0x7F, 0x6F, 0x77, 0x7C, 0x3
              -9, 0x5E, 0x79, 0x71, 0x76, 0x38, 0x5c, 0x73, 0x3e };//0-9 abcdef 显示器码数组
-   6          unsigned char const INIT_CODE[] = { 0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80 };//逐段点亮数码管数组
-   7          unsigned char const SHANGSHUO[] = { 0x40, 0x00 }; // 点亮数码管中间段以及灭
-   8          unsigned char buf_display[6][8] = { 0 }; //3个TM1629显存数组
-   9          unsigned char display_ram[240] = { 0 }; //程序运行时记录显示数据的内存 
-  10          unsigned char await_time_table= 0 ;//用于记录待机显示横杠数码管次数 
-  11          
-  12          void writeDataTo1629(unsigned char p) //写数据给第一个TM1629
-  13          {
-  14   1        unsigned int i;
-  15   1        TM1629_STB = 0;
-  16   1        for (i = 0; i<8; i++)
-  17   1        {
-  18   2          TM1629_CLK = 0;
-  19   2          if (p & 0x01)
-  20   2            TM1629_DIO = 1;
-  21   2          else
-  22   2            TM1629_DIO = 0;
-  23   2          _nop_();
+   7          unsigned char const INIT_CODE[] = { 0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80 };//逐段点亮数码管数组
+   8          unsigned char const SHANGSHUO[] = { 0x40, 0x00 }; // 点亮数码管中间段以及灭
+   9          unsigned char buf_display[6][8] = { 0 }; //3个TM1629显存数组
+  10          unsigned char display_ram[240] = { 0 }; //程序运行时记录显示数据的内存 
+  11          unsigned char await_time_table= 0 ;//用于记录待机显示横杠数码管次数 
+  12          
+  13          void writeDataTo1629(unsigned char p) //写数据给第一个TM1629
+  14          {
+  15   1        unsigned int i;
+  16   1        TM1629_STB = 0;
+  17   1        for (i = 0; i<8; i++)
+  18   1        {
+  19   2          TM1629_CLK = 0;
+  20   2          if (p & 0x01)
+  21   2            TM1629_DIO = 1;
+  22   2          else
+  23   2            TM1629_DIO = 0;
   24   2          _nop_();
   25   2          _nop_();
   26   2          _nop_();
-  27   2          TM1629_CLK = 1;
-  28   2          p = p >> 1;
-  29   2        }
-  30   1        TM1629_CLK = 0;
-  31   1        TM1629_DIO = 0;
-  32   1      }
-  33          
-  34          void writeDataTo1629_2(unsigned char p) //写数据给第二个TM1629
-  35          {
-  36   1        unsigned int i;
-  37   1        TM1629_STB2 = 0;
-  38   1        for (i = 0; i<8; i++)
-  39   1        {
-  40   2          TM1629_CLK = 0;
-  41   2          if (p & 0x01)
-  42   2            TM1629_DIO = 1;
-  43   2          else
-  44   2            TM1629_DIO = 0;
-  45   2          _nop_();
+  27   2          _nop_();
+  28   2          TM1629_CLK = 1;
+  29   2          p = p >> 1;
+  30   2        }
+  31   1        TM1629_CLK = 0;
+  32   1        TM1629_DIO = 0;
+  33   1      }
+  34          
+  35          void writeDataTo1629_2(unsigned char p) //写数据给第二个TM1629
+  36          {
+  37   1        unsigned int i;
+  38   1        TM1629_STB2 = 0;
+  39   1        for (i = 0; i<8; i++)
+  40   1        {
+  41   2          TM1629_CLK = 0;
+  42   2          if (p & 0x01)
+  43   2            TM1629_DIO = 1;
+  44   2          else
+  45   2            TM1629_DIO = 0;
   46   2          _nop_();
   47   2          _nop_();
   48   2          _nop_();
-  49   2          TM1629_CLK = 1;
-  50   2          p = p >> 1;
-  51   2        }
-  52   1        TM1629_CLK = 0;
-  53   1        TM1629_DIO = 0;
-C51 COMPILER V9.00   TM1629                                                                09/04/2015 10:18:59 PAGE 2   
+  49   2          _nop_();
+  50   2          TM1629_CLK = 1;
+  51   2          p = p >> 1;
+  52   2        }
+  53   1        TM1629_CLK = 0;
+C51 COMPILER V9.00   TM1629                                                                09/04/2015 15:08:00 PAGE 2   
 
-  54   1      }
-  55          
-  56          void writeDataTo1629_3(unsigned char p) //写数据给第三个TM1629
-  57          {
-  58   1        unsigned int i;
-  59   1        TM1629_STB3 = 0;
-  60   1        for (i = 0; i<8; i++)
-  61   1        {
-  62   2          TM1629_CLK = 0;
-  63   2          if (p & 0x01)
-  64   2            TM1629_DIO = 1;
-  65   2          else
-  66   2            TM1629_DIO = 0;
-  67   2          _nop_();
+  54   1        TM1629_DIO = 0;
+  55   1      }
+  56          
+  57          void writeDataTo1629_3(unsigned char p) //写数据给第三个TM1629
+  58          {
+  59   1        unsigned int i;
+  60   1        TM1629_STB3 = 0;
+  61   1        for (i = 0; i<8; i++)
+  62   1        {
+  63   2          TM1629_CLK = 0;
+  64   2          if (p & 0x01)
+  65   2            TM1629_DIO = 1;
+  66   2          else
+  67   2            TM1629_DIO = 0;
   68   2          _nop_();
   69   2          _nop_();
   70   2          _nop_();
-  71   2          TM1629_CLK = 1;
-  72   2          p = p >> 1;
-  73   2        }
-  74   1        TM1629_CLK = 0;
-  75   1        TM1629_DIO = 0;
-  76   1      }
-  77          
-  78          void send_command(unsigned char word) //写命令给第一个TM1629
-  79          {
-  80   1        TM1629_STB = 1;
-  81   1        nop;
-  82   1        TM1629_STB = 0;
-  83   1        writeDataTo1629(word);
-  84   1      }
-  85          
-  86          void send_command_2(unsigned char word) //写命令给第二个TM1629
-  87          {
-  88   1        TM1629_STB2 = 1;
-  89   1        nop;
-  90   1        TM1629_STB2 = 0;
-  91   1        writeDataTo1629_2(word);
-  92   1      }
-  93          
-  94          void send_command_3(unsigned char word) //写命令给第三个TM1629
-  95          {
-  96   1        TM1629_STB3 = 1;
-  97   1        nop;
-  98   1        TM1629_STB3 = 0;
-  99   1        writeDataTo1629_3(word);
- 100   1      }
- 101          
- 102          void display(void) //3个TM1629显示函数
- 103          {
- 104   1        unsigned char i;
- 105   1        send_command(0x40); //设置数据命令:普通模式、地址自增1，写数据到显存
- 106   1        send_command(0xc0); //设置显示地址命令：从00H开始
- 107   1        for (i = 0; i<8; i++) //发送16字节的显存数据
- 108   1        {
- 109   2          writeDataTo1629(buf_display[0][i]);
- 110   2          writeDataTo1629(buf_display[1][i]);
- 111   2        }
- 112   1        send_command(0x8C); //设置显示控制命令：打开显示，并设置为11/16.
- 113   1        TM1629_STB = 1;
- 114   1      
- 115   1        send_command_2(0x40); //设置数据命令:普通模式、地址自增1，写数据到显存
-C51 COMPILER V9.00   TM1629                                                                09/04/2015 10:18:59 PAGE 3   
+  71   2          _nop_();
+  72   2          TM1629_CLK = 1;
+  73   2          p = p >> 1;
+  74   2        }
+  75   1        TM1629_CLK = 0;
+  76   1        TM1629_DIO = 0;
+  77   1      }
+  78          
+  79          void send_command(unsigned char word) //写命令给第一个TM1629
+  80          {
+  81   1        TM1629_STB = 1;
+  82   1        nop;
+  83   1        TM1629_STB = 0;
+  84   1        writeDataTo1629(word);
+  85   1      }
+  86          
+  87          void send_command_2(unsigned char word) //写命令给第二个TM1629
+  88          {
+  89   1        TM1629_STB2 = 1;
+  90   1        nop;
+  91   1        TM1629_STB2 = 0;
+  92   1        writeDataTo1629_2(word);
+  93   1      }
+  94          
+  95          void send_command_3(unsigned char word) //写命令给第三个TM1629
+  96          {
+  97   1        TM1629_STB3 = 1;
+  98   1        nop;
+  99   1        TM1629_STB3 = 0;
+ 100   1        writeDataTo1629_3(word);
+ 101   1      }
+ 102          
+ 103          void display(void) //3个TM1629显示函数
+ 104          {
+ 105   1        unsigned char i;
+ 106   1        send_command(0x40); //设置数据命令:普通模式、地址自增1，写数据到显存
+ 107   1        send_command(0xc0); //设置显示地址命令：从00H开始
+ 108   1        for (i = 0; i<8; i++) //发送16字节的显存数据
+ 109   1        {
+ 110   2          writeDataTo1629(buf_display[0][i]);
+ 111   2          writeDataTo1629(buf_display[1][i]);
+ 112   2        }
+ 113   1        send_command(0x8C); //设置显示控制命令：打开显示，并设置为11/16.
+ 114   1        TM1629_STB = 1;
+ 115   1      
+C51 COMPILER V9.00   TM1629                                                                09/04/2015 15:08:00 PAGE 3   
 
- 116   1        send_command_2(0xc0); //设置显示地址命令：从00H开始
- 117   1        for (i = 0; i<8; i++) //发送16字节的显存数据
- 118   1        {
- 119   2          writeDataTo1629_2(buf_display[2][i]);
- 120   2          writeDataTo1629_2(buf_display[3][i]);
- 121   2        }
- 122   1        send_command_2(0x8C); //设置显示控制命令：打开显示，并设置为11/16.
- 123   1        TM1629_STB2 = 1;
- 124   1      
- 125   1        send_command_3(0x40); //设置数据命令:普通模式、地址自增1，写数据到显存
- 126   1        send_command_3(0xc0); //设置显示地址命令：从00H开始
- 127   1        for (i = 0; i<8; i++) //发送16字节的显存数据
- 128   1        {
- 129   2          writeDataTo1629_3(buf_display[4][i]);
- 130   2          writeDataTo1629_3(buf_display[5][i]);
- 131   2        }
- 132   1        send_command_3(0x8C); //设置显示控制命令：打开显示，并设置为11/16.
- 133   1        TM1629_STB3 = 1;
- 134   1      }
- 135          
- 136          void tm1629_init(void) //TM1629开机初始化函数
- 137          {
- 138   1        unsigned char i, j, k;    //k控制显示的具体数字，i和j控制buf_display的刷新
- 139   1        for (k = 0; k<8; k++)
- 140   1        {
- 141   2          for (i = 0; i<6; i++)
- 142   2          {
- 143   3            for (j = 0; j<8; j++)
- 144   3            {
- 145   4              buf_display[i][j] = INIT_CODE[k];
- 146   4            }
- 147   3          }
- 148   2          display();
- 149   2          Tm1629_delay(30);
- 150   2        }
- 151   1      }
- 152          
+ 116   1        send_command_2(0x40); //设置数据命令:普通模式、地址自增1，写数据到显存
+ 117   1        send_command_2(0xc0); //设置显示地址命令：从00H开始
+ 118   1        for (i = 0; i<8; i++) //发送16字节的显存数据
+ 119   1        {
+ 120   2          writeDataTo1629_2(buf_display[2][i]);
+ 121   2          writeDataTo1629_2(buf_display[3][i]);
+ 122   2        }
+ 123   1        send_command_2(0x8C); //设置显示控制命令：打开显示，并设置为11/16.
+ 124   1        TM1629_STB2 = 1;
+ 125   1      
+ 126   1        send_command_3(0x40); //设置数据命令:普通模式、地址自增1，写数据到显存
+ 127   1        send_command_3(0xc0); //设置显示地址命令：从00H开始
+ 128   1        for (i = 0; i<8; i++) //发送16字节的显存数据
+ 129   1        {
+ 130   2          writeDataTo1629_3(buf_display[4][i]);
+ 131   2          writeDataTo1629_3(buf_display[5][i]);
+ 132   2        }
+ 133   1        send_command_3(0x8C); //设置显示控制命令：打开显示，并设置为11/16.
+ 134   1        TM1629_STB3 = 1;
+ 135   1      }
+ 136          
+ 137          void tm1629_init(void) //TM1629开机初始化函数
+ 138          {
+ 139   1        unsigned char i, j, k;    //k控制显示的具体数字，i和j控制buf_display的刷新
+ 140   1        for (k = 0; k<8; k++)
+ 141   1        {
+ 142   2          for (i = 0; i<6; i++)
+ 143   2          {
+ 144   3            for (j = 0; j<8; j++)
+ 145   3            {
+ 146   4              buf_display[i][j] = INIT_CODE[k];
+ 147   4            }
+ 148   3          }
+ 149   2          display();
+ 150   2          Tm1629_delay(30);
+ 151   2        }
+ 152   1      }
  153          
- 154          void Tm1629_delay(unsigned char k) //延时函数
- 155          {
- 156   1        unsigned char i, j;
- 157   1        for (; k>0; k--)
- 158   1        {
- 159   2          for (i = 255; i>0; i--)
- 160   2          {
- 161   3            for (j = 255; j>0; j--)
- 162   3            {
- 163   4              ;
- 164   4      
- 165   4            }
- 166   3          }
- 167   2        }
- 168   1      }
- 169          
- 170          void tm1629_clear(void)//全部归零
- 171          {
- 172   1        unsigned char i, j;
- 173   1        for (i = 0; i<6; i++)
- 174   1        {
- 175   2          for (j = 0; j<8; j++)
- 176   2          {
- 177   3            buf_display[i][j] = 0x00;
-C51 COMPILER V9.00   TM1629                                                                09/04/2015 10:18:59 PAGE 4   
+ 154          
+ 155          void Tm1629_delay(unsigned char k) //延时函数
+ 156          {
+ 157   1        unsigned char i, j;
+ 158   1        for (; k>0; k--)
+ 159   1        {
+ 160   2          for (i = 255; i>0; i--)
+ 161   2          {
+ 162   3            for (j = 255; j>0; j--)
+ 163   3            {
+ 164   4              ;
+ 165   4      
+ 166   4            }
+ 167   3          }
+ 168   2        }
+ 169   1      }
+ 170          
+ 171          void tm1629_clear(void)//全部归零
+ 172          {
+ 173   1        unsigned char i, j;
+ 174   1        for (i = 0; i<6; i++)
+ 175   1        {
+ 176   2          for (j = 0; j<8; j++)
+ 177   2          {
+C51 COMPILER V9.00   TM1629                                                                09/04/2015 15:08:00 PAGE 4   
 
- 178   3          }
- 179   2        }
- 180   1      }
- 181          
- 182          void tm1629_await(void)
- 183          {
- 184   1        unsigned char i;  //k控制显示的具体数字，i和j控制buf_display的刷新
- 185   1        unsigned char await_number_table_temp = 0;
- 186   1        await_number_table_temp = return_await_number_table();
- 187   1        if (await_number_table_temp == 1)
- 188   1        {
- 189   2          //GD5800_select_chapter(0x0008) ;
- 190   2          tm1629_clear();
- 191   2          i = await_time_table & 0x03;
- 192   2          buf_display[0][i] = 0x40;
- 193   2          display();
- 194   2          set_await_number_table(0);
- 195   2          await_time_table++;
- 196   2          if (await_time_table == 4)
- 197   2            await_time_table = 0;
- 198   2        }
- 199   1      }
- 200          
- 201          void fun0(void) //待机显示函数
- 202          {
- 203   1        tm1629_await();
- 204   1      }
+ 178   3            buf_display[i][j] = 0x00;
+ 179   3          }
+ 180   2        }
+ 181   1      }
+ 182          
+ 183          void tm1629_await(void)
+ 184          {
+ 185   1        unsigned char i;  //k控制显示的具体数字，i和j控制buf_display的刷新
+ 186   1        unsigned char await_number_table_temp = 0;
+ 187   1        await_number_table_temp = return_await_number_table();
+ 188   1        if (await_number_table_temp == 1)
+ 189   1        {
+ 190   2          //GD5800_select_chapter(0x0008) ;
+ 191   2          tm1629_clear();
+ 192   2          i = await_time_table & 0x03;
+ 193   2          buf_display[0][i] = 0x40;
+ 194   2          display();
+ 195   2          set_await_number_table(0);
+ 196   2          await_time_table++;
+ 197   2          if (await_time_table == 4)
+ 198   2            await_time_table = 0;
+ 199   2        }
+ 200   1      }
+ 201          
+ 202          void Display_time(void)
+ 203          {
+ 204   1        tm1629_clear();
+ 205   1        Ds1302_Read_Time(); 
+ 206   1        buf_display[1][7] = CODE[time_buf1[0] / 10]; //年
+ 207   1        buf_display[1][6] = CODE[time_buf1[0] % 10];
+ 208   1        buf_display[1][5] = CODE[time_buf1[1] / 10];
+ 209   1        buf_display[1][4] = CODE[time_buf1[1] % 10];
+ 210   1      
+ 211   1        buf_display[1][3] = 0x40;          // -
+ 212   1        
+ 213   1        buf_display[1][2] = CODE[time_buf1[2] / 10]; //月
+ 214   1        buf_display[1][1] = CODE[time_buf1[2] % 10];
+ 215   1      
+ 216   1        buf_display[1][0] = 0x40;          // -
+ 217   1      
+ 218   1        buf_display[0][7] = CODE[time_buf1[3] / 10];
+ 219   1        buf_display[0][6] = CODE[time_buf1[3] % 10];//日
+ 220   1      
+ 221   1        buf_display[0][5] = CODE[time_buf1[7]];   //星期
+ 222   1      
+ 223   1        buf_display[0][3] = CODE[time_buf1[4] / 10]; //小时
+ 224   1        buf_display[0][2] = CODE[time_buf1[4] % 10];
+ 225   1        buf_display[0][1] = CODE[time_buf1[5] / 10]; //小时
+ 226   1        buf_display[0][0] = CODE[time_buf1[5] % 10];
+ 227   1      
+ 228   1        display();
+ 229   1      
+ 230   1      }
+ 231          
+ 232          void tm1629_f(unsigned char f_number) //第一行倒数二个显示F,倒数第一个显示f_number
+ 233          {
+ 234   1        tm1629_clear();
+ 235   1        buf_display[0][1] = CODE[0x0f];
+ 236   1        buf_display[0][0] = CODE[f_number];
+ 237   1        display();
+ 238   1      }
+ 239          
+C51 COMPILER V9.00   TM1629                                                                09/04/2015 15:08:00 PAGE 5   
+
+ 240          void fun0(void) //待机显示函数
+ 241          {
+ 242   1        //tm1629_await();
+ 243   1        Display_time();
+ 244   1      }
+ 245          
+ 246          void fun1(void) //一级菜单F0
+ 247          {
+ 248   1        tm1629_f(0x00);
+ 249   1      }
+ 250          
+ 251          void fun2(void) //一级菜单F1
+ 252          {
+ 253   1        tm1629_f(0x01);
+ 254   1      }
+ 255          
+ 256          void fun3(void) //一级菜单F2
+ 257          {
+ 258   1        tm1629_f(0x02);
+ 259   1      }
+ 260          
+ 261          void fun4(void) //一级菜单F3
+ 262          {
+ 263   1        tm1629_f(0x03);
+ 264   1      }
+ 265          
+ 266          void fun5(void) //一级菜单F4
+ 267          {
+ 268   1        tm1629_f(0x04);
+ 269   1      }
+ 270          
+ 271          void fun6(void) //一级菜单F5
+ 272          {
+ 273   1        tm1629_f(0x05);
+ 274   1      }
+ 275          
+ 276          void fun7(void) //一级菜单F6
+ 277          {
+ 278   1        tm1629_f(0x06);
+ 279   1      }
+ 280          
+ 281          void fun8(void) //一级菜单F7
+ 282          {
+ 283   1        tm1629_f(0x07);
+ 284   1      }
+ 285          
+ 286          void fun9(void) //一级菜单F8
+ 287          {
+ 288   1        tm1629_f(0x08);
+ 289   1      }
+ 290          
+ 291          void fun10(void) //一级菜单F9
+ 292          {
+ 293   1        tm1629_f(0x09);
+ 294   1      }
+ 295          
+ 296          void fun11(void) //一级菜单FA
+ 297          {
+ 298   1        tm1629_f(0x0a);
+ 299   1      }
+ 300          
+ 301          void fun12(void) //一级菜单Fb
+C51 COMPILER V9.00   TM1629                                                                09/04/2015 15:08:00 PAGE 6   
+
+ 302          {
+ 303   1        tm1629_f(0x0b);
+ 304   1      }
+ 305          
+ 306          void fun13(void) //一级菜单FC
+ 307          {
+ 308   1        tm1629_f(0x0c);
+ 309   1      }
+ 310          
+ 311          void fun14(void) //设置年份
+ 312          {
+ 313   1        if (return_await_number_table() == 1)
+ 314   1        {
+ 315   2          Display_time();
+ 316   2          set_await_number_table(2);
+ 317   2        }
+ 318   1        if (return_await_number_table() == 3)
+ 319   1        {
+ 320   2          buf_display[1][7] = 0;
+ 321   2          buf_display[1][6] = 0;
+ 322   2          buf_display[1][5] = 0;
+ 323   2          buf_display[1][4] = 0;
+ 324   2          display();
+ 325   2          set_await_number_table(0);
+ 326   2        }
+ 327   1        Ds1302_Write_Time();
+ 328   1      }
+ 329          
+ 330          void fun15(void) //设置月份
+ 331          {
+ 332   1        if (return_await_number_table() == 1)
+ 333   1        {
+ 334   2          Display_time();
+ 335   2          set_await_number_table(2);
+ 336   2        }
+ 337   1        if (return_await_number_table() == 3)
+ 338   1        {
+ 339   2          buf_display[1][2] = 0;
+ 340   2          buf_display[1][1] = 0;
+ 341   2          display();
+ 342   2          set_await_number_table(0);
+ 343   2        }
+ 344   1        Ds1302_Write_Time();
+ 345   1      }
+ 346          
+ 347          void fun16(void) //设置日期
+ 348          {
+ 349   1        if (return_await_number_table() == 1)
+ 350   1        {
+ 351   2          Display_time();
+ 352   2          set_await_number_table(2);
+ 353   2        }
+ 354   1        if (return_await_number_table() == 3)
+ 355   1        {
+ 356   2          buf_display[0][7] = 0;
+ 357   2          buf_display[0][6] = 0;
+ 358   2          display();
+ 359   2          set_await_number_table(0);
+ 360   2        }
+ 361   1        Ds1302_Write_Time();
+ 362   1      }
+ 363          
+C51 COMPILER V9.00   TM1629                                                                09/04/2015 15:08:00 PAGE 7   
+
+ 364          void fun17(void) //设置星期
+ 365          {
+ 366   1        if (return_await_number_table() == 1)
+ 367   1        {
+ 368   2          Display_time();
+ 369   2          set_await_number_table(2);
+ 370   2        }
+ 371   1        if (return_await_number_table() == 3)
+ 372   1        {
+ 373   2          buf_display[0][5] = 0;
+ 374   2          display();
+ 375   2          set_await_number_table(0);
+ 376   2        }
+ 377   1        Ds1302_Write_Time();
+ 378   1      }
+ 379          
+ 380          void fun18(void) //设置小时
+ 381          {
+ 382   1        if (return_await_number_table() == 1)
+ 383   1        {
+ 384   2          Display_time();
+ 385   2          set_await_number_table(2);
+ 386   2        }
+ 387   1        if (return_await_number_table() == 3)
+ 388   1        {
+ 389   2          buf_display[0][3] = 0;
+ 390   2          buf_display[0][2] = 0;
+ 391   2          display();
+ 392   2          set_await_number_table(0);
+ 393   2        }
+ 394   1        Ds1302_Write_Time();
+ 395   1      }
+ 396          
+ 397          void fun19(void) //设置小时
+ 398          {
+ 399   1        if (return_await_number_table() == 1)
+ 400   1        {
+ 401   2          Display_time();
+ 402   2          set_await_number_table(2);
+ 403   2        }
+ 404   1        if (return_await_number_table() == 3)
+ 405   1        {
+ 406   2          buf_display[0][1] = 0;
+ 407   2          buf_display[0][0] = 0;
+ 408   2          display();
+ 409   2          set_await_number_table(0);
+ 410   2        }
+ 411   1        Ds1302_Write_Time();
+ 412   1      }
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =    527    ----
+   CODE SIZE        =   1170    ----
    CONSTANT SIZE    =   ----    ----
    XDATA SIZE       =    320       1
    PDATA SIZE       =   ----    ----

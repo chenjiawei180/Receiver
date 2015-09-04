@@ -64,6 +64,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ds1302.c" />
     <ClCompile Include="key.c" />
     <ClCompile Include="main.c" />
     <ClCompile Include="timer.c" />
@@ -71,10 +72,12 @@
     <ClCompile Include="usart.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ds1302.h" />
     <ClInclude Include="key.h" />
     <ClInclude Include="menu.h" />
     <ClInclude Include="timer.h" />
     <ClInclude Include="tm1629.h" />
+    <ClInclude Include="usart.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
