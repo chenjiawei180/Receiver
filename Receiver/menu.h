@@ -74,5 +74,52 @@
 #define TWO_MENU_FC_SET     48  //FC功能设置
 #define TWO_MENU_Fd_SET     49  //Fd功能设置
 
+//F1_E1子菜单设置
+#define TWO_MENU_F1_E1_D1   50  //注册呼叫器千位
+#define TWO_MENU_F1_E1_D2   51  //注册呼叫器百位
+#define TWO_MENU_F1_E1_D3   52  //注册呼叫器十位
+#define TWO_MENU_F1_E1_D4   53  //注册呼叫器个位
+
+//F1_E2子菜单设置
+#define TWO_MENU_F1_E2_D1   54  //注册管理器千位
+#define TWO_MENU_F1_E2_D2   55  //注册管理器百位
+#define TWO_MENU_F1_E2_D3   56  //注册管理器十位
+#define TWO_MENU_F1_E2_D4   57  //注册管理器个位
+
+//F1_E3子菜单设置
+#define TWO_MENU_F1_E3_D1   58  //注册报警器千位
+#define TWO_MENU_F1_E3_D2   59  //注册报警器百位
+#define TWO_MENU_F1_E3_D3   60  //注册报警器十位
+#define TWO_MENU_F1_E3_D4   61  //注册报警器个位
+
+//F1_E4子菜单设置
+#define TWO_MENU_F1_E4_D1   62  //注册取消器千位
+#define TWO_MENU_F1_E4_D2   63  //注册取消器百位
+#define TWO_MENU_F1_E4_D3   64  //注册取消器十位
+#define TWO_MENU_F1_E4_D4   65  //注册取消器个位
+
+//F1_E1子菜单设置
+#define TWO_MENU_F2_E1_D1   66  //删除呼叫器千位
+#define TWO_MENU_F2_E1_D2   67  //删除呼叫器百位
+#define TWO_MENU_F2_E1_D3   68  //删除呼叫器十位
+#define TWO_MENU_F2_E1_D4   69  //删除呼叫器个位
+
+//F1_E2子菜单设置
+#define TWO_MENU_F2_E2_D1   70  //删除管理器千位
+#define TWO_MENU_F2_E2_D2   71  //删除管理器百位
+#define TWO_MENU_F2_E2_D3   72  //删除管理器十位
+#define TWO_MENU_F2_E2_D4   73  //删除管理器个位
+
+//F1_E3子菜单设置
+#define TWO_MENU_F2_E3_D1   74  //删除报警器千位
+#define TWO_MENU_F2_E3_D2   75  //删除报警器百位
+#define TWO_MENU_F2_E3_D3   76  //删除报警器十位
+#define TWO_MENU_F2_E3_D4   77  //删除报警器个位
+
+//F1_E4子菜单设置
+#define TWO_MENU_F2_E4_D1   78  //删除取消器千位
+#define TWO_MENU_F2_E4_D2   79  //删除取消器百位
+#define TWO_MENU_F2_E4_D3   80  //删除取消器十位
+#define TWO_MENU_F2_E4_D4   81  //删除取消器个位
 
 #endif

@@ -9,6 +9,8 @@ unsigned char await_number_table = 0;//0.5秒标志变量
 unsigned char main_press_time_table = 0;//main计算时间变量跟标志位
 unsigned char main_press_time = 0;
 
+unsigned char again_and_again_time = 0;// 判断重复解码所需要的计算时间变量
+
 void Init_Timer0(void)
 {
 	TMOD |= 0x01;	  //使用模式1，16位定时器，使用"|"符号可以在使用多个定时器时不受影响	
@@ -36,9 +38,13 @@ void Timer0_isr(void) interrupt 1  //定时器0中断服务程序
 	TH0 = (65536 - TIMER50MS) >> 8;		  //重新赋值 50ms
 	TL0 = (65536 - TIMER50MS) & 0xff;
 	func_index_temp = return_func_index();
-	if (func_index_temp == MENU_STANDBY || func_index_temp == TWO_MENU_F0_YEAR || func_index_temp == TWO_MENU_F0_MOUTH 
-		|| func_index_temp == TWO_MENU_F0_DAY || func_index_temp == TWO_MENU_F0_WEEK || func_index_temp == TWO_MENU_F0_HOUR
-		|| func_index_temp == TWO_MENU_F0_MINUTE )
+	//if (func_index_temp == MENU_STANDBY || func_index_temp == TWO_MENU_F0_YEAR || func_index_temp == TWO_MENU_F0_MOUTH 
+	//	|| func_index_temp == TWO_MENU_F0_DAY || func_index_temp == TWO_MENU_F0_WEEK || func_index_temp == TWO_MENU_F0_HOUR
+	//	|| func_index_temp == TWO_MENU_F0_MINUTE || func_index_temp == TWO_MENU_F1_E1_D1 || func_index_temp == TWO_MENU_F1_E1_D2
+	//	|| func_index_temp == TWO_MENU_F1_E1_D3 || func_index_temp == TWO_MENU_F1_E1_D4 || func_index_temp == TWO_MENU_F1_E2_D1
+	//	|| func_index_temp == TWO_MENU_F1_E2_D2 || func_index_temp == TWO_MENU_F1_E2_D3 || func_index_temp == TWO_MENU_F1_E2_D4	
+	//	)
+	if (1)
 	{
 		await_number++;
 		if (await_number == 10)
@@ -55,6 +61,16 @@ void Timer0_isr(void) interrupt 1  //定时器0中断服务程序
 	if (main_press_time_table == 1) //菜单键按下时间标志
 	{
 		main_press_time++;			//计算菜单键按下时间长度变量
+	}
+
+	if (return_again_and_again_decoder_table() == 1)
+	{
+		again_and_again_time++;
+		if (again_and_again_time >120)
+		{
+			clear_again_and_again_decoder_table();
+			again_and_again_time = 0;
+		}
 	}
 
 }

@@ -179,7 +179,7 @@ void receive_rf_decoder(void)
 			{
 				if (old2_RF_RECE_REG[0] == RF_RECE_REG[0] && old2_RF_RECE_REG[1] == RF_RECE_REG[1] && old2_RF_RECE_REG[2] == RF_RECE_REG[2])
 				{
-					if (again_and_again_decoder_table == 0)
+					if (again_and_again_decoder_table == 0) //如果该位不等于0  代表着上一次解码等于这次
 					{
 						old2_RF_RECE_REG[0] = RF_RECE_REG[0];
 						old2_RF_RECE_REG[1] = RF_RECE_REG[1];
@@ -253,4 +253,16 @@ unsigned char return_again_receive_rf_decoder_finished(void)
 void clear_again_receive_rf_decoder_finished(void)
 {
 	again_receive_rf_decoder_finished = 0;
+}
+
+unsigned char return_again_and_again_decoder_table(void)
+{
+	unsigned char temp;
+	temp = again_and_again_decoder_table;
+	return temp;
+}
+
+void clear_again_and_again_decoder_table(void)
+{
+	again_and_again_decoder_table = 0;
 }

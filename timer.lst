@@ -1,4 +1,4 @@
-C51 COMPILER V9.00   TIMER                                                                 09/05/2015 12:03:11 PAGE 1   
+C51 COMPILER V9.00   TIMER                                                                 09/05/2015 15:53:51 PAGE 1   
 
 
 C51 COMPILER V9.00, COMPILATION OF MODULE TIMER
@@ -19,102 +19,123 @@ line level    source
    9          unsigned char main_press_time_table = 0;//main计算时间变量跟标志位
   10          unsigned char main_press_time = 0;
   11          
-  12          void Init_Timer0(void)
-  13          {
-  14   1        TMOD |= 0x01;   //使用模式1，16位定时器，使用"|"符号可以在使用多个定时器时不受影响  
-  15   1        TH0 = (65536 - TIMER50MS) >> 8; //重新赋值 5ms
-  16   1        TL0 = (65536 - TIMER50MS) & 0xff;
-  17   1        EA = 1;            //总中断打开
-  18   1        ET0 = 1;           //定时器中断打开
-  19   1        TR0 = 1;           //定时器开关打开
-  20   1      }
-  21          
-  22          void Init_Timer1(void) 
-  23          {
-  24   1        TMOD |= 0x10;   //使用模式1，16位定时器，使用"|"符号可以在使用多个定时器时不受影响  
-  25   1        TH1 = (65536 - 100) >> 8; //重新赋值 100us
-  26   1        TL1 = (65536 - 100) & 0xff;
-  27   1        EA = 1;            //总中断打开
-  28   1        ET1 = 1;           //定时器中断打开
-  29   1        //TR1=1;           //定时器开关打开
-  30   1      }
-  31          
-  32          void Timer0_isr(void) interrupt 1  //定时器0中断服务程序
-  33          {
-  34   1        unsigned char func_index_temp = 0;
-  35   1        TF0 = 0;
-  36   1        TH0 = (65536 - TIMER50MS) >> 8;     //重新赋值 50ms
-  37   1        TL0 = (65536 - TIMER50MS) & 0xff;
-  38   1        func_index_temp = return_func_index();
-  39   1        if (func_index_temp == MENU_STANDBY || func_index_temp == TWO_MENU_F0_YEAR || func_index_temp == TWO_MENU
-             -_F0_MOUTH 
-  40   1          || func_index_temp == TWO_MENU_F0_DAY || func_index_temp == TWO_MENU_F0_WEEK || func_index_temp == TWO_M
-             -ENU_F0_HOUR
-  41   1          || func_index_temp == TWO_MENU_F0_MINUTE )
-  42   1        {
-  43   2          await_number++;
-  44   2          if (await_number == 10)
-  45   2          {
-  46   3            await_number_table++;
-  47   3            await_number = 0;
-  48   3          }
-  49   2          if (await_number_table >= 4)//确保程序正确延时
-  50   2          {
-  51   3            await_number_table = 0;
-  52   3          }   
-C51 COMPILER V9.00   TIMER                                                                 09/05/2015 12:03:11 PAGE 2   
+  12          unsigned char again_and_again_time = 0;// 判断重复解码所需要的计算时间变量
+  13          
+  14          void Init_Timer0(void)
+  15          {
+  16   1        TMOD |= 0x01;   //使用模式1，16位定时器，使用"|"符号可以在使用多个定时器时不受影响  
+  17   1        TH0 = (65536 - TIMER50MS) >> 8; //重新赋值 5ms
+  18   1        TL0 = (65536 - TIMER50MS) & 0xff;
+  19   1        EA = 1;            //总中断打开
+  20   1        ET0 = 1;           //定时器中断打开
+  21   1        TR0 = 1;           //定时器开关打开
+  22   1      }
+  23          
+  24          void Init_Timer1(void) 
+  25          {
+  26   1        TMOD |= 0x10;   //使用模式1，16位定时器，使用"|"符号可以在使用多个定时器时不受影响  
+  27   1        TH1 = (65536 - 100) >> 8; //重新赋值 100us
+  28   1        TL1 = (65536 - 100) & 0xff;
+  29   1        EA = 1;            //总中断打开
+  30   1        ET1 = 1;           //定时器中断打开
+  31   1        //TR1=1;           //定时器开关打开
+  32   1      }
+  33          
+  34          void Timer0_isr(void) interrupt 1  //定时器0中断服务程序
+  35          {
+  36   1        unsigned char func_index_temp = 0;
+  37   1        TF0 = 0;
+  38   1        TH0 = (65536 - TIMER50MS) >> 8;     //重新赋值 50ms
+  39   1        TL0 = (65536 - TIMER50MS) & 0xff;
+  40   1        func_index_temp = return_func_index();
+  41   1        //if (func_index_temp == MENU_STANDBY || func_index_temp == TWO_MENU_F0_YEAR || func_index_temp == TWO_ME
+             -NU_F0_MOUTH 
+  42   1        //  || func_index_temp == TWO_MENU_F0_DAY || func_index_temp == TWO_MENU_F0_WEEK || func_index_temp == TWO
+             -_MENU_F0_HOUR
+  43   1        //  || func_index_temp == TWO_MENU_F0_MINUTE || func_index_temp == TWO_MENU_F1_E1_D1 || func_index_temp ==
+             - TWO_MENU_F1_E1_D2
+  44   1        //  || func_index_temp == TWO_MENU_F1_E1_D3 || func_index_temp == TWO_MENU_F1_E1_D4 || func_index_temp == 
+             -TWO_MENU_F1_E2_D1
+  45   1        //  || func_index_temp == TWO_MENU_F1_E2_D2 || func_index_temp == TWO_MENU_F1_E2_D3 || func_index_temp == 
+             -TWO_MENU_F1_E2_D4 
+  46   1        //  )
+  47   1        if (1)
+  48   1        {
+  49   2          await_number++;
+C51 COMPILER V9.00   TIMER                                                                 09/05/2015 15:53:51 PAGE 2   
 
-  53   2        }
-  54   1      
-  55   1        if (main_press_time_table == 1) //菜单键按下时间标志
-  56   1        {
-  57   2          main_press_time++;      //计算菜单键按下时间长度变量
-  58   2        }
-  59   1      
-  60   1      }
-  61          
-  62          void Timer1_isr(void) interrupt 3  //定时器1中断服务程序
-  63          {
-  64   1        TF1 = 0;
-  65   1        TH1 = (65536 - 100) >> 8;     //重新赋值 100us
-  66   1        TL1 = (65536 - 100) & 0xff;
-  67   1        RF_decode_main();
-  68   1      }
-  69          
-  70          unsigned char return_await_number_table(void) //返回await_number_table变量的值
-  71          {
-  72   1        unsigned char await_number_table_temp=0;
-  73   1        await_number_table_temp = await_number_table;
-  74   1        return await_number_table_temp;
-  75   1      }
-  76          
-  77          void set_await_number_table(unsigned char temp) //设置await_number_table变量的值
-  78          {
-  79   1        await_number_table = temp;
-  80   1      }
-  81          
-  82          void set_main_press_time_table(unsigned char temp) //设置main_press_time_table变量的值
-  83          {
-  84   1        main_press_time_table = temp;
-  85   1      }
-  86          
-  87          unsigned char return_main_press_time(void)
-  88          {
-  89   1        unsigned char temp = 0;
-  90   1        temp = main_press_time;
-  91   1        return temp;
-  92   1      }
-  93          
-  94          void clear_main_press_time(void)
-  95          {
-  96   1        main_press_time = 0;
-  97   1      }
+  50   2          if (await_number == 10)
+  51   2          {
+  52   3            await_number_table++;
+  53   3            await_number = 0;
+  54   3          }
+  55   2          if (await_number_table >= 4)//确保程序正确延时
+  56   2          {
+  57   3            await_number_table = 0;
+  58   3          }   
+  59   2        }
+  60   1      
+  61   1        if (main_press_time_table == 1) //菜单键按下时间标志
+  62   1        {
+  63   2          main_press_time++;      //计算菜单键按下时间长度变量
+  64   2        }
+  65   1      
+  66   1        if (return_again_and_again_decoder_table() == 1)
+  67   1        {
+  68   2          again_and_again_time++;
+  69   2          if (again_and_again_time >120)
+  70   2          {
+  71   3            clear_again_and_again_decoder_table();
+  72   3            again_and_again_time = 0;
+  73   3          }
+  74   2        }
+  75   1      
+  76   1      }
+  77          
+  78          void Timer1_isr(void) interrupt 3  //定时器1中断服务程序
+  79          {
+  80   1        TF1 = 0;
+  81   1        TH1 = (65536 - 100) >> 8;     //重新赋值 100us
+  82   1        TL1 = (65536 - 100) & 0xff;
+  83   1        RF_decode_main();
+  84   1      }
+  85          
+  86          unsigned char return_await_number_table(void) //返回await_number_table变量的值
+  87          {
+  88   1        unsigned char await_number_table_temp=0;
+  89   1        await_number_table_temp = await_number_table;
+  90   1        return await_number_table_temp;
+  91   1      }
+  92          
+  93          void set_await_number_table(unsigned char temp) //设置await_number_table变量的值
+  94          {
+  95   1        await_number_table = temp;
+  96   1      }
+  97          
+  98          void set_main_press_time_table(unsigned char temp) //设置main_press_time_table变量的值
+  99          {
+ 100   1        main_press_time_table = temp;
+ 101   1      }
+ 102          
+ 103          unsigned char return_main_press_time(void)
+ 104          {
+ 105   1        unsigned char temp = 0;
+ 106   1        temp = main_press_time;
+ 107   1        return temp;
+ 108   1      }
+ 109          
+ 110          void clear_main_press_time(void)
+ 111          {
+C51 COMPILER V9.00   TIMER                                                                 09/05/2015 15:53:51 PAGE 3   
+
+ 112   1        main_press_time = 0;
+ 113   1      }
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =    270    ----
+   CODE SIZE        =    273    ----
    CONSTANT SIZE    =   ----    ----
-   XDATA SIZE       =      4    ----
+   XDATA SIZE       =      5       1
    PDATA SIZE       =   ----    ----
    DATA SIZE        =   ----    ----
    IDATA SIZE       =   ----    ----

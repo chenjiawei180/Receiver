@@ -12,6 +12,15 @@
 #define HKeyPort  P1
 #define LKeyPort  P2
 
+extern unsigned char Two_Menu_F1_E1[4];
+extern unsigned char Two_Menu_F1_E2[4];
+extern unsigned char Two_Menu_F1_E3[4];
+extern unsigned char Two_Menu_F1_E4[4];
+extern unsigned char Two_Menu_F2_E1[4];
+extern unsigned char Two_Menu_F2_E2[4];
+extern unsigned char Two_Menu_F2_E3[4];
+extern unsigned char Two_Menu_F2_E4[4];
+
 typedef struct
 {
 	unsigned char index;

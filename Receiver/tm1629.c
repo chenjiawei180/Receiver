@@ -2,6 +2,7 @@
 #include "timer.h"
 #include "usart.h"
 #include "ds1302.h"
+#include "key.h"
 
 unsigned char const CODE[] = { 0x3F, 0x06, 0x5B, 0x4F, 0x66, 0x6D, 0x7D, 0x07, 0x7F, 0x6F, 0x77, 0x7C, 0x39, 0x5E, 0x79, 0x71, 0x76, 0x38, 0x5c, 0x73, 0x3e };//0-9 abcdef 显示器码数组
 unsigned char const INIT_CODE[] = { 0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80 };//逐段点亮数码管数组
@@ -242,6 +243,16 @@ void tm1629_E(unsigned char f_number) //第一行倒数二个显示F,倒数第一个显示f_numb
 	tm1629_clear();
 	buf_display[0][1] = CODE[0x0E];
 	buf_display[0][0] = CODE[f_number];
+	display();
+}
+
+void Show_four_number(unsigned char* temp)
+{
+	tm1629_clear();
+	buf_display[0][3] = CODE[*(temp)];
+	buf_display[0][2] = CODE[*(temp+1)];
+	buf_display[0][1] = CODE[*(temp+2)];
+	buf_display[0][0] = CODE[*(temp+3)];
 	display();
 }
 
@@ -568,4 +579,484 @@ void fun48(void) //二级菜单FC
 void fun49(void) //二级菜单Fd
 {
 	tm1629_f(0x0f);
+}
+
+void fun50(void) //F1_E1 千位闪烁
+{
+	if (return_await_number_table() == 1)
+	{
+		Show_four_number(Two_Menu_F1_E1);
+		set_await_number_table(2);
+	}
+	if (return_await_number_table() == 3)
+	{
+		buf_display[0][3] = 0;
+		display();
+		set_await_number_table(0);
+	}
+}
+
+void fun51(void) //F1_E1 百位闪烁
+{
+	if (return_await_number_table() == 1)
+	{
+		Show_four_number(Two_Menu_F1_E1);
+		set_await_number_table(2);
+	}
+	if (return_await_number_table() == 3)
+	{
+		buf_display[0][2] = 0;
+		display();
+		set_await_number_table(0);
+	}
+}
+
+void fun52(void)  //F1_E1 十位闪烁
+{
+	if (return_await_number_table() == 1)
+	{
+		Show_four_number(Two_Menu_F1_E1);
+		set_await_number_table(2);
+	}
+	if (return_await_number_table() == 3)
+	{
+		buf_display[0][1] = 0;
+		display();
+		set_await_number_table(0);
+	}
+}
+
+void fun53(void) //F1_E1 个位闪烁
+{
+	if (return_await_number_table() == 1)
+	{
+		Show_four_number(Two_Menu_F1_E1);
+		set_await_number_table(2);
+	}
+	if (return_await_number_table() == 3)
+	{
+		buf_display[0][0] = 0;
+		display();
+		set_await_number_table(0);
+	}
+}
+
+void fun54(void) //F1_E2 千位闪烁
+{
+	if (return_await_number_table() == 1)
+	{
+		Show_four_number(Two_Menu_F1_E2);
+		set_await_number_table(2);
+	}
+	if (return_await_number_table() == 3)
+	{
+		buf_display[0][3] = 0;
+		display();
+		set_await_number_table(0);
+	}
+}
+
+void fun55(void) //F1_E2 百位闪烁
+{
+	if (return_await_number_table() == 1)
+	{
+		Show_four_number(Two_Menu_F1_E2);
+		set_await_number_table(2);
+	}
+	if (return_await_number_table() == 3)
+	{
+		buf_display[0][2] = 0;
+		display();
+		set_await_number_table(0);
+	}
+}
+
+void fun56(void) //F1_E2 十位闪烁
+{
+	if (return_await_number_table() == 1)
+	{
+		Show_four_number(Two_Menu_F1_E2);
+		set_await_number_table(2);
+	}
+	if (return_await_number_table() == 3)
+	{
+		buf_display[0][1] = 0;
+		display();
+		set_await_number_table(0);
+	}
+}
+
+void fun57(void) //F1_E2 个位闪烁
+{
+	if (return_await_number_table() == 1)
+	{
+		Show_four_number(Two_Menu_F1_E2);
+		set_await_number_table(2);
+	}
+	if (return_await_number_table() == 3)
+	{
+		buf_display[0][0] = 0;
+		display();
+		set_await_number_table(0);
+	}
+}
+
+void fun58(void) //F1_E3 千位闪烁
+{
+	if (return_await_number_table() == 1)
+	{
+		Show_four_number(Two_Menu_F1_E3);
+		set_await_number_table(2);
+	}
+	if (return_await_number_table() == 3)
+	{
+		buf_display[0][3] = 0;
+		display();
+		set_await_number_table(0);
+	}
+}
+
+void fun59(void) //F1_E3 百位闪烁
+{
+	if (return_await_number_table() == 1)
+	{
+		Show_four_number(Two_Menu_F1_E3);
+		set_await_number_table(2);
+	}
+	if (return_await_number_table() == 3)
+	{
+		buf_display[0][2] = 0;
+		display();
+		set_await_number_table(0);
+	}
+}
+
+void fun60(void) //F1_E3 十位闪烁
+{
+	if (return_await_number_table() == 1)
+	{
+		Show_four_number(Two_Menu_F1_E3);
+		set_await_number_table(2);
+	}
+	if (return_await_number_table() == 3)
+	{
+		buf_display[0][1] = 0;
+		display();
+		set_await_number_table(0);
+	}
+}
+
+void fun61(void) //F1_E3 个位闪烁
+{
+	if (return_await_number_table() == 1)
+	{
+		Show_four_number(Two_Menu_F1_E3);
+		set_await_number_table(2);
+	}
+	if (return_await_number_table() == 3)
+	{
+		buf_display[0][0] = 0;
+		display();
+		set_await_number_table(0);
+	}
+}
+
+void fun62(void) //F1_E4 千位闪烁
+{
+	if (return_await_number_table() == 1)
+	{
+		Show_four_number(Two_Menu_F1_E4);
+		set_await_number_table(2);
+	}
+	if (return_await_number_table() == 3)
+	{
+		buf_display[0][3] = 0;
+		display();
+		set_await_number_table(0);
+	}
+}
+
+void fun63(void) //F1_E4 百位闪烁
+{
+	if (return_await_number_table() == 1)
+	{
+		Show_four_number(Two_Menu_F1_E4);
+		set_await_number_table(2);
+	}
+	if (return_await_number_table() == 3)
+	{
+		buf_display[0][2] = 0;
+		display();
+		set_await_number_table(0);
+	}
+}
+
+void fun64(void) //F1_E4 十位闪烁
+{
+	if (return_await_number_table() == 1)
+	{
+		Show_four_number(Two_Menu_F1_E4);
+		set_await_number_table(2);
+	}
+	if (return_await_number_table() == 3)
+	{
+		buf_display[0][1] = 0;
+		display();
+		set_await_number_table(0);
+	}
+}
+
+void fun65(void) //F1_E4 个位闪烁
+{
+	if (return_await_number_table() == 1)
+	{
+		Show_four_number(Two_Menu_F1_E4);
+		set_await_number_table(2);
+	}
+	if (return_await_number_table() == 3)
+	{
+		buf_display[0][0] = 0;
+		display();
+		set_await_number_table(0);
+	}
+}
+
+void fun66(void) //F2_E1 千位闪烁
+{
+	if (return_await_number_table() == 1)
+	{
+		Show_four_number(Two_Menu_F2_E1);
+		set_await_number_table(2);
+	}
+	if (return_await_number_table() == 3)
+	{
+		buf_display[0][3] = 0;
+		display();
+		set_await_number_table(0);
+	}
+}
+
+void fun67(void) //F2_E1 百位闪烁
+{
+	if (return_await_number_table() == 1)
+	{
+		Show_four_number(Two_Menu_F2_E1);
+		set_await_number_table(2);
+	}
+	if (return_await_number_table() == 3)
+	{
+		buf_display[0][2] = 0;
+		display();
+		set_await_number_table(0);
+	}
+}
+
+void fun68(void) //F2_E1 十位闪烁
+{
+	if (return_await_number_table() == 1)
+	{
+		Show_four_number(Two_Menu_F2_E1);
+		set_await_number_table(2);
+	}
+	if (return_await_number_table() == 3)
+	{
+		buf_display[0][1] = 0;
+		display();
+		set_await_number_table(0);
+	}
+}
+
+void fun69(void) //F2_E1 个位闪烁
+{
+	if (return_await_number_table() == 1)
+	{
+		Show_four_number(Two_Menu_F2_E1);
+		set_await_number_table(2);
+	}
+	if (return_await_number_table() == 3)
+	{
+		buf_display[0][0] = 0;
+		display();
+		set_await_number_table(0);
+	}
+}
+
+void fun70(void) //F2_E2 千位闪烁
+{
+	if (return_await_number_table() == 1)
+	{
+		Show_four_number(Two_Menu_F2_E2);
+		set_await_number_table(2);
+	}
+	if (return_await_number_table() == 3)
+	{
+		buf_display[0][3] = 0;
+		display();
+		set_await_number_table(0);
+	}
+}
+
+void fun71(void) //F2_E2 百位闪烁
+{
+	if (return_await_number_table() == 1)
+	{
+		Show_four_number(Two_Menu_F2_E2);
+		set_await_number_table(2);
+	}
+	if (return_await_number_table() == 3)
+	{
+		buf_display[0][2] = 0;
+		display();
+		set_await_number_table(0);
+	}
+}
+
+void fun72(void) //F2_E2 十位闪烁
+{
+	if (return_await_number_table() == 1)
+	{
+		Show_four_number(Two_Menu_F2_E2);
+		set_await_number_table(2);
+	}
+	if (return_await_number_table() == 3)
+	{
+		buf_display[0][1] = 0;
+		display();
+		set_await_number_table(0);
+	}
+}
+
+void fun73(void) //F2_E2 个位闪烁
+{
+	if (return_await_number_table() == 1)
+	{
+		Show_four_number(Two_Menu_F2_E2);
+		set_await_number_table(2);
+	}
+	if (return_await_number_table() == 3)
+	{
+		buf_display[0][0] = 0;
+		display();
+		set_await_number_table(0);
+	}
+}
+
+void fun74(void) //F2_E3 千位闪烁
+{
+	if (return_await_number_table() == 1)
+	{
+		Show_four_number(Two_Menu_F2_E3);
+		set_await_number_table(2);
+	}
+	if (return_await_number_table() == 3)
+	{
+		buf_display[0][3] = 0;
+		display();
+		set_await_number_table(0);
+	}
+}
+
+void fun75(void) //F2_E3 百位闪烁
+{
+	if (return_await_number_table() == 1)
+	{
+		Show_four_number(Two_Menu_F2_E3);
+		set_await_number_table(2);
+	}
+	if (return_await_number_table() == 3)
+	{
+		buf_display[0][2] = 0;
+		display();
+		set_await_number_table(0);
+	}
+}
+
+void fun76(void) //F2_E3 十位闪烁
+{
+	if (return_await_number_table() == 1)
+	{
+		Show_four_number(Two_Menu_F2_E3);
+		set_await_number_table(2);
+	}
+	if (return_await_number_table() == 3)
+	{
+		buf_display[0][1] = 0;
+		display();
+		set_await_number_table(0);
+	}
+}
+
+void fun77(void) //F2_E3 个位闪烁
+{
+	if (return_await_number_table() == 1)
+	{
+		Show_four_number(Two_Menu_F2_E3);
+		set_await_number_table(2);
+	}
+	if (return_await_number_table() == 3)
+	{
+		buf_display[0][0] = 0;
+		display();
+		set_await_number_table(0);
+	}
+}
+
+void fun78(void) //F2_E4 千位闪烁
+{
+	if (return_await_number_table() == 1)
+	{
+		Show_four_number(Two_Menu_F2_E4);
+		set_await_number_table(2);
+	}
+	if (return_await_number_table() == 3)
+	{
+		buf_display[0][3] = 0;
+		display();
+		set_await_number_table(0);
+	}
+}
+
+void fun79(void) //F2_E4 百位闪烁
+{
+	if (return_await_number_table() == 1)
+	{
+		Show_four_number(Two_Menu_F2_E4);
+		set_await_number_table(2);
+	}
+	if (return_await_number_table() == 3)
+	{
+		buf_display[0][2] = 0;
+		display();
+		set_await_number_table(0);
+	}
+}
+
+void fun80(void) //F2_E4 十位闪烁
+{
+	if (return_await_number_table() == 1)
+	{
+		Show_four_number(Two_Menu_F2_E4);
+		set_await_number_table(2);
+	}
+	if (return_await_number_table() == 3)
+	{
+		buf_display[0][1] = 0;
+		display();
+		set_await_number_table(0);
+	}
+}
+
+void fun81(void) //F2_E4 个位闪烁
+{
+	if (return_await_number_table() == 1)
+	{
+		Show_four_number(Two_Menu_F2_E4);
+		set_await_number_table(2);
+	}
+	if (return_await_number_table() == 3)
+	{
+		buf_display[0][0] = 0;
+		display();
+		set_await_number_table(0);
+	}
 }

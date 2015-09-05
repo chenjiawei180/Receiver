@@ -1,4 +1,4 @@
-C51 COMPILER V9.00   EV1527                                                                09/05/2015 12:03:11 PAGE 1   
+C51 COMPILER V9.00   EV1527                                                                09/05/2015 15:53:51 PAGE 1   
 
 
 C51 COMPILER V9.00, COMPILATION OF MODULE EV1527
@@ -62,7 +62,7 @@ line level    source
   52   1        if (P3_RF_RXD == 1)
   53   1        {
   54   2          ++RF_trans1;
-C51 COMPILER V9.00   EV1527                                                                09/05/2015 12:03:11 PAGE 2   
+C51 COMPILER V9.00   EV1527                                                                09/05/2015 15:53:51 PAGE 2   
 
   55   2        }
   56   1        else
@@ -126,7 +126,7 @@ line level    source
  112   3            RF_trans1 = 0;
  113   3            P_RF_INT++;
  114   3          }
-C51 COMPILER V9.00   EV1527                                                                09/05/2015 12:03:11 PAGE 3   
+C51 COMPILER V9.00   EV1527                                                                09/05/2015 15:53:51 PAGE 3   
 
  115   2          if (RF_trans1>((measure_sync_count2 + measure_sync_count1) >> 3)) /*if the high level is bigger than 25*
              -100us,Then should be setted as noise instead of useful signal sjz*/
@@ -190,7 +190,7 @@ line level    source
  173   3            old1_RF_RECE_REG[1] = RF_RECE_REG[1];
  174   3            old1_RF_RECE_REG[2] = RF_RECE_REG[2];
  175   3            rx_table = 1;
-C51 COMPILER V9.00   EV1527                                                                09/05/2015 12:03:11 PAGE 4   
+C51 COMPILER V9.00   EV1527                                                                09/05/2015 15:53:51 PAGE 4   
 
  176   3            break;
  177   3          case 1:
@@ -200,7 +200,7 @@ line level    source
  180   4              if (old2_RF_RECE_REG[0] == RF_RECE_REG[0] && old2_RF_RECE_REG[1] == RF_RECE_REG[1] && old2_RF_RECE_REG
              -[2] == RF_RECE_REG[2])
  181   4              {
- 182   5                if (again_and_again_decoder_table == 0)
+ 182   5                if (again_and_again_decoder_table == 0) //如果该位不等于0  代表着上一次解码等于这次
  183   5                {
  184   6                  old2_RF_RECE_REG[0] = RF_RECE_REG[0];
  185   6                  old2_RF_RECE_REG[1] = RF_RECE_REG[1];
@@ -254,7 +254,7 @@ line level    source
  232   4            }
  233   3            else
  234   3            {
-C51 COMPILER V9.00   EV1527                                                                09/05/2015 12:03:11 PAGE 5   
+C51 COMPILER V9.00   EV1527                                                                09/05/2015 15:53:51 PAGE 5   
 
  235   4              old1_RF_RECE_REG[0] = RF_RECE_REG[0];
  236   4              old1_RF_RECE_REG[1] = RF_RECE_REG[1];
@@ -278,10 +278,22 @@ line level    source
  254          {
  255   1        again_receive_rf_decoder_finished = 0;
  256   1      }
+ 257          
+ 258          unsigned char return_again_and_again_decoder_table(void)
+ 259          {
+ 260   1        unsigned char temp;
+ 261   1        temp = again_and_again_decoder_table;
+ 262   1        return temp;
+ 263   1      }
+ 264          
+ 265          void clear_again_and_again_decoder_table(void)
+ 266          {
+ 267   1        again_and_again_decoder_table = 0;
+ 268   1      }
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =    655    ----
+   CODE SIZE        =    667    ----
    CONSTANT SIZE    =   ----    ----
    XDATA SIZE       =     24    ----
    PDATA SIZE       =   ----    ----
