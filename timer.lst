@@ -1,4 +1,4 @@
-C51 COMPILER V9.00   TIMER                                                                 09/05/2015 11:00:47 PAGE 1   
+C51 COMPILER V9.00   TIMER                                                                 09/05/2015 12:03:11 PAGE 1   
 
 
 C51 COMPILER V9.00, COMPILATION OF MODULE TIMER
@@ -62,7 +62,7 @@ line level    source
   50   2          {
   51   3            await_number_table = 0;
   52   3          }   
-C51 COMPILER V9.00   TIMER                                                                 09/05/2015 11:00:47 PAGE 2   
+C51 COMPILER V9.00   TIMER                                                                 09/05/2015 12:03:11 PAGE 2   
 
   53   2        }
   54   1      

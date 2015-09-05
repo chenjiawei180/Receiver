@@ -316,7 +316,12 @@ void fun13(void) //一级菜单FC
 	tm1629_f(0x0c);
 }
 
-void fun14(void) //设置年份
+void fun14(void) //一级菜单Fd
+{
+	tm1629_f(0x0d);
+}
+
+void fun15(void) //设置年份
 {
 	if (return_await_number_table() == 1)
 	{
@@ -335,7 +340,7 @@ void fun14(void) //设置年份
 	Ds1302_Write_Time();
 }
 
-void fun15(void) //设置月份
+void fun16(void) //设置月份
 {
 	if (return_await_number_table() == 1)
 	{
@@ -352,7 +357,7 @@ void fun15(void) //设置月份
 	Ds1302_Write_Time();
 }
 
-void fun16(void) //设置日期
+void fun17(void) //设置日期
 {
 	if (return_await_number_table() == 1)
 	{
@@ -369,7 +374,7 @@ void fun16(void) //设置日期
 	Ds1302_Write_Time();
 }
 
-void fun17(void) //设置星期
+void fun18(void) //设置星期
 {
 	if (return_await_number_table() == 1)
 	{
@@ -385,7 +390,7 @@ void fun17(void) //设置星期
 	Ds1302_Write_Time();
 }
 
-void fun18(void) //设置小时
+void fun19(void) //设置小时
 {
 	if (return_await_number_table() == 1)
 	{
@@ -402,7 +407,7 @@ void fun18(void) //设置小时
 	Ds1302_Write_Time();
 }
 
-void fun19(void) //设置小时
+void fun20(void) //设置分钟
 {
 	if (return_await_number_table() == 1)
 	{
@@ -419,127 +424,148 @@ void fun19(void) //设置小时
 	Ds1302_Write_Time();
 }
 
-void fun20(void) //二级菜单F1-E1
+void fun21(void) //二级菜单F1-E1
 {
 	tm1629_E(0x01);
 }
 
-void fun21(void) //二级菜单F1-E2
+void fun22(void) //二级菜单F1-E2
 {
 	tm1629_E(0x02);
 }
 
-void fun22(void) //二级菜单F1-E3
+void fun23(void) //二级菜单F1-E3
 {
 	tm1629_E(0x03);
 }
 
-void fun23(void) //二级菜单F1-E4
+void fun24(void) //二级菜单F1-E4
 {
 	tm1629_E(0x04);
 }
 
-void fun24(void) //二级菜单F2-E1
+void fun25(void) //二级菜单F2-E1
 {
 	tm1629_E(0x01);
 }
 
-void fun25(void) //二级菜单F2-E2
+void fun26(void) //二级菜单F2-E2
 {
 	tm1629_E(0x02);
 }
 
-void fun26(void) //二级菜单F2-E3
+void fun27(void) //二级菜单F2-E3
 {
 	tm1629_E(0x03);
 }
 
-void fun27(void) //二级菜单F2-E4
+void fun28(void) //二级菜单F2-E4
 {
 	tm1629_E(0x04);
 }
 
-void fun28(void) //二级菜单F3-E1
+void fun29(void) //二级菜单F3-E1
 {
 	tm1629_E(0x01);
 }
 
-void fun29(void) //二级菜单F3-E2
+void fun30(void) //二级菜单F3-E2
 {
 	tm1629_E(0x02);
 }
 
-void fun30(void) //二级菜单F4
+void fun31(void) //二级菜单F4
 {
 	tm1629_f(0x0f);
 }
 
-void fun31(void) //二级菜单F5
+void fun32(void) //二级菜单F5
 {
 	tm1629_f(0x0f);
 }
 
-void fun32(void) //二级菜单F6-E1
+void fun33(void) //二级菜单F6-E1
 {
 	tm1629_E(0x01);
 }
 
-void fun33(void) //二级菜单F6-E2
+void fun34(void) //二级菜单F6-E2
 {
 	tm1629_E(0x02);
 }
 
-void fun34(void) //二级菜单F6-E3
+void fun35(void) //二级菜单F6-E3
 {
 	tm1629_E(0x03);
 }
 
-void fun35(void) //二级菜单F6-E4
+void fun36(void) //二级菜单F6-E4
 {
 	tm1629_E(0x04);
 }
 
-void fun36(void) //二级菜单F6-E5
+void fun37(void) //二级菜单F6-E5
 {
 	tm1629_E(0x05);
 }
 
-void fun37(void) //二级菜单F7
-{
-	tm1629_f(0x0f);
-}
-
-void fun38(void) //二级菜单F8
-{
-	tm1629_f(0x0f);
-}
-
-void fun39(void) //二级菜单F9-E1
+void fun38(void) //二级菜单F7-E1
 {
 	tm1629_E(0x01);
 }
 
-void fun40(void) //二级菜单F9-E2
+void fun39(void) //二级菜单F7-E2
 {
 	tm1629_E(0x02);
 }
 
-void fun41(void) //二级菜单FA-E1
+void fun40(void) //二级菜单F7-E3
+{
+	tm1629_E(0x03);
+}
+
+void fun41(void) //二级菜单F7-E4
+{
+	tm1629_E(0x04);
+}
+
+void fun42(void) //二级菜单F8-E1
 {
 	tm1629_E(0x01);
 }
 
-void fun42(void) //二级菜单FA-E2
+void fun43(void) //二级菜单F8-E2
 {
 	tm1629_E(0x02);
 }
 
-void fun43(void) //二级菜单Fb
+void fun44(void) //二级菜单F9-E1
+{
+	tm1629_E(0x01);
+}
+
+void fun45(void) //二级菜单F9-E2
+{
+	tm1629_E(0x02);
+}
+
+void fun46(void) //二级菜单FA
 {
 	tm1629_f(0x0f);
 }
 
-void fun44(void) //二级菜单FC
+
+void fun47(void) //二级菜单Fb
+{
+	tm1629_f(0x0f);
+}
+
+void fun48(void) //二级菜单FC
+{
+	tm1629_f(0x0f);
+}
+
+void fun49(void) //二级菜单Fd
 {
 	tm1629_f(0x0f);
 }
