@@ -395,6 +395,16 @@
               <FileType>1</FileType>
               <FilePath>.\Receiver\ds1302.c</FilePath>
             </File>
+            <File>
+              <FileName>ev1527.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Receiver\ev1527.c</FilePath>
+            </File>
+            <File>
+              <FileName>decoder.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Receiver\decoder.c</FilePath>
+            </File>
           </Files>
         </Group>
       </Groups>

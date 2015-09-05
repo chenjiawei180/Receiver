@@ -1,4 +1,4 @@
-C51 COMPILER V9.00   TM1629                                                                09/04/2015 16:30:54 PAGE 1   
+C51 COMPILER V9.00   TM1629                                                                09/05/2015 11:00:47 PAGE 1   
 
 
 C51 COMPILER V9.00, COMPILATION OF MODULE TM1629
@@ -62,7 +62,7 @@ line level    source
   51   2          p = p >> 1;
   52   2        }
   53   1        TM1629_CLK = 0;
-C51 COMPILER V9.00   TM1629                                                                09/04/2015 16:30:54 PAGE 2   
+C51 COMPILER V9.00   TM1629                                                                09/05/2015 11:00:47 PAGE 2   
 
   54   1        TM1629_DIO = 0;
   55   1      }
@@ -126,7 +126,7 @@ line level    source
  113   1        send_command(0x8C); //设置显示控制命令：打开显示，并设置为11/16.
  114   1        TM1629_STB = 1;
  115   1      
-C51 COMPILER V9.00   TM1629                                                                09/04/2015 16:30:54 PAGE 3   
+C51 COMPILER V9.00   TM1629                                                                09/05/2015 11:00:47 PAGE 3   
 
  116   1        send_command_2(0x40); //设置数据命令:普通模式、地址自增1，写数据到显存
  117   1        send_command_2(0xc0); //设置显示地址命令：从00H开始
@@ -190,7 +190,7 @@ line level    source
  175   1        {
  176   2          for (j = 0; j<8; j++)
  177   2          {
-C51 COMPILER V9.00   TM1629                                                                09/04/2015 16:30:54 PAGE 4   
+C51 COMPILER V9.00   TM1629                                                                09/05/2015 11:00:47 PAGE 4   
 
  178   3            buf_display[i][j] = 0x00;
  179   3          }
@@ -220,8 +220,8 @@ line level    source
  203          {
  204   1        tm1629_clear();
  205   1        Ds1302_Read_Time(); 
- 206   1        buf_display[1][7] = CODE[time_buf1[0] / 10]; //年
- 207   1        buf_display[1][6] = CODE[time_buf1[0] % 10];
+ 206   1        buf_display[1][7] = CODE[2];        //年
+ 207   1        buf_display[1][6] = CODE[0];
  208   1        buf_display[1][5] = CODE[time_buf1[1] / 10];
  209   1        buf_display[1][4] = CODE[time_buf1[1] % 10];
  210   1      
@@ -254,7 +254,7 @@ line level    source
  237   1        display();
  238   1      }
  239          
-C51 COMPILER V9.00   TM1629                                                                09/04/2015 16:30:54 PAGE 5   
+C51 COMPILER V9.00   TM1629                                                                09/05/2015 11:00:47 PAGE 5   
 
  240          void tm1629_E(unsigned char f_number) //第一行倒数二个显示F,倒数第一个显示f_number
  241          {
@@ -318,7 +318,7 @@ line level    source
  299          void fun10(void) //一级菜单F9
  300          {
  301   1        tm1629_f(0x09);
-C51 COMPILER V9.00   TM1629                                                                09/04/2015 16:30:54 PAGE 6   
+C51 COMPILER V9.00   TM1629                                                                09/05/2015 11:00:47 PAGE 6   
 
  302   1      }
  303          
@@ -382,7 +382,7 @@ line level    source
  361   2        }
  362   1        if (return_await_number_table() == 3)
  363   1        {
-C51 COMPILER V9.00   TM1629                                                                09/04/2015 16:30:54 PAGE 7   
+C51 COMPILER V9.00   TM1629                                                                09/05/2015 11:00:47 PAGE 7   
 
  364   2          buf_display[0][7] = 0;
  365   2          buf_display[0][6] = 0;
@@ -446,7 +446,7 @@ line level    source
  423          {
  424   1        tm1629_E(0x01);
  425   1      }
-C51 COMPILER V9.00   TM1629                                                                09/04/2015 16:30:54 PAGE 8   
+C51 COMPILER V9.00   TM1629                                                                09/05/2015 11:00:47 PAGE 8   
 
  426          
  427          void fun21(void) //二级菜单F1-E2
@@ -510,7 +510,7 @@ line level    source
  485   1      }
  486          
  487          void fun33(void) //二级菜单F6-E2
-C51 COMPILER V9.00   TM1629                                                                09/04/2015 16:30:54 PAGE 9   
+C51 COMPILER V9.00   TM1629                                                                09/05/2015 11:00:47 PAGE 9   
 
  488          {
  489   1        tm1629_E(0x02);
@@ -573,8 +573,8 @@ line level    source
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =   1326    ----
-C51 COMPILER V9.00   TM1629                                                                09/04/2015 16:30:54 PAGE 10  
+   CODE SIZE        =   1298    ----
+C51 COMPILER V9.00   TM1629                                                                09/05/2015 11:00:47 PAGE 10  
 
    CONSTANT SIZE    =   ----    ----
    XDATA SIZE       =    320       1

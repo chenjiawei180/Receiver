@@ -4,6 +4,9 @@
 #include "tm1629.h"
 #include "timer.h"
 #include "ds1302.h"
+#include "ev1527.h"
+#include "decoder.h"
+
 
 void main()
 {	
@@ -19,15 +22,28 @@ void main()
 #ifdef DEBUG
 	uart_printf("Init_Timer0 Complete! \r\n");
 #endif
+	Init_Timer1();
+#ifdef DEBUG
+	uart_printf("Init_Timer1 Complete! \r\n");
+#endif
+	exint0_init();
+#ifdef DEBUG
+	uart_printf("exint0_init Complete! \r\n");
+#endif
 	Ds1302_Init();
 #ifdef DEBUG
 	uart_printf("Ds1302_Init Complete! \r\n");
 #endif
+	Init_Timer1();
 	//Ds1302_Write_Time();
+
+	P3M1 = 0X0C; //IO口设置为输入 必须添加 否则无法解码
+	P3M0 = 0X00;
 
 	while (1)
 	{
 		KeyProcess();
+		DecoderProcess();
 	}
 }
 

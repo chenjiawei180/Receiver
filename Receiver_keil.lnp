@@ -4,6 +4,8 @@
 "key.obj",
 "tm1629.obj",
 "timer.obj",
-"ds1302.obj" 
+"ds1302.obj",
+"ev1527.obj",
+"decoder.obj" 
 TO "Receiver_keil" 
 RAMSIZE(256) 

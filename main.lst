@@ -1,4 +1,4 @@
-C51 COMPILER V9.00   MAIN                                                                  09/04/2015 16:30:54 PAGE 1   
+C51 COMPILER V9.00   MAIN                                                                  09/05/2015 11:00:46 PAGE 1   
 
 
 C51 COMPILER V9.00, COMPILATION OF MODULE MAIN
@@ -14,38 +14,56 @@ line level    source
    4          #include "tm1629.h"
    5          #include "timer.h"
    6          #include "ds1302.h"
-   7          
-   8          void main()
-   9          { 
-  10   1        UsartInit();  //串口初始化
-  11   1      #ifdef DEBUG
-  12   1        uart_printf("UsartInit Complete! \r\n");
-  13   1      #endif
-  14   1        tm1629_init();
-  15   1      #ifdef DEBUG
-  16   1        uart_printf("tm1629_init Complete! \r\n");
-  17   1      #endif
-  18   1        Init_Timer0();
-  19   1      #ifdef DEBUG
-  20   1        uart_printf("Init_Timer0 Complete! \r\n");
-  21   1      #endif
-  22   1        Ds1302_Init();
-  23   1      #ifdef DEBUG
-  24   1        uart_printf("Ds1302_Init Complete! \r\n");
-  25   1      #endif
-  26   1        //Ds1302_Write_Time();
-  27   1      
-  28   1        while (1)
-  29   1        {
-  30   2          KeyProcess();
-  31   2        }
-  32   1      }
-  33          
+   7          #include "ev1527.h"
+   8          #include "decoder.h"
+   9          
+  10          
+  11          void main()
+  12          { 
+  13   1        UsartInit();  //串口初始化
+  14   1      #ifdef DEBUG
+  15   1        uart_printf("UsartInit Complete! \r\n");
+  16   1      #endif
+  17   1        tm1629_init();
+  18   1      #ifdef DEBUG
+  19   1        uart_printf("tm1629_init Complete! \r\n");
+  20   1      #endif
+  21   1        Init_Timer0();
+  22   1      #ifdef DEBUG
+  23   1        uart_printf("Init_Timer0 Complete! \r\n");
+  24   1      #endif
+  25   1        Init_Timer1();
+  26   1      #ifdef DEBUG
+  27   1        uart_printf("Init_Timer1 Complete! \r\n");
+  28   1      #endif
+  29   1        exint0_init();
+  30   1      #ifdef DEBUG
+  31   1        uart_printf("exint0_init Complete! \r\n");
+  32   1      #endif
+  33   1        Ds1302_Init();
+  34   1      #ifdef DEBUG
+  35   1        uart_printf("Ds1302_Init Complete! \r\n");
+  36   1      #endif
+  37   1        Init_Timer1();
+  38   1        //Ds1302_Write_Time();
+  39   1      
+  40   1        P3M1 = 0X0C; //IO口设置为输入 必须添加 否则无法解码
+  41   1        P3M0 = 0X00;
+  42   1      
+  43   1        while (1)
+  44   1        {
+  45   2          KeyProcess();
+  46   2          DecoderProcess();
+  47   2        }
+  48   1      }
+  49          
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =     53    ----
-   CONSTANT SIZE    =     98    ----
+   CODE SIZE        =     89    ----
+   CONSTANT SIZE    =    148    ----
+C51 COMPILER V9.00   MAIN                                                                  09/05/2015 11:00:46 PAGE 2   
+
    XDATA SIZE       =   ----    ----
    PDATA SIZE       =   ----    ----
    DATA SIZE        =   ----    ----

@@ -5,6 +5,7 @@
 #define TIMER50MS 50000
 
 extern void Init_Timer0(void);
+extern void Init_Timer1(void);
 
 
 extern unsigned char return_await_number_table(void);

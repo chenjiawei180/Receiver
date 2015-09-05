@@ -1,6 +1,7 @@
 #include "timer.h"
 #include "key.h"
 #include "menu.h"
+#include "ev1527.h"
 
 unsigned char await_number = 0;      //待机时刻计算50MS次数变量
 unsigned char await_number_table = 0;//0.5秒标志变量
@@ -18,7 +19,17 @@ void Init_Timer0(void)
 	TR0 = 1;           //定时器开关打开
 }
 
-void Timer0_isr(void) interrupt 1
+void Init_Timer1(void) 
+{
+	TMOD |= 0x10;	  //使用模式1，16位定时器，使用"|"符号可以在使用多个定时器时不受影响	
+	TH1 = (65536 - 100) >> 8; //重新赋值 100us
+	TL1 = (65536 - 100) & 0xff;
+	EA = 1;            //总中断打开
+	ET1 = 1;           //定时器中断打开
+	//TR1=1;           //定时器开关打开
+}
+
+void Timer0_isr(void) interrupt 1  //定时器0中断服务程序
 {
 	unsigned char func_index_temp = 0;
 	TF0 = 0;
@@ -46,6 +57,14 @@ void Timer0_isr(void) interrupt 1
 		main_press_time++;			//计算菜单键按下时间长度变量
 	}
 
+}
+
+void Timer1_isr(void) interrupt 3  //定时器1中断服务程序
+{
+	TF1 = 0;
+	TH1 = (65536 - 100) >> 8;		  //重新赋值 100us
+	TL1 = (65536 - 100) & 0xff;
+	RF_decode_main();
 }
 
 unsigned char return_await_number_table(void)	//返回await_number_table变量的值

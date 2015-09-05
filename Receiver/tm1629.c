@@ -203,8 +203,8 @@ void Display_time(void)
 {
 	tm1629_clear();
 	Ds1302_Read_Time(); 
-	buf_display[1][7] = CODE[time_buf1[0] / 10]; //Äê
-	buf_display[1][6] = CODE[time_buf1[0] % 10];
+	buf_display[1][7] = CODE[2];				//Äê
+	buf_display[1][6] = CODE[0];
 	buf_display[1][5] = CODE[time_buf1[1] / 10];
 	buf_display[1][4] = CODE[time_buf1[1] % 10];
 
