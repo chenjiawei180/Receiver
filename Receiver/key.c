@@ -78,24 +78,24 @@ key_table code table[100] =
 	{ TWO_MENU_F2_E4, TWO_MENU_F2_E1, TWO_MENU_F2_E3, TWO_MENU_F2_E4_D1, ONE_MENU_F2, (*fun28) }, //F2子菜单E4
 
 	{ TWO_MENU_F3_E1, TWO_MENU_F3_E2, TWO_MENU_F3_E2, TWO_MENU_F3_E1_SET, ONE_MENU_F3, (*fun29) }, //F3子菜单E1
-	{ TWO_MENU_F3_E2, TWO_MENU_F3_E1, TWO_MENU_F3_E1, 0, ONE_MENU_F3, (*fun30) }, //F3子菜单E2
+	{ TWO_MENU_F3_E2, TWO_MENU_F3_E1, TWO_MENU_F3_E1, TWO_MENU_F3_E2_SET, ONE_MENU_F3, (*fun30) }, //F3子菜单E2
 
-	{ TWO_MENU_F4_SET, TWO_MENU_F4_SET, TWO_MENU_F4_SET, 0, ONE_MENU_F4, (*fun31) }, //F4子菜单
-	{ TWO_MENU_F5_SET, TWO_MENU_F5_SET, TWO_MENU_F5_SET, 0, ONE_MENU_F5, (*fun32) }, //F5子菜单
+	{ TWO_MENU_F4_SET, TWO_MENU_F4_SET, TWO_MENU_F4_SET, TWO_MENU_F4_SET, ONE_MENU_F4, (*fun31) }, //F4子菜单
+	{ TWO_MENU_F5_SET, TWO_MENU_F5_SET, TWO_MENU_F5_SET, TWO_MENU_F5_SET, ONE_MENU_F5, (*fun32) }, //F5子菜单
 
-	{ TWO_MENU_F6_E1, TWO_MENU_F6_E2, TWO_MENU_F6_E5, 0, ONE_MENU_F6, (*fun33) }, //F6子菜单E1
-	{ TWO_MENU_F6_E2, TWO_MENU_F6_E3, TWO_MENU_F6_E1, 0, ONE_MENU_F6, (*fun34) }, //F6子菜单E2
-	{ TWO_MENU_F6_E3, TWO_MENU_F6_E4, TWO_MENU_F6_E2, 0, ONE_MENU_F6, (*fun35) }, //F6子菜单E3
-	{ TWO_MENU_F6_E4, TWO_MENU_F6_E5, TWO_MENU_F6_E3, 0, ONE_MENU_F6, (*fun36) }, //F6子菜单E4
-	{ TWO_MENU_F6_E5, TWO_MENU_F6_E1, TWO_MENU_F6_E4, 0, ONE_MENU_F6, (*fun37) }, //F6子菜单E5
+	{ TWO_MENU_F6_E1, TWO_MENU_F6_E2, TWO_MENU_F6_E5, TWO_MENU_F6_E1_SET, ONE_MENU_F6, (*fun33) }, //F6子菜单E1
+	{ TWO_MENU_F6_E2, TWO_MENU_F6_E3, TWO_MENU_F6_E1, TWO_MENU_F6_E2_SET, ONE_MENU_F6, (*fun34) }, //F6子菜单E2
+	{ TWO_MENU_F6_E3, TWO_MENU_F6_E4, TWO_MENU_F6_E2, TWO_MENU_F6_E3_SET, ONE_MENU_F6, (*fun35) }, //F6子菜单E3
+	{ TWO_MENU_F6_E4, TWO_MENU_F6_E5, TWO_MENU_F6_E3, TWO_MENU_F6_E4_SET, ONE_MENU_F6, (*fun36) }, //F6子菜单E4
+	{ TWO_MENU_F6_E5, TWO_MENU_F6_E1, TWO_MENU_F6_E4, TWO_MENU_F6_E5_SET, ONE_MENU_F6, (*fun37) }, //F6子菜单E5
 
-	{ TWO_MENU_F7_E1, TWO_MENU_F7_E2, TWO_MENU_F7_E4, 0, ONE_MENU_F7, (*fun38) }, //F7子菜单E1
-	{ TWO_MENU_F7_E2, TWO_MENU_F7_E3, TWO_MENU_F7_E1, 0, ONE_MENU_F7, (*fun39) }, //F7子菜单E2
-	{ TWO_MENU_F7_E3, TWO_MENU_F7_E4, TWO_MENU_F7_E2, 0, ONE_MENU_F7, (*fun40) }, //F7子菜单E3
-	{ TWO_MENU_F7_E4, TWO_MENU_F7_E1, TWO_MENU_F7_E3, 0, ONE_MENU_F7, (*fun41) }, //F7子菜单E4	
+	{ TWO_MENU_F7_E1, TWO_MENU_F7_E2, TWO_MENU_F7_E4, TWO_MENU_F7_E1_SET, ONE_MENU_F7, (*fun38) }, //F7子菜单E1
+	{ TWO_MENU_F7_E2, TWO_MENU_F7_E3, TWO_MENU_F7_E1, TWO_MENU_F7_E2_SET, ONE_MENU_F7, (*fun39) }, //F7子菜单E2
+	{ TWO_MENU_F7_E3, TWO_MENU_F7_E4, TWO_MENU_F7_E2, TWO_MENU_F7_E3_SET, ONE_MENU_F7, (*fun40) }, //F7子菜单E3
+	{ TWO_MENU_F7_E4, TWO_MENU_F7_E1, TWO_MENU_F7_E3, TWO_MENU_F7_E4_SET, ONE_MENU_F7, (*fun41) }, //F7子菜单E4	
 
-	{ TWO_MENU_F8_E1, TWO_MENU_F8_E2, TWO_MENU_F8_E2, 0, ONE_MENU_F8, (*fun42) }, //F8子菜单E1
-	{ TWO_MENU_F8_E2, TWO_MENU_F8_E1, TWO_MENU_F8_E1, 0, ONE_MENU_F8, (*fun43) }, //F8子菜单E2
+	{ TWO_MENU_F8_E1, TWO_MENU_F8_E2, TWO_MENU_F8_E2, TWO_MENU_F8_E1_SET, ONE_MENU_F8, (*fun42) }, //F8子菜单E1
+	{ TWO_MENU_F8_E2, TWO_MENU_F8_E1, TWO_MENU_F8_E1, TWO_MENU_F8_E2_SET, ONE_MENU_F8, (*fun43) }, //F8子菜单E2
 
 	{ TWO_MENU_F9_E1, TWO_MENU_F9_E2, TWO_MENU_F9_E2, 0, ONE_MENU_F9, (*fun44) }, //F9子菜单E1
 	{ TWO_MENU_F9_E2, TWO_MENU_F9_E1, TWO_MENU_F9_E1, 0, ONE_MENU_F9, (*fun45) }, //F9子菜单E2
@@ -146,7 +146,21 @@ key_table code table[100] =
 	{ TWO_MENU_F2_E4_D4, TWO_MENU_F2_E4_D4, TWO_MENU_F2_E4_D4, TWO_MENU_F2_E4_D1, TWO_MENU_F2_E4, (*fun81) }, //F2_E4删除取消器
 
 	{ TWO_MENU_F3_E1_SET, TWO_MENU_F3_E1_SET, TWO_MENU_F3_E1_SET, TWO_MENU_F3_E1_SET, TWO_MENU_F3_E1, (*fun82) }, //F3_E1设置排队显示或者循环显示
+	{ TWO_MENU_F3_E2_SET, TWO_MENU_F3_E2_SET, TWO_MENU_F3_E2_SET, TWO_MENU_F3_E2_SET, TWO_MENU_F3_E2, (*fun83) }, //F3_E2设置队列个数
 
+	{ TWO_MENU_F6_E1_SET, TWO_MENU_F6_E1_SET, TWO_MENU_F6_E1_SET, TWO_MENU_F6_E1_SET, TWO_MENU_F6_E1, (*fun84) }, //F6_E1语音选择
+	{ TWO_MENU_F6_E2_SET, TWO_MENU_F6_E2_SET, TWO_MENU_F6_E2_SET, TWO_MENU_F6_E2_SET, TWO_MENU_F6_E2, (*fun85) }, //F6_E2语音报读次数
+	{ TWO_MENU_F6_E3_SET, TWO_MENU_F6_E3_SET, TWO_MENU_F6_E3_SET, TWO_MENU_F6_E3_SET, TWO_MENU_F6_E3, (*fun86) }, //F6_E3循环时候是否报读
+	{ TWO_MENU_F6_E4_SET, TWO_MENU_F6_E4_SET, TWO_MENU_F6_E4_SET, TWO_MENU_F6_E4_SET, TWO_MENU_F6_E4, (*fun87) }, //F6_E4音量大小调整
+	{ TWO_MENU_F6_E5_SET, TWO_MENU_F6_E5_SET, TWO_MENU_F6_E5_SET, TWO_MENU_F6_E5_SET, TWO_MENU_F6_E5, (*fun88) }, //F6_E5屏幕亮度调整
+
+	{ TWO_MENU_F7_E1_SET, TWO_MENU_F7_E1_SET, TWO_MENU_F7_E1_SET, TWO_MENU_F7_E1_SET, TWO_MENU_F7_E1, (*fun89) }, //F7_E1 999*9
+	{ TWO_MENU_F7_E2_SET, TWO_MENU_F7_E2_SET, TWO_MENU_F7_E2_SET, TWO_MENU_F7_E2_SET, TWO_MENU_F7_E2, (*fun90) }, //F7_E2 9999*9
+	{ TWO_MENU_F7_E3_SET, TWO_MENU_F7_E3_SET, TWO_MENU_F7_E3_SET, TWO_MENU_F7_E3_SET, TWO_MENU_F7_E3, (*fun91) }, //F7_E3 999*99
+	{ TWO_MENU_F7_E4_SET, TWO_MENU_F7_E4_SET, TWO_MENU_F7_E4_SET, TWO_MENU_F7_E4_SET, TWO_MENU_F7_E4, (*fun92) }, //F7_E4 9999*99
+
+	{ TWO_MENU_F8_E1_SET, TWO_MENU_F8_E1_SET, TWO_MENU_F8_E1_SET, TWO_MENU_F8_E1_SET, TWO_MENU_F8_E1, (*fun93) }, //F8_E1 单键位跟多键位切换
+	{ TWO_MENU_F8_E2_SET, TWO_MENU_F8_E2_SET, TWO_MENU_F8_E2_SET, TWO_MENU_F8_E2_SET, TWO_MENU_F8_E2, (*fun94) }, //F8_E2 键位设置
 };
 
 unsigned int KeyScan(void)  //Keyboard scan function
@@ -421,7 +435,62 @@ void KeyProcess(void)
 				if (Two_Menu_F3_E1 == 1) Two_Menu_F3_E1 = 2;	//排队显示 或者 循环显示
 				else Two_Menu_F3_E1 = 1;
 				break;
-
+			case TWO_MENU_F3_E2_SET:
+				if (Two_Menu_F3_E2 == 20) Two_Menu_F3_E2 = 1;	//存储队列个数
+				else Two_Menu_F3_E2 ++;
+				break;
+			case TWO_MENU_F4_SET:
+				if (Two_Menu_F4_E1 == 99) Two_Menu_F4_E1 = 0;	//销号时间设置
+				else Two_Menu_F4_E1++;
+				break;
+			case TWO_MENU_F5_SET:
+				if (Two_Menu_F5_E1 == 99) Two_Menu_F5_E1 = 0;	//循环时间设置
+				else Two_Menu_F5_E1++;
+				break;
+			case TWO_MENU_F6_E1_SET:
+				if (Two_Menu_F6_E1 == 5) Two_Menu_F6_E1 = 0;	//F6_E1语音选择
+				else Two_Menu_F6_E1++;
+				break;
+			case TWO_MENU_F6_E2_SET:
+				if (Two_Menu_F6_E2 == 9) Two_Menu_F6_E2 = 1;	//F6_E2语音报读次数
+				else Two_Menu_F6_E2++;
+				break;
+			case TWO_MENU_F6_E3_SET:
+				if (Two_Menu_F6_E3 == 0) Two_Menu_F6_E3 = 1;	//F6_E3循环时候是否报读
+				else Two_Menu_F6_E3 = 0;
+				break;
+			case TWO_MENU_F6_E4_SET:
+				if (Two_Menu_F6_E4 == 9) Two_Menu_F6_E4 = 0;	//F6_E4音量大小调整
+				else Two_Menu_F6_E4++;
+				break;
+			case TWO_MENU_F6_E5_SET:
+				if (Two_Menu_F6_E5 == 9) Two_Menu_F6_E5 = 0;	//F6_E5屏幕亮度调整
+				else Two_Menu_F6_E5++;
+				break;
+			case TWO_MENU_F7_E1_SET:
+				if (Two_Menu_F7_E1 == 11) Two_Menu_F7_E1 = 0;	//F7_E1原始规则 999*9
+				else Two_Menu_F7_E1++;
+				break;
+			case TWO_MENU_F7_E2_SET:
+				if (Two_Menu_F7_E2 == 11) Two_Menu_F7_E2 = 0;	//F7_E2附加规则 9999*9
+				else Two_Menu_F7_E2++;
+				break;
+			case TWO_MENU_F7_E3_SET:
+				if (Two_Menu_F7_E3 == 11) Two_Menu_F7_E3 = 0;	//F7_E3附加规则 999*99
+				else Two_Menu_F7_E3++;
+				break;
+			case TWO_MENU_F7_E4_SET:
+				if (Two_Menu_F7_E4 == 11) Two_Menu_F7_E4 = 0;	//F7_E3附加规则 9999*99
+				else Two_Menu_F7_E4++;
+				break;
+			case TWO_MENU_F8_E1_SET:
+				if (Two_Menu_F8_E1 == 1) Two_Menu_F8_E1 = 0;	//F8_E1单键位跟多键位切换
+				else Two_Menu_F8_E1 = 1 ;
+				break;
+			case TWO_MENU_F8_E2_SET:
+				if (Two_Menu_F8_E2 == 50) Two_Menu_F8_E2 = 0;	//F8_E2键位设置
+				else Two_Menu_F8_E2++;
+				break;
 
 				default:break;
 			}	
@@ -585,7 +654,62 @@ void KeyProcess(void)
 				if (Two_Menu_F3_E1 == 1) Two_Menu_F3_E1 = 2;	//排队显示 或者 循环显示
 				else Two_Menu_F3_E1 = 1;
 				break;
-
+			case TWO_MENU_F3_E2_SET:
+				if (Two_Menu_F3_E2 == 1) Two_Menu_F3_E2 = 20;	//存储队列个数
+				else Two_Menu_F3_E2--;
+				break;
+			case TWO_MENU_F4_SET:
+				if (Two_Menu_F4_E1 == 0) Two_Menu_F4_E1 = 99;	//销号时间设置
+				else Two_Menu_F4_E1--;
+				break;
+			case TWO_MENU_F5_SET:
+				if (Two_Menu_F5_E1 == 0) Two_Menu_F5_E1 = 99;	//销号时间设置
+				else Two_Menu_F5_E1--;
+				break;
+			case TWO_MENU_F6_E1_SET:
+				if (Two_Menu_F6_E1 == 0) Two_Menu_F6_E1 = 5;	//F6_E1额语音选择
+				else Two_Menu_F6_E1--;
+				break;
+			case TWO_MENU_F6_E2_SET:
+				if (Two_Menu_F6_E2 == 1) Two_Menu_F6_E2 = 9;	//F6_E2语音报读次数调整
+				else Two_Menu_F6_E2--;
+				break;
+			case TWO_MENU_F6_E3_SET:
+				if (Two_Menu_F6_E3 == 0) Two_Menu_F6_E3 = 1;	//F6_E3循环时候是否报读
+				else Two_Menu_F6_E3 = 0;
+				break;
+			case TWO_MENU_F6_E4_SET:
+				if (Two_Menu_F6_E4 == 0) Two_Menu_F6_E4 = 9;	//F6_E4音量大小调整
+				else Two_Menu_F6_E4--;
+				break;
+			case TWO_MENU_F6_E5_SET:
+				if (Two_Menu_F6_E5 == 0) Two_Menu_F6_E5 = 9;	//F6_E5屏幕亮度调整
+				else Two_Menu_F6_E5--;
+				break;
+			case TWO_MENU_F7_E1_SET:
+				if (Two_Menu_F7_E1 == 0) Two_Menu_F7_E1 = 11;	//F7_E1原始规则 999*9
+				else Two_Menu_F7_E1--;
+				break;
+			case TWO_MENU_F7_E2_SET:
+				if (Two_Menu_F7_E2 == 0) Two_Menu_F7_E2 = 11;	//F7_E2附加规则 9999*9
+				else Two_Menu_F7_E2--;
+				break;
+			case TWO_MENU_F7_E3_SET:
+				if (Two_Menu_F7_E3 == 0) Two_Menu_F7_E3 = 11;	//F7_E3附加规则 999*99
+				else Two_Menu_F7_E3--;
+				break;
+			case TWO_MENU_F7_E4_SET:
+				if (Two_Menu_F7_E4 == 0) Two_Menu_F7_E4 = 11;	//F7_E3附加规则 9999*99
+				else Two_Menu_F7_E4--;
+				break;
+			case TWO_MENU_F8_E1_SET:
+				if (Two_Menu_F8_E1 == 1) Two_Menu_F8_E1 = 0;	//F8_E1单键位跟多键位切换
+				else Two_Menu_F8_E1 = 1;
+				break;
+			case TWO_MENU_F8_E2_SET:
+				if (Two_Menu_F8_E2 == 0) Two_Menu_F8_E2 = 50;	//F8_E2键位设置
+				else Two_Menu_F8_E2--;
+				break;
 
 				default:break;
 			}
@@ -616,5 +740,103 @@ unsigned char return_Two_Menu_F3_E1(void)
 {
 	unsigned char temp = 0;
 	temp = Two_Menu_F3_E1;
+	return temp;
+}
+
+unsigned char return_Two_Menu_F3_E2(void)
+{
+	unsigned char temp = 0;
+	temp = Two_Menu_F3_E2;
+	return temp;
+}
+
+unsigned char return_Two_Menu_F4_E1(void)
+{
+	unsigned char temp = 0;
+	temp = Two_Menu_F4_E1;
+	return temp;
+}
+
+unsigned char return_Two_Menu_F5_E1(void)
+{
+	unsigned char temp = 0;
+	temp = Two_Menu_F5_E1;
+	return temp;
+}
+
+unsigned char return_Two_Menu_F6_E1(void)
+{
+	unsigned char temp = 0;
+	temp = Two_Menu_F6_E1;
+	return temp;
+}
+
+unsigned char return_Two_Menu_F6_E2(void)
+{
+	unsigned char temp = 0;
+	temp = Two_Menu_F6_E2;
+	return temp;
+}
+
+unsigned char return_Two_Menu_F6_E3(void)
+{
+	unsigned char temp = 0;
+	temp = Two_Menu_F6_E3;
+	return temp;
+}
+
+unsigned char return_Two_Menu_F6_E4(void)
+{
+	unsigned char temp = 0;
+	temp = Two_Menu_F6_E4;
+	return temp;
+}
+
+unsigned char return_Two_Menu_F6_E5(void)
+{
+	unsigned char temp = 0;
+	temp = Two_Menu_F6_E5;
+	return temp;
+}
+
+unsigned char return_Two_Menu_F7_E1(void)
+{
+	unsigned char temp = 0;
+	temp = Two_Menu_F7_E1;
+	return temp;
+}
+
+unsigned char return_Two_Menu_F7_E2(void)
+{
+	unsigned char temp = 0;
+	temp = Two_Menu_F7_E2;
+	return temp;
+}
+
+unsigned char return_Two_Menu_F7_E3(void)
+{
+	unsigned char temp = 0;
+	temp = Two_Menu_F7_E3;
+	return temp;
+}
+
+unsigned char return_Two_Menu_F7_E4(void)
+{
+	unsigned char temp = 0;
+	temp = Two_Menu_F7_E4;
+	return temp;
+}
+
+unsigned char return_Two_Menu_F8_E1(void)
+{
+	unsigned char temp = 0;
+	temp = Two_Menu_F8_E1;
+	return temp;
+}
+
+unsigned char return_Two_Menu_F8_E2(void)
+{
+	unsigned char temp = 0;
+	temp = Two_Menu_F8_E2;
 	return temp;
 }

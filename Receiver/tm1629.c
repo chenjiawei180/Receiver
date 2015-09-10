@@ -503,12 +503,16 @@ void fun30(void) //二级菜单F3-E2
 
 void fun31(void) //二级菜单F4
 {
-	tm1629_f(0x0f);
+	unsigned char temp = 0;
+	temp = return_Two_Menu_F4_E1();
+	Show_two_number(temp);
 }
 
 void fun32(void) //二级菜单F5
 {
-	tm1629_f(0x0f);
+	unsigned char temp = 0;
+	temp = return_Two_Menu_F5_E1();
+	Show_two_number(temp);
 }
 
 void fun33(void) //二级菜单F6-E1
@@ -1082,4 +1086,88 @@ void fun82(void) //显示即时显示 还是循环显示
 	unsigned char temp=0;
 	temp = return_Two_Menu_F3_E1();
 	Show_one_number(temp);
+}
+
+void fun83(void) //队列存储个数
+{
+	unsigned char temp = 0;
+	temp = return_Two_Menu_F3_E2();
+	Show_two_number(temp);
+}
+
+void fun84(void) //F6_E1语音选择
+{
+	unsigned char temp = 0;
+	temp = return_Two_Menu_F6_E1();
+	Show_one_number(temp);
+}
+
+void fun85(void) //F6_E2语音报读次数
+{
+	unsigned char temp = 0;
+	temp = return_Two_Menu_F6_E2();
+	Show_one_number(temp);
+}
+
+void fun86(void) //F6_E3循环时候是否报读
+{
+	unsigned char temp = 0;
+	temp = return_Two_Menu_F6_E3();
+	Show_one_number(temp);
+}
+
+void fun87(void) //F6_E4音量大小调整
+{
+	unsigned char temp = 0;
+	temp = return_Two_Menu_F6_E4();
+	Show_one_number(temp);
+}
+
+void fun88(void) //F6_E5屏幕亮度调整
+{
+	unsigned char temp = 0;
+	temp = return_Two_Menu_F6_E5();
+	Show_one_number(temp);
+}
+
+void fun89(void) //F7_E1 999*9
+{
+	unsigned char temp = 0;
+	temp = return_Two_Menu_F7_E1();
+	Show_one_number(temp);
+}
+
+void fun90(void) //F7_E2 9999*9
+{
+	unsigned char temp = 0;
+	temp = return_Two_Menu_F7_E2();
+	Show_one_number(temp);
+}
+
+void fun91(void) //F7_E3 999*99
+{
+	unsigned char temp = 0;
+	temp = return_Two_Menu_F7_E3();
+	Show_one_number(temp);
+}
+
+void fun92(void) //F7_E4 9999*99
+{
+	unsigned char temp = 0;
+	temp = return_Two_Menu_F7_E4();
+	Show_one_number(temp);
+}
+
+void fun93(void) //F8_E1单键位跟多键位切换
+{
+	unsigned char temp = 0;
+	temp = return_Two_Menu_F8_E1();
+	Show_one_number(temp);
+}
+
+void fun94(void) //F8_E2键位设置
+{
+	unsigned char temp = 0;
+	temp = return_Two_Menu_F8_E2();
+	Show_two_number(temp);
 }

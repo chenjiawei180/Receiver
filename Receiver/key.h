@@ -38,6 +38,19 @@ extern void KeyProcess(void);//按键处理函数
 
 extern unsigned char return_func_index(void);
 extern unsigned char return_Two_Menu_F3_E1(void);
-
+extern unsigned char return_Two_Menu_F3_E2(void);
+extern unsigned char return_Two_Menu_F4_E1(void);
+extern unsigned char return_Two_Menu_F5_E1(void);
+extern unsigned char return_Two_Menu_F6_E1(void);
+extern unsigned char return_Two_Menu_F6_E2(void);
+extern unsigned char return_Two_Menu_F6_E3(void);
+extern unsigned char return_Two_Menu_F6_E4(void);
+extern unsigned char return_Two_Menu_F6_E5(void);
+extern unsigned char return_Two_Menu_F7_E1(void);
+extern unsigned char return_Two_Menu_F7_E2(void);
+extern unsigned char return_Two_Menu_F7_E3(void);
+extern unsigned char return_Two_Menu_F7_E4(void);
+extern unsigned char return_Two_Menu_F8_E1(void);
+extern unsigned char return_Two_Menu_F8_E2(void);
 #endif
 

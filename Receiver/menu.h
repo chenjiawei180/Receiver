@@ -122,9 +122,25 @@
 #define TWO_MENU_F2_E4_D3   80  //删除取消器十位
 #define TWO_MENU_F2_E4_D4   81  //删除取消器个位
 
-//F3_E1子菜单设置
+//F3子菜单设置
 #define TWO_MENU_F3_E1_SET  82 //F3_E1设置选择
 #define TWO_MENU_F3_E2_SET  83 //F3_E1设置选择
 
+//F6子菜单设置
+#define TWO_MENU_F6_E1_SET  84 //F6_E1语音选择
+#define TWO_MENU_F6_E2_SET  85 //F6_E2语音报读次数
+#define TWO_MENU_F6_E3_SET  86 //F6_E3循环是否报读
+#define TWO_MENU_F6_E4_SET  87 //F6_E4音量大小调整
+#define TWO_MENU_F6_E5_SET  88 //F6_E5显示屏亮度调整
+
+//F7子菜单设置
+#define TWO_MENU_F7_E1_SET  89 //F7_E1 默认规则999*9
+#define TWO_MENU_F7_E2_SET  90 //F7_E2 附加规则9999*9
+#define TWO_MENU_F7_E3_SET  91 //F7_E3 附加规则999*99
+#define TWO_MENU_F7_E4_SET  92 //F7_E4 附加规则9999*99
+
+//F8子菜单设置
+#define TWO_MENU_F8_E1_SET  93 //F8_E1 单键盘还是多键盘
+#define TWO_MENU_F8_E2_SET  94 //F8_E2 键位更改设置
 
 #endif

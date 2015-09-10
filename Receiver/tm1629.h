@@ -128,6 +128,16 @@ extern void fun86(void);
 extern void fun87(void);
 extern void fun88(void);
 extern void fun89(void);
+extern void fun90(void);
+extern void fun91(void);
+extern void fun92(void);
+extern void fun93(void);
+extern void fun94(void);
+extern void fun95(void);
+extern void fun96(void);
+extern void fun97(void);
+extern void fun98(void);
+extern void fun99(void);
 
 extern void buftobuf(unsigned char a[48], unsigned char* b);
 extern void romtobuf(unsigned char* a, unsigned char* index);
