@@ -8,14 +8,38 @@
 unsigned char func_index = 0; //多级菜单索引变量
 void(*current_operation_index)();// 多级菜单函数指针
 
-unsigned char Two_Menu_F1_E1[4] = { 0 };
-unsigned char Two_Menu_F1_E2[4] = { 0 };
-unsigned char Two_Menu_F1_E3[4] = { 0 };
-unsigned char Two_Menu_F1_E4[4] = { 0 };
-unsigned char Two_Menu_F2_E1[4] = { 0 };
-unsigned char Two_Menu_F2_E2[4] = { 0 };
-unsigned char Two_Menu_F2_E3[4] = { 0 };
-unsigned char Two_Menu_F2_E4[4] = { 0 };
+unsigned char Two_Menu_F1_E1[4] = { 0 }; //F1_E1
+unsigned char Two_Menu_F1_E2[4] = { 0 }; //F1_E2
+unsigned char Two_Menu_F1_E3[4] = { 0 }; //F1_E3
+unsigned char Two_Menu_F1_E4[4] = { 0 }; //F1_E4
+unsigned char Two_Menu_F2_E1[4] = { 0 }; //F2_E1
+unsigned char Two_Menu_F2_E2[4] = { 0 }; //F2_E2
+unsigned char Two_Menu_F2_E3[4] = { 0 }; //F2_E3
+unsigned char Two_Menu_F2_E4[4] = { 0 }; //F2_E4
+
+unsigned char Two_Menu_F3_E1 = 1; //即时模式或者排队显示
+unsigned char Two_Menu_F3_E2 = 1; //呼叫时候存储数量
+
+unsigned char Two_Menu_F4_E1 = 0; //销号时间
+unsigned char Two_Menu_F5_E1 = 0; //循环间隔时间
+
+unsigned char Two_Menu_F6_E1 = 0; //简单报读
+unsigned char Two_Menu_F6_E2 = 1; //语音报读次数
+unsigned char Two_Menu_F6_E3 = 0; //循环时候是否报读
+unsigned char Two_Menu_F6_E4 = 0; //音量大小调整
+unsigned char Two_Menu_F6_E5 = 0; //显示屏LED亮度调整
+
+unsigned char Two_Menu_F7_E1 = 0; // E1默认键盘规则 999*9
+unsigned char Two_Menu_F7_E2 = 0; // E2其他键盘规则 9999*9
+unsigned char Two_Menu_F7_E3 = 0; // E3其他键盘规则 999*99
+unsigned char Two_Menu_F7_E4 = 0; // E4其他键盘规则 9999*99
+
+unsigned char Two_Menu_F8_E1 = 1; // 单按键与 多按键切换
+unsigned char Two_Menu_F8_E2 = 0; // 键位设置
+
+unsigned char Two_Menu_Fb_E1 = 0; // 设置主机有没有销号功能
+unsigned char Two_Menu_FC_E1 = 0; // 设置万年历待机与----待机的切换
+unsigned char Two_Menu_Fd_E1 = 0; // E1 E2 E3 E4 E5 E6
 
 key_table code table[100] =
 {	// 目标索引		    上				下          确认		 退出         函数
@@ -53,7 +77,7 @@ key_table code table[100] =
 	{ TWO_MENU_F2_E3, TWO_MENU_F2_E4, TWO_MENU_F2_E2, TWO_MENU_F2_E3_D1, ONE_MENU_F2, (*fun27) }, //F2子菜单E3
 	{ TWO_MENU_F2_E4, TWO_MENU_F2_E1, TWO_MENU_F2_E3, TWO_MENU_F2_E4_D1, ONE_MENU_F2, (*fun28) }, //F2子菜单E4
 
-	{ TWO_MENU_F3_E1, TWO_MENU_F3_E2, TWO_MENU_F3_E2, 0, ONE_MENU_F3, (*fun29) }, //F3子菜单E1
+	{ TWO_MENU_F3_E1, TWO_MENU_F3_E2, TWO_MENU_F3_E2, TWO_MENU_F3_E1_SET, ONE_MENU_F3, (*fun29) }, //F3子菜单E1
 	{ TWO_MENU_F3_E2, TWO_MENU_F3_E1, TWO_MENU_F3_E1, 0, ONE_MENU_F3, (*fun30) }, //F3子菜单E2
 
 	{ TWO_MENU_F4_SET, TWO_MENU_F4_SET, TWO_MENU_F4_SET, 0, ONE_MENU_F4, (*fun31) }, //F4子菜单
@@ -120,6 +144,8 @@ key_table code table[100] =
 	{ TWO_MENU_F2_E4_D2, TWO_MENU_F2_E4_D2, TWO_MENU_F2_E4_D2, TWO_MENU_F2_E4_D3, TWO_MENU_F2_E4, (*fun79) }, //F2_E4删除取消器
 	{ TWO_MENU_F2_E4_D3, TWO_MENU_F2_E4_D3, TWO_MENU_F2_E4_D3, TWO_MENU_F2_E4_D4, TWO_MENU_F2_E4, (*fun80) }, //F2_E4删除取消器
 	{ TWO_MENU_F2_E4_D4, TWO_MENU_F2_E4_D4, TWO_MENU_F2_E4_D4, TWO_MENU_F2_E4_D1, TWO_MENU_F2_E4, (*fun81) }, //F2_E4删除取消器
+
+	{ TWO_MENU_F3_E1_SET, TWO_MENU_F3_E1_SET, TWO_MENU_F3_E1_SET, TWO_MENU_F3_E1_SET, TWO_MENU_F3_E1, (*fun82) }, //F3_E1设置排队显示或者循环显示
 
 };
 
@@ -391,7 +417,11 @@ void KeyProcess(void)
 			case TWO_MENU_F2_E4_D4:
 				if (Two_Menu_F2_E4[3] == 9) Two_Menu_F2_E4[3] = 0;	//设置F2_E4个位
 				else Two_Menu_F2_E4[3]++;
+			case TWO_MENU_F3_E1_SET:
+				if (Two_Menu_F3_E1 == 1) Two_Menu_F3_E1 = 2;	//排队显示 或者 循环显示
+				else Two_Menu_F3_E1 = 1;
 				break;
+
 
 				default:break;
 			}	
@@ -551,6 +581,10 @@ void KeyProcess(void)
 				if (Two_Menu_F2_E4[3] == 0) Two_Menu_F2_E4[3] = 9;	//设置F2_E4个位
 				else Two_Menu_F2_E4[3]--;
 				break;
+			case TWO_MENU_F3_E1_SET:
+				if (Two_Menu_F3_E1 == 1) Two_Menu_F3_E1 = 2;	//排队显示 或者 循环显示
+				else Two_Menu_F3_E1 = 1;
+				break;
 
 
 				default:break;
@@ -576,4 +610,11 @@ unsigned char return_func_index(void)
 	unsigned char func_index_temp = 0;
 	func_index_temp = func_index;
 	return func_index_temp;
+}
+
+unsigned char return_Two_Menu_F3_E1(void)
+{
+	unsigned char temp = 0;
+	temp = Two_Menu_F3_E1;
+	return temp;
 }

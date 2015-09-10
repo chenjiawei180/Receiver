@@ -1,4 +1,4 @@
-C51 COMPILER V9.00   AT24C256                                                              09/05/2015 16:36:19 PAGE 1   
+C51 COMPILER V9.00   AT24C256                                                              09/09/2015 19:16:59 PAGE 1   
 
 
 C51 COMPILER V9.00, COMPILATION OF MODULE AT24C256
@@ -62,7 +62,7 @@ line level    source
   52   1        SDA = 0;    //发送结束条件的数据信号
   53   1        _Nop();   //发送结束条件的时钟信号
   54   1        SCL = 1;    //结束条件建立时间大于4μ
-C51 COMPILER V9.00   AT24C256                                                              09/05/2015 16:36:19 PAGE 2   
+C51 COMPILER V9.00   AT24C256                                                              09/09/2015 19:16:59 PAGE 2   
 
   55   1        _Nop();
   56   1        _Nop();
@@ -126,7 +126,7 @@ line level    source
  114          unsigned char  RcvByte()
  115          {
  116   1        unsigned char retc;
-C51 COMPILER V9.00   AT24C256                                                              09/05/2015 16:36:19 PAGE 3   
+C51 COMPILER V9.00   AT24C256                                                              09/09/2015 19:16:59 PAGE 3   
 
  117   1        unsigned char BitCnt;
  118   1        retc = 0;
@@ -190,7 +190,7 @@ line level    source
  176   1        _Nop();
  177   1        SCL = 1;
  178   1        _Nop();
-C51 COMPILER V9.00   AT24C256                                                              09/05/2015 16:36:19 PAGE 4   
+C51 COMPILER V9.00   AT24C256                                                              09/09/2015 19:16:59 PAGE 4   
 
  179   1        _Nop();              //时钟低电平周期大于4μ
  180   1        _Nop();

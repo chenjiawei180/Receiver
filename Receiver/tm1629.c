@@ -246,6 +246,22 @@ void tm1629_E(unsigned char f_number) //第一行倒数二个显示F,倒数第一个显示f_numb
 	display();
 }
 
+void Show_one_number(unsigned char f_number) //显示一个数字
+{
+	tm1629_clear();
+	//buf_display[0][1] = CODE[0x0E];
+	buf_display[0][0] = CODE[f_number];
+	display();
+}
+
+void Show_two_number(unsigned char f_number) //显示两个数字
+{
+	tm1629_clear();
+	buf_display[0][1] = CODE[f_number / 10];
+	buf_display[0][0] = CODE[f_number % 10];
+	display();
+}
+
 void Show_four_number(unsigned char* temp)
 {
 	tm1629_clear();
@@ -1059,4 +1075,11 @@ void fun81(void) //F2_E4 个位闪烁
 		display();
 		set_await_number_table(0);
 	}
+}
+
+void fun82(void) //显示即时显示 还是循环显示
+{
+	unsigned char temp=0;
+	temp = return_Two_Menu_F3_E1();
+	Show_one_number(temp);
 }

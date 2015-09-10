@@ -34,6 +34,8 @@ extern void tm1629_load(void);
 
 extern void tm1629_f(unsigned char f_number);
 extern void tm1629_E(unsigned char f_number);
+extern void Show_one_number(unsigned char f_number);
+extern void Show_two_number(unsigned char f_number);
 extern void Show_four_number(unsigned char* temp);
 
 extern void fun0(void);
