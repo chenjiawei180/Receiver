@@ -143,4 +143,124 @@
 #define TWO_MENU_F8_E1_SET  93 //F8_E1 单键盘还是多键盘
 #define TWO_MENU_F8_E2_SET  94 //F8_E2 键位更改设置
 
+
+//以下为声音定义
+#define ZERO      0
+#define ONE       1
+#define TWO       2
+#define THREE     3
+#define FOUR      4
+#define FIVE      5
+#define SIX       6
+#define SEVEN     7
+#define EIGHT     8
+#define NINE      9
+#define TEN       10
+#define ELEVEN    11
+#define TWELVE    12
+#define THIRTEEN  13
+#define FOURTEEN  14
+#define FIFTEEN   15
+#define SIXTEEN   16
+#define SEVENTEEN 17
+#define EIGHTEEN  18
+#define NINETEEN  19
+#define TWENTY    20
+#define THIRTY    21
+#define FORTY     22
+#define FIFTY     23
+#define SIXTY     24
+#define SEVENTY   25
+#define EIGHTY    26
+#define NINETTY   27
+#define HUNDRED   28
+#define AND       29
+#define THOUSAND  30
+
+#define ZIMU_A   32
+#define ZIMU_B   33
+#define ZIMU_C   34
+#define ZIMU_D   35
+#define ZIMU_E   36
+#define ZIMU_F   37
+#define ZIMU_G   38
+#define ZIMU_H   39
+#define ZIMU_I   40
+#define ZIMU_J   41
+#define ZIMU_K   42
+#define ZIMU_L   43
+#define ZIMU_M   44
+#define ZIMU_N   45
+#define ZIMU_O   46
+#define ZIMU_P   47
+#define ZIMU_Q   48
+#define ZIMU_R   49
+#define ZIMU_S   50
+#define ZIMU_T   51
+#define ZIMU_U   52
+#define ZIMU_V   53
+#define ZIMU_W   54
+#define ZIMU_X   55
+#define ZIMU_Y   56
+#define ZIMU_Z   57
+
+#define BAOJING   58
+#define YINGYUEYI 59
+#define YINGYUEER 60
+#define DINGDONG  61
+#define QING      62
+#define DAO       63
+#define GUITAI    64
+#define HUJIAO    65
+#define QUXIAO    66
+#define JIUSHUI   67
+#define JIEZHANG  68
+#define MAIDANG   69
+#define DIANDANG  70
+#define JIASHUI   71
+#define TIANDIAN  72
+#define SHIYING   73
+#define FUWU      74
+#define PIJIU     75
+#define JIU       76
+#define CUFANG    77
+#define CUSHI     78
+#define BATAI     79
+#define BANGZHU   80
+#define YISHENG   81
+#define HUSHI     82
+#define ANMO      83
+#define ZHILIAO   84
+#define QIANTAI   85
+#define BAOJIE    86
+#define BANGONG   87
+#define BAZHEN    88
+#define HUANYAO   89
+#define SHUYE     90
+#define JINJI     91
+#define JIASHI    92
+#define QINGJIE   93
+#define GUANLI    94
+#define WEIXIU    95
+#define GUZHANG   96
+#define ZHUXI     97
+#define ZHUREN    98
+#define LICAI     99
+#define SHOUQUAN  100
+#define ANQUAN    101
+#define BAOAN     102
+#define HAO       103
+#define FANG      104
+#define CHUANG    105
+#define ZHUO      106
+#define LOU       107
+#define DENGHOU   108
+
+#define DI        126
+#define CHENGGONG 127
+#define SHIBAI    128
+#define CHUSHIHUA 129
+
+
+
 #endif
