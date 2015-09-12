@@ -13,13 +13,49 @@ sbit SCL = P3 ^ 5;            //模拟I2C时钟控制位
 #define  I2C_ADDRESS 0xa0
 #define  PAGE_LENGTH 32
 
+#define  CALL_TABLE_NUMBER   32
+#define  HOST_TABLE_NUMBER   8
+#define  ALARM_TABLE_NUMBER  8
+#define  CANCEL_TABLE_NUMBER 8
+
+//标志位地址
+#define CALL_TABLE_START    0x0000
+#define CALL_TABLE_END      0x03FF
+#define HOST_TABLE_START    0X0400
+#define HOST_TABLE_END      0x04FF
+#define ALARM_TABLE_START   0X0500
+#define ALARM_TABLE_END     0x05FF
+#define CANCEL_TABLE_START  0X0600
+#define CANCEL_TABLE_END    0x06FF
+
+//数据存储地址
+#define CALL_DATA_START    0x0700
+#define CALL_DATA_END      0x26FF // 1024*8=8192 =2000H
+#define HOST_DATA_START    0X2700
+#define HOST_DATA_END      0x2EFF // 256*8 =2048 =800H
+#define ALARM_DATA_START   0X2F00 
+#define ALARM_DATA_END     0x36FF // 256*8 =2048 =800H
+#define CANCEL_DATA_START  0X3700
+#define CANCEL_DATA_END    0x3EFF // 256*8 =2048 =800H
+
 extern void DelayUs2x(unsigned char t);//函数声明 
 extern void DelayMs(unsigned char t);
 extern void Start_I2c();
 extern void Stop_I2c();
-extern void  SendByte(unsigned char c);
-extern unsigned char  RcvByte();
+extern void SendByte(unsigned char c);
+extern unsigned char RcvByte();
+extern bit ISendStr(unsigned char sla, unsigned int suba, unsigned char *s, unsigned char no);
+extern bit IRcvStr(unsigned char sla, unsigned int suba, unsigned char *s, unsigned char no);
 extern void Ack_I2c(void);
 extern void NoAck_I2c(void);
+
+extern bit register_call_function(unsigned char *buf);
+extern bit delete_call_function(unsigned char *buf);
+extern bit register_host_function(unsigned char *buf);
+extern bit delete_host_function(unsigned char *buf);
+extern bit register_alarm_function(unsigned char *buf);
+extern bit delete_alarm_function(unsigned char *buf);
+extern bit register_cancel_function(unsigned char *buf);
+extern bit delete_cancel_function(unsigned char *buf);
 
 #endif

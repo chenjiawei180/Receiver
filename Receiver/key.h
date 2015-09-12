@@ -37,6 +37,7 @@ extern unsigned char KeyDecoder(void);//解码函数
 extern void KeyProcess(void);//按键处理函数
 
 extern unsigned char return_func_index(void);
+extern void set_func_index(unsigned char temp);
 extern unsigned char return_Two_Menu_F3_E1(void);
 extern unsigned char return_Two_Menu_F3_E2(void);
 extern unsigned char return_Two_Menu_F4_E1(void);

@@ -1,4 +1,4 @@
-C51 COMPILER V9.00   KEY                                                                   09/10/2015 20:09:04 PAGE 1   
+C51 COMPILER V9.00   KEY                                                                   09/12/2015 12:08:49 PAGE 1   
 
 
 C51 COMPILER V9.00, COMPILATION OF MODULE KEY
@@ -14,287 +14,288 @@ line level    source
    4          #include "menu.h"
    5          #include "timer.h"
    6          #include "ds1302.h"
-   7          
-   8          unsigned char func_index = 0; //多级菜单索引变量
-   9          void(*current_operation_index)();// 多级菜单函数指针
-  10          
-  11          unsigned char Two_Menu_F1_E1[4] = { 0 }; //F1_E1
-  12          unsigned char Two_Menu_F1_E2[4] = { 0 }; //F1_E2
-  13          unsigned char Two_Menu_F1_E3[4] = { 0 }; //F1_E3
-  14          unsigned char Two_Menu_F1_E4[4] = { 0 }; //F1_E4
-  15          unsigned char Two_Menu_F2_E1[4] = { 0 }; //F2_E1
-  16          unsigned char Two_Menu_F2_E2[4] = { 0 }; //F2_E2
-  17          unsigned char Two_Menu_F2_E3[4] = { 0 }; //F2_E3
-  18          unsigned char Two_Menu_F2_E4[4] = { 0 }; //F2_E4
-  19          
-  20          unsigned char Two_Menu_F3_E1 = 1; //即时模式或者排队显示
-  21          unsigned char Two_Menu_F3_E2 = 1; //呼叫时候存储数量
-  22          
-  23          unsigned char Two_Menu_F4_E1 = 0; //销号时间
-  24          unsigned char Two_Menu_F5_E1 = 0; //循环间隔时间
-  25          
-  26          unsigned char Two_Menu_F6_E1 = 0; //简单报读
-  27          unsigned char Two_Menu_F6_E2 = 1; //语音报读次数
-  28          unsigned char Two_Menu_F6_E3 = 0; //循环时候是否报读
-  29          unsigned char Two_Menu_F6_E4 = 0; //音量大小调整
-  30          unsigned char Two_Menu_F6_E5 = 0; //显示屏LED亮度调整
-  31          
-  32          unsigned char Two_Menu_F7_E1 = 0; // E1默认键盘规则 999*9
-  33          unsigned char Two_Menu_F7_E2 = 0; // E2其他键盘规则 9999*9
-  34          unsigned char Two_Menu_F7_E3 = 0; // E3其他键盘规则 999*99
-  35          unsigned char Two_Menu_F7_E4 = 0; // E4其他键盘规则 9999*99
-  36          
-  37          unsigned char Two_Menu_F8_E1 = 1; // 单按键与 多按键切换
-  38          unsigned char Two_Menu_F8_E2 = 0; // 键位设置
-  39          
-  40          unsigned char Two_Menu_Fb_E1 = 0; // 设置主机有没有销号功能
-  41          unsigned char Two_Menu_FC_E1 = 0; // 设置万年历待机与----待机的切换
-  42          unsigned char Two_Menu_Fd_E1 = 0; // E1 E2 E3 E4 E5 E6
-  43          
-  44          key_table code table[100] =
-  45          { // 目标索引       上        下          确认     退出         函数
-  46            { MENU_STANDBY, MENU_STANDBY, MENU_STANDBY, MENU_STANDBY, MENU_STANDBY, (*fun0) }, //待机
-  47          
-  48            { ONE_MENU_F0, ONE_MENU_F1, ONE_MENU_Fd, TWO_MENU_F0_YEAR , MENU_STANDBY, (*fun1) }, //F0-F9
-  49            { ONE_MENU_F1, ONE_MENU_F2, ONE_MENU_F0, TWO_MENU_F1_E1   , MENU_STANDBY, (*fun2) },
-  50            { ONE_MENU_F2, ONE_MENU_F3, ONE_MENU_F1, TWO_MENU_F2_E1   , MENU_STANDBY, (*fun3) },
-  51            { ONE_MENU_F3, ONE_MENU_F4, ONE_MENU_F2, TWO_MENU_F3_E1   , MENU_STANDBY, (*fun4) },
-  52            { ONE_MENU_F4, ONE_MENU_F5, ONE_MENU_F3, TWO_MENU_F4_SET  , MENU_STANDBY, (*fun5) },
-  53            { ONE_MENU_F5, ONE_MENU_F6, ONE_MENU_F4, TWO_MENU_F5_SET  , MENU_STANDBY, (*fun6) },
-  54            { ONE_MENU_F6, ONE_MENU_F7, ONE_MENU_F5, TWO_MENU_F6_E1   , MENU_STANDBY, (*fun7) },
-C51 COMPILER V9.00   KEY                                                                   09/10/2015 20:09:04 PAGE 2   
+   7          #include "at24c256.h"
+   8          
+   9          unsigned char func_index = 0; //多级菜单索引变量
+  10          void(*current_operation_index)();// 多级菜单函数指针
+  11          
+  12          unsigned char Two_Menu_F1_E1[4] = { 0, 0, 0, 1 }; //F1_E1
+  13          unsigned char Two_Menu_F1_E2[4] = { 0, 0, 0, 1 }; //F1_E2
+  14          unsigned char Two_Menu_F1_E3[4] = { 0, 0, 0, 1 }; //F1_E3
+  15          unsigned char Two_Menu_F1_E4[4] = { 0, 0, 0, 1 }; //F1_E4
+  16          unsigned char Two_Menu_F2_E1[4] = { 0, 0, 0, 1 }; //F2_E1
+  17          unsigned char Two_Menu_F2_E2[4] = { 0, 0, 0, 1 }; //F2_E2
+  18          unsigned char Two_Menu_F2_E3[4] = { 0, 0, 0, 1 }; //F2_E3
+  19          unsigned char Two_Menu_F2_E4[4] = { 0, 0, 0, 1 }; //F2_E4
+  20          
+  21          unsigned char Two_Menu_F3_E1 = 1; //即时模式或者排队显示
+  22          unsigned char Two_Menu_F3_E2 = 1; //呼叫时候存储数量
+  23          
+  24          unsigned char Two_Menu_F4_E1 = 0; //销号时间
+  25          unsigned char Two_Menu_F5_E1 = 0; //循环间隔时间
+  26          
+  27          unsigned char Two_Menu_F6_E1 = 0; //简单报读
+  28          unsigned char Two_Menu_F6_E2 = 1; //语音报读次数
+  29          unsigned char Two_Menu_F6_E3 = 0; //循环时候是否报读
+  30          unsigned char Two_Menu_F6_E4 = 0; //音量大小调整
+  31          unsigned char Two_Menu_F6_E5 = 0; //显示屏LED亮度调整
+  32          
+  33          unsigned char Two_Menu_F7_E1 = 0; // E1默认键盘规则 999*9
+  34          unsigned char Two_Menu_F7_E2 = 0; // E2其他键盘规则 9999*9
+  35          unsigned char Two_Menu_F7_E3 = 0; // E3其他键盘规则 999*99
+  36          unsigned char Two_Menu_F7_E4 = 0; // E4其他键盘规则 9999*99
+  37          
+  38          unsigned char Two_Menu_F8_E1 = 2; // 单按键与 多按键切换
+  39          unsigned char Two_Menu_F8_E2 = 0; // 键位设置
+  40          
+  41          unsigned char Two_Menu_Fb_E1 = 0; // 设置主机有没有销号功能
+  42          unsigned char Two_Menu_FC_E1 = 0; // 设置万年历待机与----待机的切换
+  43          unsigned char Two_Menu_Fd_E1 = 0; // E1 E2 E3 E4 E5 E6
+  44          
+  45          key_table code table[100] =
+  46          { // 目标索引       上        下          确认     退出         函数
+  47            { MENU_STANDBY, MENU_STANDBY, MENU_STANDBY, MENU_STANDBY, MENU_STANDBY, (*fun0) }, //待机
+  48          
+  49            { ONE_MENU_F0, ONE_MENU_F1, ONE_MENU_Fd, TWO_MENU_F0_YEAR , MENU_STANDBY, (*fun1) }, //F0-F9
+  50            { ONE_MENU_F1, ONE_MENU_F2, ONE_MENU_F0, TWO_MENU_F1_E1   , MENU_STANDBY, (*fun2) },
+  51            { ONE_MENU_F2, ONE_MENU_F3, ONE_MENU_F1, TWO_MENU_F2_E1   , MENU_STANDBY, (*fun3) },
+  52            { ONE_MENU_F3, ONE_MENU_F4, ONE_MENU_F2, TWO_MENU_F3_E1   , MENU_STANDBY, (*fun4) },
+  53            { ONE_MENU_F4, ONE_MENU_F5, ONE_MENU_F3, TWO_MENU_F4_SET  , MENU_STANDBY, (*fun5) },
+  54            { ONE_MENU_F5, ONE_MENU_F6, ONE_MENU_F4, TWO_MENU_F5_SET  , MENU_STANDBY, (*fun6) },
+C51 COMPILER V9.00   KEY                                                                   09/12/2015 12:08:49 PAGE 2   
 
-  55            { ONE_MENU_F7, ONE_MENU_F8, ONE_MENU_F6, TWO_MENU_F7_E1   , MENU_STANDBY, (*fun8) },
-  56            { ONE_MENU_F8, ONE_MENU_F9, ONE_MENU_F7, TWO_MENU_F8_E1   , MENU_STANDBY, (*fun9) },
-  57            { ONE_MENU_F9, ONE_MENU_FA, ONE_MENU_F8, TWO_MENU_F9_E1   , MENU_STANDBY, (*fun10) },
-  58            { ONE_MENU_FA, ONE_MENU_Fb, ONE_MENU_F9, TWO_MENU_FA_SET  , MENU_STANDBY, (*fun11) }, //FA
-  59            { ONE_MENU_Fb, ONE_MENU_FC, ONE_MENU_FA, TWO_MENU_Fb_SET  , MENU_STANDBY, (*fun12) }, //Fb
-  60            { ONE_MENU_FC, ONE_MENU_Fd, ONE_MENU_Fb, TWO_MENU_FC_SET  , MENU_STANDBY, (*fun13) }, //FC
-  61            { ONE_MENU_Fd, ONE_MENU_F0, ONE_MENU_FC, TWO_MENU_Fd_SET  , MENU_STANDBY, (*fun14) }, //Fd
-  62          
-  63            { TWO_MENU_F0_YEAR  , TWO_MENU_F0_YEAR  , TWO_MENU_F0_YEAR  , TWO_MENU_F0_MOUTH , ONE_MENU_F0, (*fun15) }
+  55            { ONE_MENU_F6, ONE_MENU_F7, ONE_MENU_F5, TWO_MENU_F6_E1   , MENU_STANDBY, (*fun7) },
+  56            { ONE_MENU_F7, ONE_MENU_F8, ONE_MENU_F6, TWO_MENU_F7_E1   , MENU_STANDBY, (*fun8) },
+  57            { ONE_MENU_F8, ONE_MENU_F9, ONE_MENU_F7, TWO_MENU_F8_E1   , MENU_STANDBY, (*fun9) },
+  58            { ONE_MENU_F9, ONE_MENU_FA, ONE_MENU_F8, TWO_MENU_F9_E1   , MENU_STANDBY, (*fun10) },
+  59            { ONE_MENU_FA, ONE_MENU_Fb, ONE_MENU_F9, TWO_MENU_FA_SET  , MENU_STANDBY, (*fun11) }, //FA
+  60            { ONE_MENU_Fb, ONE_MENU_FC, ONE_MENU_FA, TWO_MENU_Fb_SET  , MENU_STANDBY, (*fun12) }, //Fb
+  61            { ONE_MENU_FC, ONE_MENU_Fd, ONE_MENU_Fb, TWO_MENU_FC_SET  , MENU_STANDBY, (*fun13) }, //FC
+  62            { ONE_MENU_Fd, ONE_MENU_F0, ONE_MENU_FC, TWO_MENU_Fd_SET  , MENU_STANDBY, (*fun14) }, //Fd
+  63          
+  64            { TWO_MENU_F0_YEAR  , TWO_MENU_F0_YEAR  , TWO_MENU_F0_YEAR  , TWO_MENU_F0_MOUTH , ONE_MENU_F0, (*fun15) }
              -, //万年历 年
-  64            { TWO_MENU_F0_MOUTH , TWO_MENU_F0_MOUTH , TWO_MENU_F0_MOUTH , TWO_MENU_F0_DAY   , ONE_MENU_F0, (*fun16) }
+  65            { TWO_MENU_F0_MOUTH , TWO_MENU_F0_MOUTH , TWO_MENU_F0_MOUTH , TWO_MENU_F0_DAY   , ONE_MENU_F0, (*fun16) }
              -, //万年历 月
-  65            { TWO_MENU_F0_DAY   , TWO_MENU_F0_DAY   , TWO_MENU_F0_DAY   , TWO_MENU_F0_WEEK  , ONE_MENU_F0, (*fun17) }
+  66            { TWO_MENU_F0_DAY   , TWO_MENU_F0_DAY   , TWO_MENU_F0_DAY   , TWO_MENU_F0_WEEK  , ONE_MENU_F0, (*fun17) }
              -, //万年历 日
-  66            { TWO_MENU_F0_WEEK  , TWO_MENU_F0_WEEK  , TWO_MENU_F0_WEEK  , TWO_MENU_F0_HOUR  , ONE_MENU_F0, (*fun18) }
+  67            { TWO_MENU_F0_WEEK  , TWO_MENU_F0_WEEK  , TWO_MENU_F0_WEEK  , TWO_MENU_F0_HOUR  , ONE_MENU_F0, (*fun18) }
              -, //万年历 周
-  67            { TWO_MENU_F0_HOUR  , TWO_MENU_F0_HOUR  , TWO_MENU_F0_HOUR  , TWO_MENU_F0_MINUTE, ONE_MENU_F0, (*fun19) }
+  68            { TWO_MENU_F0_HOUR  , TWO_MENU_F0_HOUR  , TWO_MENU_F0_HOUR  , TWO_MENU_F0_MINUTE, ONE_MENU_F0, (*fun19) }
              -, //万年历 小时
-  68            { TWO_MENU_F0_MINUTE, TWO_MENU_F0_MINUTE, TWO_MENU_F0_MINUTE, TWO_MENU_F0_YEAR  , ONE_MENU_F0, (*fun20) }
+  69            { TWO_MENU_F0_MINUTE, TWO_MENU_F0_MINUTE, TWO_MENU_F0_MINUTE, TWO_MENU_F0_YEAR  , ONE_MENU_F0, (*fun20) }
              -, //万年历 分钟
-  69          
-  70            { TWO_MENU_F1_E1, TWO_MENU_F1_E2, TWO_MENU_F1_E4, TWO_MENU_F1_E1_D1, ONE_MENU_F1, (*fun21) }, //F1子菜单E
+  70          
+  71            { TWO_MENU_F1_E1, TWO_MENU_F1_E2, TWO_MENU_F1_E4, TWO_MENU_F1_E1_D4, ONE_MENU_F1, (*fun21) }, //F1子菜单E
              -1
-  71            { TWO_MENU_F1_E2, TWO_MENU_F1_E3, TWO_MENU_F1_E1, TWO_MENU_F1_E2_D1, ONE_MENU_F1, (*fun22) }, //F1子菜单E
+  72            { TWO_MENU_F1_E2, TWO_MENU_F1_E3, TWO_MENU_F1_E1, TWO_MENU_F1_E2_D4, ONE_MENU_F1, (*fun22) }, //F1子菜单E
              -2
-  72            { TWO_MENU_F1_E3, TWO_MENU_F1_E4, TWO_MENU_F1_E2, TWO_MENU_F1_E3_D1, ONE_MENU_F1, (*fun23) }, //F1子菜单E
+  73            { TWO_MENU_F1_E3, TWO_MENU_F1_E4, TWO_MENU_F1_E2, TWO_MENU_F1_E3_D4, ONE_MENU_F1, (*fun23) }, //F1子菜单E
              -3
-  73            { TWO_MENU_F1_E4, TWO_MENU_F1_E1, TWO_MENU_F1_E3, TWO_MENU_F1_E4_D1, ONE_MENU_F1, (*fun24) }, //F1子菜单E
+  74            { TWO_MENU_F1_E4, TWO_MENU_F1_E1, TWO_MENU_F1_E3, TWO_MENU_F1_E4_D4, ONE_MENU_F1, (*fun24) }, //F1子菜单E
              -4
-  74          
-  75            { TWO_MENU_F2_E1, TWO_MENU_F2_E2, TWO_MENU_F2_E4, TWO_MENU_F2_E1_D1, ONE_MENU_F2, (*fun25) }, //F2子菜单E
+  75          
+  76            { TWO_MENU_F2_E1, TWO_MENU_F2_E2, TWO_MENU_F2_E4, TWO_MENU_F2_E1_D4, ONE_MENU_F2, (*fun25) }, //F2子菜单E
              -1
-  76            { TWO_MENU_F2_E2, TWO_MENU_F2_E3, TWO_MENU_F2_E1, TWO_MENU_F2_E2_D1, ONE_MENU_F2, (*fun26) }, //F2子菜单E
+  77            { TWO_MENU_F2_E2, TWO_MENU_F2_E3, TWO_MENU_F2_E1, TWO_MENU_F2_E2_D4, ONE_MENU_F2, (*fun26) }, //F2子菜单E
              -2
-  77            { TWO_MENU_F2_E3, TWO_MENU_F2_E4, TWO_MENU_F2_E2, TWO_MENU_F2_E3_D1, ONE_MENU_F2, (*fun27) }, //F2子菜单E
+  78            { TWO_MENU_F2_E3, TWO_MENU_F2_E4, TWO_MENU_F2_E2, TWO_MENU_F2_E3_D4, ONE_MENU_F2, (*fun27) }, //F2子菜单E
              -3
-  78            { TWO_MENU_F2_E4, TWO_MENU_F2_E1, TWO_MENU_F2_E3, TWO_MENU_F2_E4_D1, ONE_MENU_F2, (*fun28) }, //F2子菜单E
+  79            { TWO_MENU_F2_E4, TWO_MENU_F2_E1, TWO_MENU_F2_E3, TWO_MENU_F2_E4_D4, ONE_MENU_F2, (*fun28) }, //F2子菜单E
              -4
-  79          
-  80            { TWO_MENU_F3_E1, TWO_MENU_F3_E2, TWO_MENU_F3_E2, TWO_MENU_F3_E1_SET, ONE_MENU_F3, (*fun29) }, //F3子菜单
+  80          
+  81            { TWO_MENU_F3_E1, TWO_MENU_F3_E2, TWO_MENU_F3_E2, TWO_MENU_F3_E1_SET, ONE_MENU_F3, (*fun29) }, //F3子菜单
              -E1
-  81            { TWO_MENU_F3_E2, TWO_MENU_F3_E1, TWO_MENU_F3_E1, TWO_MENU_F3_E2_SET, ONE_MENU_F3, (*fun30) }, //F3子菜单
+  82            { TWO_MENU_F3_E2, TWO_MENU_F3_E1, TWO_MENU_F3_E1, TWO_MENU_F3_E2_SET, ONE_MENU_F3, (*fun30) }, //F3子菜单
              -E2
-  82          
-  83            { TWO_MENU_F4_SET, TWO_MENU_F4_SET, TWO_MENU_F4_SET, TWO_MENU_F4_SET, ONE_MENU_F4, (*fun31) }, //F4子菜单
-  84            { TWO_MENU_F5_SET, TWO_MENU_F5_SET, TWO_MENU_F5_SET, TWO_MENU_F5_SET, ONE_MENU_F5, (*fun32) }, //F5子菜单
-  85          
-  86            { TWO_MENU_F6_E1, TWO_MENU_F6_E2, TWO_MENU_F6_E5, TWO_MENU_F6_E1_SET, ONE_MENU_F6, (*fun33) }, //F6子菜单
+  83          
+  84            { TWO_MENU_F4_SET, TWO_MENU_F4_SET, TWO_MENU_F4_SET, TWO_MENU_F4_SET, ONE_MENU_F4, (*fun31) }, //F4子菜单
+  85            { TWO_MENU_F5_SET, TWO_MENU_F5_SET, TWO_MENU_F5_SET, TWO_MENU_F5_SET, ONE_MENU_F5, (*fun32) }, //F5子菜单
+  86          
+  87            { TWO_MENU_F6_E1, TWO_MENU_F6_E2, TWO_MENU_F6_E5, TWO_MENU_F6_E1_SET, ONE_MENU_F6, (*fun33) }, //F6子菜单
              -E1
-  87            { TWO_MENU_F6_E2, TWO_MENU_F6_E3, TWO_MENU_F6_E1, TWO_MENU_F6_E2_SET, ONE_MENU_F6, (*fun34) }, //F6子菜单
+  88            { TWO_MENU_F6_E2, TWO_MENU_F6_E3, TWO_MENU_F6_E1, TWO_MENU_F6_E2_SET, ONE_MENU_F6, (*fun34) }, //F6子菜单
              -E2
-  88            { TWO_MENU_F6_E3, TWO_MENU_F6_E4, TWO_MENU_F6_E2, TWO_MENU_F6_E3_SET, ONE_MENU_F6, (*fun35) }, //F6子菜单
+  89            { TWO_MENU_F6_E3, TWO_MENU_F6_E4, TWO_MENU_F6_E2, TWO_MENU_F6_E3_SET, ONE_MENU_F6, (*fun35) }, //F6子菜单
              -E3
-  89            { TWO_MENU_F6_E4, TWO_MENU_F6_E5, TWO_MENU_F6_E3, TWO_MENU_F6_E4_SET, ONE_MENU_F6, (*fun36) }, //F6子菜单
+  90            { TWO_MENU_F6_E4, TWO_MENU_F6_E5, TWO_MENU_F6_E3, TWO_MENU_F6_E4_SET, ONE_MENU_F6, (*fun36) }, //F6子菜单
              -E4
-  90            { TWO_MENU_F6_E5, TWO_MENU_F6_E1, TWO_MENU_F6_E4, TWO_MENU_F6_E5_SET, ONE_MENU_F6, (*fun37) }, //F6子菜单
+  91            { TWO_MENU_F6_E5, TWO_MENU_F6_E1, TWO_MENU_F6_E4, TWO_MENU_F6_E5_SET, ONE_MENU_F6, (*fun37) }, //F6子菜单
              -E5
-  91          
-  92            { TWO_MENU_F7_E1, TWO_MENU_F7_E2, TWO_MENU_F7_E4, TWO_MENU_F7_E1_SET, ONE_MENU_F7, (*fun38) }, //F7子菜单
+  92          
+  93            { TWO_MENU_F7_E1, TWO_MENU_F7_E2, TWO_MENU_F7_E4, TWO_MENU_F7_E1_SET, ONE_MENU_F7, (*fun38) }, //F7子菜单
              -E1
-  93            { TWO_MENU_F7_E2, TWO_MENU_F7_E3, TWO_MENU_F7_E1, TWO_MENU_F7_E2_SET, ONE_MENU_F7, (*fun39) }, //F7子菜单
-             -E2
-C51 COMPILER V9.00   KEY                                                                   09/10/2015 20:09:04 PAGE 3   
+  94            { TWO_MENU_F7_E2, TWO_MENU_F7_E3, TWO_MENU_F7_E1, TWO_MENU_F7_E2_SET, ONE_MENU_F7, (*fun39) }, //F7子菜单
+C51 COMPILER V9.00   KEY                                                                   09/12/2015 12:08:49 PAGE 3   
 
-  94            { TWO_MENU_F7_E3, TWO_MENU_F7_E4, TWO_MENU_F7_E2, TWO_MENU_F7_E3_SET, ONE_MENU_F7, (*fun40) }, //F7子菜单
+             -E2
+  95            { TWO_MENU_F7_E3, TWO_MENU_F7_E4, TWO_MENU_F7_E2, TWO_MENU_F7_E3_SET, ONE_MENU_F7, (*fun40) }, //F7子菜单
              -E3
-  95            { TWO_MENU_F7_E4, TWO_MENU_F7_E1, TWO_MENU_F7_E3, TWO_MENU_F7_E4_SET, ONE_MENU_F7, (*fun41) }, //F7子菜单
+  96            { TWO_MENU_F7_E4, TWO_MENU_F7_E1, TWO_MENU_F7_E3, TWO_MENU_F7_E4_SET, ONE_MENU_F7, (*fun41) }, //F7子菜单
              -E4  
-  96          
-  97            { TWO_MENU_F8_E1, TWO_MENU_F8_E2, TWO_MENU_F8_E2, TWO_MENU_F8_E1_SET, ONE_MENU_F8, (*fun42) }, //F8子菜单
+  97          
+  98            { TWO_MENU_F8_E1, TWO_MENU_F8_E2, TWO_MENU_F8_E2, TWO_MENU_F8_E1_SET, ONE_MENU_F8, (*fun42) }, //F8子菜单
              -E1
-  98            { TWO_MENU_F8_E2, TWO_MENU_F8_E1, TWO_MENU_F8_E1, TWO_MENU_F8_E2_SET, ONE_MENU_F8, (*fun43) }, //F8子菜单
+  99            { TWO_MENU_F8_E2, TWO_MENU_F8_E1, TWO_MENU_F8_E1, TWO_MENU_F8_E2_SET, ONE_MENU_F8, (*fun43) }, //F8子菜单
              -E2
-  99          
- 100            { TWO_MENU_F9_E1, TWO_MENU_F9_E2, TWO_MENU_F9_E2, 0, ONE_MENU_F9, (*fun44) }, //F9子菜单E1
- 101            { TWO_MENU_F9_E2, TWO_MENU_F9_E1, TWO_MENU_F9_E1, 0, ONE_MENU_F9, (*fun45) }, //F9子菜单E2
- 102          
- 103            { TWO_MENU_FA_SET, TWO_MENU_FA_SET, TWO_MENU_FA_SET, 0, ONE_MENU_FA, (*fun46) }, //FA子菜单
- 104            { TWO_MENU_Fb_SET, TWO_MENU_Fb_SET, TWO_MENU_Fb_SET, 0, ONE_MENU_Fb, (*fun47) }, //Fb子菜单
- 105            { TWO_MENU_FC_SET, TWO_MENU_FC_SET, TWO_MENU_FC_SET, 0, ONE_MENU_FC, (*fun48) }, //FC子菜单
- 106            { TWO_MENU_Fd_SET, TWO_MENU_Fd_SET, TWO_MENU_Fd_SET, 0, ONE_MENU_Fd, (*fun49) }, //Fd子菜单
- 107          
- 108            { TWO_MENU_F1_E1_D1, TWO_MENU_F1_E1_D1, TWO_MENU_F1_E1_D1, TWO_MENU_F1_E1_D2, TWO_MENU_F1_E1, (*fun50) },
+ 100          
+ 101            { TWO_MENU_F9_E1, TWO_MENU_F9_E2, TWO_MENU_F9_E2, 0, ONE_MENU_F9, (*fun44) }, //F9子菜单E1
+ 102            { TWO_MENU_F9_E2, TWO_MENU_F9_E1, TWO_MENU_F9_E1, 0, ONE_MENU_F9, (*fun45) }, //F9子菜单E2
+ 103          
+ 104            { TWO_MENU_FA_SET, TWO_MENU_FA_SET, TWO_MENU_FA_SET, 0, ONE_MENU_FA, (*fun46) }, //FA子菜单
+ 105            { TWO_MENU_Fb_SET, TWO_MENU_Fb_SET, TWO_MENU_Fb_SET, 0, ONE_MENU_Fb, (*fun47) }, //Fb子菜单
+ 106            { TWO_MENU_FC_SET, TWO_MENU_FC_SET, TWO_MENU_FC_SET, 0, ONE_MENU_FC, (*fun48) }, //FC子菜单
+ 107            { TWO_MENU_Fd_SET, TWO_MENU_Fd_SET, TWO_MENU_Fd_SET, 0, ONE_MENU_Fd, (*fun49) }, //Fd子菜单
+ 108          
+ 109            { TWO_MENU_F1_E1_D1, TWO_MENU_F1_E1_D1, TWO_MENU_F1_E1_D1, TWO_MENU_F1_E1_D4, TWO_MENU_F1_E1, (*fun50) },
              - //F1_E1注册呼叫器
- 109            { TWO_MENU_F1_E1_D2, TWO_MENU_F1_E1_D2, TWO_MENU_F1_E1_D2, TWO_MENU_F1_E1_D3, TWO_MENU_F1_E1, (*fun51) },
+ 110            { TWO_MENU_F1_E1_D2, TWO_MENU_F1_E1_D2, TWO_MENU_F1_E1_D2, TWO_MENU_F1_E1_D1, TWO_MENU_F1_E1, (*fun51) },
              - //F1_E1注册呼叫器
- 110            { TWO_MENU_F1_E1_D3, TWO_MENU_F1_E1_D3, TWO_MENU_F1_E1_D3, TWO_MENU_F1_E1_D4, TWO_MENU_F1_E1, (*fun52) },
+ 111            { TWO_MENU_F1_E1_D3, TWO_MENU_F1_E1_D3, TWO_MENU_F1_E1_D3, TWO_MENU_F1_E1_D2, TWO_MENU_F1_E1, (*fun52) },
              - //F1_E1注册呼叫器
- 111            { TWO_MENU_F1_E1_D4, TWO_MENU_F1_E1_D4, TWO_MENU_F1_E1_D4, TWO_MENU_F1_E1_D1, TWO_MENU_F1_E1, (*fun53) },
+ 112            { TWO_MENU_F1_E1_D4, TWO_MENU_F1_E1_D4, TWO_MENU_F1_E1_D4, TWO_MENU_F1_E1_D3, TWO_MENU_F1_E1, (*fun53) },
              - //F1_E1注册呼叫器
- 112          
- 113            { TWO_MENU_F1_E2_D1, TWO_MENU_F1_E2_D1, TWO_MENU_F1_E2_D1, TWO_MENU_F1_E2_D2, TWO_MENU_F1_E2, (*fun54) },
+ 113          
+ 114            { TWO_MENU_F1_E2_D1, TWO_MENU_F1_E2_D1, TWO_MENU_F1_E2_D1, TWO_MENU_F1_E2_D4, TWO_MENU_F1_E2, (*fun54) },
              - //F1_E2注册管理器
- 114            { TWO_MENU_F1_E2_D2, TWO_MENU_F1_E2_D2, TWO_MENU_F1_E2_D2, TWO_MENU_F1_E2_D3, TWO_MENU_F1_E2, (*fun55) },
+ 115            { TWO_MENU_F1_E2_D2, TWO_MENU_F1_E2_D2, TWO_MENU_F1_E2_D2, TWO_MENU_F1_E2_D1, TWO_MENU_F1_E2, (*fun55) },
              - //F1_E2注册管理器
- 115            { TWO_MENU_F1_E2_D3, TWO_MENU_F1_E2_D3, TWO_MENU_F1_E2_D3, TWO_MENU_F1_E2_D4, TWO_MENU_F1_E2, (*fun56) },
+ 116            { TWO_MENU_F1_E2_D3, TWO_MENU_F1_E2_D3, TWO_MENU_F1_E2_D3, TWO_MENU_F1_E2_D2, TWO_MENU_F1_E2, (*fun56) },
              - //F1_E2注册管理器
- 116            { TWO_MENU_F1_E2_D4, TWO_MENU_F1_E2_D4, TWO_MENU_F1_E2_D4, TWO_MENU_F1_E2_D1, TWO_MENU_F1_E2, (*fun57) },
+ 117            { TWO_MENU_F1_E2_D4, TWO_MENU_F1_E2_D4, TWO_MENU_F1_E2_D4, TWO_MENU_F1_E2_D3, TWO_MENU_F1_E2, (*fun57) },
              - //F1_E2注册管理器
- 117          
- 118            { TWO_MENU_F1_E3_D1, TWO_MENU_F1_E3_D1, TWO_MENU_F1_E3_D1, TWO_MENU_F1_E3_D2, TWO_MENU_F1_E3, (*fun58) },
+ 118          
+ 119            { TWO_MENU_F1_E3_D1, TWO_MENU_F1_E3_D1, TWO_MENU_F1_E3_D1, TWO_MENU_F1_E3_D4, TWO_MENU_F1_E3, (*fun58) },
              - //F1_E3注册报警器
- 119            { TWO_MENU_F1_E3_D2, TWO_MENU_F1_E3_D2, TWO_MENU_F1_E3_D2, TWO_MENU_F1_E3_D3, TWO_MENU_F1_E3, (*fun59) },
+ 120            { TWO_MENU_F1_E3_D2, TWO_MENU_F1_E3_D2, TWO_MENU_F1_E3_D2, TWO_MENU_F1_E3_D1, TWO_MENU_F1_E3, (*fun59) },
              - //F1_E3注册报警器
- 120            { TWO_MENU_F1_E3_D3, TWO_MENU_F1_E3_D3, TWO_MENU_F1_E3_D3, TWO_MENU_F1_E3_D4, TWO_MENU_F1_E3, (*fun60) },
+ 121            { TWO_MENU_F1_E3_D3, TWO_MENU_F1_E3_D3, TWO_MENU_F1_E3_D3, TWO_MENU_F1_E3_D2, TWO_MENU_F1_E3, (*fun60) },
              - //F1_E3注册报警器
- 121            { TWO_MENU_F1_E3_D4, TWO_MENU_F1_E3_D4, TWO_MENU_F1_E3_D4, TWO_MENU_F1_E3_D1, TWO_MENU_F1_E3, (*fun61) },
+ 122            { TWO_MENU_F1_E3_D4, TWO_MENU_F1_E3_D4, TWO_MENU_F1_E3_D4, TWO_MENU_F1_E3_D3, TWO_MENU_F1_E3, (*fun61) },
              - //F1_E3注册报警器
- 122          
- 123            { TWO_MENU_F1_E4_D1, TWO_MENU_F1_E4_D1, TWO_MENU_F1_E4_D1, TWO_MENU_F1_E4_D2, TWO_MENU_F1_E4, (*fun62) },
+ 123          
+ 124            { TWO_MENU_F1_E4_D1, TWO_MENU_F1_E4_D1, TWO_MENU_F1_E4_D1, TWO_MENU_F1_E4_D4, TWO_MENU_F1_E4, (*fun62) },
              - //F1_E3注册取消器
- 124            { TWO_MENU_F1_E4_D2, TWO_MENU_F1_E4_D2, TWO_MENU_F1_E4_D2, TWO_MENU_F1_E4_D3, TWO_MENU_F1_E4, (*fun63) },
+ 125            { TWO_MENU_F1_E4_D2, TWO_MENU_F1_E4_D2, TWO_MENU_F1_E4_D2, TWO_MENU_F1_E4_D1, TWO_MENU_F1_E4, (*fun63) },
              - //F1_E3注册取消器
- 125            { TWO_MENU_F1_E4_D3, TWO_MENU_F1_E4_D3, TWO_MENU_F1_E4_D3, TWO_MENU_F1_E4_D4, TWO_MENU_F1_E4, (*fun64) },
+ 126            { TWO_MENU_F1_E4_D3, TWO_MENU_F1_E4_D3, TWO_MENU_F1_E4_D3, TWO_MENU_F1_E4_D2, TWO_MENU_F1_E4, (*fun64) },
              - //F1_E3注册取消器
- 126            { TWO_MENU_F1_E4_D4, TWO_MENU_F1_E4_D4, TWO_MENU_F1_E4_D4, TWO_MENU_F1_E4_D1, TWO_MENU_F1_E4, (*fun65) },
+ 127            { TWO_MENU_F1_E4_D4, TWO_MENU_F1_E4_D4, TWO_MENU_F1_E4_D4, TWO_MENU_F1_E4_D3, TWO_MENU_F1_E4, (*fun65) },
              - //F1_E3注册取消器
- 127          
- 128            { TWO_MENU_F2_E1_D1, TWO_MENU_F2_E1_D1, TWO_MENU_F2_E1_D1, TWO_MENU_F2_E1_D2, TWO_MENU_F2_E1, (*fun66) },
+ 128          
+ 129            { TWO_MENU_F2_E1_D1, TWO_MENU_F2_E1_D1, TWO_MENU_F2_E1_D1, TWO_MENU_F2_E1_D4, TWO_MENU_F2_E1, (*fun66) },
              - //F2_E1删除呼叫器
- 129            { TWO_MENU_F2_E1_D2, TWO_MENU_F2_E1_D2, TWO_MENU_F2_E1_D2, TWO_MENU_F2_E1_D3, TWO_MENU_F2_E1, (*fun67) },
+ 130            { TWO_MENU_F2_E1_D2, TWO_MENU_F2_E1_D2, TWO_MENU_F2_E1_D2, TWO_MENU_F2_E1_D1, TWO_MENU_F2_E1, (*fun67) },
              - //F2_E1删除呼叫器
- 130            { TWO_MENU_F2_E1_D3, TWO_MENU_F2_E1_D3, TWO_MENU_F2_E1_D3, TWO_MENU_F2_E1_D4, TWO_MENU_F2_E1, (*fun68) },
+ 131            { TWO_MENU_F2_E1_D3, TWO_MENU_F2_E1_D3, TWO_MENU_F2_E1_D3, TWO_MENU_F2_E1_D2, TWO_MENU_F2_E1, (*fun68) },
              - //F2_E1删除呼叫器
- 131            { TWO_MENU_F2_E1_D4, TWO_MENU_F2_E1_D4, TWO_MENU_F2_E1_D4, TWO_MENU_F2_E1_D1, TWO_MENU_F2_E1, (*fun69) },
-             - //F2_E1删除呼叫器
-C51 COMPILER V9.00   KEY                                                                   09/10/2015 20:09:04 PAGE 4   
+ 132            { TWO_MENU_F2_E1_D4, TWO_MENU_F2_E1_D4, TWO_MENU_F2_E1_D4, TWO_MENU_F2_E1_D3, TWO_MENU_F2_E1, (*fun69) },
+C51 COMPILER V9.00   KEY                                                                   09/12/2015 12:08:49 PAGE 4   
 
- 132          
- 133            { TWO_MENU_F2_E2_D1, TWO_MENU_F2_E2_D1, TWO_MENU_F2_E2_D1, TWO_MENU_F2_E2_D2, TWO_MENU_F2_E2, (*fun70) },
+             - //F2_E1删除呼叫器
+ 133          
+ 134            { TWO_MENU_F2_E2_D1, TWO_MENU_F2_E2_D1, TWO_MENU_F2_E2_D1, TWO_MENU_F2_E2_D4, TWO_MENU_F2_E2, (*fun70) },
              - //F2_E2删除管理器
- 134            { TWO_MENU_F2_E2_D2, TWO_MENU_F2_E2_D2, TWO_MENU_F2_E2_D2, TWO_MENU_F2_E2_D3, TWO_MENU_F2_E2, (*fun71) },
+ 135            { TWO_MENU_F2_E2_D2, TWO_MENU_F2_E2_D2, TWO_MENU_F2_E2_D2, TWO_MENU_F2_E2_D1, TWO_MENU_F2_E2, (*fun71) },
              - //F2_E2删除管理器
- 135            { TWO_MENU_F2_E2_D3, TWO_MENU_F2_E2_D3, TWO_MENU_F2_E2_D3, TWO_MENU_F2_E2_D4, TWO_MENU_F2_E2, (*fun72) },
+ 136            { TWO_MENU_F2_E2_D3, TWO_MENU_F2_E2_D3, TWO_MENU_F2_E2_D3, TWO_MENU_F2_E2_D2, TWO_MENU_F2_E2, (*fun72) },
              - //F2_E2删除管理器
- 136            { TWO_MENU_F2_E2_D4, TWO_MENU_F2_E2_D4, TWO_MENU_F2_E2_D4, TWO_MENU_F2_E2_D1, TWO_MENU_F2_E2, (*fun73) },
+ 137            { TWO_MENU_F2_E2_D4, TWO_MENU_F2_E2_D4, TWO_MENU_F2_E2_D4, TWO_MENU_F2_E2_D3, TWO_MENU_F2_E2, (*fun73) },
              - //F2_E2删除管理器
- 137          
- 138            { TWO_MENU_F2_E3_D1, TWO_MENU_F2_E3_D1, TWO_MENU_F2_E3_D1, TWO_MENU_F2_E3_D2, TWO_MENU_F2_E3, (*fun74) },
+ 138          
+ 139            { TWO_MENU_F2_E3_D1, TWO_MENU_F2_E3_D1, TWO_MENU_F2_E3_D1, TWO_MENU_F2_E3_D4, TWO_MENU_F2_E3, (*fun74) },
              - //F2_E3删除报警器
- 139            { TWO_MENU_F2_E3_D2, TWO_MENU_F2_E3_D2, TWO_MENU_F2_E3_D2, TWO_MENU_F2_E3_D3, TWO_MENU_F2_E3, (*fun75) },
+ 140            { TWO_MENU_F2_E3_D2, TWO_MENU_F2_E3_D2, TWO_MENU_F2_E3_D2, TWO_MENU_F2_E3_D1, TWO_MENU_F2_E3, (*fun75) },
              - //F2_E3删除报警器
- 140            { TWO_MENU_F2_E3_D3, TWO_MENU_F2_E3_D3, TWO_MENU_F2_E3_D3, TWO_MENU_F2_E3_D4, TWO_MENU_F2_E3, (*fun76) },
+ 141            { TWO_MENU_F2_E3_D3, TWO_MENU_F2_E3_D3, TWO_MENU_F2_E3_D3, TWO_MENU_F2_E3_D2, TWO_MENU_F2_E3, (*fun76) },
              - //F2_E3删除报警器
- 141            { TWO_MENU_F2_E3_D4, TWO_MENU_F2_E3_D4, TWO_MENU_F2_E3_D4, TWO_MENU_F2_E3_D1, TWO_MENU_F2_E3, (*fun77) },
+ 142            { TWO_MENU_F2_E3_D4, TWO_MENU_F2_E3_D4, TWO_MENU_F2_E3_D4, TWO_MENU_F2_E3_D3, TWO_MENU_F2_E3, (*fun77) },
              - //F2_E3删除报警器
- 142          
- 143            { TWO_MENU_F2_E4_D1, TWO_MENU_F2_E4_D1, TWO_MENU_F2_E4_D1, TWO_MENU_F2_E4_D2, TWO_MENU_F2_E4, (*fun78) },
+ 143          
+ 144            { TWO_MENU_F2_E4_D1, TWO_MENU_F2_E4_D1, TWO_MENU_F2_E4_D1, TWO_MENU_F2_E4_D4, TWO_MENU_F2_E4, (*fun78) },
              - //F2_E4删除取消器
- 144            { TWO_MENU_F2_E4_D2, TWO_MENU_F2_E4_D2, TWO_MENU_F2_E4_D2, TWO_MENU_F2_E4_D3, TWO_MENU_F2_E4, (*fun79) },
+ 145            { TWO_MENU_F2_E4_D2, TWO_MENU_F2_E4_D2, TWO_MENU_F2_E4_D2, TWO_MENU_F2_E4_D1, TWO_MENU_F2_E4, (*fun79) },
              - //F2_E4删除取消器
- 145            { TWO_MENU_F2_E4_D3, TWO_MENU_F2_E4_D3, TWO_MENU_F2_E4_D3, TWO_MENU_F2_E4_D4, TWO_MENU_F2_E4, (*fun80) },
+ 146            { TWO_MENU_F2_E4_D3, TWO_MENU_F2_E4_D3, TWO_MENU_F2_E4_D3, TWO_MENU_F2_E4_D2, TWO_MENU_F2_E4, (*fun80) },
              - //F2_E4删除取消器
- 146            { TWO_MENU_F2_E4_D4, TWO_MENU_F2_E4_D4, TWO_MENU_F2_E4_D4, TWO_MENU_F2_E4_D1, TWO_MENU_F2_E4, (*fun81) },
+ 147            { TWO_MENU_F2_E4_D4, TWO_MENU_F2_E4_D4, TWO_MENU_F2_E4_D4, TWO_MENU_F2_E4_D3, TWO_MENU_F2_E4, (*fun81) },
              - //F2_E4删除取消器
- 147          
- 148            { TWO_MENU_F3_E1_SET, TWO_MENU_F3_E1_SET, TWO_MENU_F3_E1_SET, TWO_MENU_F3_E1_SET, TWO_MENU_F3_E1, (*fun82
+ 148          
+ 149            { TWO_MENU_F3_E1_SET, TWO_MENU_F3_E1_SET, TWO_MENU_F3_E1_SET, TWO_MENU_F3_E1_SET, TWO_MENU_F3_E1, (*fun82
              -) }, //F3_E1设置排队显示或者循环显示
- 149            { TWO_MENU_F3_E2_SET, TWO_MENU_F3_E2_SET, TWO_MENU_F3_E2_SET, TWO_MENU_F3_E2_SET, TWO_MENU_F3_E2, (*fun83
+ 150            { TWO_MENU_F3_E2_SET, TWO_MENU_F3_E2_SET, TWO_MENU_F3_E2_SET, TWO_MENU_F3_E2_SET, TWO_MENU_F3_E2, (*fun83
              -) }, //F3_E2设置队列个数
- 150          
- 151            { TWO_MENU_F6_E1_SET, TWO_MENU_F6_E1_SET, TWO_MENU_F6_E1_SET, TWO_MENU_F6_E1_SET, TWO_MENU_F6_E1, (*fun84
+ 151          
+ 152            { TWO_MENU_F6_E1_SET, TWO_MENU_F6_E1_SET, TWO_MENU_F6_E1_SET, TWO_MENU_F6_E1_SET, TWO_MENU_F6_E1, (*fun84
              -) }, //F6_E1语音选择
- 152            { TWO_MENU_F6_E2_SET, TWO_MENU_F6_E2_SET, TWO_MENU_F6_E2_SET, TWO_MENU_F6_E2_SET, TWO_MENU_F6_E2, (*fun85
+ 153            { TWO_MENU_F6_E2_SET, TWO_MENU_F6_E2_SET, TWO_MENU_F6_E2_SET, TWO_MENU_F6_E2_SET, TWO_MENU_F6_E2, (*fun85
              -) }, //F6_E2语音报读次数
- 153            { TWO_MENU_F6_E3_SET, TWO_MENU_F6_E3_SET, TWO_MENU_F6_E3_SET, TWO_MENU_F6_E3_SET, TWO_MENU_F6_E3, (*fun86
+ 154            { TWO_MENU_F6_E3_SET, TWO_MENU_F6_E3_SET, TWO_MENU_F6_E3_SET, TWO_MENU_F6_E3_SET, TWO_MENU_F6_E3, (*fun86
              -) }, //F6_E3循环时候是否报读
- 154            { TWO_MENU_F6_E4_SET, TWO_MENU_F6_E4_SET, TWO_MENU_F6_E4_SET, TWO_MENU_F6_E4_SET, TWO_MENU_F6_E4, (*fun87
+ 155            { TWO_MENU_F6_E4_SET, TWO_MENU_F6_E4_SET, TWO_MENU_F6_E4_SET, TWO_MENU_F6_E4_SET, TWO_MENU_F6_E4, (*fun87
              -) }, //F6_E4音量大小调整
- 155            { TWO_MENU_F6_E5_SET, TWO_MENU_F6_E5_SET, TWO_MENU_F6_E5_SET, TWO_MENU_F6_E5_SET, TWO_MENU_F6_E5, (*fun88
+ 156            { TWO_MENU_F6_E5_SET, TWO_MENU_F6_E5_SET, TWO_MENU_F6_E5_SET, TWO_MENU_F6_E5_SET, TWO_MENU_F6_E5, (*fun88
              -) }, //F6_E5屏幕亮度调整
- 156          
- 157            { TWO_MENU_F7_E1_SET, TWO_MENU_F7_E1_SET, TWO_MENU_F7_E1_SET, TWO_MENU_F7_E1_SET, TWO_MENU_F7_E1, (*fun89
+ 157          
+ 158            { TWO_MENU_F7_E1_SET, TWO_MENU_F7_E1_SET, TWO_MENU_F7_E1_SET, TWO_MENU_F7_E1_SET, TWO_MENU_F7_E1, (*fun89
              -) }, //F7_E1 999*9
- 158            { TWO_MENU_F7_E2_SET, TWO_MENU_F7_E2_SET, TWO_MENU_F7_E2_SET, TWO_MENU_F7_E2_SET, TWO_MENU_F7_E2, (*fun90
+ 159            { TWO_MENU_F7_E2_SET, TWO_MENU_F7_E2_SET, TWO_MENU_F7_E2_SET, TWO_MENU_F7_E2_SET, TWO_MENU_F7_E2, (*fun90
              -) }, //F7_E2 9999*9
- 159            { TWO_MENU_F7_E3_SET, TWO_MENU_F7_E3_SET, TWO_MENU_F7_E3_SET, TWO_MENU_F7_E3_SET, TWO_MENU_F7_E3, (*fun91
+ 160            { TWO_MENU_F7_E3_SET, TWO_MENU_F7_E3_SET, TWO_MENU_F7_E3_SET, TWO_MENU_F7_E3_SET, TWO_MENU_F7_E3, (*fun91
              -) }, //F7_E3 999*99
- 160            { TWO_MENU_F7_E4_SET, TWO_MENU_F7_E4_SET, TWO_MENU_F7_E4_SET, TWO_MENU_F7_E4_SET, TWO_MENU_F7_E4, (*fun92
+ 161            { TWO_MENU_F7_E4_SET, TWO_MENU_F7_E4_SET, TWO_MENU_F7_E4_SET, TWO_MENU_F7_E4_SET, TWO_MENU_F7_E4, (*fun92
              -) }, //F7_E4 9999*99
- 161          
- 162            { TWO_MENU_F8_E1_SET, TWO_MENU_F8_E1_SET, TWO_MENU_F8_E1_SET, TWO_MENU_F8_E1_SET, TWO_MENU_F8_E1, (*fun93
+ 162          
+ 163            { TWO_MENU_F8_E1_SET, TWO_MENU_F8_E1_SET, TWO_MENU_F8_E1_SET, TWO_MENU_F8_E1_SET, TWO_MENU_F8_E1, (*fun93
              -) }, //F8_E1 单键位跟多键位切换
- 163            { TWO_MENU_F8_E2_SET, TWO_MENU_F8_E2_SET, TWO_MENU_F8_E2_SET, TWO_MENU_F8_E2_SET, TWO_MENU_F8_E2, (*fun94
+ 164            { TWO_MENU_F8_E2_SET, TWO_MENU_F8_E2_SET, TWO_MENU_F8_E2_SET, TWO_MENU_F8_E2_SET, TWO_MENU_F8_E2, (*fun94
              -) }, //F8_E2 键位设置
- 164          };
- 165          
- 166          unsigned int KeyScan(void)  //Keyboard scan function
- 167          {
- 168   1        unsigned int Val = 0;
-C51 COMPILER V9.00   KEY                                                                   09/10/2015 20:09:04 PAGE 5   
+ 165          };
+ 166          
+ 167          unsigned int KeyScan(void)  //Keyboard scan function
+ 168          {
+C51 COMPILER V9.00   KEY                                                                   09/12/2015 12:08:49 PAGE 5   
 
- 169   1        HKeyPort |= 0x1f;//Row height
- 170   1        LKeyPort &= 0x07;
- 171   1        if ((HKeyPort & 0x1f) != 0x1f)//Press button
- 172   1        {
- 173   2          delay10ms();  //Remove jitter
- 174   2          if ((HKeyPort & 0x1f) != 0x1f)   //Press button
- 175   2          {
- 176   3            HKeyPort |= 0x1f; //检测第一列
- 177   3            LKeyPort |= 0xf8;
- 178   3            LKeyPort &= 0x7f;
- 179   3            if ((HKeyPort & 0x1f) != 0x1f)
- 180   3            {
- 181   4              //  return_standby_time=0;
- 182   4              //  sound_table=1;
- 183   4              Val = HKeyPort & 0x1f;
- 184   4              Val <<= 8;
- 185   4              Val += (LKeyPort & 0xf8);
- 186   4              if (Val == 0x1e78)
- 187   4              {
- 188   5                clear_main_press_time();  //清除菜单键按下的时间计算变量
- 189   5                set_main_press_time_table(1); //设置相应的标志位，开始计算时间
- 190   5              }
- 191   4              while ((HKeyPort & 0x1f) != 0x1f);
- 192   4              delay10ms();
- 193   4              while ((HKeyPort & 0x1f) != 0x1f);
- 194   4              set_main_press_time_table(0);//按键释放，清除相应的标志位
- 195   4              return Val;
- 196   4            }
- 197   3          }
- 198   2        }
- 199   1        return 0x0fff;
- 200   1      }
- 201          
- 202          unsigned char KeyDecoder(void)
- 203          {
- 204   1        unsigned int key_val = 0;
- 205   1      
- 206   1        key_val = KeyScan();
- 207   1      #if 0   
+ 169   1        unsigned int Val = 0;
+ 170   1        HKeyPort |= 0x1f;//Row height
+ 171   1        LKeyPort &= 0x07;
+ 172   1        if ((HKeyPort & 0x1f) != 0x1f)//Press button
+ 173   1        {
+ 174   2          delay10ms();  //Remove jitter
+ 175   2          if ((HKeyPort & 0x1f) != 0x1f)   //Press button
+ 176   2          {
+ 177   3            HKeyPort |= 0x1f; //检测第一列
+ 178   3            LKeyPort |= 0xf8;
+ 179   3            LKeyPort &= 0x7f;
+ 180   3            if ((HKeyPort & 0x1f) != 0x1f)
+ 181   3            {
+ 182   4              //  return_standby_time=0;
+ 183   4              //  sound_table=1;
+ 184   4              Val = HKeyPort & 0x1f;
+ 185   4              Val <<= 8;
+ 186   4              Val += (LKeyPort & 0xf8);
+ 187   4              if (Val == 0x1e78)
+ 188   4              {
+ 189   5                clear_main_press_time();  //清除菜单键按下的时间计算变量
+ 190   5                set_main_press_time_table(1); //设置相应的标志位，开始计算时间
+ 191   5              }
+ 192   4              while ((HKeyPort & 0x1f) != 0x1f);
+ 193   4              delay10ms();
+ 194   4              while ((HKeyPort & 0x1f) != 0x1f);
+ 195   4              set_main_press_time_table(0);//按键释放，清除相应的标志位
+ 196   4              return Val;
+ 197   4            }
+ 198   3          }
+ 199   2        }
+ 200   1        return 0x0fff;
+ 201   1      }
+ 202          
+ 203          unsigned char KeyDecoder(void)
+ 204          {
+ 205   1        unsigned int key_val = 0;
+ 206   1      
+ 207   1        key_val = KeyScan();
+ 208   1      #if 0   
                 if (key_val == 0x0fff) /*do not key press*/
                 {
                   /*sjz 有注册管理器标志*/
@@ -317,9 +318,9 @@ line level    source
                         accumulate_decoder = 0;
                       }
                     }
-                    register_manager = 0;
-C51 COMPILER V9.00   KEY                                                                   09/10/2015 20:09:04 PAGE 6   
+C51 COMPILER V9.00   KEY                                                                   09/12/2015 12:08:49 PAGE 6   
 
+                    register_manager = 0;
                     switch (old2_RF_RECE_REG[2] & 0x0f)
                     {
                     case 0x01:key_val = 0x1778; break;
@@ -331,635 +332,660 @@ line level    source
                   }
                 }
               #endif   
- 242   1      
- 243   1      #ifdef DEBUG
- 244   1        if (key_val != 0x0fff)
- 245   1        uart_printf("key_val is %x .\r\n", key_val); //测试按键键值
- 246   1      #endif
- 247   1        switch (key_val)
- 248   1        {
- 249   2        case 0x1778:return KEY_RETURN; break;//1 按下相应的键显示相对应的码值
- 250   2        case 0x1d78:return KEY_DOWN; break;//2  
- 251   2        case 0x1b78:return KEY_UP; break;//4
- 252   2        case 0x1e78:return KEY_FUNC; break;//5 按下相应的键显示相对应的码值
- 253   2        default:return 0xff; break;
- 254   2        }
- 255   1      }
- 256          
- 257          void KeyProcess(void)
- 258          {
- 259   1        unsigned char key_value = 0, main_press_time_temp = 0;
- 260   1        key_value = KeyDecoder();
- 261   1        switch (key_value)
- 262   1        {
- 263   2          case KEY_FUNC:
- 264   2            if (func_index == MENU_STANDBY )  //如果索引==0  则要1秒以上进入菜单
- 265   2            {
- 266   3              main_press_time_temp = return_main_press_time();
- 267   3              if (main_press_time_temp >= 20)
- 268   3              {
- 269   4                func_index = ONE_MENU_F0;
- 270   4                clear_main_press_time();
- 271   4              }
- 272   3            }
- 273   2            else
- 274   2            {
- 275   3              func_index = table[func_index].enter;
- 276   3              clear_main_press_time();
- 277   3            }
- 278   2             break;
- 279   2          case KEY_RETURN:  func_index = table[func_index].esc; break;
- 280   2          case KEY_UP:
- 281   2            switch (func_index)
- 282   2            {
- 283   3            case TWO_MENU_F0_YEAR: 
- 284   3              if (time_buf1[1] == 99) time_buf1[1] = 0; //设置万年历 年
- 285   3                         else time_buf1[1]++;
- 286   3              break;
- 287   3            case TWO_MENU_F0_MOUTH:
- 288   3              if (time_buf1[2] == 12) time_buf1[2] = 1; //设置万年历 月
- 289   3              else time_buf1[2]++;
- 290   3              break;
- 291   3            case TWO_MENU_F0_DAY:
- 292   3              if (time_buf1[3] == 31) time_buf1[3] = 1; //设置万年历 日
-C51 COMPILER V9.00   KEY                                                                   09/10/2015 20:09:04 PAGE 7   
+ 243   1      
+ 244   1      #ifdef DEBUG
+ 245   1        if (key_val != 0x0fff)
+ 246   1        uart_printf("key_val is %x .\r\n", key_val); //测试按键键值
+ 247   1      #endif
+ 248   1        switch (key_val)
+ 249   1        {
+ 250   2        case 0x1778:return KEY_RETURN; break;//1 按下相应的键显示相对应的码值
+ 251   2        case 0x1d78:return KEY_DOWN; break;//2  
+ 252   2        case 0x1b78:return KEY_UP; break;//4
+ 253   2        case 0x1e78:return KEY_FUNC; break;//5 按下相应的键显示相对应的码值
+ 254   2        default:return 0xff; break;
+ 255   2        }
+ 256   1      }
+ 257          
+ 258          void KeyProcess(void)
+ 259          {
+ 260   1        unsigned char key_value = 0, main_press_time_temp = 0;
+ 261   1        key_value = KeyDecoder();
+ 262   1        switch (key_value)
+ 263   1        {
+ 264   2          case KEY_FUNC:
+ 265   2            if (func_index == MENU_STANDBY )  //如果索引==0  则要1秒以上进入菜单
+ 266   2            {
+ 267   3              main_press_time_temp = return_main_press_time();
+ 268   3              if (main_press_time_temp >= 20)
+ 269   3              {
+ 270   4                func_index = ONE_MENU_F0;
+ 271   4                clear_main_press_time();
+ 272   4              }
+ 273   3            }
+ 274   2            else if (func_index == TWO_MENU_F2_E1_D1 || func_index == TWO_MENU_F2_E1_D2 || func_index == TWO_MENU_F
+             -2_E1_D3 || func_index == TWO_MENU_F2_E1_D4 )
+ 275   2            {
+ 276   3              main_press_time_temp = return_main_press_time();
+ 277   3              if (main_press_time_temp >= 10)
+ 278   3              {
+ 279   4                delete_call_function(Two_Menu_F2_E1);
+ 280   4                delay10ms();
+ 281   4                clear_main_press_time();
+ 282   4      //          if (sound_table == 1)
+ 283   4      //          {
+ 284   4      //#if SOUND
+ 285   4      //            GD5800_select_chapter(SETSUCCESS_POSITION);
+ 286   4      //#endif
+ 287   4      //            sound_table = 0;
+ 288   4      //          }
+ 289   4              }
+ 290   3              else
+ 291   3                func_index = table[func_index].enter;
+C51 COMPILER V9.00   KEY                                                                   09/12/2015 12:08:49 PAGE 7   
 
- 293   3              else time_buf1[3]++;
- 294   3              break;
- 295   3            case TWO_MENU_F0_WEEK:
- 296   3              if (time_buf1[7] == 7) time_buf1[7] = 1;  //设置万年历 星期
- 297   3              else time_buf1[7]++;
- 298   3              break;
- 299   3            case TWO_MENU_F0_HOUR:
- 300   3              if (time_buf1[4] == 23) time_buf1[4] = 0; //设置万年历 小时
- 301   3              else time_buf1[4]++;
- 302   3              break;
- 303   3            case TWO_MENU_F0_MINUTE:
- 304   3              if (time_buf1[5] == 59) time_buf1[5] = 0; //设置万年历 分钟
- 305   3              else time_buf1[5]++;
+ 292   3            }
+ 293   2            else
+ 294   2            {
+ 295   3              func_index = table[func_index].enter;
+ 296   3              clear_main_press_time();
+ 297   3            }
+ 298   2             break;
+ 299   2          case KEY_RETURN:  func_index = table[func_index].esc; break;
+ 300   2          case KEY_UP:
+ 301   2            switch (func_index)
+ 302   2            {
+ 303   3            case TWO_MENU_F0_YEAR: 
+ 304   3              if (time_buf1[1] == 99) time_buf1[1] = 0; //设置万年历 年
+ 305   3                         else time_buf1[1]++;
  306   3              break;
- 307   3            case TWO_MENU_F1_E1_D1:
- 308   3              if (Two_Menu_F1_E1[0] == 20 ) Two_Menu_F1_E1[0] = 0;  //设置F1_E1千位
- 309   3              else Two_Menu_F1_E1[0]++;
+ 307   3            case TWO_MENU_F0_MOUTH:
+ 308   3              if (time_buf1[2] == 12) time_buf1[2] = 1; //设置万年历 月
+ 309   3              else time_buf1[2]++;
  310   3              break;
- 311   3            case TWO_MENU_F1_E1_D2:
- 312   3              if (Two_Menu_F1_E1[1] == 9) Two_Menu_F1_E1[1] = 0;  //设置F1_E1百位
- 313   3              else Two_Menu_F1_E1[1]++;
+ 311   3            case TWO_MENU_F0_DAY:
+ 312   3              if (time_buf1[3] == 31) time_buf1[3] = 1; //设置万年历 日
+ 313   3              else time_buf1[3]++;
  314   3              break;
- 315   3            case TWO_MENU_F1_E1_D3:
- 316   3              if (Two_Menu_F1_E1[2] == 9) Two_Menu_F1_E1[2] = 0;  //设置F1_E1十位
- 317   3              else Two_Menu_F1_E1[2]++;
+ 315   3            case TWO_MENU_F0_WEEK:
+ 316   3              if (time_buf1[7] == 7) time_buf1[7] = 1;  //设置万年历 星期
+ 317   3              else time_buf1[7]++;
  318   3              break;
- 319   3            case TWO_MENU_F1_E1_D4:
- 320   3              if (Two_Menu_F1_E1[3] == 9) Two_Menu_F1_E1[3] = 0;  //设置F1_E1个位
- 321   3              else Two_Menu_F1_E1[3]++;
+ 319   3            case TWO_MENU_F0_HOUR:
+ 320   3              if (time_buf1[4] == 23) time_buf1[4] = 0; //设置万年历 小时
+ 321   3              else time_buf1[4]++;
  322   3              break;
- 323   3            case TWO_MENU_F1_E2_D1:
- 324   3              if (Two_Menu_F1_E2[0] == 20) Two_Menu_F1_E2[0] = 0; //设置F1_E2千位
- 325   3              else Two_Menu_F1_E2[0]++;
+ 323   3            case TWO_MENU_F0_MINUTE:
+ 324   3              if (time_buf1[5] == 59) time_buf1[5] = 0; //设置万年历 分钟
+ 325   3              else time_buf1[5]++;
  326   3              break;
- 327   3            case TWO_MENU_F1_E2_D2:
- 328   3              if (Two_Menu_F1_E2[1] == 9) Two_Menu_F1_E2[1] = 0;  //设置F1_E2百位
- 329   3              else Two_Menu_F1_E2[1]++;
+ 327   3            case TWO_MENU_F1_E1_D1:
+ 328   3              if (Two_Menu_F1_E1[0] == 20 ) Two_Menu_F1_E1[0] = 0;  //设置F1_E1千位
+ 329   3              else Two_Menu_F1_E1[0]++;
  330   3              break;
- 331   3            case TWO_MENU_F1_E2_D3:
- 332   3              if (Two_Menu_F1_E2[2] == 9) Two_Menu_F1_E2[2] = 0;  //设置F1_E2十位
- 333   3              else Two_Menu_F1_E2[2]++;
+ 331   3            case TWO_MENU_F1_E1_D2:
+ 332   3              if (Two_Menu_F1_E1[1] == 9) Two_Menu_F1_E1[1] = 0;  //设置F1_E1百位
+ 333   3              else Two_Menu_F1_E1[1]++;
  334   3              break;
- 335   3            case TWO_MENU_F1_E2_D4:
- 336   3              if (Two_Menu_F1_E2[3] == 9) Two_Menu_F1_E2[3] = 0;  //设置F1_E2个位
- 337   3              else Two_Menu_F1_E2[3]++;
+ 335   3            case TWO_MENU_F1_E1_D3:
+ 336   3              if (Two_Menu_F1_E1[2] == 9) Two_Menu_F1_E1[2] = 0;  //设置F1_E1十位
+ 337   3              else Two_Menu_F1_E1[2]++;
  338   3              break;
- 339   3            case TWO_MENU_F1_E3_D1:
- 340   3              if (Two_Menu_F1_E3[0] == 20) Two_Menu_F1_E3[0] = 0; //设置F1_E3千位
- 341   3              else Two_Menu_F1_E3[0]++;
+ 339   3            case TWO_MENU_F1_E1_D4:
+ 340   3              if (Two_Menu_F1_E1[3] == 9) Two_Menu_F1_E1[3] = 0;  //设置F1_E1个位
+ 341   3              else Two_Menu_F1_E1[3]++;
  342   3              break;
- 343   3            case TWO_MENU_F1_E3_D2:
- 344   3              if (Two_Menu_F1_E3[1] == 9) Two_Menu_F1_E3[1] = 0;  //设置F1_E3百位
- 345   3              else Two_Menu_F1_E3[1]++;
+ 343   3            case TWO_MENU_F1_E2_D1:
+ 344   3              if (Two_Menu_F1_E2[0] == 20) Two_Menu_F1_E2[0] = 0; //设置F1_E2千位
+ 345   3              else Two_Menu_F1_E2[0]++;
  346   3              break;
- 347   3            case TWO_MENU_F1_E3_D3:
- 348   3              if (Two_Menu_F1_E3[2] == 9) Two_Menu_F1_E3[2] = 0;  //设置F1_E3十位
- 349   3              else Two_Menu_F1_E3[2]++;
+ 347   3            case TWO_MENU_F1_E2_D2:
+ 348   3              if (Two_Menu_F1_E2[1] == 9) Two_Menu_F1_E2[1] = 0;  //设置F1_E2百位
+ 349   3              else Two_Menu_F1_E2[1]++;
  350   3              break;
- 351   3            case TWO_MENU_F1_E3_D4:
- 352   3              if (Two_Menu_F1_E3[3] == 9) Two_Menu_F1_E3[3] = 0;  //设置F1_E3个位
- 353   3              else Two_Menu_F1_E3[3]++;
+ 351   3            case TWO_MENU_F1_E2_D3:
+ 352   3              if (Two_Menu_F1_E2[2] == 9) Two_Menu_F1_E2[2] = 0;  //设置F1_E2十位
+ 353   3              else Two_Menu_F1_E2[2]++;
+C51 COMPILER V9.00   KEY                                                                   09/12/2015 12:08:49 PAGE 8   
+
  354   3              break;
-C51 COMPILER V9.00   KEY                                                                   09/10/2015 20:09:04 PAGE 8   
-
- 355   3            case TWO_MENU_F1_E4_D1:
- 356   3              if (Two_Menu_F1_E4[0] == 20) Two_Menu_F1_E4[0] = 0; //设置F1_E4千位
- 357   3              else Two_Menu_F1_E4[0]++;
+ 355   3            case TWO_MENU_F1_E2_D4:
+ 356   3              if (Two_Menu_F1_E2[3] == 9) Two_Menu_F1_E2[3] = 0;  //设置F1_E2个位
+ 357   3              else Two_Menu_F1_E2[3]++;
  358   3              break;
- 359   3            case TWO_MENU_F1_E4_D2:
- 360   3              if (Two_Menu_F1_E4[1] == 9) Two_Menu_F1_E4[1] = 0;  //设置F1_E4百位
- 361   3              else Two_Menu_F1_E4[1]++;
+ 359   3            case TWO_MENU_F1_E3_D1:
+ 360   3              if (Two_Menu_F1_E3[0] == 20) Two_Menu_F1_E3[0] = 0; //设置F1_E3千位
+ 361   3              else Two_Menu_F1_E3[0]++;
  362   3              break;
- 363   3            case TWO_MENU_F1_E4_D3:
- 364   3              if (Two_Menu_F1_E4[2] == 9) Two_Menu_F1_E4[2] = 0;  //设置F1_E4十位
- 365   3              else Two_Menu_F1_E4[2]++;
+ 363   3            case TWO_MENU_F1_E3_D2:
+ 364   3              if (Two_Menu_F1_E3[1] == 9) Two_Menu_F1_E3[1] = 0;  //设置F1_E3百位
+ 365   3              else Two_Menu_F1_E3[1]++;
  366   3              break;
- 367   3            case TWO_MENU_F1_E4_D4:
- 368   3              if (Two_Menu_F1_E4[3] == 9) Two_Menu_F1_E4[3] = 0;  //设置F1_E4个位
- 369   3              else Two_Menu_F1_E4[3]++;
+ 367   3            case TWO_MENU_F1_E3_D3:
+ 368   3              if (Two_Menu_F1_E3[2] == 9) Two_Menu_F1_E3[2] = 0;  //设置F1_E3十位
+ 369   3              else Two_Menu_F1_E3[2]++;
  370   3              break;
- 371   3            case TWO_MENU_F2_E1_D1:
- 372   3              if (Two_Menu_F2_E1[0] == 20) Two_Menu_F2_E1[0] = 0; //设置F2_E1千位
- 373   3              else Two_Menu_F2_E1[0]++;
+ 371   3            case TWO_MENU_F1_E3_D4:
+ 372   3              if (Two_Menu_F1_E3[3] == 9) Two_Menu_F1_E3[3] = 0;  //设置F1_E3个位
+ 373   3              else Two_Menu_F1_E3[3]++;
  374   3              break;
- 375   3            case TWO_MENU_F2_E1_D2:
- 376   3              if (Two_Menu_F2_E1[1] == 9) Two_Menu_F2_E1[1] = 0;  //设置F2_E1百位
- 377   3              else Two_Menu_F2_E1[1]++;
+ 375   3            case TWO_MENU_F1_E4_D1:
+ 376   3              if (Two_Menu_F1_E4[0] == 20) Two_Menu_F1_E4[0] = 0; //设置F1_E4千位
+ 377   3              else Two_Menu_F1_E4[0]++;
  378   3              break;
- 379   3            case TWO_MENU_F2_E1_D3:
- 380   3              if (Two_Menu_F2_E1[2] == 9) Two_Menu_F2_E1[2] = 0;  //设置F2_E1十位
- 381   3              else Two_Menu_F2_E1[2]++;
+ 379   3            case TWO_MENU_F1_E4_D2:
+ 380   3              if (Two_Menu_F1_E4[1] == 9) Two_Menu_F1_E4[1] = 0;  //设置F1_E4百位
+ 381   3              else Two_Menu_F1_E4[1]++;
  382   3              break;
- 383   3            case TWO_MENU_F2_E1_D4:
- 384   3              if (Two_Menu_F2_E1[3] == 9) Two_Menu_F2_E1[3] = 0;  //设置F2_E1个位
- 385   3              else Two_Menu_F2_E1[3]++;
+ 383   3            case TWO_MENU_F1_E4_D3:
+ 384   3              if (Two_Menu_F1_E4[2] == 9) Two_Menu_F1_E4[2] = 0;  //设置F1_E4十位
+ 385   3              else Two_Menu_F1_E4[2]++;
  386   3              break;
- 387   3            case TWO_MENU_F2_E2_D1:
- 388   3              if (Two_Menu_F2_E2[0] == 20) Two_Menu_F2_E2[0] = 0; //设置F2_E2千位
- 389   3              else Two_Menu_F2_E2[0]++;
+ 387   3            case TWO_MENU_F1_E4_D4:
+ 388   3              if (Two_Menu_F1_E4[3] == 9) Two_Menu_F1_E4[3] = 0;  //设置F1_E4个位
+ 389   3              else Two_Menu_F1_E4[3]++;
  390   3              break;
- 391   3            case TWO_MENU_F2_E2_D2:
- 392   3              if (Two_Menu_F2_E2[1] == 9) Two_Menu_F2_E2[1] = 0;  //设置F2_E2百位
- 393   3              else Two_Menu_F2_E2[1]++;
+ 391   3            case TWO_MENU_F2_E1_D1:
+ 392   3              if (Two_Menu_F2_E1[0] == 20) Two_Menu_F2_E1[0] = 0; //设置F2_E1千位
+ 393   3              else Two_Menu_F2_E1[0]++;
  394   3              break;
- 395   3            case TWO_MENU_F2_E2_D3:
- 396   3              if (Two_Menu_F2_E2[2] == 9) Two_Menu_F2_E2[2] = 0;  //设置F2_E2十位
- 397   3              else Two_Menu_F2_E2[2]++;
+ 395   3            case TWO_MENU_F2_E1_D2:
+ 396   3              if (Two_Menu_F2_E1[1] == 9) Two_Menu_F2_E1[1] = 0;  //设置F2_E1百位
+ 397   3              else Two_Menu_F2_E1[1]++;
  398   3              break;
- 399   3            case TWO_MENU_F2_E2_D4:
- 400   3              if (Two_Menu_F2_E2[3] == 9) Two_Menu_F2_E2[3] = 0;  //设置F2_E2个位
- 401   3              else Two_Menu_F2_E2[3]++;
+ 399   3            case TWO_MENU_F2_E1_D3:
+ 400   3              if (Two_Menu_F2_E1[2] == 9) Two_Menu_F2_E1[2] = 0;  //设置F2_E1十位
+ 401   3              else Two_Menu_F2_E1[2]++;
  402   3              break;
- 403   3            case TWO_MENU_F2_E3_D1:
- 404   3              if (Two_Menu_F2_E3[0] == 20) Two_Menu_F2_E3[0] = 0; //设置F2_E3千位
- 405   3              else Two_Menu_F2_E3[0]++;
+ 403   3            case TWO_MENU_F2_E1_D4:
+ 404   3              if (Two_Menu_F2_E1[3] == 9) Two_Menu_F2_E1[3] = 0;  //设置F2_E1个位
+ 405   3              else Two_Menu_F2_E1[3]++;
  406   3              break;
- 407   3            case TWO_MENU_F2_E3_D2:
- 408   3              if (Two_Menu_F2_E3[1] == 9) Two_Menu_F2_E3[1] = 0;  //设置F2_E3百位
- 409   3              else Two_Menu_F2_E3[1]++;
+ 407   3            case TWO_MENU_F2_E2_D1:
+ 408   3              if (Two_Menu_F2_E2[0] == 20) Two_Menu_F2_E2[0] = 0; //设置F2_E2千位
+ 409   3              else Two_Menu_F2_E2[0]++;
  410   3              break;
- 411   3            case TWO_MENU_F2_E3_D3:
- 412   3              if (Two_Menu_F2_E3[2] == 9) Two_Menu_F2_E3[2] = 0;  //设置F2_E3十位
- 413   3              else Two_Menu_F2_E3[2]++;
+ 411   3            case TWO_MENU_F2_E2_D2:
+ 412   3              if (Two_Menu_F2_E2[1] == 9) Two_Menu_F2_E2[1] = 0;  //设置F2_E2百位
+ 413   3              else Two_Menu_F2_E2[1]++;
  414   3              break;
- 415   3            case TWO_MENU_F2_E3_D4:
- 416   3              if (Two_Menu_F2_E3[3] == 9) Two_Menu_F2_E3[3] = 0;  //设置F2_E3个位
-C51 COMPILER V9.00   KEY                                                                   09/10/2015 20:09:04 PAGE 9   
+ 415   3            case TWO_MENU_F2_E2_D3:
+C51 COMPILER V9.00   KEY                                                                   09/12/2015 12:08:49 PAGE 9   
 
- 417   3              else Two_Menu_F2_E3[3]++;
+ 416   3              if (Two_Menu_F2_E2[2] == 9) Two_Menu_F2_E2[2] = 0;  //设置F2_E2十位
+ 417   3              else Two_Menu_F2_E2[2]++;
  418   3              break;
- 419   3            case TWO_MENU_F2_E4_D1:
- 420   3              if (Two_Menu_F2_E4[0] == 20) Two_Menu_F2_E4[0] = 0; //设置F2_E4千位
- 421   3              else Two_Menu_F2_E4[0]++;
+ 419   3            case TWO_MENU_F2_E2_D4:
+ 420   3              if (Two_Menu_F2_E2[3] == 9) Two_Menu_F2_E2[3] = 0;  //设置F2_E2个位
+ 421   3              else Two_Menu_F2_E2[3]++;
  422   3              break;
- 423   3            case TWO_MENU_F2_E4_D2:
- 424   3              if (Two_Menu_F2_E4[1] == 9) Two_Menu_F2_E4[1] = 0;  //设置F2_E4百位
- 425   3              else Two_Menu_F2_E4[1]++;
+ 423   3            case TWO_MENU_F2_E3_D1:
+ 424   3              if (Two_Menu_F2_E3[0] == 20) Two_Menu_F2_E3[0] = 0; //设置F2_E3千位
+ 425   3              else Two_Menu_F2_E3[0]++;
  426   3              break;
- 427   3            case TWO_MENU_F2_E4_D3:
- 428   3              if (Two_Menu_F2_E4[2] == 9) Two_Menu_F2_E4[2] = 0;  //设置F2_E4十位
- 429   3              else Two_Menu_F2_E4[2]++;
+ 427   3            case TWO_MENU_F2_E3_D2:
+ 428   3              if (Two_Menu_F2_E3[1] == 9) Two_Menu_F2_E3[1] = 0;  //设置F2_E3百位
+ 429   3              else Two_Menu_F2_E3[1]++;
  430   3              break;
- 431   3            case TWO_MENU_F2_E4_D4:
- 432   3              if (Two_Menu_F2_E4[3] == 9) Two_Menu_F2_E4[3] = 0;  //设置F2_E4个位
- 433   3              else Two_Menu_F2_E4[3]++;
- 434   3            case TWO_MENU_F3_E1_SET:
- 435   3              if (Two_Menu_F3_E1 == 1) Two_Menu_F3_E1 = 2;  //排队显示 或者 循环显示
- 436   3              else Two_Menu_F3_E1 = 1;
- 437   3              break;
- 438   3            case TWO_MENU_F3_E2_SET:
- 439   3              if (Two_Menu_F3_E2 == 20) Two_Menu_F3_E2 = 1; //存储队列个数
- 440   3              else Two_Menu_F3_E2 ++;
- 441   3              break;
- 442   3            case TWO_MENU_F4_SET:
- 443   3              if (Two_Menu_F4_E1 == 99) Two_Menu_F4_E1 = 0; //销号时间设置
- 444   3              else Two_Menu_F4_E1++;
- 445   3              break;
- 446   3            case TWO_MENU_F5_SET:
- 447   3              if (Two_Menu_F5_E1 == 99) Two_Menu_F5_E1 = 0; //循环时间设置
- 448   3              else Two_Menu_F5_E1++;
- 449   3              break;
- 450   3            case TWO_MENU_F6_E1_SET:
- 451   3              if (Two_Menu_F6_E1 == 5) Two_Menu_F6_E1 = 0;  //F6_E1语音选择
- 452   3              else Two_Menu_F6_E1++;
- 453   3              break;
- 454   3            case TWO_MENU_F6_E2_SET:
- 455   3              if (Two_Menu_F6_E2 == 9) Two_Menu_F6_E2 = 1;  //F6_E2语音报读次数
- 456   3              else Two_Menu_F6_E2++;
+ 431   3            case TWO_MENU_F2_E3_D3:
+ 432   3              if (Two_Menu_F2_E3[2] == 9) Two_Menu_F2_E3[2] = 0;  //设置F2_E3十位
+ 433   3              else Two_Menu_F2_E3[2]++;
+ 434   3              break;
+ 435   3            case TWO_MENU_F2_E3_D4:
+ 436   3              if (Two_Menu_F2_E3[3] == 9) Two_Menu_F2_E3[3] = 0;  //设置F2_E3个位
+ 437   3              else Two_Menu_F2_E3[3]++;
+ 438   3              break;
+ 439   3            case TWO_MENU_F2_E4_D1:
+ 440   3              if (Two_Menu_F2_E4[0] == 20) Two_Menu_F2_E4[0] = 0; //设置F2_E4千位
+ 441   3              else Two_Menu_F2_E4[0]++;
+ 442   3              break;
+ 443   3            case TWO_MENU_F2_E4_D2:
+ 444   3              if (Two_Menu_F2_E4[1] == 9) Two_Menu_F2_E4[1] = 0;  //设置F2_E4百位
+ 445   3              else Two_Menu_F2_E4[1]++;
+ 446   3              break;
+ 447   3            case TWO_MENU_F2_E4_D3:
+ 448   3              if (Two_Menu_F2_E4[2] == 9) Two_Menu_F2_E4[2] = 0;  //设置F2_E4十位
+ 449   3              else Two_Menu_F2_E4[2]++;
+ 450   3              break;
+ 451   3            case TWO_MENU_F2_E4_D4:
+ 452   3              if (Two_Menu_F2_E4[3] == 9) Two_Menu_F2_E4[3] = 0;  //设置F2_E4个位
+ 453   3              else Two_Menu_F2_E4[3]++;
+ 454   3            case TWO_MENU_F3_E1_SET:
+ 455   3              if (Two_Menu_F3_E1 == 1) Two_Menu_F3_E1 = 2;  //排队显示 或者 循环显示
+ 456   3              else Two_Menu_F3_E1 = 1;
  457   3              break;
- 458   3            case TWO_MENU_F6_E3_SET:
- 459   3              if (Two_Menu_F6_E3 == 0) Two_Menu_F6_E3 = 1;  //F6_E3循环时候是否报读
- 460   3              else Two_Menu_F6_E3 = 0;
+ 458   3            case TWO_MENU_F3_E2_SET:
+ 459   3              if (Two_Menu_F3_E2 == 20) Two_Menu_F3_E2 = 1; //存储队列个数
+ 460   3              else Two_Menu_F3_E2 ++;
  461   3              break;
- 462   3            case TWO_MENU_F6_E4_SET:
- 463   3              if (Two_Menu_F6_E4 == 9) Two_Menu_F6_E4 = 0;  //F6_E4音量大小调整
- 464   3              else Two_Menu_F6_E4++;
+ 462   3            case TWO_MENU_F4_SET:
+ 463   3              if (Two_Menu_F4_E1 == 99) Two_Menu_F4_E1 = 0; //销号时间设置
+ 464   3              else Two_Menu_F4_E1++;
  465   3              break;
- 466   3            case TWO_MENU_F6_E5_SET:
- 467   3              if (Two_Menu_F6_E5 == 9) Two_Menu_F6_E5 = 0;  //F6_E5屏幕亮度调整
- 468   3              else Two_Menu_F6_E5++;
+ 466   3            case TWO_MENU_F5_SET:
+ 467   3              if (Two_Menu_F5_E1 == 99) Two_Menu_F5_E1 = 0; //循环时间设置
+ 468   3              else Two_Menu_F5_E1++;
  469   3              break;
- 470   3            case TWO_MENU_F7_E1_SET:
- 471   3              if (Two_Menu_F7_E1 == 11) Two_Menu_F7_E1 = 0; //F7_E1原始规则 999*9
- 472   3              else Two_Menu_F7_E1++;
+ 470   3            case TWO_MENU_F6_E1_SET:
+ 471   3              if (Two_Menu_F6_E1 == 5) Two_Menu_F6_E1 = 0;  //F6_E1语音选择
+ 472   3              else Two_Menu_F6_E1++;
  473   3              break;
- 474   3            case TWO_MENU_F7_E2_SET:
- 475   3              if (Two_Menu_F7_E2 == 11) Two_Menu_F7_E2 = 0; //F7_E2附加规则 9999*9
- 476   3              else Two_Menu_F7_E2++;
+ 474   3            case TWO_MENU_F6_E2_SET:
+ 475   3              if (Two_Menu_F6_E2 == 9) Two_Menu_F6_E2 = 1;  //F6_E2语音报读次数
+ 476   3              else Two_Menu_F6_E2++;
  477   3              break;
- 478   3            case TWO_MENU_F7_E3_SET:
-C51 COMPILER V9.00   KEY                                                                   09/10/2015 20:09:04 PAGE 10  
+C51 COMPILER V9.00   KEY                                                                   09/12/2015 12:08:49 PAGE 10  
 
- 479   3              if (Two_Menu_F7_E3 == 11) Two_Menu_F7_E3 = 0; //F7_E3附加规则 999*99
- 480   3              else Two_Menu_F7_E3++;
+ 478   3            case TWO_MENU_F6_E3_SET:
+ 479   3              if (Two_Menu_F6_E3 == 0) Two_Menu_F6_E3 = 1;  //F6_E3循环时候是否报读
+ 480   3              else Two_Menu_F6_E3 = 0;
  481   3              break;
- 482   3            case TWO_MENU_F7_E4_SET:
- 483   3              if (Two_Menu_F7_E4 == 11) Two_Menu_F7_E4 = 0; //F7_E3附加规则 9999*99
- 484   3              else Two_Menu_F7_E4++;
+ 482   3            case TWO_MENU_F6_E4_SET:
+ 483   3              if (Two_Menu_F6_E4 == 9) Two_Menu_F6_E4 = 0;  //F6_E4音量大小调整
+ 484   3              else Two_Menu_F6_E4++;
  485   3              break;
- 486   3            case TWO_MENU_F8_E1_SET:
- 487   3              if (Two_Menu_F8_E1 == 1) Two_Menu_F8_E1 = 0;  //F8_E1单键位跟多键位切换
- 488   3              else Two_Menu_F8_E1 = 1 ;
+ 486   3            case TWO_MENU_F6_E5_SET:
+ 487   3              if (Two_Menu_F6_E5 == 9) Two_Menu_F6_E5 = 0;  //F6_E5屏幕亮度调整
+ 488   3              else Two_Menu_F6_E5++;
  489   3              break;
- 490   3            case TWO_MENU_F8_E2_SET:
- 491   3              if (Two_Menu_F8_E2 == 50) Two_Menu_F8_E2 = 0; //F8_E2键位设置
- 492   3              else Two_Menu_F8_E2++;
+ 490   3            case TWO_MENU_F7_E1_SET:
+ 491   3              if (Two_Menu_F7_E1 == 11) Two_Menu_F7_E1 = 0; //F7_E1原始规则 999*9
+ 492   3              else Two_Menu_F7_E1++;
  493   3              break;
- 494   3      
- 495   3              default:break;
- 496   3            } 
- 497   2            func_index = table[func_index].up; break;
- 498   2          case KEY_DOWN:
- 499   2            switch (func_index)
- 500   2            {
- 501   3            case TWO_MENU_F0_YEAR:
- 502   3              if (time_buf1[1] == 0) time_buf1[1] = 99; //设置万年历 年
- 503   3              else time_buf1[1]--;
- 504   3              break;
- 505   3            case TWO_MENU_F0_MOUTH:
- 506   3              if (time_buf1[2] == 1) time_buf1[2] = 12; //设置万年历 月
- 507   3              else time_buf1[2]--;
- 508   3              break;
- 509   3            case TWO_MENU_F0_DAY:
- 510   3              if (time_buf1[3] == 1) time_buf1[3] = 31; //设置万年历 日
- 511   3              else time_buf1[3]--;
- 512   3              break;
- 513   3            case TWO_MENU_F0_WEEK:
- 514   3              if (time_buf1[7] == 1) time_buf1[7] = 7;  //设置万年历 星期
- 515   3              else time_buf1[7]--;
- 516   3              break;
- 517   3            case TWO_MENU_F0_HOUR:
- 518   3              if (time_buf1[4] == 0) time_buf1[4] = 23; //设置万年历 小时
- 519   3              else time_buf1[4]--;
- 520   3              break;
- 521   3            case TWO_MENU_F0_MINUTE:
- 522   3              if (time_buf1[5] == 0) time_buf1[5] = 59; //设置万年历 分钟
- 523   3              else time_buf1[5]--;
+ 494   3            case TWO_MENU_F7_E2_SET:
+ 495   3              if (Two_Menu_F7_E2 == 11) Two_Menu_F7_E2 = 0; //F7_E2附加规则 9999*9
+ 496   3              else Two_Menu_F7_E2++;
+ 497   3              break;
+ 498   3            case TWO_MENU_F7_E3_SET:
+ 499   3              if (Two_Menu_F7_E3 == 11) Two_Menu_F7_E3 = 0; //F7_E3附加规则 999*99
+ 500   3              else Two_Menu_F7_E3++;
+ 501   3              break;
+ 502   3            case TWO_MENU_F7_E4_SET:
+ 503   3              if (Two_Menu_F7_E4 == 11) Two_Menu_F7_E4 = 0; //F7_E3附加规则 9999*99
+ 504   3              else Two_Menu_F7_E4++;
+ 505   3              break;
+ 506   3            case TWO_MENU_F8_E1_SET:
+ 507   3              if (Two_Menu_F8_E1 == 1) Two_Menu_F8_E1 = 0;  //F8_E1单键位跟多键位切换
+ 508   3              else Two_Menu_F8_E1 = 1 ;
+ 509   3              break;
+ 510   3            case TWO_MENU_F8_E2_SET:
+ 511   3              if (Two_Menu_F8_E2 == 50) Two_Menu_F8_E2 = 0; //F8_E2键位设置
+ 512   3              else Two_Menu_F8_E2++;
+ 513   3              break;
+ 514   3      
+ 515   3              default:break;
+ 516   3            } 
+ 517   2            func_index = table[func_index].up; break;
+ 518   2          case KEY_DOWN:
+ 519   2            switch (func_index)
+ 520   2            {
+ 521   3            case TWO_MENU_F0_YEAR:
+ 522   3              if (time_buf1[1] == 0) time_buf1[1] = 99; //设置万年历 年
+ 523   3              else time_buf1[1]--;
  524   3              break;
- 525   3            case TWO_MENU_F1_E1_D1:
- 526   3              if (Two_Menu_F1_E1[0] == 0) Two_Menu_F1_E1[0] = 20; //设置F1_E1千位
- 527   3              else Two_Menu_F1_E1[0]--;
+ 525   3            case TWO_MENU_F0_MOUTH:
+ 526   3              if (time_buf1[2] == 1) time_buf1[2] = 12; //设置万年历 月
+ 527   3              else time_buf1[2]--;
  528   3              break;
- 529   3            case TWO_MENU_F1_E1_D2:
- 530   3              if (Two_Menu_F1_E1[1] == 0) Two_Menu_F1_E1[1] = 9;  //设置F1_E1百位
- 531   3              else Two_Menu_F1_E1[1]--;
+ 529   3            case TWO_MENU_F0_DAY:
+ 530   3              if (time_buf1[3] == 1) time_buf1[3] = 31; //设置万年历 日
+ 531   3              else time_buf1[3]--;
  532   3              break;
- 533   3            case TWO_MENU_F1_E1_D3:
- 534   3              if (Two_Menu_F1_E1[2] == 0) Two_Menu_F1_E1[2] = 9;  //设置F1_E1十位
- 535   3              else Two_Menu_F1_E1[2]--;
+ 533   3            case TWO_MENU_F0_WEEK:
+ 534   3              if (time_buf1[7] == 1) time_buf1[7] = 7;  //设置万年历 星期
+ 535   3              else time_buf1[7]--;
  536   3              break;
- 537   3            case TWO_MENU_F1_E1_D4:
- 538   3              if (Two_Menu_F1_E1[3] == 0) Two_Menu_F1_E1[3] = 9;  //设置F1_E1个位
- 539   3              else Two_Menu_F1_E1[3]--;
+ 537   3            case TWO_MENU_F0_HOUR:
+ 538   3              if (time_buf1[4] == 0) time_buf1[4] = 23; //设置万年历 小时
+ 539   3              else time_buf1[4]--;
+C51 COMPILER V9.00   KEY                                                                   09/12/2015 12:08:49 PAGE 11  
+
  540   3              break;
-C51 COMPILER V9.00   KEY                                                                   09/10/2015 20:09:04 PAGE 11  
-
- 541   3            case TWO_MENU_F1_E2_D1:
- 542   3              if (Two_Menu_F1_E2[0] == 0) Two_Menu_F1_E2[0] = 20; //设置F1_E2千位
- 543   3              else Two_Menu_F1_E2[0]--;
+ 541   3            case TWO_MENU_F0_MINUTE:
+ 542   3              if (time_buf1[5] == 0) time_buf1[5] = 59; //设置万年历 分钟
+ 543   3              else time_buf1[5]--;
  544   3              break;
- 545   3            case TWO_MENU_F1_E2_D2:
- 546   3              if (Two_Menu_F1_E2[1] == 0) Two_Menu_F1_E2[1] = 9;  //设置F1_E2百位
- 547   3              else Two_Menu_F1_E2[1]--;
+ 545   3            case TWO_MENU_F1_E1_D1:
+ 546   3              if (Two_Menu_F1_E1[0] == 0) Two_Menu_F1_E1[0] = 20; //设置F1_E1千位
+ 547   3              else Two_Menu_F1_E1[0]--;
  548   3              break;
- 549   3            case TWO_MENU_F1_E2_D3:
- 550   3              if (Two_Menu_F1_E2[2] == 0) Two_Menu_F1_E2[2] = 9;  //设置F1_E2十位
- 551   3              else Two_Menu_F1_E2[2]--;
+ 549   3            case TWO_MENU_F1_E1_D2:
+ 550   3              if (Two_Menu_F1_E1[1] == 0) Two_Menu_F1_E1[1] = 9;  //设置F1_E1百位
+ 551   3              else Two_Menu_F1_E1[1]--;
  552   3              break;
- 553   3            case TWO_MENU_F1_E2_D4:
- 554   3              if (Two_Menu_F1_E2[3] == 0) Two_Menu_F1_E2[3] = 9;  //设置F1_E2个位
- 555   3              else Two_Menu_F1_E2[3]--;
+ 553   3            case TWO_MENU_F1_E1_D3:
+ 554   3              if (Two_Menu_F1_E1[2] == 0) Two_Menu_F1_E1[2] = 9;  //设置F1_E1十位
+ 555   3              else Two_Menu_F1_E1[2]--;
  556   3              break;
- 557   3            case TWO_MENU_F1_E3_D1:
- 558   3              if (Two_Menu_F1_E3[0] == 0) Two_Menu_F1_E3[0] = 20; //设置F1_E3千位
- 559   3              else Two_Menu_F1_E3[0]--;
+ 557   3            case TWO_MENU_F1_E1_D4:
+ 558   3              if (Two_Menu_F1_E1[3] == 0) Two_Menu_F1_E1[3] = 9;  //设置F1_E1个位
+ 559   3              else Two_Menu_F1_E1[3]--;
  560   3              break;
- 561   3            case TWO_MENU_F1_E3_D2:
- 562   3              if (Two_Menu_F1_E3[1] == 0) Two_Menu_F1_E3[1] = 9;  //设置F1_E3百位
- 563   3              else Two_Menu_F1_E3[1]--;
+ 561   3            case TWO_MENU_F1_E2_D1:
+ 562   3              if (Two_Menu_F1_E2[0] == 0) Two_Menu_F1_E2[0] = 20; //设置F1_E2千位
+ 563   3              else Two_Menu_F1_E2[0]--;
  564   3              break;
- 565   3            case TWO_MENU_F1_E3_D3:
- 566   3              if (Two_Menu_F1_E3[2] == 0) Two_Menu_F1_E3[2] = 9;  //设置F1_E3十位
- 567   3              else Two_Menu_F1_E3[2]--;
+ 565   3            case TWO_MENU_F1_E2_D2:
+ 566   3              if (Two_Menu_F1_E2[1] == 0) Two_Menu_F1_E2[1] = 9;  //设置F1_E2百位
+ 567   3              else Two_Menu_F1_E2[1]--;
  568   3              break;
- 569   3            case TWO_MENU_F1_E3_D4:
- 570   3              if (Two_Menu_F1_E3[3] == 0) Two_Menu_F1_E3[3] = 9;  //设置F1_E3个位
- 571   3              else Two_Menu_F1_E3[3]--;
+ 569   3            case TWO_MENU_F1_E2_D3:
+ 570   3              if (Two_Menu_F1_E2[2] == 0) Two_Menu_F1_E2[2] = 9;  //设置F1_E2十位
+ 571   3              else Two_Menu_F1_E2[2]--;
  572   3              break;
- 573   3            case TWO_MENU_F1_E4_D1:
- 574   3              if (Two_Menu_F1_E4[0] == 0) Two_Menu_F1_E4[0] = 20; //设置F1_E4千位
- 575   3              else Two_Menu_F1_E4[0]--;
+ 573   3            case TWO_MENU_F1_E2_D4:
+ 574   3              if (Two_Menu_F1_E2[3] == 0) Two_Menu_F1_E2[3] = 9;  //设置F1_E2个位
+ 575   3              else Two_Menu_F1_E2[3]--;
  576   3              break;
- 577   3            case TWO_MENU_F1_E4_D2:
- 578   3              if (Two_Menu_F1_E4[1] == 0) Two_Menu_F1_E4[1] = 9;  //设置F1_E4百位
- 579   3              else Two_Menu_F1_E4[1]--;
+ 577   3            case TWO_MENU_F1_E3_D1:
+ 578   3              if (Two_Menu_F1_E3[0] == 0) Two_Menu_F1_E3[0] = 20; //设置F1_E3千位
+ 579   3              else Two_Menu_F1_E3[0]--;
  580   3              break;
- 581   3            case TWO_MENU_F1_E4_D3:
- 582   3              if (Two_Menu_F1_E4[2] == 0) Two_Menu_F1_E4[2] = 9;  //设置F1_E4十位
- 583   3              else Two_Menu_F1_E4[2]--;
+ 581   3            case TWO_MENU_F1_E3_D2:
+ 582   3              if (Two_Menu_F1_E3[1] == 0) Two_Menu_F1_E3[1] = 9;  //设置F1_E3百位
+ 583   3              else Two_Menu_F1_E3[1]--;
  584   3              break;
- 585   3            case TWO_MENU_F1_E4_D4:
- 586   3              if (Two_Menu_F1_E4[3] == 0) Two_Menu_F1_E4[3] = 9;  //设置F1_E4个位
- 587   3              else Two_Menu_F1_E4[3]--;
+ 585   3            case TWO_MENU_F1_E3_D3:
+ 586   3              if (Two_Menu_F1_E3[2] == 0) Two_Menu_F1_E3[2] = 9;  //设置F1_E3十位
+ 587   3              else Two_Menu_F1_E3[2]--;
  588   3              break;
- 589   3            case TWO_MENU_F2_E1_D1:
- 590   3              if (Two_Menu_F2_E1[0] == 0) Two_Menu_F2_E1[0] = 20; //设置F2_E1千位
- 591   3              else Two_Menu_F2_E1[0]--;
+ 589   3            case TWO_MENU_F1_E3_D4:
+ 590   3              if (Two_Menu_F1_E3[3] == 0) Two_Menu_F1_E3[3] = 9;  //设置F1_E3个位
+ 591   3              else Two_Menu_F1_E3[3]--;
  592   3              break;
- 593   3            case TWO_MENU_F2_E1_D2:
- 594   3              if (Two_Menu_F2_E1[1] == 0) Two_Menu_F2_E1[1] = 9;  //设置F2_E1百位
- 595   3              else Two_Menu_F2_E1[1]--;
+ 593   3            case TWO_MENU_F1_E4_D1:
+ 594   3              if (Two_Menu_F1_E4[0] == 0) Two_Menu_F1_E4[0] = 20; //设置F1_E4千位
+ 595   3              else Two_Menu_F1_E4[0]--;
  596   3              break;
- 597   3            case TWO_MENU_F2_E1_D3:
- 598   3              if (Two_Menu_F2_E1[2] == 0) Two_Menu_F2_E1[2] = 9;  //设置F2_E1十位
- 599   3              else Two_Menu_F2_E1[2]--;
+ 597   3            case TWO_MENU_F1_E4_D2:
+ 598   3              if (Two_Menu_F1_E4[1] == 0) Two_Menu_F1_E4[1] = 9;  //设置F1_E4百位
+ 599   3              else Two_Menu_F1_E4[1]--;
  600   3              break;
- 601   3            case TWO_MENU_F2_E1_D4:
- 602   3              if (Two_Menu_F2_E1[3] == 0) Two_Menu_F2_E1[3] = 9;  //设置F2_E1个位
-C51 COMPILER V9.00   KEY                                                                   09/10/2015 20:09:04 PAGE 12  
+ 601   3            case TWO_MENU_F1_E4_D3:
+C51 COMPILER V9.00   KEY                                                                   09/12/2015 12:08:49 PAGE 12  
 
- 603   3              else Two_Menu_F2_E1[3]--;
+ 602   3              if (Two_Menu_F1_E4[2] == 0) Two_Menu_F1_E4[2] = 9;  //设置F1_E4十位
+ 603   3              else Two_Menu_F1_E4[2]--;
  604   3              break;
- 605   3            case TWO_MENU_F2_E2_D1:
- 606   3              if (Two_Menu_F2_E2[0] == 0) Two_Menu_F2_E2[0] = 20; //设置F2_E2千位
- 607   3              else Two_Menu_F2_E2[0]--;
+ 605   3            case TWO_MENU_F1_E4_D4:
+ 606   3              if (Two_Menu_F1_E4[3] == 0) Two_Menu_F1_E4[3] = 9;  //设置F1_E4个位
+ 607   3              else Two_Menu_F1_E4[3]--;
  608   3              break;
- 609   3            case TWO_MENU_F2_E2_D2:
- 610   3              if (Two_Menu_F2_E2[1] == 0) Two_Menu_F2_E2[1] = 9;  //设置F2_E2百位
- 611   3              else Two_Menu_F2_E2[1]--;
+ 609   3            case TWO_MENU_F2_E1_D1:
+ 610   3              if (Two_Menu_F2_E1[0] == 0) Two_Menu_F2_E1[0] = 20; //设置F2_E1千位
+ 611   3              else Two_Menu_F2_E1[0]--;
  612   3              break;
- 613   3            case TWO_MENU_F2_E2_D3:
- 614   3              if (Two_Menu_F2_E2[2] == 0) Two_Menu_F2_E2[2] = 9;  //设置F2_E2十位
- 615   3              else Two_Menu_F2_E2[2]--;
+ 613   3            case TWO_MENU_F2_E1_D2:
+ 614   3              if (Two_Menu_F2_E1[1] == 0) Two_Menu_F2_E1[1] = 9;  //设置F2_E1百位
+ 615   3              else Two_Menu_F2_E1[1]--;
  616   3              break;
- 617   3            case TWO_MENU_F2_E2_D4:
- 618   3              if (Two_Menu_F2_E2[3] == 0) Two_Menu_F2_E2[3] = 9;  //设置F2_E2个位
- 619   3              else Two_Menu_F2_E2[3]--;
+ 617   3            case TWO_MENU_F2_E1_D3:
+ 618   3              if (Two_Menu_F2_E1[2] == 0) Two_Menu_F2_E1[2] = 9;  //设置F2_E1十位
+ 619   3              else Two_Menu_F2_E1[2]--;
  620   3              break;
- 621   3            case TWO_MENU_F2_E3_D1:
- 622   3              if (Two_Menu_F2_E3[0] == 0) Two_Menu_F2_E3[0] = 20; //设置F2_E3千位
- 623   3              else Two_Menu_F2_E3[0]--;
+ 621   3            case TWO_MENU_F2_E1_D4:
+ 622   3              if (Two_Menu_F2_E1[3] == 0) Two_Menu_F2_E1[3] = 9;  //设置F2_E1个位
+ 623   3              else Two_Menu_F2_E1[3]--;
  624   3              break;
- 625   3            case TWO_MENU_F2_E3_D2:
- 626   3              if (Two_Menu_F2_E3[1] == 0) Two_Menu_F2_E3[1] = 9;  //设置F2_E3百位
- 627   3              else Two_Menu_F2_E3[1]--;
+ 625   3            case TWO_MENU_F2_E2_D1:
+ 626   3              if (Two_Menu_F2_E2[0] == 0) Two_Menu_F2_E2[0] = 20; //设置F2_E2千位
+ 627   3              else Two_Menu_F2_E2[0]--;
  628   3              break;
- 629   3            case TWO_MENU_F2_E3_D3:
- 630   3              if (Two_Menu_F2_E3[2] == 0) Two_Menu_F2_E3[2] = 9;  //设置F2_E3十位
- 631   3              else Two_Menu_F2_E3[2]--;
+ 629   3            case TWO_MENU_F2_E2_D2:
+ 630   3              if (Two_Menu_F2_E2[1] == 0) Two_Menu_F2_E2[1] = 9;  //设置F2_E2百位
+ 631   3              else Two_Menu_F2_E2[1]--;
  632   3              break;
- 633   3            case TWO_MENU_F2_E3_D4:
- 634   3              if (Two_Menu_F2_E3[3] == 0) Two_Menu_F2_E3[3] = 9;  //设置F2_E3个位
- 635   3              else Two_Menu_F2_E3[3]--;
+ 633   3            case TWO_MENU_F2_E2_D3:
+ 634   3              if (Two_Menu_F2_E2[2] == 0) Two_Menu_F2_E2[2] = 9;  //设置F2_E2十位
+ 635   3              else Two_Menu_F2_E2[2]--;
  636   3              break;
- 637   3            case TWO_MENU_F2_E4_D1:
- 638   3              if (Two_Menu_F2_E4[0] == 0) Two_Menu_F2_E4[0] = 20; //设置F2_E4千位
- 639   3              else Two_Menu_F2_E4[0]--;
+ 637   3            case TWO_MENU_F2_E2_D4:
+ 638   3              if (Two_Menu_F2_E2[3] == 0) Two_Menu_F2_E2[3] = 9;  //设置F2_E2个位
+ 639   3              else Two_Menu_F2_E2[3]--;
  640   3              break;
- 641   3            case TWO_MENU_F2_E4_D2:
- 642   3              if (Two_Menu_F2_E4[1] == 0) Two_Menu_F2_E4[1] = 9;  //设置F2_E4百位
- 643   3              else Two_Menu_F2_E4[1]--;
+ 641   3            case TWO_MENU_F2_E3_D1:
+ 642   3              if (Two_Menu_F2_E3[0] == 0) Two_Menu_F2_E3[0] = 20; //设置F2_E3千位
+ 643   3              else Two_Menu_F2_E3[0]--;
  644   3              break;
- 645   3            case TWO_MENU_F2_E4_D3:
- 646   3              if (Two_Menu_F2_E4[2] == 0) Two_Menu_F2_E4[2] = 9;  //设置F2_E4十位
- 647   3              else Two_Menu_F2_E4[2]--;
+ 645   3            case TWO_MENU_F2_E3_D2:
+ 646   3              if (Two_Menu_F2_E3[1] == 0) Two_Menu_F2_E3[1] = 9;  //设置F2_E3百位
+ 647   3              else Two_Menu_F2_E3[1]--;
  648   3              break;
- 649   3            case TWO_MENU_F2_E4_D4:
- 650   3              if (Two_Menu_F2_E4[3] == 0) Two_Menu_F2_E4[3] = 9;  //设置F2_E4个位
- 651   3              else Two_Menu_F2_E4[3]--;
+ 649   3            case TWO_MENU_F2_E3_D3:
+ 650   3              if (Two_Menu_F2_E3[2] == 0) Two_Menu_F2_E3[2] = 9;  //设置F2_E3十位
+ 651   3              else Two_Menu_F2_E3[2]--;
  652   3              break;
- 653   3            case TWO_MENU_F3_E1_SET:
- 654   3              if (Two_Menu_F3_E1 == 1) Two_Menu_F3_E1 = 2;  //排队显示 或者 循环显示
- 655   3              else Two_Menu_F3_E1 = 1;
+ 653   3            case TWO_MENU_F2_E3_D4:
+ 654   3              if (Two_Menu_F2_E3[3] == 0) Two_Menu_F2_E3[3] = 9;  //设置F2_E3个位
+ 655   3              else Two_Menu_F2_E3[3]--;
  656   3              break;
- 657   3            case TWO_MENU_F3_E2_SET:
- 658   3              if (Two_Menu_F3_E2 == 1) Two_Menu_F3_E2 = 20; //存储队列个数
- 659   3              else Two_Menu_F3_E2--;
+ 657   3            case TWO_MENU_F2_E4_D1:
+ 658   3              if (Two_Menu_F2_E4[0] == 0) Two_Menu_F2_E4[0] = 20; //设置F2_E4千位
+ 659   3              else Two_Menu_F2_E4[0]--;
  660   3              break;
- 661   3            case TWO_MENU_F4_SET:
- 662   3              if (Two_Menu_F4_E1 == 0) Two_Menu_F4_E1 = 99; //销号时间设置
- 663   3              else Two_Menu_F4_E1--;
+ 661   3            case TWO_MENU_F2_E4_D2:
+ 662   3              if (Two_Menu_F2_E4[1] == 0) Two_Menu_F2_E4[1] = 9;  //设置F2_E4百位
+ 663   3              else Two_Menu_F2_E4[1]--;
+C51 COMPILER V9.00   KEY                                                                   09/12/2015 12:08:49 PAGE 13  
+
  664   3              break;
-C51 COMPILER V9.00   KEY                                                                   09/10/2015 20:09:04 PAGE 13  
-
- 665   3            case TWO_MENU_F5_SET:
- 666   3              if (Two_Menu_F5_E1 == 0) Two_Menu_F5_E1 = 99; //销号时间设置
- 667   3              else Two_Menu_F5_E1--;
+ 665   3            case TWO_MENU_F2_E4_D3:
+ 666   3              if (Two_Menu_F2_E4[2] == 0) Two_Menu_F2_E4[2] = 9;  //设置F2_E4十位
+ 667   3              else Two_Menu_F2_E4[2]--;
  668   3              break;
- 669   3            case TWO_MENU_F6_E1_SET:
- 670   3              if (Two_Menu_F6_E1 == 0) Two_Menu_F6_E1 = 5;  //F6_E1额语音选择
- 671   3              else Two_Menu_F6_E1--;
+ 669   3            case TWO_MENU_F2_E4_D4:
+ 670   3              if (Two_Menu_F2_E4[3] == 0) Two_Menu_F2_E4[3] = 9;  //设置F2_E4个位
+ 671   3              else Two_Menu_F2_E4[3]--;
  672   3              break;
- 673   3            case TWO_MENU_F6_E2_SET:
- 674   3              if (Two_Menu_F6_E2 == 1) Two_Menu_F6_E2 = 9;  //F6_E2语音报读次数调整
- 675   3              else Two_Menu_F6_E2--;
+ 673   3            case TWO_MENU_F3_E1_SET:
+ 674   3              if (Two_Menu_F3_E1 == 1) Two_Menu_F3_E1 = 2;  //排队显示 或者 循环显示
+ 675   3              else Two_Menu_F3_E1 = 1;
  676   3              break;
- 677   3            case TWO_MENU_F6_E3_SET:
- 678   3              if (Two_Menu_F6_E3 == 0) Two_Menu_F6_E3 = 1;  //F6_E3循环时候是否报读
- 679   3              else Two_Menu_F6_E3 = 0;
+ 677   3            case TWO_MENU_F3_E2_SET:
+ 678   3              if (Two_Menu_F3_E2 == 1) Two_Menu_F3_E2 = 20; //存储队列个数
+ 679   3              else Two_Menu_F3_E2--;
  680   3              break;
- 681   3            case TWO_MENU_F6_E4_SET:
- 682   3              if (Two_Menu_F6_E4 == 0) Two_Menu_F6_E4 = 9;  //F6_E4音量大小调整
- 683   3              else Two_Menu_F6_E4--;
+ 681   3            case TWO_MENU_F4_SET:
+ 682   3              if (Two_Menu_F4_E1 == 0) Two_Menu_F4_E1 = 99; //销号时间设置
+ 683   3              else Two_Menu_F4_E1--;
  684   3              break;
- 685   3            case TWO_MENU_F6_E5_SET:
- 686   3              if (Two_Menu_F6_E5 == 0) Two_Menu_F6_E5 = 9;  //F6_E5屏幕亮度调整
- 687   3              else Two_Menu_F6_E5--;
+ 685   3            case TWO_MENU_F5_SET:
+ 686   3              if (Two_Menu_F5_E1 == 0) Two_Menu_F5_E1 = 99; //销号时间设置
+ 687   3              else Two_Menu_F5_E1--;
  688   3              break;
- 689   3            case TWO_MENU_F7_E1_SET:
- 690   3              if (Two_Menu_F7_E1 == 0) Two_Menu_F7_E1 = 11; //F7_E1原始规则 999*9
- 691   3              else Two_Menu_F7_E1--;
+ 689   3            case TWO_MENU_F6_E1_SET:
+ 690   3              if (Two_Menu_F6_E1 == 0) Two_Menu_F6_E1 = 5;  //F6_E1额语音选择
+ 691   3              else Two_Menu_F6_E1--;
  692   3              break;
- 693   3            case TWO_MENU_F7_E2_SET:
- 694   3              if (Two_Menu_F7_E2 == 0) Two_Menu_F7_E2 = 11; //F7_E2附加规则 9999*9
- 695   3              else Two_Menu_F7_E2--;
+ 693   3            case TWO_MENU_F6_E2_SET:
+ 694   3              if (Two_Menu_F6_E2 == 1) Two_Menu_F6_E2 = 9;  //F6_E2语音报读次数调整
+ 695   3              else Two_Menu_F6_E2--;
  696   3              break;
- 697   3            case TWO_MENU_F7_E3_SET:
- 698   3              if (Two_Menu_F7_E3 == 0) Two_Menu_F7_E3 = 11; //F7_E3附加规则 999*99
- 699   3              else Two_Menu_F7_E3--;
+ 697   3            case TWO_MENU_F6_E3_SET:
+ 698   3              if (Two_Menu_F6_E3 == 0) Two_Menu_F6_E3 = 1;  //F6_E3循环时候是否报读
+ 699   3              else Two_Menu_F6_E3 = 0;
  700   3              break;
- 701   3            case TWO_MENU_F7_E4_SET:
- 702   3              if (Two_Menu_F7_E4 == 0) Two_Menu_F7_E4 = 11; //F7_E3附加规则 9999*99
- 703   3              else Two_Menu_F7_E4--;
+ 701   3            case TWO_MENU_F6_E4_SET:
+ 702   3              if (Two_Menu_F6_E4 == 0) Two_Menu_F6_E4 = 9;  //F6_E4音量大小调整
+ 703   3              else Two_Menu_F6_E4--;
  704   3              break;
- 705   3            case TWO_MENU_F8_E1_SET:
- 706   3              if (Two_Menu_F8_E1 == 1) Two_Menu_F8_E1 = 0;  //F8_E1单键位跟多键位切换
- 707   3              else Two_Menu_F8_E1 = 1;
+ 705   3            case TWO_MENU_F6_E5_SET:
+ 706   3              if (Two_Menu_F6_E5 == 0) Two_Menu_F6_E5 = 9;  //F6_E5屏幕亮度调整
+ 707   3              else Two_Menu_F6_E5--;
  708   3              break;
- 709   3            case TWO_MENU_F8_E2_SET:
- 710   3              if (Two_Menu_F8_E2 == 0) Two_Menu_F8_E2 = 50; //F8_E2键位设置
- 711   3              else Two_Menu_F8_E2--;
+ 709   3            case TWO_MENU_F7_E1_SET:
+ 710   3              if (Two_Menu_F7_E1 == 0) Two_Menu_F7_E1 = 11; //F7_E1原始规则 999*9
+ 711   3              else Two_Menu_F7_E1--;
  712   3              break;
- 713   3      
- 714   3              default:break;
- 715   3            }
- 716   2            func_index = table[func_index].down; break;
- 717   2          default:break;
- 718   2        }
- 719   1        current_operation_index = table[func_index].index_operation;
- 720   1        (*current_operation_index)();//执行当前操作函数
- 721   1      }
- 722          
- 723          void delay10ms(void)   //误差 -0.054253472222us
- 724          {
- 725   1        unsigned char a, b, c;
- 726   1        for (c = 4; c>0; c--)
-C51 COMPILER V9.00   KEY                                                                   09/10/2015 20:09:04 PAGE 14  
+ 713   3            case TWO_MENU_F7_E2_SET:
+ 714   3              if (Two_Menu_F7_E2 == 0) Two_Menu_F7_E2 = 11; //F7_E2附加规则 9999*9
+ 715   3              else Two_Menu_F7_E2--;
+ 716   3              break;
+ 717   3            case TWO_MENU_F7_E3_SET:
+ 718   3              if (Two_Menu_F7_E3 == 0) Two_Menu_F7_E3 = 11; //F7_E3附加规则 999*99
+ 719   3              else Two_Menu_F7_E3--;
+ 720   3              break;
+ 721   3            case TWO_MENU_F7_E4_SET:
+ 722   3              if (Two_Menu_F7_E4 == 0) Two_Menu_F7_E4 = 11; //F7_E3附加规则 9999*99
+ 723   3              else Two_Menu_F7_E4--;
+ 724   3              break;
+ 725   3            case TWO_MENU_F8_E1_SET:
+C51 COMPILER V9.00   KEY                                                                   09/12/2015 12:08:49 PAGE 14  
 
- 727   1        for (b = 52; b>0; b--)
- 728   1        for (a = 220; a>0; a--);
- 729   1        _nop_();  //if Keil,require use intrins.h
- 730   1      }
- 731          
- 732          unsigned char return_func_index(void)
- 733          {
- 734   1        unsigned char func_index_temp = 0;
- 735   1        func_index_temp = func_index;
- 736   1        return func_index_temp;
- 737   1      }
- 738          
- 739          unsigned char return_Two_Menu_F3_E1(void)
- 740          {
- 741   1        unsigned char temp = 0;
- 742   1        temp = Two_Menu_F3_E1;
- 743   1        return temp;
- 744   1      }
- 745          
- 746          unsigned char return_Two_Menu_F3_E2(void)
- 747          {
- 748   1        unsigned char temp = 0;
- 749   1        temp = Two_Menu_F3_E2;
- 750   1        return temp;
- 751   1      }
- 752          
- 753          unsigned char return_Two_Menu_F4_E1(void)
- 754          {
- 755   1        unsigned char temp = 0;
- 756   1        temp = Two_Menu_F4_E1;
- 757   1        return temp;
- 758   1      }
- 759          
- 760          unsigned char return_Two_Menu_F5_E1(void)
- 761          {
- 762   1        unsigned char temp = 0;
- 763   1        temp = Two_Menu_F5_E1;
- 764   1        return temp;
- 765   1      }
- 766          
- 767          unsigned char return_Two_Menu_F6_E1(void)
- 768          {
- 769   1        unsigned char temp = 0;
- 770   1        temp = Two_Menu_F6_E1;
- 771   1        return temp;
- 772   1      }
- 773          
- 774          unsigned char return_Two_Menu_F6_E2(void)
- 775          {
- 776   1        unsigned char temp = 0;
- 777   1        temp = Two_Menu_F6_E2;
- 778   1        return temp;
- 779   1      }
- 780          
- 781          unsigned char return_Two_Menu_F6_E3(void)
- 782          {
- 783   1        unsigned char temp = 0;
- 784   1        temp = Two_Menu_F6_E3;
- 785   1        return temp;
- 786   1      }
- 787          
- 788          unsigned char return_Two_Menu_F6_E4(void)
-C51 COMPILER V9.00   KEY                                                                   09/10/2015 20:09:04 PAGE 15  
+ 726   3              if (Two_Menu_F8_E1 == 1) Two_Menu_F8_E1 = 0;  //F8_E1单键位跟多键位切换
+ 727   3              else Two_Menu_F8_E1 = 1;
+ 728   3              break;
+ 729   3            case TWO_MENU_F8_E2_SET:
+ 730   3              if (Two_Menu_F8_E2 == 0) Two_Menu_F8_E2 = 50; //F8_E2键位设置
+ 731   3              else Two_Menu_F8_E2--;
+ 732   3              break;
+ 733   3      
+ 734   3              default:break;
+ 735   3            }
+ 736   2            func_index = table[func_index].down; break;
+ 737   2          default:break;
+ 738   2        }
+ 739   1        current_operation_index = table[func_index].index_operation;
+ 740   1        (*current_operation_index)();//执行当前操作函数
+ 741   1      }
+ 742          
+ 743          void delay10ms(void)   //误差 -0.054253472222us
+ 744          {
+ 745   1        unsigned char a, b, c;
+ 746   1        for (c = 4; c>0; c--)
+ 747   1        for (b = 52; b>0; b--)
+ 748   1        for (a = 220; a>0; a--);
+ 749   1        _nop_();  //if Keil,require use intrins.h
+ 750   1      }
+ 751          
+ 752          unsigned char return_func_index(void)
+ 753          {
+ 754   1        unsigned char func_index_temp = 0;
+ 755   1        func_index_temp = func_index;
+ 756   1        return func_index_temp;
+ 757   1      }
+ 758          
+ 759          void set_func_index(unsigned char temp)
+ 760          {
+ 761   1        func_index = temp;
+ 762   1      }
+ 763          
+ 764          unsigned char return_Two_Menu_F3_E1(void)
+ 765          {
+ 766   1        unsigned char temp = 0;
+ 767   1        temp = Two_Menu_F3_E1;
+ 768   1        return temp;
+ 769   1      }
+ 770          
+ 771          unsigned char return_Two_Menu_F3_E2(void)
+ 772          {
+ 773   1        unsigned char temp = 0;
+ 774   1        temp = Two_Menu_F3_E2;
+ 775   1        return temp;
+ 776   1      }
+ 777          
+ 778          unsigned char return_Two_Menu_F4_E1(void)
+ 779          {
+ 780   1        unsigned char temp = 0;
+ 781   1        temp = Two_Menu_F4_E1;
+ 782   1        return temp;
+ 783   1      }
+ 784          
+ 785          unsigned char return_Two_Menu_F5_E1(void)
+ 786          {
+ 787   1        unsigned char temp = 0;
+C51 COMPILER V9.00   KEY                                                                   09/12/2015 12:08:49 PAGE 15  
 
- 789          {
- 790   1        unsigned char temp = 0;
- 791   1        temp = Two_Menu_F6_E4;
- 792   1        return temp;
- 793   1      }
- 794          
- 795          unsigned char return_Two_Menu_F6_E5(void)
- 796          {
- 797   1        unsigned char temp = 0;
- 798   1        temp = Two_Menu_F6_E5;
- 799   1        return temp;
- 800   1      }
- 801          
- 802          unsigned char return_Two_Menu_F7_E1(void)
- 803          {
- 804   1        unsigned char temp = 0;
- 805   1        temp = Two_Menu_F7_E1;
- 806   1        return temp;
- 807   1      }
- 808          
- 809          unsigned char return_Two_Menu_F7_E2(void)
- 810          {
- 811   1        unsigned char temp = 0;
- 812   1        temp = Two_Menu_F7_E2;
- 813   1        return temp;
- 814   1      }
- 815          
- 816          unsigned char return_Two_Menu_F7_E3(void)
- 817          {
- 818   1        unsigned char temp = 0;
- 819   1        temp = Two_Menu_F7_E3;
- 820   1        return temp;
- 821   1      }
- 822          
- 823          unsigned char return_Two_Menu_F7_E4(void)
- 824          {
- 825   1        unsigned char temp = 0;
- 826   1        temp = Two_Menu_F7_E4;
- 827   1        return temp;
- 828   1      }
- 829          
- 830          unsigned char return_Two_Menu_F8_E1(void)
- 831          {
- 832   1        unsigned char temp = 0;
- 833   1        temp = Two_Menu_F8_E1;
- 834   1        return temp;
- 835   1      }
- 836          
- 837          unsigned char return_Two_Menu_F8_E2(void)
- 838          {
- 839   1        unsigned char temp = 0;
- 840   1        temp = Two_Menu_F8_E2;
- 841   1        return temp;
- 842   1      }
+ 788   1        temp = Two_Menu_F5_E1;
+ 789   1        return temp;
+ 790   1      }
+ 791          
+ 792          unsigned char return_Two_Menu_F6_E1(void)
+ 793          {
+ 794   1        unsigned char temp = 0;
+ 795   1        temp = Two_Menu_F6_E1;
+ 796   1        return temp;
+ 797   1      }
+ 798          
+ 799          unsigned char return_Two_Menu_F6_E2(void)
+ 800          {
+ 801   1        unsigned char temp = 0;
+ 802   1        temp = Two_Menu_F6_E2;
+ 803   1        return temp;
+ 804   1      }
+ 805          
+ 806          unsigned char return_Two_Menu_F6_E3(void)
+ 807          {
+ 808   1        unsigned char temp = 0;
+ 809   1        temp = Two_Menu_F6_E3;
+ 810   1        return temp;
+ 811   1      }
+ 812          
+ 813          unsigned char return_Two_Menu_F6_E4(void)
+ 814          {
+ 815   1        unsigned char temp = 0;
+ 816   1        temp = Two_Menu_F6_E4;
+ 817   1        return temp;
+ 818   1      }
+ 819          
+ 820          unsigned char return_Two_Menu_F6_E5(void)
+ 821          {
+ 822   1        unsigned char temp = 0;
+ 823   1        temp = Two_Menu_F6_E5;
+ 824   1        return temp;
+ 825   1      }
+ 826          
+ 827          unsigned char return_Two_Menu_F7_E1(void)
+ 828          {
+ 829   1        unsigned char temp = 0;
+ 830   1        temp = Two_Menu_F7_E1;
+ 831   1        return temp;
+ 832   1      }
+ 833          
+ 834          unsigned char return_Two_Menu_F7_E2(void)
+ 835          {
+ 836   1        unsigned char temp = 0;
+ 837   1        temp = Two_Menu_F7_E2;
+ 838   1        return temp;
+ 839   1      }
+ 840          
+ 841          unsigned char return_Two_Menu_F7_E3(void)
+ 842          {
+ 843   1        unsigned char temp = 0;
+ 844   1        temp = Two_Menu_F7_E3;
+ 845   1        return temp;
+ 846   1      }
+ 847          
+ 848          unsigned char return_Two_Menu_F7_E4(void)
+ 849          {
+C51 COMPILER V9.00   KEY                                                                   09/12/2015 12:08:49 PAGE 16  
+
+ 850   1        unsigned char temp = 0;
+ 851   1        temp = Two_Menu_F7_E4;
+ 852   1        return temp;
+ 853   1      }
+ 854          
+ 855          unsigned char return_Two_Menu_F8_E1(void)
+ 856          {
+ 857   1        unsigned char temp = 0;
+ 858   1        temp = Two_Menu_F8_E1;
+ 859   1        return temp;
+ 860   1      }
+ 861          
+ 862          unsigned char return_Two_Menu_F8_E2(void)
+ 863          {
+ 864   1        unsigned char temp = 0;
+ 865   1        temp = Two_Menu_F8_E2;
+ 866   1        return temp;
+ 867   1      }
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =   2643    ----
+   CODE SIZE        =   2725    ----
    CONSTANT SIZE    =    818    ----
    XDATA SIZE       =     54       5
    PDATA SIZE       =   ----    ----
    DATA SIZE        =   ----    ----
-C51 COMPILER V9.00   KEY                                                                   09/10/2015 20:09:04 PAGE 16  
-
    IDATA SIZE       =   ----    ----
    BIT SIZE         =   ----    ----
 END OF MODULE INFORMATION.

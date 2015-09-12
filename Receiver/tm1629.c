@@ -454,6 +454,10 @@ void fun20(void) //设置分钟
 void fun21(void) //二级菜单F1-E1
 {
 	tm1629_E(0x01);
+	Two_Menu_F1_E1[0] = 0;
+	Two_Menu_F1_E1[1] = 0;
+	Two_Menu_F1_E1[2] = 0;
+	Two_Menu_F1_E1[3] = 1;
 }
 
 void fun22(void) //二级菜单F1-E2
@@ -474,6 +478,10 @@ void fun24(void) //二级菜单F1-E4
 void fun25(void) //二级菜单F2-E1
 {
 	tm1629_E(0x01);
+	Two_Menu_F1_E2[0] = 0;
+	Two_Menu_F1_E2[1] = 0;
+	Two_Menu_F1_E2[2] = 0;
+	Two_Menu_F1_E2[3] = 1;
 }
 
 void fun26(void) //二级菜单F2-E2

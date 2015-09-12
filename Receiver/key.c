@@ -4,18 +4,19 @@
 #include "menu.h"
 #include "timer.h"
 #include "ds1302.h"
+#include "at24c256.h"
 
 unsigned char func_index = 0; //¶à¼¶²Ëµ¥Ë÷Òý±äÁ¿
 void(*current_operation_index)();// ¶à¼¶²Ëµ¥º¯ÊýÖ¸Õë
 
-unsigned char Two_Menu_F1_E1[4] = { 0 }; //F1_E1
-unsigned char Two_Menu_F1_E2[4] = { 0 }; //F1_E2
-unsigned char Two_Menu_F1_E3[4] = { 0 }; //F1_E3
-unsigned char Two_Menu_F1_E4[4] = { 0 }; //F1_E4
-unsigned char Two_Menu_F2_E1[4] = { 0 }; //F2_E1
-unsigned char Two_Menu_F2_E2[4] = { 0 }; //F2_E2
-unsigned char Two_Menu_F2_E3[4] = { 0 }; //F2_E3
-unsigned char Two_Menu_F2_E4[4] = { 0 }; //F2_E4
+unsigned char Two_Menu_F1_E1[4] = { 0, 0, 0, 1 }; //F1_E1
+unsigned char Two_Menu_F1_E2[4] = { 0, 0, 0, 1 }; //F1_E2
+unsigned char Two_Menu_F1_E3[4] = { 0, 0, 0, 1 }; //F1_E3
+unsigned char Two_Menu_F1_E4[4] = { 0, 0, 0, 1 }; //F1_E4
+unsigned char Two_Menu_F2_E1[4] = { 0, 0, 0, 1 }; //F2_E1
+unsigned char Two_Menu_F2_E2[4] = { 0, 0, 0, 1 }; //F2_E2
+unsigned char Two_Menu_F2_E3[4] = { 0, 0, 0, 1 }; //F2_E3
+unsigned char Two_Menu_F2_E4[4] = { 0, 0, 0, 1 }; //F2_E4
 
 unsigned char Two_Menu_F3_E1 = 1; //¼´Ê±Ä£Ê½»òÕßÅÅ¶ÓÏÔÊ¾
 unsigned char Two_Menu_F3_E2 = 1; //ºô½ÐÊ±ºò´æ´¢ÊýÁ¿
@@ -34,7 +35,7 @@ unsigned char Two_Menu_F7_E2 = 0; // E2ÆäËû¼üÅÌ¹æÔò 9999*9
 unsigned char Two_Menu_F7_E3 = 0; // E3ÆäËû¼üÅÌ¹æÔò 999*99
 unsigned char Two_Menu_F7_E4 = 0; // E4ÆäËû¼üÅÌ¹æÔò 9999*99
 
-unsigned char Two_Menu_F8_E1 = 1; // µ¥°´¼üÓë ¶à°´¼üÇÐ»»
+unsigned char Two_Menu_F8_E1 = 2; // µ¥°´¼üÓë ¶à°´¼üÇÐ»»
 unsigned char Two_Menu_F8_E2 = 0; // ¼üÎ»ÉèÖÃ
 
 unsigned char Two_Menu_Fb_E1 = 0; // ÉèÖÃÖ÷»úÓÐÃ»ÓÐÏúºÅ¹¦ÄÜ
@@ -67,15 +68,15 @@ key_table code table[100] =
 	{ TWO_MENU_F0_HOUR  , TWO_MENU_F0_HOUR  , TWO_MENU_F0_HOUR  , TWO_MENU_F0_MINUTE, ONE_MENU_F0, (*fun19) }, //ÍòÄêÀú Ð¡Ê±
 	{ TWO_MENU_F0_MINUTE, TWO_MENU_F0_MINUTE, TWO_MENU_F0_MINUTE, TWO_MENU_F0_YEAR  , ONE_MENU_F0, (*fun20) }, //ÍòÄêÀú ·ÖÖÓ
 
-	{ TWO_MENU_F1_E1, TWO_MENU_F1_E2, TWO_MENU_F1_E4, TWO_MENU_F1_E1_D1, ONE_MENU_F1, (*fun21) }, //F1×Ó²Ëµ¥E1
-	{ TWO_MENU_F1_E2, TWO_MENU_F1_E3, TWO_MENU_F1_E1, TWO_MENU_F1_E2_D1, ONE_MENU_F1, (*fun22) }, //F1×Ó²Ëµ¥E2
-	{ TWO_MENU_F1_E3, TWO_MENU_F1_E4, TWO_MENU_F1_E2, TWO_MENU_F1_E3_D1, ONE_MENU_F1, (*fun23) }, //F1×Ó²Ëµ¥E3
-	{ TWO_MENU_F1_E4, TWO_MENU_F1_E1, TWO_MENU_F1_E3, TWO_MENU_F1_E4_D1, ONE_MENU_F1, (*fun24) }, //F1×Ó²Ëµ¥E4
+	{ TWO_MENU_F1_E1, TWO_MENU_F1_E2, TWO_MENU_F1_E4, TWO_MENU_F1_E1_D4, ONE_MENU_F1, (*fun21) }, //F1×Ó²Ëµ¥E1
+	{ TWO_MENU_F1_E2, TWO_MENU_F1_E3, TWO_MENU_F1_E1, TWO_MENU_F1_E2_D4, ONE_MENU_F1, (*fun22) }, //F1×Ó²Ëµ¥E2
+	{ TWO_MENU_F1_E3, TWO_MENU_F1_E4, TWO_MENU_F1_E2, TWO_MENU_F1_E3_D4, ONE_MENU_F1, (*fun23) }, //F1×Ó²Ëµ¥E3
+	{ TWO_MENU_F1_E4, TWO_MENU_F1_E1, TWO_MENU_F1_E3, TWO_MENU_F1_E4_D4, ONE_MENU_F1, (*fun24) }, //F1×Ó²Ëµ¥E4
 
-	{ TWO_MENU_F2_E1, TWO_MENU_F2_E2, TWO_MENU_F2_E4, TWO_MENU_F2_E1_D1, ONE_MENU_F2, (*fun25) }, //F2×Ó²Ëµ¥E1
-	{ TWO_MENU_F2_E2, TWO_MENU_F2_E3, TWO_MENU_F2_E1, TWO_MENU_F2_E2_D1, ONE_MENU_F2, (*fun26) }, //F2×Ó²Ëµ¥E2
-	{ TWO_MENU_F2_E3, TWO_MENU_F2_E4, TWO_MENU_F2_E2, TWO_MENU_F2_E3_D1, ONE_MENU_F2, (*fun27) }, //F2×Ó²Ëµ¥E3
-	{ TWO_MENU_F2_E4, TWO_MENU_F2_E1, TWO_MENU_F2_E3, TWO_MENU_F2_E4_D1, ONE_MENU_F2, (*fun28) }, //F2×Ó²Ëµ¥E4
+	{ TWO_MENU_F2_E1, TWO_MENU_F2_E2, TWO_MENU_F2_E4, TWO_MENU_F2_E1_D4, ONE_MENU_F2, (*fun25) }, //F2×Ó²Ëµ¥E1
+	{ TWO_MENU_F2_E2, TWO_MENU_F2_E3, TWO_MENU_F2_E1, TWO_MENU_F2_E2_D4, ONE_MENU_F2, (*fun26) }, //F2×Ó²Ëµ¥E2
+	{ TWO_MENU_F2_E3, TWO_MENU_F2_E4, TWO_MENU_F2_E2, TWO_MENU_F2_E3_D4, ONE_MENU_F2, (*fun27) }, //F2×Ó²Ëµ¥E3
+	{ TWO_MENU_F2_E4, TWO_MENU_F2_E1, TWO_MENU_F2_E3, TWO_MENU_F2_E4_D4, ONE_MENU_F2, (*fun28) }, //F2×Ó²Ëµ¥E4
 
 	{ TWO_MENU_F3_E1, TWO_MENU_F3_E2, TWO_MENU_F3_E2, TWO_MENU_F3_E1_SET, ONE_MENU_F3, (*fun29) }, //F3×Ó²Ëµ¥E1
 	{ TWO_MENU_F3_E2, TWO_MENU_F3_E1, TWO_MENU_F3_E1, TWO_MENU_F3_E2_SET, ONE_MENU_F3, (*fun30) }, //F3×Ó²Ëµ¥E2
@@ -105,45 +106,45 @@ key_table code table[100] =
 	{ TWO_MENU_FC_SET, TWO_MENU_FC_SET, TWO_MENU_FC_SET, 0, ONE_MENU_FC, (*fun48) }, //FC×Ó²Ëµ¥
 	{ TWO_MENU_Fd_SET, TWO_MENU_Fd_SET, TWO_MENU_Fd_SET, 0, ONE_MENU_Fd, (*fun49) }, //Fd×Ó²Ëµ¥
 
-	{ TWO_MENU_F1_E1_D1, TWO_MENU_F1_E1_D1, TWO_MENU_F1_E1_D1, TWO_MENU_F1_E1_D2, TWO_MENU_F1_E1, (*fun50) }, //F1_E1×¢²áºô½ÐÆ÷
-	{ TWO_MENU_F1_E1_D2, TWO_MENU_F1_E1_D2, TWO_MENU_F1_E1_D2, TWO_MENU_F1_E1_D3, TWO_MENU_F1_E1, (*fun51) }, //F1_E1×¢²áºô½ÐÆ÷
-	{ TWO_MENU_F1_E1_D3, TWO_MENU_F1_E1_D3, TWO_MENU_F1_E1_D3, TWO_MENU_F1_E1_D4, TWO_MENU_F1_E1, (*fun52) }, //F1_E1×¢²áºô½ÐÆ÷
-	{ TWO_MENU_F1_E1_D4, TWO_MENU_F1_E1_D4, TWO_MENU_F1_E1_D4, TWO_MENU_F1_E1_D1, TWO_MENU_F1_E1, (*fun53) }, //F1_E1×¢²áºô½ÐÆ÷
+	{ TWO_MENU_F1_E1_D1, TWO_MENU_F1_E1_D1, TWO_MENU_F1_E1_D1, TWO_MENU_F1_E1_D4, TWO_MENU_F1_E1, (*fun50) }, //F1_E1×¢²áºô½ÐÆ÷
+	{ TWO_MENU_F1_E1_D2, TWO_MENU_F1_E1_D2, TWO_MENU_F1_E1_D2, TWO_MENU_F1_E1_D1, TWO_MENU_F1_E1, (*fun51) }, //F1_E1×¢²áºô½ÐÆ÷
+	{ TWO_MENU_F1_E1_D3, TWO_MENU_F1_E1_D3, TWO_MENU_F1_E1_D3, TWO_MENU_F1_E1_D2, TWO_MENU_F1_E1, (*fun52) }, //F1_E1×¢²áºô½ÐÆ÷
+	{ TWO_MENU_F1_E1_D4, TWO_MENU_F1_E1_D4, TWO_MENU_F1_E1_D4, TWO_MENU_F1_E1_D3, TWO_MENU_F1_E1, (*fun53) }, //F1_E1×¢²áºô½ÐÆ÷
 
-	{ TWO_MENU_F1_E2_D1, TWO_MENU_F1_E2_D1, TWO_MENU_F1_E2_D1, TWO_MENU_F1_E2_D2, TWO_MENU_F1_E2, (*fun54) }, //F1_E2×¢²á¹ÜÀíÆ÷
-	{ TWO_MENU_F1_E2_D2, TWO_MENU_F1_E2_D2, TWO_MENU_F1_E2_D2, TWO_MENU_F1_E2_D3, TWO_MENU_F1_E2, (*fun55) }, //F1_E2×¢²á¹ÜÀíÆ÷
-	{ TWO_MENU_F1_E2_D3, TWO_MENU_F1_E2_D3, TWO_MENU_F1_E2_D3, TWO_MENU_F1_E2_D4, TWO_MENU_F1_E2, (*fun56) }, //F1_E2×¢²á¹ÜÀíÆ÷
-	{ TWO_MENU_F1_E2_D4, TWO_MENU_F1_E2_D4, TWO_MENU_F1_E2_D4, TWO_MENU_F1_E2_D1, TWO_MENU_F1_E2, (*fun57) }, //F1_E2×¢²á¹ÜÀíÆ÷
+	{ TWO_MENU_F1_E2_D1, TWO_MENU_F1_E2_D1, TWO_MENU_F1_E2_D1, TWO_MENU_F1_E2_D4, TWO_MENU_F1_E2, (*fun54) }, //F1_E2×¢²á¹ÜÀíÆ÷
+	{ TWO_MENU_F1_E2_D2, TWO_MENU_F1_E2_D2, TWO_MENU_F1_E2_D2, TWO_MENU_F1_E2_D1, TWO_MENU_F1_E2, (*fun55) }, //F1_E2×¢²á¹ÜÀíÆ÷
+	{ TWO_MENU_F1_E2_D3, TWO_MENU_F1_E2_D3, TWO_MENU_F1_E2_D3, TWO_MENU_F1_E2_D2, TWO_MENU_F1_E2, (*fun56) }, //F1_E2×¢²á¹ÜÀíÆ÷
+	{ TWO_MENU_F1_E2_D4, TWO_MENU_F1_E2_D4, TWO_MENU_F1_E2_D4, TWO_MENU_F1_E2_D3, TWO_MENU_F1_E2, (*fun57) }, //F1_E2×¢²á¹ÜÀíÆ÷
 
-	{ TWO_MENU_F1_E3_D1, TWO_MENU_F1_E3_D1, TWO_MENU_F1_E3_D1, TWO_MENU_F1_E3_D2, TWO_MENU_F1_E3, (*fun58) }, //F1_E3×¢²á±¨¾¯Æ÷
-	{ TWO_MENU_F1_E3_D2, TWO_MENU_F1_E3_D2, TWO_MENU_F1_E3_D2, TWO_MENU_F1_E3_D3, TWO_MENU_F1_E3, (*fun59) }, //F1_E3×¢²á±¨¾¯Æ÷
-	{ TWO_MENU_F1_E3_D3, TWO_MENU_F1_E3_D3, TWO_MENU_F1_E3_D3, TWO_MENU_F1_E3_D4, TWO_MENU_F1_E3, (*fun60) }, //F1_E3×¢²á±¨¾¯Æ÷
-	{ TWO_MENU_F1_E3_D4, TWO_MENU_F1_E3_D4, TWO_MENU_F1_E3_D4, TWO_MENU_F1_E3_D1, TWO_MENU_F1_E3, (*fun61) }, //F1_E3×¢²á±¨¾¯Æ÷
+	{ TWO_MENU_F1_E3_D1, TWO_MENU_F1_E3_D1, TWO_MENU_F1_E3_D1, TWO_MENU_F1_E3_D4, TWO_MENU_F1_E3, (*fun58) }, //F1_E3×¢²á±¨¾¯Æ÷
+	{ TWO_MENU_F1_E3_D2, TWO_MENU_F1_E3_D2, TWO_MENU_F1_E3_D2, TWO_MENU_F1_E3_D1, TWO_MENU_F1_E3, (*fun59) }, //F1_E3×¢²á±¨¾¯Æ÷
+	{ TWO_MENU_F1_E3_D3, TWO_MENU_F1_E3_D3, TWO_MENU_F1_E3_D3, TWO_MENU_F1_E3_D2, TWO_MENU_F1_E3, (*fun60) }, //F1_E3×¢²á±¨¾¯Æ÷
+	{ TWO_MENU_F1_E3_D4, TWO_MENU_F1_E3_D4, TWO_MENU_F1_E3_D4, TWO_MENU_F1_E3_D3, TWO_MENU_F1_E3, (*fun61) }, //F1_E3×¢²á±¨¾¯Æ÷
 
-	{ TWO_MENU_F1_E4_D1, TWO_MENU_F1_E4_D1, TWO_MENU_F1_E4_D1, TWO_MENU_F1_E4_D2, TWO_MENU_F1_E4, (*fun62) }, //F1_E3×¢²áÈ¡ÏûÆ÷
-	{ TWO_MENU_F1_E4_D2, TWO_MENU_F1_E4_D2, TWO_MENU_F1_E4_D2, TWO_MENU_F1_E4_D3, TWO_MENU_F1_E4, (*fun63) }, //F1_E3×¢²áÈ¡ÏûÆ÷
-	{ TWO_MENU_F1_E4_D3, TWO_MENU_F1_E4_D3, TWO_MENU_F1_E4_D3, TWO_MENU_F1_E4_D4, TWO_MENU_F1_E4, (*fun64) }, //F1_E3×¢²áÈ¡ÏûÆ÷
-	{ TWO_MENU_F1_E4_D4, TWO_MENU_F1_E4_D4, TWO_MENU_F1_E4_D4, TWO_MENU_F1_E4_D1, TWO_MENU_F1_E4, (*fun65) }, //F1_E3×¢²áÈ¡ÏûÆ÷
+	{ TWO_MENU_F1_E4_D1, TWO_MENU_F1_E4_D1, TWO_MENU_F1_E4_D1, TWO_MENU_F1_E4_D4, TWO_MENU_F1_E4, (*fun62) }, //F1_E3×¢²áÈ¡ÏûÆ÷
+	{ TWO_MENU_F1_E4_D2, TWO_MENU_F1_E4_D2, TWO_MENU_F1_E4_D2, TWO_MENU_F1_E4_D1, TWO_MENU_F1_E4, (*fun63) }, //F1_E3×¢²áÈ¡ÏûÆ÷
+	{ TWO_MENU_F1_E4_D3, TWO_MENU_F1_E4_D3, TWO_MENU_F1_E4_D3, TWO_MENU_F1_E4_D2, TWO_MENU_F1_E4, (*fun64) }, //F1_E3×¢²áÈ¡ÏûÆ÷
+	{ TWO_MENU_F1_E4_D4, TWO_MENU_F1_E4_D4, TWO_MENU_F1_E4_D4, TWO_MENU_F1_E4_D3, TWO_MENU_F1_E4, (*fun65) }, //F1_E3×¢²áÈ¡ÏûÆ÷
 
-	{ TWO_MENU_F2_E1_D1, TWO_MENU_F2_E1_D1, TWO_MENU_F2_E1_D1, TWO_MENU_F2_E1_D2, TWO_MENU_F2_E1, (*fun66) }, //F2_E1É¾³ýºô½ÐÆ÷
-	{ TWO_MENU_F2_E1_D2, TWO_MENU_F2_E1_D2, TWO_MENU_F2_E1_D2, TWO_MENU_F2_E1_D3, TWO_MENU_F2_E1, (*fun67) }, //F2_E1É¾³ýºô½ÐÆ÷
-	{ TWO_MENU_F2_E1_D3, TWO_MENU_F2_E1_D3, TWO_MENU_F2_E1_D3, TWO_MENU_F2_E1_D4, TWO_MENU_F2_E1, (*fun68) }, //F2_E1É¾³ýºô½ÐÆ÷
-	{ TWO_MENU_F2_E1_D4, TWO_MENU_F2_E1_D4, TWO_MENU_F2_E1_D4, TWO_MENU_F2_E1_D1, TWO_MENU_F2_E1, (*fun69) }, //F2_E1É¾³ýºô½ÐÆ÷
+	{ TWO_MENU_F2_E1_D1, TWO_MENU_F2_E1_D1, TWO_MENU_F2_E1_D1, TWO_MENU_F2_E1_D4, TWO_MENU_F2_E1, (*fun66) }, //F2_E1É¾³ýºô½ÐÆ÷
+	{ TWO_MENU_F2_E1_D2, TWO_MENU_F2_E1_D2, TWO_MENU_F2_E1_D2, TWO_MENU_F2_E1_D1, TWO_MENU_F2_E1, (*fun67) }, //F2_E1É¾³ýºô½ÐÆ÷
+	{ TWO_MENU_F2_E1_D3, TWO_MENU_F2_E1_D3, TWO_MENU_F2_E1_D3, TWO_MENU_F2_E1_D2, TWO_MENU_F2_E1, (*fun68) }, //F2_E1É¾³ýºô½ÐÆ÷
+	{ TWO_MENU_F2_E1_D4, TWO_MENU_F2_E1_D4, TWO_MENU_F2_E1_D4, TWO_MENU_F2_E1_D3, TWO_MENU_F2_E1, (*fun69) }, //F2_E1É¾³ýºô½ÐÆ÷
 
-	{ TWO_MENU_F2_E2_D1, TWO_MENU_F2_E2_D1, TWO_MENU_F2_E2_D1, TWO_MENU_F2_E2_D2, TWO_MENU_F2_E2, (*fun70) }, //F2_E2É¾³ý¹ÜÀíÆ÷
-	{ TWO_MENU_F2_E2_D2, TWO_MENU_F2_E2_D2, TWO_MENU_F2_E2_D2, TWO_MENU_F2_E2_D3, TWO_MENU_F2_E2, (*fun71) }, //F2_E2É¾³ý¹ÜÀíÆ÷
-	{ TWO_MENU_F2_E2_D3, TWO_MENU_F2_E2_D3, TWO_MENU_F2_E2_D3, TWO_MENU_F2_E2_D4, TWO_MENU_F2_E2, (*fun72) }, //F2_E2É¾³ý¹ÜÀíÆ÷
-	{ TWO_MENU_F2_E2_D4, TWO_MENU_F2_E2_D4, TWO_MENU_F2_E2_D4, TWO_MENU_F2_E2_D1, TWO_MENU_F2_E2, (*fun73) }, //F2_E2É¾³ý¹ÜÀíÆ÷
+	{ TWO_MENU_F2_E2_D1, TWO_MENU_F2_E2_D1, TWO_MENU_F2_E2_D1, TWO_MENU_F2_E2_D4, TWO_MENU_F2_E2, (*fun70) }, //F2_E2É¾³ý¹ÜÀíÆ÷
+	{ TWO_MENU_F2_E2_D2, TWO_MENU_F2_E2_D2, TWO_MENU_F2_E2_D2, TWO_MENU_F2_E2_D1, TWO_MENU_F2_E2, (*fun71) }, //F2_E2É¾³ý¹ÜÀíÆ÷
+	{ TWO_MENU_F2_E2_D3, TWO_MENU_F2_E2_D3, TWO_MENU_F2_E2_D3, TWO_MENU_F2_E2_D2, TWO_MENU_F2_E2, (*fun72) }, //F2_E2É¾³ý¹ÜÀíÆ÷
+	{ TWO_MENU_F2_E2_D4, TWO_MENU_F2_E2_D4, TWO_MENU_F2_E2_D4, TWO_MENU_F2_E2_D3, TWO_MENU_F2_E2, (*fun73) }, //F2_E2É¾³ý¹ÜÀíÆ÷
 
-	{ TWO_MENU_F2_E3_D1, TWO_MENU_F2_E3_D1, TWO_MENU_F2_E3_D1, TWO_MENU_F2_E3_D2, TWO_MENU_F2_E3, (*fun74) }, //F2_E3É¾³ý±¨¾¯Æ÷
-	{ TWO_MENU_F2_E3_D2, TWO_MENU_F2_E3_D2, TWO_MENU_F2_E3_D2, TWO_MENU_F2_E3_D3, TWO_MENU_F2_E3, (*fun75) }, //F2_E3É¾³ý±¨¾¯Æ÷
-	{ TWO_MENU_F2_E3_D3, TWO_MENU_F2_E3_D3, TWO_MENU_F2_E3_D3, TWO_MENU_F2_E3_D4, TWO_MENU_F2_E3, (*fun76) }, //F2_E3É¾³ý±¨¾¯Æ÷
-	{ TWO_MENU_F2_E3_D4, TWO_MENU_F2_E3_D4, TWO_MENU_F2_E3_D4, TWO_MENU_F2_E3_D1, TWO_MENU_F2_E3, (*fun77) }, //F2_E3É¾³ý±¨¾¯Æ÷
+	{ TWO_MENU_F2_E3_D1, TWO_MENU_F2_E3_D1, TWO_MENU_F2_E3_D1, TWO_MENU_F2_E3_D4, TWO_MENU_F2_E3, (*fun74) }, //F2_E3É¾³ý±¨¾¯Æ÷
+	{ TWO_MENU_F2_E3_D2, TWO_MENU_F2_E3_D2, TWO_MENU_F2_E3_D2, TWO_MENU_F2_E3_D1, TWO_MENU_F2_E3, (*fun75) }, //F2_E3É¾³ý±¨¾¯Æ÷
+	{ TWO_MENU_F2_E3_D3, TWO_MENU_F2_E3_D3, TWO_MENU_F2_E3_D3, TWO_MENU_F2_E3_D2, TWO_MENU_F2_E3, (*fun76) }, //F2_E3É¾³ý±¨¾¯Æ÷
+	{ TWO_MENU_F2_E3_D4, TWO_MENU_F2_E3_D4, TWO_MENU_F2_E3_D4, TWO_MENU_F2_E3_D3, TWO_MENU_F2_E3, (*fun77) }, //F2_E3É¾³ý±¨¾¯Æ÷
 
-	{ TWO_MENU_F2_E4_D1, TWO_MENU_F2_E4_D1, TWO_MENU_F2_E4_D1, TWO_MENU_F2_E4_D2, TWO_MENU_F2_E4, (*fun78) }, //F2_E4É¾³ýÈ¡ÏûÆ÷
-	{ TWO_MENU_F2_E4_D2, TWO_MENU_F2_E4_D2, TWO_MENU_F2_E4_D2, TWO_MENU_F2_E4_D3, TWO_MENU_F2_E4, (*fun79) }, //F2_E4É¾³ýÈ¡ÏûÆ÷
-	{ TWO_MENU_F2_E4_D3, TWO_MENU_F2_E4_D3, TWO_MENU_F2_E4_D3, TWO_MENU_F2_E4_D4, TWO_MENU_F2_E4, (*fun80) }, //F2_E4É¾³ýÈ¡ÏûÆ÷
-	{ TWO_MENU_F2_E4_D4, TWO_MENU_F2_E4_D4, TWO_MENU_F2_E4_D4, TWO_MENU_F2_E4_D1, TWO_MENU_F2_E4, (*fun81) }, //F2_E4É¾³ýÈ¡ÏûÆ÷
+	{ TWO_MENU_F2_E4_D1, TWO_MENU_F2_E4_D1, TWO_MENU_F2_E4_D1, TWO_MENU_F2_E4_D4, TWO_MENU_F2_E4, (*fun78) }, //F2_E4É¾³ýÈ¡ÏûÆ÷
+	{ TWO_MENU_F2_E4_D2, TWO_MENU_F2_E4_D2, TWO_MENU_F2_E4_D2, TWO_MENU_F2_E4_D1, TWO_MENU_F2_E4, (*fun79) }, //F2_E4É¾³ýÈ¡ÏûÆ÷
+	{ TWO_MENU_F2_E4_D3, TWO_MENU_F2_E4_D3, TWO_MENU_F2_E4_D3, TWO_MENU_F2_E4_D2, TWO_MENU_F2_E4, (*fun80) }, //F2_E4É¾³ýÈ¡ÏûÆ÷
+	{ TWO_MENU_F2_E4_D4, TWO_MENU_F2_E4_D4, TWO_MENU_F2_E4_D4, TWO_MENU_F2_E4_D3, TWO_MENU_F2_E4, (*fun81) }, //F2_E4É¾³ýÈ¡ÏûÆ÷
 
 	{ TWO_MENU_F3_E1_SET, TWO_MENU_F3_E1_SET, TWO_MENU_F3_E1_SET, TWO_MENU_F3_E1_SET, TWO_MENU_F3_E1, (*fun82) }, //F3_E1ÉèÖÃÅÅ¶ÓÏÔÊ¾»òÕßÑ­»·ÏÔÊ¾
 	{ TWO_MENU_F3_E2_SET, TWO_MENU_F3_E2_SET, TWO_MENU_F3_E2_SET, TWO_MENU_F3_E2_SET, TWO_MENU_F3_E2, (*fun83) }, //F3_E2ÉèÖÃ¶ÓÁÐ¸öÊý
@@ -269,6 +270,25 @@ void KeyProcess(void)
 					func_index = ONE_MENU_F0;
 					clear_main_press_time();
 				}
+			}
+			else if (func_index == TWO_MENU_F2_E1_D1 || func_index == TWO_MENU_F2_E1_D2 || func_index == TWO_MENU_F2_E1_D3 || func_index == TWO_MENU_F2_E1_D4 )
+			{
+				main_press_time_temp = return_main_press_time();
+				if (main_press_time_temp >= 10)
+				{
+					delete_call_function(Two_Menu_F2_E1);
+					delay10ms();
+					clear_main_press_time();
+//					if (sound_table == 1)
+//					{
+//#if SOUND
+//						GD5800_select_chapter(SETSUCCESS_POSITION);
+//#endif
+//						sound_table = 0;
+//					}
+				}
+				else
+					func_index = table[func_index].enter;
 			}
 			else
 			{
@@ -734,6 +754,11 @@ unsigned char return_func_index(void)
 	unsigned char func_index_temp = 0;
 	func_index_temp = func_index;
 	return func_index_temp;
+}
+
+void set_func_index(unsigned char temp)
+{
+	func_index = temp;
 }
 
 unsigned char return_Two_Menu_F3_E1(void)
