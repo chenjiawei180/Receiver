@@ -1,4 +1,4 @@
-C51 COMPILER V9.00   TIMER                                                                 09/12/2015 15:35:40 PAGE 1   
+C51 COMPILER V9.00   TIMER                                                                 09/12/2015 17:33:14 PAGE 1   
 
 
 C51 COMPILER V9.00, COMPILATION OF MODULE TIMER
@@ -62,7 +62,7 @@ line level    source
   47   1        if (1)
   48   1        {
   49   2          await_number++;
-C51 COMPILER V9.00   TIMER                                                                 09/12/2015 15:35:40 PAGE 2   
+C51 COMPILER V9.00   TIMER                                                                 09/12/2015 17:33:14 PAGE 2   
 
   50   2          if (await_number == 10)
   51   2          {
@@ -126,7 +126,7 @@ line level    source
  109          
  110          void clear_main_press_time(void)
  111          {
-C51 COMPILER V9.00   TIMER                                                                 09/12/2015 15:35:40 PAGE 3   
+C51 COMPILER V9.00   TIMER                                                                 09/12/2015 17:33:14 PAGE 3   
 
  112   1        main_press_time = 0;
  113   1      }

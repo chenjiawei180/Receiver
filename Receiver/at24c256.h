@@ -58,5 +58,6 @@ extern bit register_alarm_function(unsigned char *buf);
 extern bit delete_alarm_function(unsigned char *buf);
 extern bit register_cancel_function(unsigned char *buf);
 extern bit delete_cancel_function(unsigned char *buf);
+extern void Delete_all_data(void);
 
 #endif
