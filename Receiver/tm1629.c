@@ -463,40 +463,64 @@ void fun21(void) //二级菜单F1-E1
 void fun22(void) //二级菜单F1-E2
 {
 	tm1629_E(0x02);
-}
-
-void fun23(void) //二级菜单F1-E3
-{
-	tm1629_E(0x03);
-}
-
-void fun24(void) //二级菜单F1-E4
-{
-	tm1629_E(0x04);
-}
-
-void fun25(void) //二级菜单F2-E1
-{
-	tm1629_E(0x01);
 	Two_Menu_F1_E2[0] = 0;
 	Two_Menu_F1_E2[1] = 0;
 	Two_Menu_F1_E2[2] = 0;
 	Two_Menu_F1_E2[3] = 1;
 }
 
+void fun23(void) //二级菜单F1-E3
+{
+	tm1629_E(0x03);
+	Two_Menu_F1_E3[0] = 0;
+	Two_Menu_F1_E3[1] = 0;
+	Two_Menu_F1_E3[2] = 0;
+	Two_Menu_F1_E3[3] = 1;
+}
+
+void fun24(void) //二级菜单F1-E4
+{
+	tm1629_E(0x04);
+	Two_Menu_F1_E4[0] = 0;
+	Two_Menu_F1_E4[1] = 0;
+	Two_Menu_F1_E4[2] = 0;
+	Two_Menu_F1_E4[3] = 1;
+}
+
+void fun25(void) //二级菜单F2-E1
+{
+	tm1629_E(0x01);
+	Two_Menu_F2_E1[0] = 0;
+	Two_Menu_F2_E1[1] = 0;
+	Two_Menu_F2_E1[2] = 0;
+	Two_Menu_F2_E1[3] = 1;
+}
+
 void fun26(void) //二级菜单F2-E2
 {
 	tm1629_E(0x02);
+	Two_Menu_F2_E2[0] = 0;
+	Two_Menu_F2_E2[1] = 0;
+	Two_Menu_F2_E2[2] = 0;
+	Two_Menu_F2_E2[3] = 1;
 }
 
 void fun27(void) //二级菜单F2-E3
 {
 	tm1629_E(0x03);
+	Two_Menu_F2_E3[0] = 0;
+	Two_Menu_F2_E3[1] = 0;
+	Two_Menu_F2_E3[2] = 0;
+	Two_Menu_F2_E3[3] = 1;
 }
 
 void fun28(void) //二级菜单F2-E4
 {
 	tm1629_E(0x04);
+	Two_Menu_F2_E4[0] = 0;
+	Two_Menu_F2_E4[1] = 0;
+	Two_Menu_F2_E4[2] = 0;
+	Two_Menu_F2_E4[3] = 1;
 }
 
 void fun29(void) //二级菜单F3-E1

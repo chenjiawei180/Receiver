@@ -290,6 +290,63 @@ void KeyProcess(void)
 				else
 					func_index = table[func_index].enter;
 			}
+			else if (func_index == TWO_MENU_F2_E2_D1 || func_index == TWO_MENU_F2_E2_D2 || func_index == TWO_MENU_F2_E2_D3 || func_index == TWO_MENU_F2_E2_D4)
+			{
+				main_press_time_temp = return_main_press_time();
+				if (main_press_time_temp >= 10)
+				{
+					delete_host_function(Two_Menu_F2_E2);
+					delay10ms();
+					clear_main_press_time();
+					//					if (sound_table == 1)
+					//					{
+					//#if SOUND
+					//						GD5800_select_chapter(SETSUCCESS_POSITION);
+					//#endif
+					//						sound_table = 0;
+					//					}
+				}
+				else
+					func_index = table[func_index].enter;
+			}
+			else if (func_index == TWO_MENU_F2_E3_D1 || func_index == TWO_MENU_F2_E3_D2 || func_index == TWO_MENU_F2_E3_D3 || func_index == TWO_MENU_F2_E3_D4)
+			{
+				main_press_time_temp = return_main_press_time();
+				if (main_press_time_temp >= 10)
+				{
+					delete_alarm_function(Two_Menu_F2_E3);
+					delay10ms();
+					clear_main_press_time();
+					//					if (sound_table == 1)
+					//					{
+					//#if SOUND
+					//						GD5800_select_chapter(SETSUCCESS_POSITION);
+					//#endif
+					//						sound_table = 0;
+					//					}
+				}
+				else
+					func_index = table[func_index].enter;
+			}
+			else if (func_index == TWO_MENU_F2_E4_D1 || func_index == TWO_MENU_F2_E4_D2 || func_index == TWO_MENU_F2_E4_D3 || func_index == TWO_MENU_F2_E4_D4)
+			{
+				main_press_time_temp = return_main_press_time();
+				if (main_press_time_temp >= 10)
+				{
+					delete_cancel_function(Two_Menu_F2_E4);
+					delay10ms();
+					clear_main_press_time();
+					//					if (sound_table == 1)
+					//					{
+					//#if SOUND
+					//						GD5800_select_chapter(SETSUCCESS_POSITION);
+					//#endif
+					//						sound_table = 0;
+					//					}
+				}
+				else
+					func_index = table[func_index].enter;
+			}
 			else
 			{
 				func_index = table[func_index].enter;

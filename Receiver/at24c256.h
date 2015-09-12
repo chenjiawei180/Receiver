@@ -17,6 +17,7 @@ sbit SCL = P3 ^ 5;            //模拟I2C时钟控制位
 #define  HOST_TABLE_NUMBER   8
 #define  ALARM_TABLE_NUMBER  8
 #define  CANCEL_TABLE_NUMBER 8
+#define  ALL_TABLE_NUMBER    56
 
 //标志位地址
 #define CALL_TABLE_START    0x0000
