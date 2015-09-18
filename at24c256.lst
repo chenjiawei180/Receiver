@@ -1,4 +1,4 @@
-C51 COMPILER V9.00   AT24C256                                                              09/18/2015 12:10:36 PAGE 1   
+C51 COMPILER V9.00   AT24C256                                                              09/18/2015 14:28:52 PAGE 1   
 
 
 C51 COMPILER V9.00, COMPILATION OF MODULE AT24C256
@@ -62,7 +62,7 @@ line level    source
   52          /*------------------------------------------------
   53          结束总线
   54          ------------------------------------------------*/
-C51 COMPILER V9.00   AT24C256                                                              09/18/2015 12:10:36 PAGE 2   
+C51 COMPILER V9.00   AT24C256                                                              09/18/2015 14:28:52 PAGE 2   
 
   55          void Stop_I2c()
   56          {
@@ -126,7 +126,7 @@ line level    source
  114          字节数据传送函数
  115          函数原型: unsigned char  RcvByte();
  116          功能:  用来接收从器件传来的数据,并判断总线错误(不发应答信号)，
-C51 COMPILER V9.00   AT24C256                                                              09/18/2015 12:10:36 PAGE 3   
+C51 COMPILER V9.00   AT24C256                                                              09/18/2015 14:28:52 PAGE 3   
 
  117          发完后请用应答函数。
  118          ------------------------------------------------------------------*/
@@ -190,7 +190,7 @@ line level    source
  176          void NoAck_I2c(void)
  177          {
  178   1        SDA = 1;
-C51 COMPILER V9.00   AT24C256                                                              09/18/2015 12:10:36 PAGE 4   
+C51 COMPILER V9.00   AT24C256                                                              09/18/2015 14:28:52 PAGE 4   
 
  179   1        _Nop();
  180   1        _Nop();
@@ -254,7 +254,7 @@ line level    source
  238   1        SendByte(suba);            //发送器件子地址
  239   1        if (ack == 0)return(0);
  240   1        Start_I2c();
-C51 COMPILER V9.00   AT24C256                                                              09/18/2015 12:10:36 PAGE 5   
+C51 COMPILER V9.00   AT24C256                                                              09/18/2015 14:28:52 PAGE 5   
 
  241   1        SendByte(sla + 1);
  242   1        if (ack == 0)return(0);
@@ -318,7 +318,7 @@ line level    source
  295   1          //如果程序执行到这里，则代表ID码没有注册过
  296   1          for (base_address = CALL_TABLE_START; base_address<CALL_TABLE_NUMBER; base_address++)
  297   1          {
-C51 COMPILER V9.00   AT24C256                                                              09/18/2015 12:10:36 PAGE 6   
+C51 COMPILER V9.00   AT24C256                                                              09/18/2015 14:28:52 PAGE 6   
 
  298   2            IRcvStr(I2C_ADDRESS, base_address*PAGE_LENGTH, at24c64_buff, PAGE_LENGTH);//从AT24C64里面读出32个字节的
              -标志位
@@ -382,7 +382,7 @@ line level    source
  350   5                Two_Menu_F1_E2[2] = *(eeprom_buff + 3);
  351   5                Two_Menu_F1_E2[3] = *(eeprom_buff + 4);
  352   5      #ifdef DEBUG
-C51 COMPILER V9.00   AT24C256                                                              09/18/2015 12:10:36 PAGE 7   
+C51 COMPILER V9.00   AT24C256                                                              09/18/2015 14:28:52 PAGE 7   
 
  353   5                uart_printf("host register is old! \n\r");
  354   5      #endif
@@ -446,7 +446,7 @@ line level    source
  409   2          IRcvStr(I2C_ADDRESS, base_address*PAGE_LENGTH, at24c64_buff, PAGE_LENGTH);//从AT24C256里面读出32个字节的
              -标志位
  410   2          delay10ms();
-C51 COMPILER V9.00   AT24C256                                                              09/18/2015 12:10:36 PAGE 8   
+C51 COMPILER V9.00   AT24C256                                                              09/18/2015 14:28:52 PAGE 8   
 
  411   2          for (offset_address = 0; offset_address<PAGE_LENGTH; offset_address++)//主要32个字节标志位里面没有0的就O
              -K
@@ -510,7 +510,7 @@ line level    source
  465   4              //          }
  466   4              return 1;
  467   4              //提示成功        
-C51 COMPILER V9.00   AT24C256                                                              09/18/2015 12:10:36 PAGE 9   
+C51 COMPILER V9.00   AT24C256                                                              09/18/2015 14:28:52 PAGE 9   
 
  468   4            }
  469   3          }
@@ -574,7 +574,7 @@ line level    source
  520   2          {
  521   3            if (at24c64_buff[offset_address] != 0)
  522   3            {
-C51 COMPILER V9.00   AT24C256                                                              09/18/2015 12:10:36 PAGE 10  
+C51 COMPILER V9.00   AT24C256                                                              09/18/2015 14:28:52 PAGE 10  
 
  523   4              ISendStr(I2C_ADDRESS, (CANCEL_DATA_START + ((base_address*PAGE_LENGTH) + offset_address) * 8), buf, 8)
              -;
@@ -638,7 +638,7 @@ line level    source
              -eeprom_buff + 2)), (unsigned int)(*(eeprom_buff + 3)), (unsigned int)(*(eeprom_buff + 4)) );
  578   5                uart_printf("caller is delete success \r\n");
  579   5      #endif    
-C51 COMPILER V9.00   AT24C256                                                              09/18/2015 12:10:36 PAGE 11  
+C51 COMPILER V9.00   AT24C256                                                              09/18/2015 14:28:52 PAGE 11  
 
  580   5              }
  581   4      
@@ -702,7 +702,7 @@ line level    source
  635          bit delete_alarm_function(unsigned char *buf)//buf为组码数组的指针
  636          {
  637   1        unsigned char base_address = 0;
-C51 COMPILER V9.00   AT24C256                                                              09/18/2015 12:10:36 PAGE 12  
+C51 COMPILER V9.00   AT24C256                                                              09/18/2015 14:28:52 PAGE 12  
 
  638   1        unsigned char offset_address = 0;
  639   1      
@@ -766,7 +766,7 @@ line level    source
  693   4      #ifdef DEBUG
  694   4              uart_printf("canceler is delete success \r\n");
  695   4      #endif    
-C51 COMPILER V9.00   AT24C256                                                              09/18/2015 12:10:36 PAGE 13  
+C51 COMPILER V9.00   AT24C256                                                              09/18/2015 14:28:52 PAGE 13  
 
  696   4            }
  697   3            else if (at24c64_buff[offset_address] == 0)//如果不是0000 则无需全部删除

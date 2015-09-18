@@ -19,7 +19,7 @@ unsigned char Two_Menu_F2_E3[4] = { 0, 0, 0, 1 }; //F2_E3
 unsigned char Two_Menu_F2_E4[4] = { 0, 0, 0, 1 }; //F2_E4
 
 unsigned char Two_Menu_F3_E1 = 1; //即时模式或者排队显示
-unsigned char Two_Menu_F3_E2 = 7; //呼叫时候存储数量
+unsigned char Two_Menu_F3_E2 = 12; //呼叫时候存储数量
 
 unsigned char Two_Menu_F4_E1 = 0; //销号时间
 unsigned char Two_Menu_F5_E1 = 0; //循环间隔时间
@@ -563,7 +563,7 @@ void KeyProcess(void)
 				else Two_Menu_F7_E4++;
 				break;
 			case TWO_MENU_F8_E1_SET:
-				if (Two_Menu_F8_E1 == 1) Two_Menu_F8_E1 = 0;	//F8_E1单键位跟多键位切换
+				if (Two_Menu_F8_E1 == 1) Two_Menu_F8_E1 = 2;	//F8_E1单键位跟多键位切换
 				else Two_Menu_F8_E1 = 1 ;
 				break;
 			case TWO_MENU_F8_E2_SET:
@@ -782,7 +782,7 @@ void KeyProcess(void)
 				else Two_Menu_F7_E4--;
 				break;
 			case TWO_MENU_F8_E1_SET:
-				if (Two_Menu_F8_E1 == 1) Two_Menu_F8_E1 = 0;	//F8_E1单键位跟多键位切换
+				if (Two_Menu_F8_E1 == 1) Two_Menu_F8_E1 = 2;	//F8_E1单键位跟多键位切换
 				else Two_Menu_F8_E1 = 1;
 				break;
 			case TWO_MENU_F8_E2_SET:

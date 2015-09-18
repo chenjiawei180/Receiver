@@ -276,25 +276,25 @@ void tm1629_load(void)
 {
 	tm1629_clear();
 	if (*(display_ram + 66) != 0)
-		mcuram_to_displayram(buf_display[2] + 15, display_ram + 66);
+		mcuram_to_displayram(buf_display[5] + 7, display_ram + 66);
 	if (*(display_ram + 60) != 0)
-		mcuram_to_displayram(buf_display[2] + 11, display_ram + 60);
+		mcuram_to_displayram(buf_display[5] + 3, display_ram + 60);
 	if (*(display_ram + 54) != 0)
-		mcuram_to_displayram(buf_display[2] + 7, display_ram + 54);
+		mcuram_to_displayram(buf_display[4] + 7, display_ram + 54);
 	if (*(display_ram + 48) != 0)
-		mcuram_to_displayram(buf_display[2] + 3, display_ram + 48);
+		mcuram_to_displayram(buf_display[4] + 3, display_ram + 48);
 	if (*(display_ram + 42) != 0)
-		mcuram_to_displayram(buf_display[1] + 15, display_ram + 42);
+		mcuram_to_displayram(buf_display[3] + 7, display_ram + 42);
 	if (*(display_ram + 36) != 0)
-		mcuram_to_displayram(buf_display[1] + 11, display_ram + 36);
+		mcuram_to_displayram(buf_display[3] + 3, display_ram + 36);
 	if (*(display_ram + 30) != 0)
-		mcuram_to_displayram(buf_display[1] + 7, display_ram + 30);
+		mcuram_to_displayram(buf_display[2] + 7, display_ram + 30);
 	if (*(display_ram + 24) != 0)
-		mcuram_to_displayram(buf_display[1] + 3, display_ram + 24);
+		mcuram_to_displayram(buf_display[2] + 3, display_ram + 24);
 	if (*(display_ram + 18) != 0)
-		mcuram_to_displayram(buf_display[0] + 15, display_ram + 18);
+		mcuram_to_displayram(buf_display[1] + 7, display_ram + 18);
 	if (*(display_ram + 12) != 0)
-		mcuram_to_displayram(buf_display[0] + 11, display_ram + 12);
+		mcuram_to_displayram(buf_display[1] + 3, display_ram + 12);
 	if (*(display_ram + 6) != 0)
 		mcuram_to_displayram(buf_display[0] + 7, display_ram + 6);
 	if (*(display_ram + 0) != 0)

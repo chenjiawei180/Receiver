@@ -1,4 +1,4 @@
-C51 COMPILER V9.00   DECODER                                                               09/18/2015 12:10:36 PAGE 1   
+C51 COMPILER V9.00   DECODER                                                               09/18/2015 14:28:52 PAGE 1   
 
 
 C51 COMPILER V9.00, COMPILATION OF MODULE DECODER
@@ -20,420 +20,498 @@ line level    source
   10          
   11          void DecoderProcess(void)
   12          { 
-  13   1        unsigned char i, j ,l;
+  13   1        unsigned char i, j ,l ,k;
   14   1        unsigned char temp_buff[8];//½âÂëÓÃÁÙÊ±Êı×é
   15   1        unsigned char temp_buff1[PAGE_LENGTH] = { 0 };//²éÑ¯AT24C256ÁÙÊ±Êı×é
   16   1      
-  17   1        unsigned char func_index_temp = 0;
-  18   1        unsigned char Two_Menu_F8_E1_temp = 0;
-  19   1        unsigned char Two_Menu_F3_E1_temp = 0;
-  20   1        unsigned char Two_Menu_F3_E2_temp = 0;
-  21   1        func_index_temp = return_func_index();
-  22   1        Two_Menu_F8_E1_temp = return_Two_Menu_F8_E1();
-  23   1        Two_Menu_F3_E1_temp = return_Two_Menu_F3_E1();
-  24   1        Two_Menu_F3_E2_temp = return_Two_Menu_F3_E2();
-  25   1        receive_rf_decoder();
-  26   1        if (return_again_receive_rf_decoder_finished() == 1)
-  27   1        {
-  28   2      #ifdef DEBUG
-  29   2          uart_printf("decoder_val is %02x %02x %02x .\r\n", (unsigned int)old2_RF_RECE_REG[0], (unsigned int)old2
+  17   1        unsigned char func_index_temp = 0;    //´´½¨ÁÙÊ±±äÁ¿£¬ÓÃÓÚ·Å»ØÆäËûÍâ²¿±äÁ¿
+  18   1        unsigned char Two_Menu_F8_E1_temp = 0;  //´´½¨ÁÙÊ±±äÁ¿£¬ÓÃÓÚ·Å»ØÆäËûÍâ²¿±äÁ¿
+  19   1        unsigned char Two_Menu_F3_E1_temp = 0;  //´´½¨ÁÙÊ±±äÁ¿£¬ÓÃÓÚ·Å»ØÆäËûÍâ²¿±äÁ¿  
+  20   1        unsigned char Two_Menu_F3_E2_temp = 0;  //´´½¨ÁÙÊ±±äÁ¿£¬ÓÃÓÚ·Å»ØÆäËûÍâ²¿±äÁ¿
+  21   1        unsigned char Two_Menu_F7_E1_temp = 0;  //´´½¨ÁÙÊ±±äÁ¿£¬ÓÃÓÚ·Å»ØÆäËûÍâ²¿±äÁ¿
+  22   1      
+  23   1        func_index_temp = return_func_index();  //·µ»ØËùĞèÒªµÄÍâ²¿±äÁ¿
+  24   1        Two_Menu_F8_E1_temp = return_Two_Menu_F8_E1();  //·µ»ØËùĞèÒªµÄÍâ²¿±äÁ¿
+  25   1        Two_Menu_F3_E1_temp = return_Two_Menu_F3_E1();  //·µ»ØËùĞèÒªµÄÍâ²¿±äÁ¿
+  26   1        Two_Menu_F3_E2_temp = return_Two_Menu_F3_E2();  //·µ»ØËùĞèÒªµÄÍâ²¿±äÁ¿
+  27   1        Two_Menu_F7_E1_temp = return_Two_Menu_F7_E1();  //·µ»ØËùĞèÒªµÄÍâ²¿±äÁ¿
+  28   1      
+  29   1        receive_rf_decoder(); //½âÂëº¯Êı
+  30   1      
+  31   1        if (return_again_receive_rf_decoder_finished() == 1) //±êÖ¾Î»µÈÓÚ1 ËµÃ÷ÔÚ2´Î¼ìÑéÏÂÍ¨¹ı,½ÓÊÕµ½ÓĞĞ§Âë
+  32   1        {
+  33   2      #ifdef DEBUG
+  34   2          uart_printf("decoder_val is %02x %02x %02x .\r\n", (unsigned int)old2_RF_RECE_REG[0], (unsigned int)old2
              -_RF_RECE_REG[1], (unsigned int)old2_RF_RECE_REG[2]); //²âÊÔ°´¼ü¼üÖµ
-  30   2      #endif
-  31   2          switch (func_index_temp)
-  32   2          {
-  33   3          case MENU_STANDBY:
-  34   3          {
-  35   4             for (j = 0; j<(CALL_TABLE_NUMBER + CANCEL_TABLE_NUMBER + ALARM_TABLE_NUMBER); j++)
-  36   4            {
-  37   5              IRcvStr(I2C_ADDRESS, j*PAGE_LENGTH, temp_buff1, PAGE_LENGTH);
-  38   5              delay10ms();
-  39   5              for (i = 0; i<PAGE_LENGTH; i++)
-  40   5              {
-  41   6                if (temp_buff1[i] == 0)
-  42   6                { 
-  43   7      #ifdef DEBUG
-  44   7                  uart_printf("find a table!");
-  45   7      #endif
-  46   7                  IRcvStr(I2C_ADDRESS, CALL_DATA_START + (j * 32 + i) * 8, temp_buff, 8);
-  47   7                  delay10ms();
-  48   7                  if (((Two_Menu_F8_E1_temp != 1) && temp_buff[5] == old2_RF_RECE_REG[0] && temp_buff[6] == old2_RF_RE
+  35   2      #endif
+  36   2          switch (func_index_temp)
+  37   2          {
+  38   3          case MENU_STANDBY://´ı»ú×´Ì¬ÏÂ
+  39   3          {
+  40   4            //¼üÅÌ¹æÔò
+  41   4            if ((old2_RF_RECE_REG[2] & 0xf0) == 0x00 && (((old2_RF_RECE_REG[0] >> 4) == Two_Menu_F7_E1_temp) || (Tw
+             -o_Menu_F7_E1_temp == 11)))//¼üÅÌ¹æÔò£¬³ÌĞò°´Ä¬ÈÏµÄÀ´±à
+  42   4            {
+  43   5              temp_buff[0] = old2_RF_RECE_REG[2] & 0x0f;  //Îª°´¼üÖµ
+  44   5              temp_buff[1] = old2_RF_RECE_REG[0] >> 4;  //Îª·ÀÇøºÅ
+  45   5              temp_buff[2] = old2_RF_RECE_REG[0] & 0x0f;  //Îª3Î»×éÂëµÚÒ»Î»
+  46   5              temp_buff[3] = old2_RF_RECE_REG[1] >> 4;  //Îª3Î»×éÂëµÚ¶şÎ»
+  47   5              temp_buff[4] = old2_RF_RECE_REG[1] & 0x0f;  //Îª3Î»×éÂëµÚÈıÎ»
+  48   5              temp_buff[5] = old2_RF_RECE_REG[0];     //±¸ÓÃÏî,ÔİÇÒ´æµÚÒ»Î»IDÂë
+  49   5      
+  50   5              tm1629_clear();//ÇåÆÁ
+  51   5              decoder_temp_to_mcuram(display_ram, temp_buff);//½«ÁÙÊ±Êı×éµÄÊı¾İÒÆÈëµ¥Æ¬»úÔİ´æÊı×é 8×Ö½Ú×ª6×Ö½Ú
+  52   5              tm1629_load();//µ¥Æ¬»ú°ÑÊı×éÄÚÈİÔØÈëÊıÂë¹ÜÏÔ´æÊı×éÖĞ
+C51 COMPILER V9.00   DECODER                                                               09/18/2015 14:28:52 PAGE 2   
+
+  53   5              display();//ÏÔÊ¾ÊıÂë¹Ü
+  54   5              set_func_index(DECODER_MENU);//´ËÊ±ÌøÈë½âÂë²Ëµ¥£¬ÎªÏÂÒ»´Î½âÂë×ö×¼±¸
+  55   5              clear_again_receive_rf_decoder_finished();//Çå³ı½âÂëÍê³É±êÖ¾Î»
+  56   5      
+  57   5              break;
+  58   5            }
+  59   4            //ºô½ĞÆ÷×¢²á,ËÑË÷ËùĞèÒªµÄºô½ĞÆ÷
+  60   4             for (j = 0; j<(CALL_TABLE_NUMBER + CANCEL_TABLE_NUMBER + ALARM_TABLE_NUMBER); j++)//ËÑË÷±êÖ¾Î»
+  61   4            {
+  62   5              IRcvStr(I2C_ADDRESS, j*PAGE_LENGTH, temp_buff1, PAGE_LENGTH);//¶Á³ö32¸ö×Ö½Ú±êÖ¾Î»
+  63   5              delay10ms();
+  64   5              for (i = 0; i<PAGE_LENGTH; i++) //¶Ô¶Á³öµÄ32×Ö½Ú±êÖ¾Î»½øĞĞ²é¿´£¬¿´ÊÇ·ñÎª0
+  65   5              {
+  66   6                if (temp_buff1[i] == 0)//±êÖ¾Î»Îª0´ú±í¸Ã±êÖ¾Î»Ëù¶ÔÓ¦µÄÊı¾İÇøÓĞÊı¾İ
+  67   6                { 
+  68   7      #ifdef DEBUG
+  69   7                  uart_printf("find a table!");
+  70   7      #endif
+  71   7                  IRcvStr(I2C_ADDRESS, CALL_DATA_START + (j * 32 + i) * 8, temp_buff, 8);//¶Á³ö¶ÔÓ¦µÄ8¸ö×Ö½ÚµÄÊı¾İ
+  72   7                  delay10ms();
+  73   7                  if (((Two_Menu_F8_E1_temp != 1) && temp_buff[5] == old2_RF_RECE_REG[0] && temp_buff[6] == old2_RF_RE
+             -CE_REG[1] && ((temp_buff[7] >> 4) == (old2_RF_RECE_REG[2] >> 4))) || ((Two_Menu_F8_E1_temp == 1) && temp_buff[5] == old2
+             -_RF_RECE_REG[0] && temp_buff[6] == old2_RF_RECE_REG[1] && temp_buff[7] == old2_RF_RECE_REG[2]))// ½øĞĞ¶Ô±È£¬¿´¿´Êı¾İÊÇ·ñ
+             -·ûºÏ
+  74   7                  {
+  75   8                      tm1629_clear();//ÇåÆÁ
+  76   8                      decoder_temp_to_mcuram(display_ram, temp_buff);//Èç¹û·ûºÏµÄ»°  ½«ÁÙÊ±Êı×éµÄÊı¾İÒÆÈëµ¥Æ¬»úÔİ´æÊı×é 
+             -8×Ö½Ú×ª6×Ö½Ú
+  77   8                      tm1629_load();//µ¥Æ¬»ú°ÑÊı×éÄÚÈİÔØÈëÊıÂë¹ÜÏÔ´æÊı×éÖĞ
+  78   8                      display();//ÏÔÊ¾ÊıÂë¹Ü
+  79   8      #ifdef DEBUG
+  80   8                      uart_printf("decoder success!"); 
+  81   8      #endif
+  82   8      
+  83   8      #ifdef DEBUG
+  84   8                      uart_printf("display_ram is %02x %02x %02x %02x.\r\n", (unsigned int)display_ram[0], (unsigned int
+             -)display_ram[1], (unsigned int)display_ram[2], (unsigned int)display_ram[3]); //²âÊÔ°´¼ü¼üÖµ
+  85   8      #endif
+  86   8      
+  87   8                      set_func_index(DECODER_MENU);;//´ËÊ±ÌøÈë½âÂë²Ëµ¥£¬ÎªÏÂÒ»´Î½âÂë×ö×¼±¸
+  88   8                      clear_again_receive_rf_decoder_finished();//Çå³ı½âÂëÍê³É±êÖ¾Î»
+  89   8                      break;
+  90   8                      break;
+  91   8                  }
+  92   7                }
+  93   6              }
+  94   5            } 
+  95   4             break;
+  96   4          }
+  97   3      
+  98   3          case DECODER_MENU: //½âÂë²Ëµ¥ÏÂ
+  99   3          {
+ 100   4             //¼üÅÌ¹æÔò
+ 101   4            if ((old2_RF_RECE_REG[2] & 0xf0) == 0x00 && (((old2_RF_RECE_REG[0] >> 4) == Two_Menu_F7_E1_temp) || (Tw
+             -o_Menu_F7_E1_temp == 11)))//¼üÅÌ¹æÔò£¬³ÌĞò°´Ä¬ÈÏµÄÀ´±à
+ 102   4            {
+ 103   5              temp_buff[0] = old2_RF_RECE_REG[2] & 0x0f;  //Îª°´¼üÖµ
+ 104   5              temp_buff[1] = old2_RF_RECE_REG[0] >> 4;  //Îª·ÀÇøºÅ
+ 105   5              temp_buff[2] = old2_RF_RECE_REG[0] & 0x0f;  //Îª3Î»×éÂëµÚÒ»Î»
+ 106   5              temp_buff[3] = old2_RF_RECE_REG[1] >> 4;  //Îª3Î»×éÂëµÚ¶şÎ»
+ 107   5              temp_buff[4] = old2_RF_RECE_REG[1] & 0x0f;  //Îª3Î»×éÂëµÚÈıÎ»
+ 108   5              temp_buff[5] = old2_RF_RECE_REG[0];     //±¸ÓÃÏî,ÔİÇÒ´æµÚÒ»Î»IDÂë
+C51 COMPILER V9.00   DECODER                                                               09/18/2015 14:28:52 PAGE 3   
+
+ 109   5              if (Two_Menu_F3_E1_temp == 1)       //Îª¼´Ê±Ä£Ê½
+ 110   5              {
+ 111   6                for (l = Two_Menu_F3_E2_temp; l>1; l--) //ÕûÌåÍùÏÂÒÆÒ»×éÊı¾İ
+ 112   6                {
+ 113   7                  mcuram_to_mcuram_down(display_ram + (l - 2) * 6);
+ 114   7                }
+ 115   6                for (l = 0; l<6; l++) //½²µÚÒ»×éÊı¾İÇå0
+ 116   6                {
+ 117   7                  display_ram[l] = 0;
+ 118   7                }
+ 119   6                decoder_temp_to_mcuram(display_ram, temp_buff); //Èç¹û·ûºÏµÄ»°  ½«ÁÙÊ±Êı×éµÄÊı¾İÒÆÈëµ¥Æ¬»úÔİ´æÊı×é 8×
+             -Ö½Ú×ª6×Ö½Ú
+ 120   6                tm1629_load();//µ¥Æ¬»ú°ÑÊı×éÄÚÈİÔØÈëÊıÂë¹ÜÏÔ´æÊı×éÖĞ
+ 121   6                display();//ÏÔÊ¾ÊıÂë¹Ü
+ 122   6              }
+ 123   5              else if (Two_Menu_F3_E1_temp == 2)//ÎªÑ­»·Ä£Ê½
+ 124   5              {
+ 125   6                for (k = 0; k < Two_Menu_F3_E2_temp; k++)
+ 126   6                {
+ 127   7                  if (display_ram[k * 6] == 0)//ÕÒ³öÎ»ÓÚ¶ÓÁĞ×îºóµÄÄÇ¸öµã
+ 128   7                  {
+ 129   8                    decoder_temp_to_mcuram(display_ram + k * 6, temp_buff);//Èç¹û·ûºÏµÄ»°  ½«ÁÙÊ±Êı×éµÄÊı¾İÒÆÈëµ¥Æ¬»úÔİ
+             -´æÊı×é 8×Ö½Ú×ª6×Ö½Ú
+ 130   8                    tm1629_load();//µ¥Æ¬»ú°ÑÊı×éÄÚÈİÔØÈëÊıÂë¹ÜÏÔ´æÊı×éÖĞ
+ 131   8                    display();//ÏÔÊ¾ÊıÂë¹Ü
+ 132   8                    break;
+ 133   8                  }
+ 134   7                }
+ 135   6      
+ 136   6              }
+ 137   5              clear_again_receive_rf_decoder_finished();//Çå³ı½âÂëÍê³É±êÖ¾Î»
+ 138   5              break;
+ 139   5            }
+ 140   4            //ºô½ĞÆ÷×¢²á,ËÑË÷ËùĞèÒªµÄºô½ĞÆ÷
+ 141   4            for (j = 0; j<CALL_TABLE_NUMBER + ALARM_TABLE_NUMBER + CANCEL_TABLE_NUMBER; j++)//ËÑË÷±êÖ¾Î»
+ 142   4            {
+ 143   5              IRcvStr(I2C_ADDRESS, j*PAGE_LENGTH, temp_buff1, PAGE_LENGTH);//¶Á³ö32¸ö×Ö½Ú±êÖ¾Î»
+ 144   5              delay10ms();
+ 145   5              for (i = 0; i<PAGE_LENGTH; i++)
+ 146   5              {
+ 147   6                if (temp_buff1[i] == 0)//¶Ô¶Á³öµÄ32×Ö½Ú±êÖ¾Î»½øĞĞ²é¿´£¬¿´ÊÇ·ñÎª0
+ 148   6                {
+ 149   7                  IRcvStr(I2C_ADDRESS, CALL_DATA_START + (j * 32 + i) * 8, temp_buff, 8);//¶Á³ö¶ÔÓ¦µÄ8¸ö×Ö½ÚµÄÊı¾İ
+ 150   7                  delay10ms();
+ 151   7                  if (((Two_Menu_F8_E1_temp != 1) && temp_buff[5] == old2_RF_RECE_REG[0] && temp_buff[6] == old2_RF_RE
              -CE_REG[1] && ((temp_buff[7] >> 4) == (old2_RF_RECE_REG[2] >> 4))) || ((Two_Menu_F8_E1_temp == 1) && temp_buff[5] == old2
              -_RF_RECE_REG[0] && temp_buff[6] == old2_RF_RECE_REG[1] && temp_buff[7] == old2_RF_RECE_REG[2]))
-  49   7                  {
-  50   8                      tm1629_clear();//ÇåÆÁ
-  51   8                      decoder_temp_to_mcuram(display_ram, temp_buff);
-C51 COMPILER V9.00   DECODER                                                               09/18/2015 12:10:36 PAGE 2   
+ 152   7                  {
+ 153   8      
+ 154   8                    if (Two_Menu_F3_E1_temp == 1)//Îª¼´Ê±Ä£Ê½
+ 155   8                    {
+ 156   9                      for (l = Two_Menu_F3_E2_temp; l>1; l--) //ÕûÌåÍùÏÂÒÆÒ»×éÊı¾İ
+ 157   9                      {
+ 158  10                        mcuram_to_mcuram_down(display_ram + (l - 2) * 6);
+ 159  10                      }
+ 160   9                      for (l = 0; l<6; l++)//½²µÚÒ»×éÊı¾İÇå0
+ 161   9                      {
+ 162  10                        display_ram[l] = 0;
+ 163  10                      }
+ 164   9                      decoder_temp_to_mcuram(display_ram, temp_buff);//Èç¹û·ûºÏµÄ»°  ½«ÁÙÊ±Êı×éµÄÊı¾İÒÆÈëµ¥Æ¬»úÔİ´æÊı×é 
+             -8×Ö½Ú×ª6×Ö½Ú
+ 165   9                      tm1629_load();//µ¥Æ¬»ú°ÑÊı×éÄÚÈİÔØÈëÊıÂë¹ÜÏÔ´æÊı×éÖĞ
+C51 COMPILER V9.00   DECODER                                                               09/18/2015 14:28:52 PAGE 4   
 
-  52   8                      tm1629_load();
-  53   8                      display();
-  54   8      #ifdef DEBUG
-  55   8                      uart_printf("decoder success!"); 
-  56   8      #endif
-  57   8      
-  58   8      #ifdef DEBUG
-  59   8                      uart_printf("display_ram is %02x %02x %02x %02x.\r\n", (unsigned int)display_ram[0], (unsigned int
-             -)display_ram[1], (unsigned int)display_ram[2], (unsigned int)display_ram[3]); //²âÊÔ°´¼ü¼üÖµ
-  60   8      #endif
-  61   8                      //set_func_index(DECODER_MENU);
-  62   8                      clear_again_receive_rf_decoder_finished();
-  63   8                      break;
-  64   8                      break;
-  65   8                  }
-  66   7      
-  67   7                }
-  68   6      
-  69   6              }
-  70   5            }   
-  71   4             break;
-  72   4          }
-  73   3      
-  74   3          case DECODER_MENU:
-  75   3          {
-  76   4                     for (j = 0; j<CALL_TABLE_NUMBER + ALARM_TABLE_NUMBER + CANCEL_TABLE_NUMBER; j++)
-  77   4                     {
-  78   5                       IRcvStr(I2C_ADDRESS, j*PAGE_LENGTH, temp_buff1, PAGE_LENGTH);
-  79   5                       delay10ms();
-  80   5                       for (i = 0; i<PAGE_LENGTH; i++)
-  81   5                       {
-  82   6                         if (temp_buff1[i] == 0)
-  83   6                         {
-  84   7                           IRcvStr(I2C_ADDRESS, CALL_DATA_START + (j * 32 + i) * 8, temp_buff, 8);
-  85   7                           delay10ms();
-  86   7                           if (((Two_Menu_F8_E1_temp != 1) && temp_buff[5] == old2_RF_RECE_REG[0] && temp_buff[6] == old2_
-             -RF_RECE_REG[1] && ((temp_buff[7] >> 4) == (old2_RF_RECE_REG[2] >> 4))) || ((Two_Menu_F8_E1_temp == 1) && temp_buff[5] ==
-             - old2_RF_RECE_REG[0] && temp_buff[6] == old2_RF_RECE_REG[1] && temp_buff[7] == old2_RF_RECE_REG[2]))
-  87   7                           {
-  88   8      
-  89   8                             if (Two_Menu_F3_E1_temp == 1)
-  90   8                             {
-  91   9                               for (l = Two_Menu_F3_E2_temp; l>1; l--) //ÕûÌåÍùÏÂÒÆÒ»×éÊı¾İ
-  92   9                               {
-  93  10                                 mcuram_to_mcuram_down(display_ram + (l - 2) * 6);
-  94  10                               }
-  95   9                               for (l = 0; l<6; l++)
-  96   9                               {
-  97  10                                 display_ram[l] = 0;
-  98  10                               }
-  99   9                               decoder_temp_to_mcuram(display_ram, temp_buff);
- 100   9                               tm1629_load();
- 101   9                               display();
- 102   9                             }
- 103   8      #ifdef DEBUG
- 104   8                             uart_printf("decoder success!");
- 105   8      #endif
- 106   8      
- 107   8      #ifdef DEBUG
- 108   8                             uart_printf("display_ram is %02x %02x %02x %02x.\r\n", (unsigned int)display_ram[0], (unsigned
-             - int)display_ram[1], (unsigned int)display_ram[2], (unsigned int)display_ram[3]); //²âÊÔ°´¼ü¼üÖµ
- 109   8      #endif
-C51 COMPILER V9.00   DECODER                                                               09/18/2015 12:10:36 PAGE 3   
+ 166   9                      display();//ÏÔÊ¾ÊıÂë¹Ü
+ 167   9                    }
+ 168   8                  else if (Two_Menu_F3_E1_temp == 2)//ÎªÑ­»·Ä£Ê½
+ 169   8                  {
+ 170   9                    for (k = 0; k < Two_Menu_F3_E2_temp; k++)
+ 171   9                    {
+ 172  10                      if (display_ram[k * 6 ] == 0)//ÕÒ³öÎ»ÓÚ¶ÓÁĞ×îºóµÄÄÇ¸öµã
+ 173  10                      {
+ 174  11                        decoder_temp_to_mcuram(display_ram + k * 6, temp_buff);//  ½«ÁÙÊ±Êı×éµÄÊı¾İÒÆÈëµ¥Æ¬»úÔİ´æÊı×é 8×Ö
+             -½Ú×ª6×Ö½Ú
+ 175  11                        tm1629_load();//µ¥Æ¬»ú°ÑÊı×éÄÚÈİÔØÈëÊıÂë¹ÜÏÔ´æÊı×éÖĞ
+ 176  11                        display();//ÏÔÊ¾ÊıÂë¹Ü
+ 177  11                        break;
+ 178  11                      }
+ 179  10                    }
+ 180   9                  }
+ 181   8      #ifdef DEBUG
+ 182   8                    uart_printf("decoder success!");
+ 183   8      #endif
+ 184   8      
+ 185   8      #ifdef DEBUG
+ 186   8                    uart_printf("display_ram is %02x %02x %02x %02x.\r\n", (unsigned int)display_ram[0], (unsigned int)
+             -display_ram[1], (unsigned int)display_ram[2], (unsigned int)display_ram[3]); //²âÊÔ°´¼ü¼üÖµ
+ 187   8      #endif
+ 188   8                    clear_again_receive_rf_decoder_finished();
+ 189   8                    break;
+ 190   8                    break;
+ 191   8                  }
+ 192   7                }
+ 193   6              }
+ 194   5            }
+ 195   4            break;
+ 196   4          }
+ 197   3      
+ 198   3          case TWO_MENU_F1_E1_D1:
+ 199   3          case TWO_MENU_F1_E1_D2:
+ 200   3          case TWO_MENU_F1_E1_D3:
+ 201   3          case TWO_MENU_F1_E1_D4:
+ 202   3          {
+ 203   4            set_func_index(TWO_MENU_F1_E1_D4);
+ 204   4            buf_eeprom[0] = old2_RF_RECE_REG[2] & 0x0f;//°´¼üÖµ±£´æµ½0×Ö½Ú
+ 205   4            buf_eeprom[1] = Two_Menu_F1_E1[0];/*ÊıÖµ´æÈë1 2 3 4×Ö½Ú*/
+ 206   4            buf_eeprom[2] = Two_Menu_F1_E1[1];
+ 207   4            buf_eeprom[3] = Two_Menu_F1_E1[2];
+ 208   4            buf_eeprom[4] = Two_Menu_F1_E1[3];
+ 209   4            buf_eeprom[5] = old2_RF_RECE_REG[0];// IDÂë´æÈë 5 6 7 ×Ö½Ú
+ 210   4            buf_eeprom[6] = old2_RF_RECE_REG[1];
+ 211   4            if (Two_Menu_F8_E1_temp == 1)
+ 212   4            {
+ 213   5              buf_eeprom[7] = old2_RF_RECE_REG[2];
+ 214   5            }
+ 215   4            else
+ 216   4            {
+ 217   5              buf_eeprom[7] = old2_RF_RECE_REG[2] & 0xf0;
+ 218   5            }
+ 219   4      
+ 220   4            if (register_call_function(buf_eeprom))//ÊıÖµ×Ô¶¯¼Ó1
+ 221   4            {
+ 222   5      #ifdef DEBUG
+ 223   5              uart_printf("call is %02x %02x %02x .\r\n", (unsigned int)buf_eeprom[5], (unsigned int)buf_eeprom[6], 
+             -(unsigned int)buf_eeprom[7]); //²âÊÔ°´¼ü¼üÖµ
+ 224   5              uart_printf("call is %02x %02x %02x %02x.\r\n", (unsigned int)Two_Menu_F1_E1[0], (unsigned int)Two_Men
+C51 COMPILER V9.00   DECODER                                                               09/18/2015 14:28:52 PAGE 5   
 
- 110   8                             clear_again_receive_rf_decoder_finished();
- 111   8                             break;
- 112   8                             break;
- 113   8                           }
- 114   7      
- 115   7                         }
- 116   6      
- 117   6                       }
- 118   5                     }
- 119   4                     break;
- 120   4          }
- 121   3      
- 122   3      
- 123   3      
- 124   3      
- 125   3      
- 126   3      
- 127   3      
- 128   3      
- 129   3          case TWO_MENU_F1_E1_D1:
- 130   3          case TWO_MENU_F1_E1_D2:
- 131   3          case TWO_MENU_F1_E1_D3:
- 132   3          case TWO_MENU_F1_E1_D4:
- 133   3          {
- 134   4                        set_func_index(TWO_MENU_F1_E1_D4);
- 135   4                        buf_eeprom[0] = old2_RF_RECE_REG[2] & 0x0f;//°´¼üÖµ±£´æµ½0×Ö½Ú
- 136   4                        buf_eeprom[1] = Two_Menu_F1_E1[0];/*ÊıÖµ´æÈë1 2 3 4×Ö½Ú*/
- 137   4                        buf_eeprom[2] = Two_Menu_F1_E1[1];
- 138   4                        buf_eeprom[3] = Two_Menu_F1_E1[2];
- 139   4                        buf_eeprom[4] = Two_Menu_F1_E1[3];
- 140   4                        buf_eeprom[5] = old2_RF_RECE_REG[0];// IDÂë´æÈë 5 6 7 ×Ö½Ú
- 141   4                        buf_eeprom[6] = old2_RF_RECE_REG[1];
- 142   4                        if (Two_Menu_F8_E1_temp == 1)
- 143   4                        {
- 144   5                          buf_eeprom[7] = old2_RF_RECE_REG[2];
- 145   5                        }
- 146   4                        else
- 147   4                        {
- 148   5                          buf_eeprom[7] = old2_RF_RECE_REG[2] & 0xf0;
- 149   5                        }
- 150   4      
- 151   4      
- 152   4                        if (register_call_function(buf_eeprom))//ÊıÖµ×Ô¶¯¼Ó1
- 153   4                        {
- 154   5      #ifdef DEBUG
- 155   5                          uart_printf("call is %02x %02x %02x .\r\n", (unsigned int)buf_eeprom[5], (unsigned int)buf_eepr
+             -u_F1_E1[1], (unsigned int)Two_Menu_F1_E1[2], (unsigned int)Two_Menu_F1_E1[3]);
+ 225   5              uart_printf("caller is rigister success \r\n");
+ 226   5      #endif          
+ 227   5              delay10ms();
+ 228   5              if (Two_Menu_F1_E1[3] == 9)
+ 229   5              {
+ 230   6                if (Two_Menu_F1_E1[2] == 9)
+ 231   6                {
+ 232   7                  if (Two_Menu_F1_E1[1] == 9)
+ 233   7                  {
+ 234   8                    Two_Menu_F1_E1[0]++;
+ 235   8                    Two_Menu_F1_E1[1] = 0;
+ 236   8                    Two_Menu_F1_E1[2] = 0;
+ 237   8                    if (Two_Menu_F1_E1[0] == 21)
+ 238   8                    {
+ 239   9                      Two_Menu_F1_E1[0] = 0;
+ 240   9                      Two_Menu_F1_E1[3] = 1;
+ 241   9                    }
+ 242   8                    else
+ 243   8                    {
+ 244   9                      Two_Menu_F1_E1[3] = 1;
+ 245   9                    }
+ 246   8                  }
+ 247   7                  else
+ 248   7                  {
+ 249   8                    Two_Menu_F1_E1[1]++;
+ 250   8                    Two_Menu_F1_E1[2] = 0;
+ 251   8                    Two_Menu_F1_E1[3] = 0;
+ 252   8                  }
+ 253   7                }
+ 254   6                else
+ 255   6                {
+ 256   7                  Two_Menu_F1_E1[2]++;
+ 257   7                  Two_Menu_F1_E1[3] = 0;
+ 258   7                }
+ 259   6              }
+ 260   5              else
+ 261   5                Two_Menu_F1_E1[3]++;
+ 262   5            }
+ 263   4            break;
+ 264   4          }
+ 265   3      
+ 266   3          case TWO_MENU_F1_E2_D1:
+ 267   3          case TWO_MENU_F1_E2_D2:
+ 268   3          case TWO_MENU_F1_E2_D3:
+ 269   3          case TWO_MENU_F1_E2_D4:
+ 270   3          {
+ 271   4                        set_func_index(TWO_MENU_F1_E2_D4);
+ 272   4                        buf_eeprom[0] = old2_RF_RECE_REG[2] & 0x0f;//°´¼üÖµ±£´æµ½0×Ö½Ú
+ 273   4                        buf_eeprom[1] = Two_Menu_F1_E2[0];/*ÊıÖµ´æÈë1 2 3 4×Ö½Ú*/
+ 274   4                        buf_eeprom[2] = Two_Menu_F1_E2[1];
+ 275   4                        buf_eeprom[3] = Two_Menu_F1_E2[2];
+ 276   4                        buf_eeprom[4] = Two_Menu_F1_E2[3];
+ 277   4                        buf_eeprom[5] = old2_RF_RECE_REG[0];// IDÂë´æÈë 5 6 7 ×Ö½Ú
+ 278   4                        buf_eeprom[6] = old2_RF_RECE_REG[1];
+ 279   4                        buf_eeprom[7] = old2_RF_RECE_REG[2] & 0xf0;
+ 280   4      
+ 281   4                        if (register_host_function(buf_eeprom))//ÊıÖµ×Ô¶¯¼Ó1
+ 282   4                        {
+ 283   5      #ifdef DEBUG
+ 284   5                          uart_printf("host is %02x %02x %02x .\r\n", (unsigned int)buf_eeprom[5], (unsigned int)buf_eepr
              -om[6], (unsigned int)buf_eeprom[7]); //²âÊÔ°´¼ü¼üÖµ
- 156   5                          uart_printf("call is %02x %02x %02x %02x.\r\n", (unsigned int)Two_Menu_F1_E1[0], (unsigned int)
-             -Two_Menu_F1_E1[1], (unsigned int)Two_Menu_F1_E1[2], (unsigned int)Two_Menu_F1_E1[3]);
- 157   5                          uart_printf("caller is rigister success \r\n");
- 158   5      #endif          
- 159   5                          delay10ms();
- 160   5                          if (Two_Menu_F1_E1[3] == 9)
- 161   5                          {
- 162   6                            if (Two_Menu_F1_E1[2] == 9)
- 163   6                            {
- 164   7                              if (Two_Menu_F1_E1[1] == 9)
- 165   7                              {
- 166   8                                Two_Menu_F1_E1[0]++;
- 167   8                                Two_Menu_F1_E1[1] = 0;
- 168   8                                Two_Menu_F1_E1[2] = 0;
- 169   8                                if (Two_Menu_F1_E1[0] == 21)
-C51 COMPILER V9.00   DECODER                                                               09/18/2015 12:10:36 PAGE 4   
+C51 COMPILER V9.00   DECODER                                                               09/18/2015 14:28:52 PAGE 6   
 
- 170   8                                {
- 171   9                                  Two_Menu_F1_E1[0] = 0;
- 172   9                                  Two_Menu_F1_E1[3] = 1;
- 173   9                                }
- 174   8                                else
- 175   8                                {
- 176   9                                  Two_Menu_F1_E1[3] = 1;
- 177   9                                }
- 178   8      
- 179   8      
- 180   8                              }
- 181   7                              else
- 182   7                              {
- 183   8                                Two_Menu_F1_E1[1]++;
- 184   8                                Two_Menu_F1_E1[2] = 0;
- 185   8                                Two_Menu_F1_E1[3] = 0;
- 186   8                              }
- 187   7                            }
- 188   6                            else
- 189   6                            {
- 190   7                              Two_Menu_F1_E1[2]++;
- 191   7                              Two_Menu_F1_E1[3] = 0;
- 192   7                            }
- 193   6                          }
- 194   5                          else
- 195   5                            Two_Menu_F1_E1[3]++;
- 196   5                        }
- 197   4                        break;
- 198   4          }
- 199   3      
- 200   3          case TWO_MENU_F1_E2_D1:
- 201   3          case TWO_MENU_F1_E2_D2:
- 202   3          case TWO_MENU_F1_E2_D3:
- 203   3          case TWO_MENU_F1_E2_D4:
- 204   3          {
- 205   4                        set_func_index(TWO_MENU_F1_E2_D4);
- 206   4                        buf_eeprom[0] = old2_RF_RECE_REG[2] & 0x0f;//°´¼üÖµ±£´æµ½0×Ö½Ú
- 207   4                        buf_eeprom[1] = Two_Menu_F1_E2[0];/*ÊıÖµ´æÈë1 2 3 4×Ö½Ú*/
- 208   4                        buf_eeprom[2] = Two_Menu_F1_E2[1];
- 209   4                        buf_eeprom[3] = Two_Menu_F1_E2[2];
- 210   4                        buf_eeprom[4] = Two_Menu_F1_E2[3];
- 211   4                        buf_eeprom[5] = old2_RF_RECE_REG[0];// IDÂë´æÈë 5 6 7 ×Ö½Ú
- 212   4                        buf_eeprom[6] = old2_RF_RECE_REG[1];
- 213   4                        buf_eeprom[7] = old2_RF_RECE_REG[2] & 0xf0;
- 214   4      
- 215   4                        if (register_host_function(buf_eeprom))//ÊıÖµ×Ô¶¯¼Ó1
- 216   4                        {
- 217   5      #ifdef DEBUG
- 218   5                          uart_printf("host is %02x %02x %02x .\r\n", (unsigned int)buf_eeprom[5], (unsigned int)buf_eepr
-             -om[6], (unsigned int)buf_eeprom[7]); //²âÊÔ°´¼ü¼üÖµ
- 219   5                          uart_printf("host is %02x %02x %02x %02x.\r\n", (unsigned int)Two_Menu_F1_E2[0], (unsigned int)
+ 285   5                          uart_printf("host is %02x %02x %02x %02x.\r\n", (unsigned int)Two_Menu_F1_E2[0], (unsigned int)
              -Two_Menu_F1_E2[1], (unsigned int)Two_Menu_F1_E2[2], (unsigned int)Two_Menu_F1_E2[3]);
- 220   5                          uart_printf("host is rigister success \r\n");
- 221   5      #endif          
- 222   5                          delay10ms();
- 223   5                          if (Two_Menu_F1_E2[3] == 9)
- 224   5                          {
- 225   6                            if (Two_Menu_F1_E2[2] == 9)
- 226   6                            {
- 227   7                              if (Two_Menu_F1_E2[1] == 9)
- 228   7                              {
- 229   8                                Two_Menu_F1_E2[0]++;
-C51 COMPILER V9.00   DECODER                                                               09/18/2015 12:10:36 PAGE 5   
-
- 230   8                                Two_Menu_F1_E2[1] = 0;
- 231   8                                Two_Menu_F1_E2[2] = 0;
- 232   8                                if (Two_Menu_F1_E2[0] == 21)
- 233   8                                {
- 234   9                                  Two_Menu_F1_E2[0] = 0;
- 235   9                                  Two_Menu_F1_E2[3] = 1;
- 236   9                                }
- 237   8                                else
- 238   8                                {
- 239   9                                  Two_Menu_F1_E2[3] = 1;
- 240   9                                }
- 241   8      
- 242   8      
- 243   8                              }
- 244   7                              else
- 245   7                              {
- 246   8                                Two_Menu_F1_E2[1]++;
- 247   8                                Two_Menu_F1_E2[2] = 0;
- 248   8                                Two_Menu_F1_E2[3] = 0;
- 249   8                              }
- 250   7                            }
- 251   6                            else
- 252   6                            {
- 253   7                              Two_Menu_F1_E2[2]++;
- 254   7                              Two_Menu_F1_E2[3] = 0;
- 255   7                            }
- 256   6                          }
- 257   5                          else
- 258   5                            Two_Menu_F1_E2[3]++;
- 259   5                        }
- 260   4                        break;
- 261   4          }
- 262   3      
- 263   3          case TWO_MENU_F1_E3_D1:
- 264   3          case TWO_MENU_F1_E3_D2:
- 265   3          case TWO_MENU_F1_E3_D3:
- 266   3          case TWO_MENU_F1_E3_D4:
- 267   3          {
- 268   4                        set_func_index(TWO_MENU_F1_E3_D4);
- 269   4                        buf_eeprom[0] = old2_RF_RECE_REG[2] & 0x0f;//°´¼üÖµ±£´æµ½0×Ö½Ú
- 270   4                        buf_eeprom[1] = Two_Menu_F1_E3[0];/*ÊıÖµ´æÈë1 2 3 4×Ö½Ú*/
- 271   4                        buf_eeprom[2] = Two_Menu_F1_E3[1];
- 272   4                        buf_eeprom[3] = Two_Menu_F1_E3[2];
- 273   4                        buf_eeprom[4] = Two_Menu_F1_E3[3];
- 274   4                        buf_eeprom[5] = old2_RF_RECE_REG[0];// IDÂë´æÈë 5 6 7 ×Ö½Ú
- 275   4                        buf_eeprom[6] = old2_RF_RECE_REG[1];
- 276   4                        buf_eeprom[7] = old2_RF_RECE_REG[2] & 0xf0;
- 277   4      
- 278   4                        if (register_alarm_function(buf_eeprom))//ÊıÖµ×Ô¶¯¼Ó1
- 279   4                        {
- 280   5      #ifdef DEBUG
- 281   5                          uart_printf("alarm is %02x %02x %02x .\r\n", (unsigned int)buf_eeprom[5], (unsigned int)buf_eep
-             -rom[6], (unsigned int)buf_eeprom[7]); //²âÊÔ°´¼ü¼üÖµ
- 282   5                          uart_printf("alarm is %02x %02x %02x %02x.\r\n", (unsigned int)Two_Menu_F1_E3[0], (unsigned int
-             -)Two_Menu_F1_E3[1], (unsigned int)Two_Menu_F1_E3[2], (unsigned int)Two_Menu_F1_E3[3]);
- 283   5                          uart_printf("alarm is rigister success \r\n");
- 284   5      #endif          
- 285   5                          delay10ms();
- 286   5                          if (Two_Menu_F1_E3[3] == 9)
- 287   5                          {
- 288   6                            if (Two_Menu_F1_E3[2] == 9)
- 289   6                            {
-C51 COMPILER V9.00   DECODER                                                               09/18/2015 12:10:36 PAGE 6   
-
- 290   7                              if (Two_Menu_F1_E3[1] == 9)
- 291   7                              {
- 292   8                                Two_Menu_F1_E3[0]++;
- 293   8                                Two_Menu_F1_E3[1] = 0;
- 294   8                                Two_Menu_F1_E3[2] = 0;
- 295   8                                if (Two_Menu_F1_E3[0] == 21)
- 296   8                                {
- 297   9                                  Two_Menu_F1_E3[0] = 0;
- 298   9                                  Two_Menu_F1_E3[3] = 1;
- 299   9                                }
- 300   8                                else
- 301   8                                {
- 302   9                                  Two_Menu_F1_E3[3] = 1;
- 303   9                                }
- 304   8                              }
- 305   7                              else
- 306   7                              {
- 307   8                                Two_Menu_F1_E3[1]++;
- 308   8                                Two_Menu_F1_E3[2] = 0;
- 309   8                                Two_Menu_F1_E3[3] = 0;
- 310   8                              }
- 311   7                            }
- 312   6                            else
- 313   6                            {
- 314   7                              Two_Menu_F1_E3[2]++;
- 315   7                              Two_Menu_F1_E3[3] = 0;
+ 286   5                          uart_printf("host is rigister success \r\n");
+ 287   5      #endif          
+ 288   5                          delay10ms();
+ 289   5                          if (Two_Menu_F1_E2[3] == 9)
+ 290   5                          {
+ 291   6                            if (Two_Menu_F1_E2[2] == 9)
+ 292   6                            {
+ 293   7                              if (Two_Menu_F1_E2[1] == 9)
+ 294   7                              {
+ 295   8                                Two_Menu_F1_E2[0]++;
+ 296   8                                Two_Menu_F1_E2[1] = 0;
+ 297   8                                Two_Menu_F1_E2[2] = 0;
+ 298   8                                if (Two_Menu_F1_E2[0] == 21)
+ 299   8                                {
+ 300   9                                  Two_Menu_F1_E2[0] = 0;
+ 301   9                                  Two_Menu_F1_E2[3] = 1;
+ 302   9                                }
+ 303   8                                else
+ 304   8                                {
+ 305   9                                  Two_Menu_F1_E2[3] = 1;
+ 306   9                                }
+ 307   8      
+ 308   8      
+ 309   8                              }
+ 310   7                              else
+ 311   7                              {
+ 312   8                                Two_Menu_F1_E2[1]++;
+ 313   8                                Two_Menu_F1_E2[2] = 0;
+ 314   8                                Two_Menu_F1_E2[3] = 0;
+ 315   8                              }
  316   7                            }
- 317   6                          }
- 318   5                          else
- 319   5                            Two_Menu_F1_E2[3]++;
- 320   5                        }
- 321   4                        break;
- 322   4          }
- 323   3          case TWO_MENU_F1_E4_D1:
- 324   3          case TWO_MENU_F1_E4_D2:
- 325   3          case TWO_MENU_F1_E4_D3:
- 326   3          case TWO_MENU_F1_E4_D4:
- 327   3          {
- 328   4                        set_func_index(TWO_MENU_F1_E4_D4);
- 329   4                        buf_eeprom[0] = old2_RF_RECE_REG[2] & 0x0f;//°´¼üÖµ±£´æµ½0×Ö½Ú
- 330   4                        buf_eeprom[1] = Two_Menu_F1_E4[0];/*ÊıÖµ´æÈë1 2 3 4×Ö½Ú*/
- 331   4                        buf_eeprom[2] = Two_Menu_F1_E4[1];
- 332   4                        buf_eeprom[3] = Two_Menu_F1_E4[2];
- 333   4                        buf_eeprom[4] = Two_Menu_F1_E4[3];
- 334   4                        buf_eeprom[5] = old2_RF_RECE_REG[0];// IDÂë´æÈë 5 6 7 ×Ö½Ú
- 335   4                        buf_eeprom[6] = old2_RF_RECE_REG[1];
- 336   4                        buf_eeprom[7] = old2_RF_RECE_REG[2] & 0xf0;
- 337   4      
- 338   4                        if (register_cancel_function(buf_eeprom))//ÊıÖµ×Ô¶¯¼Ó1
- 339   4                        {
- 340   5      #ifdef DEBUG
- 341   5                          uart_printf("cancel is %02x %02x %02x .\r\n", (unsigned int)buf_eeprom[5], (unsigned int)buf_ee
-             -prom[6], (unsigned int)buf_eeprom[7]); //²âÊÔ°´¼ü¼üÖµ
- 342   5                          uart_printf("cancel is %02x %02x %02x %02x.\r\n", (unsigned int)Two_Menu_F1_E4[0], (unsigned in
-             -t)Two_Menu_F1_E4[1], (unsigned int)Two_Menu_F1_E4[2], (unsigned int)Two_Menu_F1_E4[3]);
- 343   5                          uart_printf("cancel is rigister success \r\n");
- 344   5      #endif          
- 345   5                          delay10ms();
- 346   5                          if (Two_Menu_F1_E4[3] == 9)
- 347   5                          {
- 348   6                            if (Two_Menu_F1_E4[2] == 9)
- 349   6                            {
-C51 COMPILER V9.00   DECODER                                                               09/18/2015 12:10:36 PAGE 7   
+ 317   6                            else
+ 318   6                            {
+ 319   7                              Two_Menu_F1_E2[2]++;
+ 320   7                              Two_Menu_F1_E2[3] = 0;
+ 321   7                            }
+ 322   6                          }
+ 323   5                          else
+ 324   5                            Two_Menu_F1_E2[3]++;
+ 325   5                        }
+ 326   4                        break;
+ 327   4          }
+ 328   3      
+ 329   3          case TWO_MENU_F1_E3_D1:
+ 330   3          case TWO_MENU_F1_E3_D2:
+ 331   3          case TWO_MENU_F1_E3_D3:
+ 332   3          case TWO_MENU_F1_E3_D4:
+ 333   3          {
+ 334   4            set_func_index(TWO_MENU_F1_E3_D4);
+ 335   4            buf_eeprom[0] = old2_RF_RECE_REG[2] & 0x0f;//°´¼üÖµ±£´æµ½0×Ö½Ú
+ 336   4            buf_eeprom[1] = Two_Menu_F1_E3[0];/*ÊıÖµ´æÈë1 2 3 4×Ö½Ú*/
+ 337   4            buf_eeprom[2] = Two_Menu_F1_E3[1];
+ 338   4            buf_eeprom[3] = Two_Menu_F1_E3[2];
+ 339   4            buf_eeprom[4] = Two_Menu_F1_E3[3];
+ 340   4            buf_eeprom[5] = old2_RF_RECE_REG[0];// IDÂë´æÈë 5 6 7 ×Ö½Ú
+ 341   4            buf_eeprom[6] = old2_RF_RECE_REG[1];
+ 342   4            buf_eeprom[7] = old2_RF_RECE_REG[2] & 0xf0;
+ 343   4      
+ 344   4            if (register_alarm_function(buf_eeprom))//ÊıÖµ×Ô¶¯¼Ó1
+ 345   4            {
+C51 COMPILER V9.00   DECODER                                                               09/18/2015 14:28:52 PAGE 7   
 
- 350   7                              if (Two_Menu_F1_E4[1] == 9)
- 351   7                              {
- 352   8                                Two_Menu_F1_E4[0]++;
- 353   8                                Two_Menu_F1_E4[1] = 0;
- 354   8                                Two_Menu_F1_E4[2] = 0;
- 355   8                                if (Two_Menu_F1_E4[0] == 21)
- 356   8                                {
- 357   9                                  Two_Menu_F1_E4[0] = 0;
- 358   9                                  Two_Menu_F1_E4[3] = 1;
- 359   9                                }
- 360   8                                else
- 361   8                                {
- 362   9                                  Two_Menu_F1_E4[3] = 1;
- 363   9                                }
- 364   8                              }
- 365   7                              else
- 366   7                              {
- 367   8                                Two_Menu_F1_E4[1]++;
- 368   8                                Two_Menu_F1_E4[2] = 0;
- 369   8                                Two_Menu_F1_E4[3] = 0;
- 370   8                              }
- 371   7                            }
- 372   6                            else
- 373   6                            {
- 374   7                              Two_Menu_F1_E4[2]++;
- 375   7                              Two_Menu_F1_E4[3] = 0;
- 376   7                            }
- 377   6                          }
- 378   5                          else
- 379   5                            Two_Menu_F1_E4[3]++;
- 380   5                        }
- 381   4                        break;
- 382   4          }
- 383   3      
- 384   3      
- 385   3          default:break;
- 386   3          }
- 387   2        }
- 388   1        clear_again_receive_rf_decoder_finished();//Çå³ı±êÖ¾Î»
- 389   1      }
+ 346   5      #ifdef DEBUG
+ 347   5              uart_printf("alarm is %02x %02x %02x .\r\n", (unsigned int)buf_eeprom[5], (unsigned int)buf_eeprom[6],
+             - (unsigned int)buf_eeprom[7]); //²âÊÔ°´¼ü¼üÖµ
+ 348   5              uart_printf("alarm is %02x %02x %02x %02x.\r\n", (unsigned int)Two_Menu_F1_E3[0], (unsigned int)Two_Me
+             -nu_F1_E3[1], (unsigned int)Two_Menu_F1_E3[2], (unsigned int)Two_Menu_F1_E3[3]);
+ 349   5              uart_printf("alarm is rigister success \r\n");
+ 350   5      #endif          
+ 351   5              delay10ms();
+ 352   5              if (Two_Menu_F1_E3[3] == 9)
+ 353   5              {
+ 354   6                if (Two_Menu_F1_E3[2] == 9)
+ 355   6                {
+ 356   7                  if (Two_Menu_F1_E3[1] == 9)
+ 357   7                  {
+ 358   8                    Two_Menu_F1_E3[0]++;
+ 359   8                    Two_Menu_F1_E3[1] = 0;
+ 360   8                    Two_Menu_F1_E3[2] = 0;
+ 361   8                    if (Two_Menu_F1_E3[0] == 21)
+ 362   8                    {
+ 363   9                      Two_Menu_F1_E3[0] = 0;
+ 364   9                      Two_Menu_F1_E3[3] = 1;
+ 365   9                    }
+ 366   8                    else
+ 367   8                    {
+ 368   9                      Two_Menu_F1_E3[3] = 1;
+ 369   9                    }
+ 370   8                  }
+ 371   7                  else
+ 372   7                  {
+ 373   8                    Two_Menu_F1_E3[1]++;
+ 374   8                    Two_Menu_F1_E3[2] = 0;
+ 375   8                    Two_Menu_F1_E3[3] = 0;
+ 376   8                  }
+ 377   7                }
+ 378   6                else
+ 379   6                {
+ 380   7                  Two_Menu_F1_E3[2]++;
+ 381   7                  Two_Menu_F1_E3[3] = 0;
+ 382   7                }
+ 383   6              }
+ 384   5              else
+ 385   5                Two_Menu_F1_E2[3]++;
+ 386   5            }
+ 387   4            break;
+ 388   4          }
+ 389   3          case TWO_MENU_F1_E4_D1:
+ 390   3          case TWO_MENU_F1_E4_D2:
+ 391   3          case TWO_MENU_F1_E4_D3:
+ 392   3          case TWO_MENU_F1_E4_D4:
+ 393   3          {
+ 394   4            set_func_index(TWO_MENU_F1_E4_D4);
+ 395   4            buf_eeprom[0] = old2_RF_RECE_REG[2] & 0x0f;//°´¼üÖµ±£´æµ½0×Ö½Ú
+ 396   4            buf_eeprom[1] = Two_Menu_F1_E4[0];/*ÊıÖµ´æÈë1 2 3 4×Ö½Ú*/
+ 397   4            buf_eeprom[2] = Two_Menu_F1_E4[1];
+ 398   4            buf_eeprom[3] = Two_Menu_F1_E4[2];
+ 399   4            buf_eeprom[4] = Two_Menu_F1_E4[3];
+ 400   4            buf_eeprom[5] = old2_RF_RECE_REG[0];// IDÂë´æÈë 5 6 7 ×Ö½Ú
+ 401   4            buf_eeprom[6] = old2_RF_RECE_REG[1];
+ 402   4            buf_eeprom[7] = old2_RF_RECE_REG[2] & 0xf0;
+ 403   4      
+ 404   4            if (register_cancel_function(buf_eeprom))//ÊıÖµ×Ô¶¯¼Ó1
+ 405   4            {
+C51 COMPILER V9.00   DECODER                                                               09/18/2015 14:28:52 PAGE 8   
+
+ 406   5      #ifdef DEBUG
+ 407   5              uart_printf("cancel is %02x %02x %02x .\r\n", (unsigned int)buf_eeprom[5], (unsigned int)buf_eeprom[6]
+             -, (unsigned int)buf_eeprom[7]); //²âÊÔ°´¼ü¼üÖµ
+ 408   5              uart_printf("cancel is %02x %02x %02x %02x.\r\n", (unsigned int)Two_Menu_F1_E4[0], (unsigned int)Two_M
+             -enu_F1_E4[1], (unsigned int)Two_Menu_F1_E4[2], (unsigned int)Two_Menu_F1_E4[3]);
+ 409   5              uart_printf("cancel is rigister success \r\n");
+ 410   5      #endif          
+ 411   5              delay10ms();
+ 412   5              if (Two_Menu_F1_E4[3] == 9)
+ 413   5              {
+ 414   6                if (Two_Menu_F1_E4[2] == 9)
+ 415   6                {
+ 416   7                  if (Two_Menu_F1_E4[1] == 9)
+ 417   7                  {
+ 418   8                    Two_Menu_F1_E4[0]++;
+ 419   8                    Two_Menu_F1_E4[1] = 0;
+ 420   8                    Two_Menu_F1_E4[2] = 0;
+ 421   8                    if (Two_Menu_F1_E4[0] == 21)
+ 422   8                    {
+ 423   9                      Two_Menu_F1_E4[0] = 0;
+ 424   9                      Two_Menu_F1_E4[3] = 1;
+ 425   9                    }
+ 426   8                    else
+ 427   8                    {
+ 428   9                      Two_Menu_F1_E4[3] = 1;
+ 429   9                    }
+ 430   8                  }
+ 431   7                  else
+ 432   7                  {
+ 433   8                    Two_Menu_F1_E4[1]++;
+ 434   8                    Two_Menu_F1_E4[2] = 0;
+ 435   8                    Two_Menu_F1_E4[3] = 0;
+ 436   8                  }
+ 437   7                }
+ 438   6                else
+ 439   6                {
+ 440   7                  Two_Menu_F1_E4[2]++;
+ 441   7                  Two_Menu_F1_E4[3] = 0;
+ 442   7                }
+ 443   6              }
+ 444   5              else
+ 445   5                Two_Menu_F1_E4[3]++;
+ 446   5            }
+ 447   4            break;
+ 448   4          }
+ 449   3      
+ 450   3      
+ 451   3          default:break;//Ä¬ÈÏµÄbreak
+ 452   3          }
+ 453   2        }
+ 454   1        clear_again_receive_rf_decoder_finished();//Çå³ı±êÖ¾Î»
+ 455   1      }
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =   2180    ----
+   CODE SIZE        =   2687    ----
    CONSTANT SIZE    =    490    ----
-   XDATA SIZE       =      8      47
+   XDATA SIZE       =      8      49
    PDATA SIZE       =   ----    ----
    DATA SIZE        =   ----    ----
    IDATA SIZE       =   ----    ----
    BIT SIZE         =   ----    ----
+C51 COMPILER V9.00   DECODER                                                               09/18/2015 14:28:52 PAGE 9   
+
 END OF MODULE INFORMATION.
 
 
