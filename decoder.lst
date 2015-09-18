@@ -1,4 +1,4 @@
-C51 COMPILER V9.00   DECODER                                                               09/12/2015 17:33:14 PAGE 1   
+C51 COMPILER V9.00   DECODER                                                               09/18/2015 12:10:36 PAGE 1   
 
 
 C51 COMPILER V9.00, COMPILATION OF MODULE DECODER
@@ -14,312 +14,427 @@ line level    source
    4          #include "at24c256.h"
    5          #include "key.h"
    6          #include "menu.h"
-   7          
-   8          unsigned char buf_eeprom[8] = { 0 };//写入EEPROM_buf
-   9          
-  10          void DecoderProcess(void)
-  11          {
-  12   1        unsigned char func_index_temp = 0;
-  13   1        unsigned char Two_Menu_F8_E1_temp = 0;
-  14   1        func_index_temp = return_func_index();
-  15   1        Two_Menu_F8_E1_temp = return_Two_Menu_F8_E1();
-  16   1        receive_rf_decoder();
-  17   1        if (return_again_receive_rf_decoder_finished() == 1)
-  18   1        {
-  19   2      #ifdef DEBUG
-  20   2          uart_printf("decoder_val is %02x %02x %02x .\r\n", (unsigned int)old2_RF_RECE_REG[0], (unsigned int)old2
+   7          #include "tm1629.h"
+   8          
+   9          unsigned char buf_eeprom[8] = { 0 };//写入EEPROM_buf
+  10          
+  11          void DecoderProcess(void)
+  12          { 
+  13   1        unsigned char i, j ,l;
+  14   1        unsigned char temp_buff[8];//解码用临时数组
+  15   1        unsigned char temp_buff1[PAGE_LENGTH] = { 0 };//查询AT24C256临时数组
+  16   1      
+  17   1        unsigned char func_index_temp = 0;
+  18   1        unsigned char Two_Menu_F8_E1_temp = 0;
+  19   1        unsigned char Two_Menu_F3_E1_temp = 0;
+  20   1        unsigned char Two_Menu_F3_E2_temp = 0;
+  21   1        func_index_temp = return_func_index();
+  22   1        Two_Menu_F8_E1_temp = return_Two_Menu_F8_E1();
+  23   1        Two_Menu_F3_E1_temp = return_Two_Menu_F3_E1();
+  24   1        Two_Menu_F3_E2_temp = return_Two_Menu_F3_E2();
+  25   1        receive_rf_decoder();
+  26   1        if (return_again_receive_rf_decoder_finished() == 1)
+  27   1        {
+  28   2      #ifdef DEBUG
+  29   2          uart_printf("decoder_val is %02x %02x %02x .\r\n", (unsigned int)old2_RF_RECE_REG[0], (unsigned int)old2
              -_RF_RECE_REG[1], (unsigned int)old2_RF_RECE_REG[2]); //测试按键键值
-  21   2      #endif
-  22   2          switch (func_index_temp)
-  23   2          {
-  24   3          case TWO_MENU_F1_E1_D1:
-  25   3          case TWO_MENU_F1_E1_D2:
-  26   3          case TWO_MENU_F1_E1_D3:
-  27   3          case TWO_MENU_F1_E1_D4:
-  28   3          {
-  29   4                        set_func_index(TWO_MENU_F1_E1_D4);
-  30   4                        buf_eeprom[0] = old2_RF_RECE_REG[2] & 0x0f;//按键值保存到0字节
-  31   4                        buf_eeprom[1] = Two_Menu_F1_E1[0];/*数值存入1 2 3 4字节*/
-  32   4                        buf_eeprom[2] = Two_Menu_F1_E1[1];
-  33   4                        buf_eeprom[3] = Two_Menu_F1_E1[2];
-  34   4                        buf_eeprom[4] = Two_Menu_F1_E1[3];
-  35   4                        buf_eeprom[5] = old2_RF_RECE_REG[0];// ID码存入 5 6 7 字节
-  36   4                        buf_eeprom[6] = old2_RF_RECE_REG[1];
-  37   4                        if (Two_Menu_F8_E1_temp == 1)
-  38   4                        {
-  39   5                          buf_eeprom[7] = old2_RF_RECE_REG[2];
-  40   5                        }
-  41   4                        else
-  42   4                        {
-  43   5                          buf_eeprom[7] = old2_RF_RECE_REG[2] & 0xf0;
-  44   5                        }
-  45   4      
-  46   4      
-  47   4                        if (register_call_function(buf_eeprom))//数值自动加1
-  48   4                        {
-  49   5      #ifdef DEBUG
-  50   5                          uart_printf("call is %02x %02x %02x .\r\n", (unsigned int)buf_eeprom[5], (unsigned int)buf_eepr
+  30   2      #endif
+  31   2          switch (func_index_temp)
+  32   2          {
+  33   3          case MENU_STANDBY:
+  34   3          {
+  35   4             for (j = 0; j<(CALL_TABLE_NUMBER + CANCEL_TABLE_NUMBER + ALARM_TABLE_NUMBER); j++)
+  36   4            {
+  37   5              IRcvStr(I2C_ADDRESS, j*PAGE_LENGTH, temp_buff1, PAGE_LENGTH);
+  38   5              delay10ms();
+  39   5              for (i = 0; i<PAGE_LENGTH; i++)
+  40   5              {
+  41   6                if (temp_buff1[i] == 0)
+  42   6                { 
+  43   7      #ifdef DEBUG
+  44   7                  uart_printf("find a table!");
+  45   7      #endif
+  46   7                  IRcvStr(I2C_ADDRESS, CALL_DATA_START + (j * 32 + i) * 8, temp_buff, 8);
+  47   7                  delay10ms();
+  48   7                  if (((Two_Menu_F8_E1_temp != 1) && temp_buff[5] == old2_RF_RECE_REG[0] && temp_buff[6] == old2_RF_RE
+             -CE_REG[1] && ((temp_buff[7] >> 4) == (old2_RF_RECE_REG[2] >> 4))) || ((Two_Menu_F8_E1_temp == 1) && temp_buff[5] == old2
+             -_RF_RECE_REG[0] && temp_buff[6] == old2_RF_RECE_REG[1] && temp_buff[7] == old2_RF_RECE_REG[2]))
+  49   7                  {
+  50   8                      tm1629_clear();//清屏
+  51   8                      decoder_temp_to_mcuram(display_ram, temp_buff);
+C51 COMPILER V9.00   DECODER                                                               09/18/2015 12:10:36 PAGE 2   
+
+  52   8                      tm1629_load();
+  53   8                      display();
+  54   8      #ifdef DEBUG
+  55   8                      uart_printf("decoder success!"); 
+  56   8      #endif
+  57   8      
+  58   8      #ifdef DEBUG
+  59   8                      uart_printf("display_ram is %02x %02x %02x %02x.\r\n", (unsigned int)display_ram[0], (unsigned int
+             -)display_ram[1], (unsigned int)display_ram[2], (unsigned int)display_ram[3]); //测试按键键值
+  60   8      #endif
+  61   8                      //set_func_index(DECODER_MENU);
+  62   8                      clear_again_receive_rf_decoder_finished();
+  63   8                      break;
+  64   8                      break;
+  65   8                  }
+  66   7      
+  67   7                }
+  68   6      
+  69   6              }
+  70   5            }   
+  71   4             break;
+  72   4          }
+  73   3      
+  74   3          case DECODER_MENU:
+  75   3          {
+  76   4                     for (j = 0; j<CALL_TABLE_NUMBER + ALARM_TABLE_NUMBER + CANCEL_TABLE_NUMBER; j++)
+  77   4                     {
+  78   5                       IRcvStr(I2C_ADDRESS, j*PAGE_LENGTH, temp_buff1, PAGE_LENGTH);
+  79   5                       delay10ms();
+  80   5                       for (i = 0; i<PAGE_LENGTH; i++)
+  81   5                       {
+  82   6                         if (temp_buff1[i] == 0)
+  83   6                         {
+  84   7                           IRcvStr(I2C_ADDRESS, CALL_DATA_START + (j * 32 + i) * 8, temp_buff, 8);
+  85   7                           delay10ms();
+  86   7                           if (((Two_Menu_F8_E1_temp != 1) && temp_buff[5] == old2_RF_RECE_REG[0] && temp_buff[6] == old2_
+             -RF_RECE_REG[1] && ((temp_buff[7] >> 4) == (old2_RF_RECE_REG[2] >> 4))) || ((Two_Menu_F8_E1_temp == 1) && temp_buff[5] ==
+             - old2_RF_RECE_REG[0] && temp_buff[6] == old2_RF_RECE_REG[1] && temp_buff[7] == old2_RF_RECE_REG[2]))
+  87   7                           {
+  88   8      
+  89   8                             if (Two_Menu_F3_E1_temp == 1)
+  90   8                             {
+  91   9                               for (l = Two_Menu_F3_E2_temp; l>1; l--) //整体往下移一组数据
+  92   9                               {
+  93  10                                 mcuram_to_mcuram_down(display_ram + (l - 2) * 6);
+  94  10                               }
+  95   9                               for (l = 0; l<6; l++)
+  96   9                               {
+  97  10                                 display_ram[l] = 0;
+  98  10                               }
+  99   9                               decoder_temp_to_mcuram(display_ram, temp_buff);
+ 100   9                               tm1629_load();
+ 101   9                               display();
+ 102   9                             }
+ 103   8      #ifdef DEBUG
+ 104   8                             uart_printf("decoder success!");
+ 105   8      #endif
+ 106   8      
+ 107   8      #ifdef DEBUG
+ 108   8                             uart_printf("display_ram is %02x %02x %02x %02x.\r\n", (unsigned int)display_ram[0], (unsigned
+             - int)display_ram[1], (unsigned int)display_ram[2], (unsigned int)display_ram[3]); //测试按键键值
+ 109   8      #endif
+C51 COMPILER V9.00   DECODER                                                               09/18/2015 12:10:36 PAGE 3   
+
+ 110   8                             clear_again_receive_rf_decoder_finished();
+ 111   8                             break;
+ 112   8                             break;
+ 113   8                           }
+ 114   7      
+ 115   7                         }
+ 116   6      
+ 117   6                       }
+ 118   5                     }
+ 119   4                     break;
+ 120   4          }
+ 121   3      
+ 122   3      
+ 123   3      
+ 124   3      
+ 125   3      
+ 126   3      
+ 127   3      
+ 128   3      
+ 129   3          case TWO_MENU_F1_E1_D1:
+ 130   3          case TWO_MENU_F1_E1_D2:
+ 131   3          case TWO_MENU_F1_E1_D3:
+ 132   3          case TWO_MENU_F1_E1_D4:
+ 133   3          {
+ 134   4                        set_func_index(TWO_MENU_F1_E1_D4);
+ 135   4                        buf_eeprom[0] = old2_RF_RECE_REG[2] & 0x0f;//按键值保存到0字节
+ 136   4                        buf_eeprom[1] = Two_Menu_F1_E1[0];/*数值存入1 2 3 4字节*/
+ 137   4                        buf_eeprom[2] = Two_Menu_F1_E1[1];
+ 138   4                        buf_eeprom[3] = Two_Menu_F1_E1[2];
+ 139   4                        buf_eeprom[4] = Two_Menu_F1_E1[3];
+ 140   4                        buf_eeprom[5] = old2_RF_RECE_REG[0];// ID码存入 5 6 7 字节
+ 141   4                        buf_eeprom[6] = old2_RF_RECE_REG[1];
+ 142   4                        if (Two_Menu_F8_E1_temp == 1)
+ 143   4                        {
+ 144   5                          buf_eeprom[7] = old2_RF_RECE_REG[2];
+ 145   5                        }
+ 146   4                        else
+ 147   4                        {
+ 148   5                          buf_eeprom[7] = old2_RF_RECE_REG[2] & 0xf0;
+ 149   5                        }
+ 150   4      
+ 151   4      
+ 152   4                        if (register_call_function(buf_eeprom))//数值自动加1
+ 153   4                        {
+ 154   5      #ifdef DEBUG
+ 155   5                          uart_printf("call is %02x %02x %02x .\r\n", (unsigned int)buf_eeprom[5], (unsigned int)buf_eepr
              -om[6], (unsigned int)buf_eeprom[7]); //测试按键键值
-  51   5                          uart_printf("call is %02x %02x %02x %02x.\r\n", (unsigned int)Two_Menu_F1_E1[0], (unsigned int)
+ 156   5                          uart_printf("call is %02x %02x %02x %02x.\r\n", (unsigned int)Two_Menu_F1_E1[0], (unsigned int)
              -Two_Menu_F1_E1[1], (unsigned int)Two_Menu_F1_E1[2], (unsigned int)Two_Menu_F1_E1[3]);
-C51 COMPILER V9.00   DECODER                                                               09/12/2015 17:33:14 PAGE 2   
+ 157   5                          uart_printf("caller is rigister success \r\n");
+ 158   5      #endif          
+ 159   5                          delay10ms();
+ 160   5                          if (Two_Menu_F1_E1[3] == 9)
+ 161   5                          {
+ 162   6                            if (Two_Menu_F1_E1[2] == 9)
+ 163   6                            {
+ 164   7                              if (Two_Menu_F1_E1[1] == 9)
+ 165   7                              {
+ 166   8                                Two_Menu_F1_E1[0]++;
+ 167   8                                Two_Menu_F1_E1[1] = 0;
+ 168   8                                Two_Menu_F1_E1[2] = 0;
+ 169   8                                if (Two_Menu_F1_E1[0] == 21)
+C51 COMPILER V9.00   DECODER                                                               09/18/2015 12:10:36 PAGE 4   
 
-  52   5                          uart_printf("caller is rigister success \r\n");
-  53   5      #endif          
-  54   5                          delay10ms();
-  55   5                          if (Two_Menu_F1_E1[3] == 9)
-  56   5                          {
-  57   6                            if (Two_Menu_F1_E1[2] == 9)
-  58   6                            {
-  59   7                              if (Two_Menu_F1_E1[1] == 9)
-  60   7                              {
-  61   8                                Two_Menu_F1_E1[0]++;
-  62   8                                Two_Menu_F1_E1[1] = 0;
-  63   8                                Two_Menu_F1_E1[2] = 0;
-  64   8                                if (Two_Menu_F1_E1[0] == 21)
-  65   8                                {
-  66   9                                  Two_Menu_F1_E1[0] = 0;
-  67   9                                  Two_Menu_F1_E1[3] = 1;
-  68   9                                }
-  69   8                                else
-  70   8                                {
-  71   9                                  Two_Menu_F1_E1[3] = 1;
-  72   9                                }
-  73   8      
-  74   8      
-  75   8                              }
-  76   7                              else
-  77   7                              {
-  78   8                                Two_Menu_F1_E1[1]++;
-  79   8                                Two_Menu_F1_E1[2] = 0;
-  80   8                                Two_Menu_F1_E1[3] = 0;
-  81   8                              }
-  82   7                            }
-  83   6                            else
-  84   6                            {
-  85   7                              Two_Menu_F1_E1[2]++;
-  86   7                              Two_Menu_F1_E1[3] = 0;
-  87   7                            }
-  88   6                          }
-  89   5                          else
-  90   5                            Two_Menu_F1_E1[3]++;
-  91   5                        }
-  92   4                        break;
-  93   4          }
-  94   3      
-  95   3          case TWO_MENU_F1_E2_D1:
-  96   3          case TWO_MENU_F1_E2_D2:
-  97   3          case TWO_MENU_F1_E2_D3:
-  98   3          case TWO_MENU_F1_E2_D4:
-  99   3          {
- 100   4                        set_func_index(TWO_MENU_F1_E2_D4);
- 101   4                        buf_eeprom[0] = old2_RF_RECE_REG[2] & 0x0f;//按键值保存到0字节
- 102   4                        buf_eeprom[1] = Two_Menu_F1_E2[0];/*数值存入1 2 3 4字节*/
- 103   4                        buf_eeprom[2] = Two_Menu_F1_E2[1];
- 104   4                        buf_eeprom[3] = Two_Menu_F1_E2[2];
- 105   4                        buf_eeprom[4] = Two_Menu_F1_E2[3];
- 106   4                        buf_eeprom[5] = old2_RF_RECE_REG[0];// ID码存入 5 6 7 字节
- 107   4                        buf_eeprom[6] = old2_RF_RECE_REG[1];
- 108   4                        buf_eeprom[7] = old2_RF_RECE_REG[2] & 0xf0;
- 109   4      
- 110   4                        if (register_host_function(buf_eeprom))//数值自动加1
- 111   4                        {
- 112   5      #ifdef DEBUG
- 113   5                          uart_printf("host is %02x %02x %02x .\r\n", (unsigned int)buf_eeprom[5], (unsigned int)buf_eepr
-C51 COMPILER V9.00   DECODER                                                               09/12/2015 17:33:14 PAGE 3   
-
+ 170   8                                {
+ 171   9                                  Two_Menu_F1_E1[0] = 0;
+ 172   9                                  Two_Menu_F1_E1[3] = 1;
+ 173   9                                }
+ 174   8                                else
+ 175   8                                {
+ 176   9                                  Two_Menu_F1_E1[3] = 1;
+ 177   9                                }
+ 178   8      
+ 179   8      
+ 180   8                              }
+ 181   7                              else
+ 182   7                              {
+ 183   8                                Two_Menu_F1_E1[1]++;
+ 184   8                                Two_Menu_F1_E1[2] = 0;
+ 185   8                                Two_Menu_F1_E1[3] = 0;
+ 186   8                              }
+ 187   7                            }
+ 188   6                            else
+ 189   6                            {
+ 190   7                              Two_Menu_F1_E1[2]++;
+ 191   7                              Two_Menu_F1_E1[3] = 0;
+ 192   7                            }
+ 193   6                          }
+ 194   5                          else
+ 195   5                            Two_Menu_F1_E1[3]++;
+ 196   5                        }
+ 197   4                        break;
+ 198   4          }
+ 199   3      
+ 200   3          case TWO_MENU_F1_E2_D1:
+ 201   3          case TWO_MENU_F1_E2_D2:
+ 202   3          case TWO_MENU_F1_E2_D3:
+ 203   3          case TWO_MENU_F1_E2_D4:
+ 204   3          {
+ 205   4                        set_func_index(TWO_MENU_F1_E2_D4);
+ 206   4                        buf_eeprom[0] = old2_RF_RECE_REG[2] & 0x0f;//按键值保存到0字节
+ 207   4                        buf_eeprom[1] = Two_Menu_F1_E2[0];/*数值存入1 2 3 4字节*/
+ 208   4                        buf_eeprom[2] = Two_Menu_F1_E2[1];
+ 209   4                        buf_eeprom[3] = Two_Menu_F1_E2[2];
+ 210   4                        buf_eeprom[4] = Two_Menu_F1_E2[3];
+ 211   4                        buf_eeprom[5] = old2_RF_RECE_REG[0];// ID码存入 5 6 7 字节
+ 212   4                        buf_eeprom[6] = old2_RF_RECE_REG[1];
+ 213   4                        buf_eeprom[7] = old2_RF_RECE_REG[2] & 0xf0;
+ 214   4      
+ 215   4                        if (register_host_function(buf_eeprom))//数值自动加1
+ 216   4                        {
+ 217   5      #ifdef DEBUG
+ 218   5                          uart_printf("host is %02x %02x %02x .\r\n", (unsigned int)buf_eeprom[5], (unsigned int)buf_eepr
              -om[6], (unsigned int)buf_eeprom[7]); //测试按键键值
- 114   5                          uart_printf("host is %02x %02x %02x %02x.\r\n", (unsigned int)Two_Menu_F1_E2[0], (unsigned int)
+ 219   5                          uart_printf("host is %02x %02x %02x %02x.\r\n", (unsigned int)Two_Menu_F1_E2[0], (unsigned int)
              -Two_Menu_F1_E2[1], (unsigned int)Two_Menu_F1_E2[2], (unsigned int)Two_Menu_F1_E2[3]);
- 115   5                          uart_printf("host is rigister success \r\n");
- 116   5      #endif          
- 117   5                          delay10ms();
- 118   5                          if (Two_Menu_F1_E2[3] == 9)
- 119   5                          {
- 120   6                            if (Two_Menu_F1_E2[2] == 9)
- 121   6                            {
- 122   7                              if (Two_Menu_F1_E2[1] == 9)
- 123   7                              {
- 124   8                                Two_Menu_F1_E2[0]++;
- 125   8                                Two_Menu_F1_E2[1] = 0;
- 126   8                                Two_Menu_F1_E2[2] = 0;
- 127   8                                if (Two_Menu_F1_E2[0] == 21)
- 128   8                                {
- 129   9                                  Two_Menu_F1_E2[0] = 0;
- 130   9                                  Two_Menu_F1_E2[3] = 1;
- 131   9                                }
- 132   8                                else
- 133   8                                {
- 134   9                                  Two_Menu_F1_E2[3] = 1;
- 135   9                                }
- 136   8      
- 137   8      
- 138   8                              }
- 139   7                              else
- 140   7                              {
- 141   8                                Two_Menu_F1_E2[1]++;
- 142   8                                Two_Menu_F1_E2[2] = 0;
- 143   8                                Two_Menu_F1_E2[3] = 0;
- 144   8                              }
- 145   7                            }
- 146   6                            else
- 147   6                            {
- 148   7                              Two_Menu_F1_E2[2]++;
- 149   7                              Two_Menu_F1_E2[3] = 0;
- 150   7                            }
- 151   6                          }
- 152   5                          else
- 153   5                            Two_Menu_F1_E2[3]++;
- 154   5                        }
- 155   4                        break;
- 156   4          }
- 157   3      
- 158   3          case TWO_MENU_F1_E3_D1:
- 159   3          case TWO_MENU_F1_E3_D2:
- 160   3          case TWO_MENU_F1_E3_D3:
- 161   3          case TWO_MENU_F1_E3_D4:
- 162   3          {
- 163   4                        set_func_index(TWO_MENU_F1_E3_D4);
- 164   4                        buf_eeprom[0] = old2_RF_RECE_REG[2] & 0x0f;//按键值保存到0字节
- 165   4                        buf_eeprom[1] = Two_Menu_F1_E3[0];/*数值存入1 2 3 4字节*/
- 166   4                        buf_eeprom[2] = Two_Menu_F1_E3[1];
- 167   4                        buf_eeprom[3] = Two_Menu_F1_E3[2];
- 168   4                        buf_eeprom[4] = Two_Menu_F1_E3[3];
- 169   4                        buf_eeprom[5] = old2_RF_RECE_REG[0];// ID码存入 5 6 7 字节
- 170   4                        buf_eeprom[6] = old2_RF_RECE_REG[1];
- 171   4                        buf_eeprom[7] = old2_RF_RECE_REG[2] & 0xf0;
- 172   4      
- 173   4                        if (register_alarm_function(buf_eeprom))//数值自动加1
-C51 COMPILER V9.00   DECODER                                                               09/12/2015 17:33:14 PAGE 4   
+ 220   5                          uart_printf("host is rigister success \r\n");
+ 221   5      #endif          
+ 222   5                          delay10ms();
+ 223   5                          if (Two_Menu_F1_E2[3] == 9)
+ 224   5                          {
+ 225   6                            if (Two_Menu_F1_E2[2] == 9)
+ 226   6                            {
+ 227   7                              if (Two_Menu_F1_E2[1] == 9)
+ 228   7                              {
+ 229   8                                Two_Menu_F1_E2[0]++;
+C51 COMPILER V9.00   DECODER                                                               09/18/2015 12:10:36 PAGE 5   
 
- 174   4                        {
- 175   5      #ifdef DEBUG
- 176   5                          uart_printf("alarm is %02x %02x %02x .\r\n", (unsigned int)buf_eeprom[5], (unsigned int)buf_eep
+ 230   8                                Two_Menu_F1_E2[1] = 0;
+ 231   8                                Two_Menu_F1_E2[2] = 0;
+ 232   8                                if (Two_Menu_F1_E2[0] == 21)
+ 233   8                                {
+ 234   9                                  Two_Menu_F1_E2[0] = 0;
+ 235   9                                  Two_Menu_F1_E2[3] = 1;
+ 236   9                                }
+ 237   8                                else
+ 238   8                                {
+ 239   9                                  Two_Menu_F1_E2[3] = 1;
+ 240   9                                }
+ 241   8      
+ 242   8      
+ 243   8                              }
+ 244   7                              else
+ 245   7                              {
+ 246   8                                Two_Menu_F1_E2[1]++;
+ 247   8                                Two_Menu_F1_E2[2] = 0;
+ 248   8                                Two_Menu_F1_E2[3] = 0;
+ 249   8                              }
+ 250   7                            }
+ 251   6                            else
+ 252   6                            {
+ 253   7                              Two_Menu_F1_E2[2]++;
+ 254   7                              Two_Menu_F1_E2[3] = 0;
+ 255   7                            }
+ 256   6                          }
+ 257   5                          else
+ 258   5                            Two_Menu_F1_E2[3]++;
+ 259   5                        }
+ 260   4                        break;
+ 261   4          }
+ 262   3      
+ 263   3          case TWO_MENU_F1_E3_D1:
+ 264   3          case TWO_MENU_F1_E3_D2:
+ 265   3          case TWO_MENU_F1_E3_D3:
+ 266   3          case TWO_MENU_F1_E3_D4:
+ 267   3          {
+ 268   4                        set_func_index(TWO_MENU_F1_E3_D4);
+ 269   4                        buf_eeprom[0] = old2_RF_RECE_REG[2] & 0x0f;//按键值保存到0字节
+ 270   4                        buf_eeprom[1] = Two_Menu_F1_E3[0];/*数值存入1 2 3 4字节*/
+ 271   4                        buf_eeprom[2] = Two_Menu_F1_E3[1];
+ 272   4                        buf_eeprom[3] = Two_Menu_F1_E3[2];
+ 273   4                        buf_eeprom[4] = Two_Menu_F1_E3[3];
+ 274   4                        buf_eeprom[5] = old2_RF_RECE_REG[0];// ID码存入 5 6 7 字节
+ 275   4                        buf_eeprom[6] = old2_RF_RECE_REG[1];
+ 276   4                        buf_eeprom[7] = old2_RF_RECE_REG[2] & 0xf0;
+ 277   4      
+ 278   4                        if (register_alarm_function(buf_eeprom))//数值自动加1
+ 279   4                        {
+ 280   5      #ifdef DEBUG
+ 281   5                          uart_printf("alarm is %02x %02x %02x .\r\n", (unsigned int)buf_eeprom[5], (unsigned int)buf_eep
              -rom[6], (unsigned int)buf_eeprom[7]); //测试按键键值
- 177   5                          uart_printf("alarm is %02x %02x %02x %02x.\r\n", (unsigned int)Two_Menu_F1_E3[0], (unsigned int
+ 282   5                          uart_printf("alarm is %02x %02x %02x %02x.\r\n", (unsigned int)Two_Menu_F1_E3[0], (unsigned int
              -)Two_Menu_F1_E3[1], (unsigned int)Two_Menu_F1_E3[2], (unsigned int)Two_Menu_F1_E3[3]);
- 178   5                          uart_printf("alarm is rigister success \r\n");
- 179   5      #endif          
- 180   5                          delay10ms();
- 181   5                          if (Two_Menu_F1_E3[3] == 9)
- 182   5                          {
- 183   6                            if (Two_Menu_F1_E3[2] == 9)
- 184   6                            {
- 185   7                              if (Two_Menu_F1_E3[1] == 9)
- 186   7                              {
- 187   8                                Two_Menu_F1_E3[0]++;
- 188   8                                Two_Menu_F1_E3[1] = 0;
- 189   8                                Two_Menu_F1_E3[2] = 0;
- 190   8                                if (Two_Menu_F1_E3[0] == 21)
- 191   8                                {
- 192   9                                  Two_Menu_F1_E3[0] = 0;
- 193   9                                  Two_Menu_F1_E3[3] = 1;
- 194   9                                }
- 195   8                                else
- 196   8                                {
- 197   9                                  Two_Menu_F1_E3[3] = 1;
- 198   9                                }
- 199   8                              }
- 200   7                              else
- 201   7                              {
- 202   8                                Two_Menu_F1_E3[1]++;
- 203   8                                Two_Menu_F1_E3[2] = 0;
- 204   8                                Two_Menu_F1_E3[3] = 0;
- 205   8                              }
- 206   7                            }
- 207   6                            else
- 208   6                            {
- 209   7                              Two_Menu_F1_E3[2]++;
- 210   7                              Two_Menu_F1_E3[3] = 0;
- 211   7                            }
- 212   6                          }
- 213   5                          else
- 214   5                            Two_Menu_F1_E2[3]++;
- 215   5                        }
- 216   4                        break;
- 217   4          }
- 218   3          case TWO_MENU_F1_E4_D1:
- 219   3          case TWO_MENU_F1_E4_D2:
- 220   3          case TWO_MENU_F1_E4_D3:
- 221   3          case TWO_MENU_F1_E4_D4:
- 222   3          {
- 223   4                        set_func_index(TWO_MENU_F1_E4_D4);
- 224   4                        buf_eeprom[0] = old2_RF_RECE_REG[2] & 0x0f;//按键值保存到0字节
- 225   4                        buf_eeprom[1] = Two_Menu_F1_E4[0];/*数值存入1 2 3 4字节*/
- 226   4                        buf_eeprom[2] = Two_Menu_F1_E4[1];
- 227   4                        buf_eeprom[3] = Two_Menu_F1_E4[2];
- 228   4                        buf_eeprom[4] = Two_Menu_F1_E4[3];
- 229   4                        buf_eeprom[5] = old2_RF_RECE_REG[0];// ID码存入 5 6 7 字节
- 230   4                        buf_eeprom[6] = old2_RF_RECE_REG[1];
- 231   4                        buf_eeprom[7] = old2_RF_RECE_REG[2] & 0xf0;
- 232   4      
- 233   4                        if (register_cancel_function(buf_eeprom))//数值自动加1
-C51 COMPILER V9.00   DECODER                                                               09/12/2015 17:33:14 PAGE 5   
+ 283   5                          uart_printf("alarm is rigister success \r\n");
+ 284   5      #endif          
+ 285   5                          delay10ms();
+ 286   5                          if (Two_Menu_F1_E3[3] == 9)
+ 287   5                          {
+ 288   6                            if (Two_Menu_F1_E3[2] == 9)
+ 289   6                            {
+C51 COMPILER V9.00   DECODER                                                               09/18/2015 12:10:36 PAGE 6   
 
- 234   4                        {
- 235   5      #ifdef DEBUG
- 236   5                          uart_printf("cancel is %02x %02x %02x .\r\n", (unsigned int)buf_eeprom[5], (unsigned int)buf_ee
+ 290   7                              if (Two_Menu_F1_E3[1] == 9)
+ 291   7                              {
+ 292   8                                Two_Menu_F1_E3[0]++;
+ 293   8                                Two_Menu_F1_E3[1] = 0;
+ 294   8                                Two_Menu_F1_E3[2] = 0;
+ 295   8                                if (Two_Menu_F1_E3[0] == 21)
+ 296   8                                {
+ 297   9                                  Two_Menu_F1_E3[0] = 0;
+ 298   9                                  Two_Menu_F1_E3[3] = 1;
+ 299   9                                }
+ 300   8                                else
+ 301   8                                {
+ 302   9                                  Two_Menu_F1_E3[3] = 1;
+ 303   9                                }
+ 304   8                              }
+ 305   7                              else
+ 306   7                              {
+ 307   8                                Two_Menu_F1_E3[1]++;
+ 308   8                                Two_Menu_F1_E3[2] = 0;
+ 309   8                                Two_Menu_F1_E3[3] = 0;
+ 310   8                              }
+ 311   7                            }
+ 312   6                            else
+ 313   6                            {
+ 314   7                              Two_Menu_F1_E3[2]++;
+ 315   7                              Two_Menu_F1_E3[3] = 0;
+ 316   7                            }
+ 317   6                          }
+ 318   5                          else
+ 319   5                            Two_Menu_F1_E2[3]++;
+ 320   5                        }
+ 321   4                        break;
+ 322   4          }
+ 323   3          case TWO_MENU_F1_E4_D1:
+ 324   3          case TWO_MENU_F1_E4_D2:
+ 325   3          case TWO_MENU_F1_E4_D3:
+ 326   3          case TWO_MENU_F1_E4_D4:
+ 327   3          {
+ 328   4                        set_func_index(TWO_MENU_F1_E4_D4);
+ 329   4                        buf_eeprom[0] = old2_RF_RECE_REG[2] & 0x0f;//按键值保存到0字节
+ 330   4                        buf_eeprom[1] = Two_Menu_F1_E4[0];/*数值存入1 2 3 4字节*/
+ 331   4                        buf_eeprom[2] = Two_Menu_F1_E4[1];
+ 332   4                        buf_eeprom[3] = Two_Menu_F1_E4[2];
+ 333   4                        buf_eeprom[4] = Two_Menu_F1_E4[3];
+ 334   4                        buf_eeprom[5] = old2_RF_RECE_REG[0];// ID码存入 5 6 7 字节
+ 335   4                        buf_eeprom[6] = old2_RF_RECE_REG[1];
+ 336   4                        buf_eeprom[7] = old2_RF_RECE_REG[2] & 0xf0;
+ 337   4      
+ 338   4                        if (register_cancel_function(buf_eeprom))//数值自动加1
+ 339   4                        {
+ 340   5      #ifdef DEBUG
+ 341   5                          uart_printf("cancel is %02x %02x %02x .\r\n", (unsigned int)buf_eeprom[5], (unsigned int)buf_ee
              -prom[6], (unsigned int)buf_eeprom[7]); //测试按键键值
- 237   5                          uart_printf("cancel is %02x %02x %02x %02x.\r\n", (unsigned int)Two_Menu_F1_E4[0], (unsigned in
+ 342   5                          uart_printf("cancel is %02x %02x %02x %02x.\r\n", (unsigned int)Two_Menu_F1_E4[0], (unsigned in
              -t)Two_Menu_F1_E4[1], (unsigned int)Two_Menu_F1_E4[2], (unsigned int)Two_Menu_F1_E4[3]);
- 238   5                          uart_printf("cancel is rigister success \r\n");
- 239   5      #endif          
- 240   5                          delay10ms();
- 241   5                          if (Two_Menu_F1_E4[3] == 9)
- 242   5                          {
- 243   6                            if (Two_Menu_F1_E4[2] == 9)
- 244   6                            {
- 245   7                              if (Two_Menu_F1_E4[1] == 9)
- 246   7                              {
- 247   8                                Two_Menu_F1_E4[0]++;
- 248   8                                Two_Menu_F1_E4[1] = 0;
- 249   8                                Two_Menu_F1_E4[2] = 0;
- 250   8                                if (Two_Menu_F1_E4[0] == 21)
- 251   8                                {
- 252   9                                  Two_Menu_F1_E4[0] = 0;
- 253   9                                  Two_Menu_F1_E4[3] = 1;
- 254   9                                }
- 255   8                                else
- 256   8                                {
- 257   9                                  Two_Menu_F1_E4[3] = 1;
- 258   9                                }
- 259   8                              }
- 260   7                              else
- 261   7                              {
- 262   8                                Two_Menu_F1_E4[1]++;
- 263   8                                Two_Menu_F1_E4[2] = 0;
- 264   8                                Two_Menu_F1_E4[3] = 0;
- 265   8                              }
- 266   7                            }
- 267   6                            else
- 268   6                            {
- 269   7                              Two_Menu_F1_E4[2]++;
- 270   7                              Two_Menu_F1_E4[3] = 0;
- 271   7                            }
- 272   6                          }
- 273   5                          else
- 274   5                            Two_Menu_F1_E4[3]++;
- 275   5                        }
- 276   4                        break;
- 277   4          }
- 278   3          default:break;
- 279   3          }
- 280   2        }
- 281   1        clear_again_receive_rf_decoder_finished();//清除标志位
- 282   1      }
+ 343   5                          uart_printf("cancel is rigister success \r\n");
+ 344   5      #endif          
+ 345   5                          delay10ms();
+ 346   5                          if (Two_Menu_F1_E4[3] == 9)
+ 347   5                          {
+ 348   6                            if (Two_Menu_F1_E4[2] == 9)
+ 349   6                            {
+C51 COMPILER V9.00   DECODER                                                               09/18/2015 12:10:36 PAGE 7   
+
+ 350   7                              if (Two_Menu_F1_E4[1] == 9)
+ 351   7                              {
+ 352   8                                Two_Menu_F1_E4[0]++;
+ 353   8                                Two_Menu_F1_E4[1] = 0;
+ 354   8                                Two_Menu_F1_E4[2] = 0;
+ 355   8                                if (Two_Menu_F1_E4[0] == 21)
+ 356   8                                {
+ 357   9                                  Two_Menu_F1_E4[0] = 0;
+ 358   9                                  Two_Menu_F1_E4[3] = 1;
+ 359   9                                }
+ 360   8                                else
+ 361   8                                {
+ 362   9                                  Two_Menu_F1_E4[3] = 1;
+ 363   9                                }
+ 364   8                              }
+ 365   7                              else
+ 366   7                              {
+ 367   8                                Two_Menu_F1_E4[1]++;
+ 368   8                                Two_Menu_F1_E4[2] = 0;
+ 369   8                                Two_Menu_F1_E4[3] = 0;
+ 370   8                              }
+ 371   7                            }
+ 372   6                            else
+ 373   6                            {
+ 374   7                              Two_Menu_F1_E4[2]++;
+ 375   7                              Two_Menu_F1_E4[3] = 0;
+ 376   7                            }
+ 377   6                          }
+ 378   5                          else
+ 379   5                            Two_Menu_F1_E4[3]++;
+ 380   5                        }
+ 381   4                        break;
+ 382   4          }
+ 383   3      
+ 384   3      
+ 385   3          default:break;
+ 386   3          }
+ 387   2        }
+ 388   1        clear_again_receive_rf_decoder_finished();//清除标志位
+ 389   1      }
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =   1307    ----
-   CONSTANT SIZE    =    389    ----
-   XDATA SIZE       =      8       2
+   CODE SIZE        =   2180    ----
+   CONSTANT SIZE    =    490    ----
+   XDATA SIZE       =      8      47
    PDATA SIZE       =   ----    ----
    DATA SIZE        =   ----    ----
    IDATA SIZE       =   ----    ----
    BIT SIZE         =   ----    ----
 END OF MODULE INFORMATION.
-
-C51 COMPILER V9.00   DECODER                                                               09/12/2015 17:33:14 PAGE 6   
 
 
 C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

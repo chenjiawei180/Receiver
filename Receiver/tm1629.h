@@ -14,6 +14,8 @@ sbit TM1629_DIO = P0 ^ 1;
 sbit TM1629_STB2 = P0 ^ 3;
 sbit TM1629_STB3 = P5 ^ 4;
 
+extern unsigned char display_ram[240];
+
 
 #define nop _nop_();_nop_();_nop_();_nop_();_nop_();_nop_();
 
@@ -31,6 +33,10 @@ extern void tm1629_await(void);
 extern void tm1629_clear(void);
 extern void tm1629_display_buff_clear(void);
 extern void tm1629_load(void);
+extern void mcuram_to_displayram(unsigned char a[48], unsigned char* b);
+extern void decoder_temp_to_mcuram(unsigned char* a, unsigned char* index);
+extern void mcuram_to_mcuram_down(unsigned char* a);
+extern void mcuram_to_mcuram_up(unsigned char* a);
 
 extern void tm1629_f(unsigned char f_number);
 extern void tm1629_E(unsigned char f_number);

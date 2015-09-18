@@ -143,6 +143,9 @@
 #define TWO_MENU_F8_E1_SET  93 //F8_E1 单键盘还是多键盘
 #define TWO_MENU_F8_E2_SET  94 //F8_E2 键位更改设置
 
+//解码菜单
+#define DECODER_MENU        95 //解码显示菜单
+
 
 //以下为声音定义
 #define ZERO      0

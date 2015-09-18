@@ -272,6 +272,80 @@ void Show_four_number(unsigned char* temp)
 	display();
 }
 
+void tm1629_load(void)
+{
+	tm1629_clear();
+	if (*(display_ram + 66) != 0)
+		mcuram_to_displayram(buf_display[2] + 15, display_ram + 66);
+	if (*(display_ram + 60) != 0)
+		mcuram_to_displayram(buf_display[2] + 11, display_ram + 60);
+	if (*(display_ram + 54) != 0)
+		mcuram_to_displayram(buf_display[2] + 7, display_ram + 54);
+	if (*(display_ram + 48) != 0)
+		mcuram_to_displayram(buf_display[2] + 3, display_ram + 48);
+	if (*(display_ram + 42) != 0)
+		mcuram_to_displayram(buf_display[1] + 15, display_ram + 42);
+	if (*(display_ram + 36) != 0)
+		mcuram_to_displayram(buf_display[1] + 11, display_ram + 36);
+	if (*(display_ram + 30) != 0)
+		mcuram_to_displayram(buf_display[1] + 7, display_ram + 30);
+	if (*(display_ram + 24) != 0)
+		mcuram_to_displayram(buf_display[1] + 3, display_ram + 24);
+	if (*(display_ram + 18) != 0)
+		mcuram_to_displayram(buf_display[0] + 15, display_ram + 18);
+	if (*(display_ram + 12) != 0)
+		mcuram_to_displayram(buf_display[0] + 11, display_ram + 12);
+	if (*(display_ram + 6) != 0)
+		mcuram_to_displayram(buf_display[0] + 7, display_ram + 6);
+	if (*(display_ram + 0) != 0)
+		mcuram_to_displayram(buf_display[0] + 3, display_ram);
+}
+
+void mcuram_to_displayram(unsigned char a[48], unsigned char* b)  //从RAM区域移到显存区域,顺带翻译成数码管显示的码
+{
+	/*
+	A// 类别、区号、接收号
+	B// 类别、区号、接收号
+	*/
+	*(a) = CODE[*(b + 1)];
+	*(a - 1) = CODE[*(b + 2)];
+	*(a - 2) = CODE[*(b + 3)];
+	*(a - 3) = CODE[*(b + 4)];
+}
+
+void decoder_temp_to_mcuram(unsigned char* a, unsigned char* index)//a为MCU缓存区   index为解码后取出的8字节临时数组
+{
+	*(a + 0) = *(index);
+	*(a + 1) = *(index + 1);
+	*(a + 2) = *(index + 2);
+	*(a + 3) = *(index + 3);
+	*(a + 4) = *(index + 4);
+	*(a + 5) = *(index + 5);
+}
+
+void mcuram_to_mcuram_down(unsigned char* a) //a为MCURAM缓存区区   向下压一组数据
+{
+	*(a + 6) = *(a);		//ram区元素下移6个
+	*(a + 7) = *(a + 1);
+	*(a + 8) = *(a + 2);
+	*(a + 9) = *(a + 3);
+	*(a + 10) = *(a + 4);
+	*(a + 11) = *(a + 5);
+
+}
+
+void mcuram_to_mcuram_up(unsigned char* a) //a为MCURAM缓存区区   向上压一组数据
+{
+	*(a) = *(a + 6);   //ram区元素上移6个
+	*(a + 1) = *(a + 7);
+	*(a + 2) = *(a + 8);
+	*(a + 3) = *(a + 9);
+	*(a + 4) = *(a + 10);
+	*(a + 5) = *(a + 11);
+}
+
+
+
 void fun0(void) //待机显示函数
 {
 	//tm1629_await();
@@ -1202,4 +1276,10 @@ void fun94(void) //F8_E2键位设置
 	unsigned char temp = 0;
 	temp = return_Two_Menu_F8_E2();
 	Show_two_number(temp);
+}
+
+void fun95(void) //解码菜单
+{
+	tm1629_load();
+	display();;
 }

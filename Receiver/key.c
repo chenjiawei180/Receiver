@@ -19,7 +19,7 @@ unsigned char Two_Menu_F2_E3[4] = { 0, 0, 0, 1 }; //F2_E3
 unsigned char Two_Menu_F2_E4[4] = { 0, 0, 0, 1 }; //F2_E4
 
 unsigned char Two_Menu_F3_E1 = 1; //即时模式或者排队显示
-unsigned char Two_Menu_F3_E2 = 1; //呼叫时候存储数量
+unsigned char Two_Menu_F3_E2 = 7; //呼叫时候存储数量
 
 unsigned char Two_Menu_F4_E1 = 0; //销号时间
 unsigned char Two_Menu_F5_E1 = 0; //循环间隔时间
@@ -162,6 +162,8 @@ key_table code table[100] =
 
 	{ TWO_MENU_F8_E1_SET, TWO_MENU_F8_E1_SET, TWO_MENU_F8_E1_SET, TWO_MENU_F8_E1_SET, TWO_MENU_F8_E1, (*fun93) }, //F8_E1 单键位跟多键位切换
 	{ TWO_MENU_F8_E2_SET, TWO_MENU_F8_E2_SET, TWO_MENU_F8_E2_SET, TWO_MENU_F8_E2_SET, TWO_MENU_F8_E2, (*fun94) }, //F8_E2 键位设置
+
+	{ DECODER_MENU, DECODER_MENU, DECODER_MENU, DECODER_MENU, DECODER_MENU, (*fun95)},
 };
 
 unsigned int KeyScan(void)  //Keyboard scan function

@@ -22,22 +22,22 @@ sbit SCL = P3 ^ 5;            //模拟I2C时钟控制位
 //标志位地址
 #define CALL_TABLE_START    0x0000
 #define CALL_TABLE_END      0x03FF
-#define HOST_TABLE_START    0X0400
-#define HOST_TABLE_END      0x04FF
-#define ALARM_TABLE_START   0X0500
-#define ALARM_TABLE_END     0x05FF
-#define CANCEL_TABLE_START  0X0600
-#define CANCEL_TABLE_END    0x06FF
+#define ALARM_TABLE_START   0X0400
+#define ALARM_TABLE_END     0x04FF
+#define CANCEL_TABLE_START  0X0500
+#define CANCEL_TABLE_END    0x05FF
+#define HOST_TABLE_START    0X0600
+#define HOST_TABLE_END      0x06FF
 
 //数据存储地址
 #define CALL_DATA_START    0x0700
 #define CALL_DATA_END      0x26FF // 1024*8=8192 =2000H
-#define HOST_DATA_START    0X2700
-#define HOST_DATA_END      0x2EFF // 256*8 =2048 =800H
-#define ALARM_DATA_START   0X2F00 
-#define ALARM_DATA_END     0x36FF // 256*8 =2048 =800H
-#define CANCEL_DATA_START  0X3700
-#define CANCEL_DATA_END    0x3EFF // 256*8 =2048 =800H
+#define ALARM_DATA_START   0X2700 
+#define ALARM_DATA_END     0x2EFF // 256*8 =2048 =800H
+#define CANCEL_DATA_START  0X2F00
+#define CANCEL_DATA_END    0x36FF // 256*8 =2048 =800H
+#define HOST_DATA_START    0X3700 
+#define HOST_DATA_END      0x3EFF // 256*8 =2048 =800H
 
 extern void DelayUs2x(unsigned char t);//函数声明 
 extern void DelayMs(unsigned char t);

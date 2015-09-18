@@ -4,15 +4,24 @@
 #include "at24c256.h"
 #include "key.h"
 #include "menu.h"
+#include "tm1629.h"
 
 unsigned char buf_eeprom[8] = { 0 };//写入EEPROM_buf
 
 void DecoderProcess(void)
-{
+{	
+	unsigned char i, j ,l;
+	unsigned char temp_buff[8];//解码用临时数组
+	unsigned char temp_buff1[PAGE_LENGTH] = { 0 };//查询AT24C256临时数组
+
 	unsigned char func_index_temp = 0;
 	unsigned char Two_Menu_F8_E1_temp = 0;
+	unsigned char Two_Menu_F3_E1_temp = 0;
+	unsigned char Two_Menu_F3_E2_temp = 0;
 	func_index_temp = return_func_index();
 	Two_Menu_F8_E1_temp = return_Two_Menu_F8_E1();
+	Two_Menu_F3_E1_temp = return_Two_Menu_F3_E1();
+	Two_Menu_F3_E2_temp = return_Two_Menu_F3_E2();
 	receive_rf_decoder();
 	if (return_again_receive_rf_decoder_finished() == 1)
 	{
@@ -21,6 +30,102 @@ void DecoderProcess(void)
 #endif
 		switch (func_index_temp)
 		{
+		case MENU_STANDBY:
+		{
+			 for (j = 0; j<(CALL_TABLE_NUMBER + CANCEL_TABLE_NUMBER + ALARM_TABLE_NUMBER); j++)
+			{
+				IRcvStr(I2C_ADDRESS, j*PAGE_LENGTH, temp_buff1, PAGE_LENGTH);
+				delay10ms();
+				for (i = 0; i<PAGE_LENGTH; i++)
+				{
+					if (temp_buff1[i] == 0)
+					{	
+#ifdef DEBUG
+						uart_printf("find a table!");
+#endif
+						IRcvStr(I2C_ADDRESS, CALL_DATA_START + (j * 32 + i) * 8, temp_buff, 8);
+						delay10ms();
+						if (((Two_Menu_F8_E1_temp != 1) && temp_buff[5] == old2_RF_RECE_REG[0] && temp_buff[6] == old2_RF_RECE_REG[1] && ((temp_buff[7] >> 4) == (old2_RF_RECE_REG[2] >> 4))) || ((Two_Menu_F8_E1_temp == 1) && temp_buff[5] == old2_RF_RECE_REG[0] && temp_buff[6] == old2_RF_RECE_REG[1] && temp_buff[7] == old2_RF_RECE_REG[2]))
+						{
+								tm1629_clear();//清屏
+								decoder_temp_to_mcuram(display_ram, temp_buff);
+								tm1629_load();
+								display();
+#ifdef DEBUG
+								uart_printf("decoder success!"); 
+#endif
+
+#ifdef DEBUG
+								uart_printf("display_ram is %02x %02x %02x %02x.\r\n", (unsigned int)display_ram[0], (unsigned int)display_ram[1], (unsigned int)display_ram[2], (unsigned int)display_ram[3]); //测试按键键值
+#endif
+								//set_func_index(DECODER_MENU);
+								clear_again_receive_rf_decoder_finished();
+								break;
+								break;
+						}
+
+					}
+
+				}
+			}		
+			 break;
+		}
+
+		case DECODER_MENU:
+		{
+							 for (j = 0; j<CALL_TABLE_NUMBER + ALARM_TABLE_NUMBER + CANCEL_TABLE_NUMBER; j++)
+							 {
+								 IRcvStr(I2C_ADDRESS, j*PAGE_LENGTH, temp_buff1, PAGE_LENGTH);
+								 delay10ms();
+								 for (i = 0; i<PAGE_LENGTH; i++)
+								 {
+									 if (temp_buff1[i] == 0)
+									 {
+										 IRcvStr(I2C_ADDRESS, CALL_DATA_START + (j * 32 + i) * 8, temp_buff, 8);
+										 delay10ms();
+										 if (((Two_Menu_F8_E1_temp != 1) && temp_buff[5] == old2_RF_RECE_REG[0] && temp_buff[6] == old2_RF_RECE_REG[1] && ((temp_buff[7] >> 4) == (old2_RF_RECE_REG[2] >> 4))) || ((Two_Menu_F8_E1_temp == 1) && temp_buff[5] == old2_RF_RECE_REG[0] && temp_buff[6] == old2_RF_RECE_REG[1] && temp_buff[7] == old2_RF_RECE_REG[2]))
+										 {
+
+											 if (Two_Menu_F3_E1_temp == 1)
+											 {
+												 for (l = Two_Menu_F3_E2_temp; l>1; l--) //整体往下移一组数据
+												 {
+													 mcuram_to_mcuram_down(display_ram + (l - 2) * 6);
+												 }
+												 for (l = 0; l<6; l++)
+												 {
+													 display_ram[l] = 0;
+												 }
+												 decoder_temp_to_mcuram(display_ram, temp_buff);
+												 tm1629_load();
+												 display();
+											 }
+#ifdef DEBUG
+											 uart_printf("decoder success!");
+#endif
+
+#ifdef DEBUG
+											 uart_printf("display_ram is %02x %02x %02x %02x.\r\n", (unsigned int)display_ram[0], (unsigned int)display_ram[1], (unsigned int)display_ram[2], (unsigned int)display_ram[3]); //测试按键键值
+#endif
+											 clear_again_receive_rf_decoder_finished();
+											 break;
+											 break;
+										 }
+
+									 }
+
+								 }
+							 }
+							 break;
+		}
+
+
+
+
+
+
+
+
 		case TWO_MENU_F1_E1_D1:
 		case TWO_MENU_F1_E1_D2:
 		case TWO_MENU_F1_E1_D3:
@@ -275,6 +380,8 @@ void DecoderProcess(void)
 								  }
 								  break;
 		}
+
+
 		default:break;
 		}
 	}
