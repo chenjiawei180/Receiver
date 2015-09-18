@@ -1,4 +1,4 @@
-C51 COMPILER V9.00   TIMER                                                                 09/18/2015 15:48:09 PAGE 1   
+C51 COMPILER V9.00   TIMER                                                                 09/18/2015 17:31:09 PAGE 1   
 
 
 C51 COMPILER V9.00, COMPILATION OF MODULE TIMER
@@ -21,121 +21,164 @@ line level    source
   11          
   12          unsigned char again_and_again_time = 0;// 判断重复解码所需要的计算时间变量
   13          
-  14          void Init_Timer0(void)
-  15          {
-  16   1        TMOD |= 0x01;   //使用模式1，16位定时器，使用"|"符号可以在使用多个定时器时不受影响  
-  17   1        TH0 = (65536 - TIMER50MS) >> 8; //重新赋值 5ms
-  18   1        TL0 = (65536 - TIMER50MS) & 0xff;
-  19   1        EA = 1;            //总中断打开
-  20   1        ET0 = 1;           //定时器中断打开
-  21   1        TR0 = 1;           //定时器开关打开
-  22   1      }
-  23          
-  24          void Init_Timer1(void) 
-  25          {
-  26   1        TMOD |= 0x10;   //使用模式1，16位定时器，使用"|"符号可以在使用多个定时器时不受影响  
-  27   1        TH1 = (65536 - 100) >> 8; //重新赋值 100us
-  28   1        TL1 = (65536 - 100) & 0xff;
-  29   1        EA = 1;            //总中断打开
-  30   1        ET1 = 1;           //定时器中断打开
-  31   1        //TR1=1;           //定时器开关打开
-  32   1      }
-  33          
-  34          void Timer0_isr(void) interrupt 1  //定时器0中断服务程序
-  35          {
-  36   1        unsigned char func_index_temp = 0;
-  37   1        TF0 = 0;
-  38   1        TH0 = (65536 - TIMER50MS) >> 8;     //重新赋值 50ms
-  39   1        TL0 = (65536 - TIMER50MS) & 0xff;
-  40   1        func_index_temp = return_func_index();
-  41   1        //if (func_index_temp == MENU_STANDBY || func_index_temp == TWO_MENU_F0_YEAR || func_index_temp == TWO_ME
+  14          unsigned char logout_cycle_number = 0; //销号 循环 计数变量以及标志位
+  15          unsigned char logout_cycle_table = 0;
+  16          
+  17          unsigned char return_standby_time = 0;//一段时间未操作  返回待机界面
+  18          
+  19          void Init_Timer0(void)
+  20          {
+  21   1        TMOD |= 0x01;   //使用模式1，16位定时器，使用"|"符号可以在使用多个定时器时不受影响  
+  22   1        TH0 = (65536 - TIMER50MS) >> 8; //重新赋值 5ms
+  23   1        TL0 = (65536 - TIMER50MS) & 0xff;
+  24   1        EA = 1;            //总中断打开
+  25   1        ET0 = 1;           //定时器中断打开
+  26   1        TR0 = 1;           //定时器开关打开
+  27   1      }
+  28          
+  29          void Init_Timer1(void) 
+  30          {
+  31   1        TMOD |= 0x10;   //使用模式1，16位定时器，使用"|"符号可以在使用多个定时器时不受影响  
+  32   1        TH1 = (65536 - 100) >> 8; //重新赋值 100us
+  33   1        TL1 = (65536 - 100) & 0xff;
+  34   1        EA = 1;            //总中断打开
+  35   1        ET1 = 1;           //定时器中断打开
+  36   1        //TR1=1;           //定时器开关打开
+  37   1      }
+  38          
+  39          void Timer0_isr(void) interrupt 1  //定时器0中断服务程序
+  40          {
+  41   1        unsigned char func_index_temp = 0;
+  42   1        TF0 = 0;
+  43   1        TH0 = (65536 - TIMER50MS) >> 8;     //重新赋值 50ms
+  44   1        TL0 = (65536 - TIMER50MS) & 0xff;
+  45   1        func_index_temp = return_func_index();
+  46   1        //if (func_index_temp == MENU_STANDBY || func_index_temp == TWO_MENU_F0_YEAR || func_index_temp == TWO_ME
              -NU_F0_MOUTH 
-  42   1        //  || func_index_temp == TWO_MENU_F0_DAY || func_index_temp == TWO_MENU_F0_WEEK || func_index_temp == TWO
+  47   1        //  || func_index_temp == TWO_MENU_F0_DAY || func_index_temp == TWO_MENU_F0_WEEK || func_index_temp == TWO
              -_MENU_F0_HOUR
-  43   1        //  || func_index_temp == TWO_MENU_F0_MINUTE || func_index_temp == TWO_MENU_F1_E1_D1 || func_index_temp ==
+  48   1        //  || func_index_temp == TWO_MENU_F0_MINUTE || func_index_temp == TWO_MENU_F1_E1_D1 || func_index_temp ==
              - TWO_MENU_F1_E1_D2
-  44   1        //  || func_index_temp == TWO_MENU_F1_E1_D3 || func_index_temp == TWO_MENU_F1_E1_D4 || func_index_temp == 
+  49   1        //  || func_index_temp == TWO_MENU_F1_E1_D3 || func_index_temp == TWO_MENU_F1_E1_D4 || func_index_temp == 
              -TWO_MENU_F1_E2_D1
-  45   1        //  || func_index_temp == TWO_MENU_F1_E2_D2 || func_index_temp == TWO_MENU_F1_E2_D3 || func_index_temp == 
-             -TWO_MENU_F1_E2_D4 
-  46   1        //  )
-  47   1        if (1)
-  48   1        {
-  49   2          await_number++;
-C51 COMPILER V9.00   TIMER                                                                 09/18/2015 15:48:09 PAGE 2   
+  50   1        //  || func_index_temp == TWO_MENU_F1_E2_D2 || func_index_temp == TWO_MENU_F1_E2_D3 || func_index_temp == 
+C51 COMPILER V9.00   TIMER                                                                 09/18/2015 17:31:09 PAGE 2   
 
-  50   2          if (await_number == 10)
-  51   2          {
-  52   3            await_number_table++;
-  53   3            await_number = 0;
-  54   3          }
-  55   2          if (await_number_table >= 4)//确保程序正确延时
+             -TWO_MENU_F1_E2_D4 
+  51   1        //  )
+  52   1        if (1)
+  53   1        {
+  54   2          await_number++;
+  55   2          if (await_number == 10)
   56   2          {
-  57   3            await_number_table = 0;
-  58   3          }   
-  59   2        }
-  60   1      
-  61   1        if (main_press_time_table == 1) //菜单键按下时间标志
-  62   1        {
-  63   2          main_press_time++;      //计算菜单键按下时间长度变量
+  57   3            await_number_table++;
+  58   3            await_number = 0;
+  59   3          }
+  60   2          if (await_number_table >= 4)//确保程序正确延时
+  61   2          {
+  62   3            await_number_table = 0;
+  63   3          }   
   64   2        }
   65   1      
-  66   1        if (return_again_and_again_decoder_table() == 1)
+  66   1        if (main_press_time_table == 1) //菜单键按下时间标志
   67   1        {
-  68   2          again_and_again_time++;
-  69   2          if (again_and_again_time >120)
-  70   2          {
-  71   3            clear_again_and_again_decoder_table();
-  72   3            again_and_again_time = 0;
-  73   3          }
-  74   2        }
-  75   1      
-  76   1      }
-  77          
-  78          void Timer1_isr(void) interrupt 3  //定时器1中断服务程序
-  79          {
-  80   1        TF1 = 0;
-  81   1        TH1 = (65536 - 100) >> 8;     //重新赋值 100us
-  82   1        TL1 = (65536 - 100) & 0xff;
-  83   1        RF_decode_main();
-  84   1      }
-  85          
-  86          unsigned char return_await_number_table(void) //返回await_number_table变量的值
-  87          {
-  88   1        unsigned char await_number_table_temp=0;
-  89   1        await_number_table_temp = await_number_table;
-  90   1        return await_number_table_temp;
-  91   1      }
-  92          
-  93          void set_await_number_table(unsigned char temp) //设置await_number_table变量的值
-  94          {
-  95   1        await_number_table = temp;
-  96   1      }
-  97          
-  98          void set_main_press_time_table(unsigned char temp) //设置main_press_time_table变量的值
-  99          {
- 100   1        main_press_time_table = temp;
- 101   1      }
- 102          
- 103          unsigned char return_main_press_time(void)
- 104          {
- 105   1        unsigned char temp = 0;
- 106   1        temp = main_press_time;
- 107   1        return temp;
- 108   1      }
- 109          
- 110          void clear_main_press_time(void)
- 111          {
-C51 COMPILER V9.00   TIMER                                                                 09/18/2015 15:48:09 PAGE 3   
+  68   2          main_press_time++;      //计算菜单键按下时间长度变量
+  69   2        }
+  70   1      
+  71   1        if (return_again_and_again_decoder_table() == 1)
+  72   1        {
+  73   2          again_and_again_time++;
+  74   2          if (again_and_again_time >120)
+  75   2          {
+  76   3            clear_again_and_again_decoder_table();
+  77   3            again_and_again_time = 0;
+  78   3          }
+  79   2        }
+  80   1      
+  81   1        if (func_index_temp == DECODER_MENU)
+  82   1        {
+  83   2          logout_cycle_number++;
+  84   2          if (logout_cycle_number == 20)
+  85   2          {
+  86   3            logout_cycle_table++;
+  87   3            logout_cycle_number = 0;
+  88   3          }
+  89   2      
+  90   2        }
+  91   1      
+  92   1        if (func_index_temp != DECODER_MENU)
+  93   1        {
+  94   2          return_standby_time++;
+  95   2          if (return_standby_time >200)
+  96   2          {
+  97   3            return_standby_time = 0;
+  98   3            set_func_index(MENU_STANDBY);
+  99   3          }
+ 100   2        }
+ 101   1      
+ 102   1      }
+ 103          
+ 104          void Timer1_isr(void) interrupt 3  //定时器1中断服务程序
+ 105          {
+ 106   1        TF1 = 0;
+ 107   1        TH1 = (65536 - 100) >> 8;     //重新赋值 100us
+ 108   1        TL1 = (65536 - 100) & 0xff;
+ 109   1        RF_decode_main();
+ 110   1      }
+ 111          
+C51 COMPILER V9.00   TIMER                                                                 09/18/2015 17:31:09 PAGE 3   
 
- 112   1        main_press_time = 0;
- 113   1      }
+ 112          unsigned char return_await_number_table(void) //返回await_number_table变量的值
+ 113          {
+ 114   1        unsigned char await_number_table_temp=0;
+ 115   1        await_number_table_temp = await_number_table;
+ 116   1        return await_number_table_temp;
+ 117   1      }
+ 118          
+ 119          void set_await_number_table(unsigned char temp) //设置await_number_table变量的值
+ 120          {
+ 121   1        await_number_table = temp;
+ 122   1      }
+ 123          
+ 124          void set_main_press_time_table(unsigned char temp) //设置main_press_time_table变量的值
+ 125          {
+ 126   1        main_press_time_table = temp;
+ 127   1      }
+ 128          
+ 129          unsigned char return_main_press_time(void)
+ 130          {
+ 131   1        unsigned char temp = 0;
+ 132   1        temp = main_press_time;
+ 133   1        return temp;
+ 134   1      }
+ 135          
+ 136          void clear_main_press_time(void)
+ 137          {
+ 138   1        main_press_time = 0;
+ 139   1      }
+ 140          
+ 141          unsigned char return_logout_cycle_table(void)
+ 142          {
+ 143   1        unsigned char temp = 0;
+ 144   1        temp = logout_cycle_table;
+ 145   1        return temp;
+ 146   1      }
+ 147          
+ 148          void set_logout_cycle_table(unsigned char temp) //设置logout_cycle_table变量的值
+ 149          {
+ 150   1        logout_cycle_table = temp;
+ 151   1      }
+ 152          
+ 153          void clear_return_standby_time(void)
+ 154          {
+ 155   1        return_standby_time = 0;
+ 156   1      }
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =    273    ----
+   CODE SIZE        =    343    ----
    CONSTANT SIZE    =   ----    ----
-   XDATA SIZE       =      5       1
+   XDATA SIZE       =      8       1
    PDATA SIZE       =   ----    ----
    DATA SIZE        =   ----    ----
    IDATA SIZE       =   ----    ----

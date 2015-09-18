@@ -1,4 +1,5 @@
 #include "ev1527.h"
+#include "timer.h"
 
 /********************解码方式专用变量*******************************/
 unsigned char Save_RF_trans1 = 0;
@@ -196,7 +197,7 @@ void receive_rf_decoder(void)
 					again_receive_rf_decoder_finished = 1;
 				}
 				again_and_again_decoder_table = 1;
-				//return_standby_time = 0;
+				clear_return_standby_time();
 
 
 				//for (j = 0; j<4; j++)
@@ -212,7 +213,7 @@ void receive_rf_decoder(void)
 				//			if (temp_buff[4] == old2_RF_RECE_REG[0] && temp_buff[5] == old2_RF_RECE_REG[1] && ((temp_buff[6] >> 4) == (old2_RF_RECE_REG[2] >> 4)))
 				//			{
 				//				register_manager = 1;
-				//				return_standby_time = 0;
+				//				clear_return_standby_time();
 				//				break;
 				//				break;
 				//			}

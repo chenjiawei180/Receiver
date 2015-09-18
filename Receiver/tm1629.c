@@ -347,6 +347,77 @@ void mcuram_to_mcuram_up(unsigned char* a) //a为MCURAM缓存区区   向上压一组数据
 	*(a + 5) = *(a + 11);
 }
 
+void CycleProcess(void)
+{
+	unsigned char i, index;
+	unsigned char f5_xunhuan, f4_xiaohao, logout_cycle_table_temp;
+	unsigned char temp[6] = { 0 };
+	f5_xunhuan = return_Two_Menu_F5_E1();
+	f4_xiaohao = return_Two_Menu_F4_E1();
+	logout_cycle_table_temp = return_logout_cycle_table();
+	/*循环处理函数*/
+	if (f5_xunhuan<f4_xiaohao && logout_cycle_table_temp>f5_xunhuan&&f5_xunhuan != 0)
+	{
+		for (i = 0; i<10; i++)
+		{
+			if (display_ram[i * 6 ] == 0)
+			{
+				index = i;
+				break;
+			}
+		}
+
+		for (i = 0; i<6; i++)
+		{
+			temp[i] = display_ram[i];
+		}
+		for (i = 0; i<index; i++)
+		{
+			mcuram_to_mcuram_up(display_ram + i * 6);
+		}
+		for (i = 0; i<6; i++)
+		{
+			display_ram[(index - 1) * 6 + i] = temp[i];
+		}
+		tm1629_load();
+		display();
+		set_logout_cycle_table(0);
+	}
+}
+
+void LogoutProcess(void)
+{
+	unsigned char i;
+	unsigned char f5_xunhuan, f4_xiaohao, logout_cycle_table_temp, Two_Menu_F3_E2_temp;
+	f5_xunhuan = return_Two_Menu_F5_E1();
+	f4_xiaohao = return_Two_Menu_F4_E1();
+	logout_cycle_table_temp = return_logout_cycle_table();
+	Two_Menu_F3_E2_temp = return_Two_Menu_F3_E2();
+	/*销号处理函数*/
+	if (f4_xiaohao<f5_xunhuan&& logout_cycle_table_temp>f4_xiaohao&&f4_xiaohao != 0)
+	{
+		for (i = 0; i<(Two_Menu_F3_E2_temp - 1); i++)
+		{
+			mcuram_to_mcuram_up(display_ram + i * 6);
+		}
+		for (i = (Two_Menu_F3_E2_temp - 1) * 6; i<Two_Menu_F3_E2_temp * 6; i++)
+		{
+			display_ram[i] = 0;
+		}
+		tm1629_load();
+		display();
+		set_logout_cycle_table(0);
+		if (display_ram[0] == 0)
+		{
+			set_func_index(MENU_STANDBY);
+		}
+	}
+}
+
+
+
+
+
 void Logout(void)
 {
 	unsigned char i;
@@ -368,6 +439,71 @@ void Logout(void)
 		set_func_index(MENU_STANDBY);
 	}
 }
+
+void CycleUp(void)
+{
+	unsigned char i, index, Two_Menu_F3_E2_temp;
+	unsigned char temp[6] = { 0 };
+	index = return_Two_Menu_F3_E2();
+	Two_Menu_F3_E2_temp = return_Two_Menu_F3_E2();
+	/*循环处理函数*/
+	for (i = 0; i<Two_Menu_F3_E2_temp; i++)
+	{
+		if (display_ram[i * 6 ] == 0)
+		{
+			index = i;
+			break;
+		}
+	}
+	for (i = 0; i<6; i++)
+	{
+		temp[i] = display_ram[i];
+	}
+	for (i = 0; i<index; i++)
+	{
+		mcuram_to_mcuram_up(display_ram + i * 6);
+	}
+	for (i = 0; i<6; i++)
+	{
+		display_ram[(index - 1) * 6 + i] = temp[i];
+	}
+	tm1629_load();
+	display();
+}
+
+void CycleDown(void)
+{
+	unsigned char i, index, Two_Menu_F3_E2_temp;
+	unsigned char temp[6] = { 0 };
+	index = return_Two_Menu_F3_E2();
+	Two_Menu_F3_E2_temp = return_Two_Menu_F3_E2();
+	/*循环处理函数*/
+	for (i = 0; i<Two_Menu_F3_E2_temp; i++)
+	{
+		if (display_ram[i * 6 ] == 0)
+		{
+			index = i;
+			break;
+		}
+	}
+
+	for (i = 0; i<6; i++)
+	{
+		temp[i] = display_ram[(index - 1) * 6 + i];
+	}
+
+	for (i = index; i>1; i--)
+	{
+		mcuram_to_mcuram_down(display_ram + (i - 2) * 6);
+	}
+	for (i = 0; i<6; i++)
+	{
+		display_ram[i] = temp[i];
+	}
+	tm1629_load();
+	display();
+}
+
 
 
 

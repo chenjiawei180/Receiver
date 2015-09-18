@@ -176,6 +176,8 @@ unsigned int KeyScan(void)  //Keyboard scan function
 		delay10ms();  //Remove jitter
 		if ((HKeyPort & 0x1f) != 0x1f)   //Press button
 		{
+			clear_return_standby_time();
+
 			HKeyPort |= 0x1f; //检测第一列
 			LKeyPort |= 0xf8;
 			LKeyPort &= 0x7f;
@@ -195,6 +197,7 @@ unsigned int KeyScan(void)  //Keyboard scan function
 				delay10ms();
 				while ((HKeyPort & 0x1f) != 0x1f);
 				set_main_press_time_table(0);//按键释放，清除相应的标志位
+				set_logout_cycle_table(0);//循环跟销号重新计数
 				return Val;
 			}
 		}
@@ -264,7 +267,7 @@ void KeyProcess(void)
 	switch (key_value)
 	{
 		case KEY_FUNC:
-			if (func_index == MENU_STANDBY )  //如果索引==0  则要1秒以上进入菜单
+			if (func_index == MENU_STANDBY || func_index == DECODER_MENU)  //如果索引==0  则要1秒以上进入菜单
 			{
 				main_press_time_temp = return_main_press_time();
 				if (main_press_time_temp >= 20)
@@ -577,6 +580,9 @@ void KeyProcess(void)
 				if (Two_Menu_F8_E2 == 50) Two_Menu_F8_E2 = 0;	//F8_E2键位设置
 				else Two_Menu_F8_E2++;
 				break;
+			case DECODER_MENU:
+				CycleUp();
+				break;
 
 				default:break;
 			}	
@@ -795,6 +801,9 @@ void KeyProcess(void)
 			case TWO_MENU_F8_E2_SET:
 				if (Two_Menu_F8_E2 == 0) Two_Menu_F8_E2 = 50;	//F8_E2键位设置
 				else Two_Menu_F8_E2--;
+				break;
+			case DECODER_MENU:
+				CycleDown();
 				break;
 
 				default:break;

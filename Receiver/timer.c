@@ -11,6 +11,11 @@ unsigned char main_press_time = 0;
 
 unsigned char again_and_again_time = 0;// 判断重复解码所需要的计算时间变量
 
+unsigned char logout_cycle_number = 0; //销号 循环 计数变量以及标志位
+unsigned char logout_cycle_table = 0;
+
+unsigned char return_standby_time = 0;//一段时间未操作  返回待机界面
+
 void Init_Timer0(void)
 {
 	TMOD |= 0x01;	  //使用模式1，16位定时器，使用"|"符号可以在使用多个定时器时不受影响	
@@ -73,6 +78,27 @@ void Timer0_isr(void) interrupt 1  //定时器0中断服务程序
 		}
 	}
 
+	if (func_index_temp == DECODER_MENU)
+	{
+		logout_cycle_number++;
+		if (logout_cycle_number == 20)
+		{
+			logout_cycle_table++;
+			logout_cycle_number = 0;
+		}
+
+	}
+
+	if (func_index_temp != DECODER_MENU)
+	{
+		return_standby_time++;
+		if (return_standby_time >200)
+		{
+			return_standby_time = 0;
+			set_func_index(MENU_STANDBY);
+		}
+	}
+
 }
 
 void Timer1_isr(void) interrupt 3  //定时器1中断服务程序
@@ -110,4 +136,21 @@ unsigned char return_main_press_time(void)
 void clear_main_press_time(void)
 {
 	main_press_time = 0;
+}
+
+unsigned char return_logout_cycle_table(void)
+{
+	unsigned char temp = 0;
+	temp = logout_cycle_table;
+	return temp;
+}
+
+void set_logout_cycle_table(unsigned char temp) //设置logout_cycle_table变量的值
+{
+	logout_cycle_table = temp;
+}
+
+void clear_return_standby_time(void)
+{
+	return_standby_time = 0;
 }

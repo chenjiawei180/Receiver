@@ -5,6 +5,7 @@
 #include "key.h"
 #include "menu.h"
 #include "tm1629.h"
+#include "timer.h"
 
 unsigned char buf_eeprom[8] = { 0 };//写入EEPROM_buf
 
@@ -37,6 +38,7 @@ void DecoderProcess(void)
 		{
 		case MENU_STANDBY://待机状态下
 		{
+			set_logout_cycle_table(0);//循环跟销号重新计数
 			//键盘规则
 			if ((old2_RF_RECE_REG[2] & 0xf0) == 0x00 && (((old2_RF_RECE_REG[0] >> 4) == Two_Menu_F7_E1_temp) || (Two_Menu_F7_E1_temp == 11)))//键盘规则，程序按默认的来编
 			{
@@ -52,7 +54,7 @@ void DecoderProcess(void)
 				tm1629_load();//单片机把数组内容载入数码管显存数组中
 				display();//显示数码管
 				set_func_index(DECODER_MENU);//此时跳入解码菜单，为下一次解码做准备
-				clear_again_receive_rf_decoder_finished();//清除解码完成标志位
+				//clear_again_receive_rf_decoder_finished();//清除解码完成标志位
 
 				break;
 			}
@@ -97,6 +99,7 @@ void DecoderProcess(void)
 
 		case DECODER_MENU: //解码菜单下
 		{
+			set_logout_cycle_table(0);//循环跟销号重新计数
 			 //键盘规则
 			if ((old2_RF_RECE_REG[2] & 0xf0) == 0x00 && (((old2_RF_RECE_REG[0] >> 4) == Two_Menu_F7_E1_temp) || (Two_Menu_F7_E1_temp == 11)))//键盘规则，程序按默认的来编
 			{
@@ -134,7 +137,7 @@ void DecoderProcess(void)
 					}
 
 				}
-				clear_again_receive_rf_decoder_finished();//清除解码完成标志位
+				//clear_again_receive_rf_decoder_finished();//清除解码完成标志位
 				break;
 			}
 			//呼叫器注册,搜索所需要的呼叫器
@@ -450,6 +453,9 @@ void DecoderProcess(void)
 
 		default:break;//默认的break
 		}
+		clear_again_receive_rf_decoder_finished();//清除标志位
 	}
-	clear_again_receive_rf_decoder_finished();//清除标志位
+	
+	LogoutProcess();
+	CycleProcess();
 }
