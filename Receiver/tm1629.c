@@ -104,7 +104,8 @@ void send_command_3(unsigned char word) //写命令给第三个TM1629
 
 void display(void) //3个TM1629显示函数
 {
-	unsigned char i;
+	unsigned char i,temp;
+	temp = return_Two_Menu_F6_E5();
 	send_command(0x40);	//设置数据命令:普通模式、地址自增1，写数据到显存
 	send_command(0xc0);	//设置显示地址命令：从00H开始
 	for (i = 0; i<8; i++)	//发送16字节的显存数据
@@ -112,7 +113,7 @@ void display(void) //3个TM1629显示函数
 		writeDataTo1629(buf_display[0][i]);
 		writeDataTo1629(buf_display[1][i]);
 	}
-	send_command(0x8C);	//设置显示控制命令：打开显示，并设置为11/16.
+	send_command(0x88 + temp);	//设置显示控制命令：打开显示，并设置为11/16.
 	TM1629_STB = 1;
 
 	send_command_2(0x40);	//设置数据命令:普通模式、地址自增1，写数据到显存
@@ -122,7 +123,7 @@ void display(void) //3个TM1629显示函数
 		writeDataTo1629_2(buf_display[2][i]);
 		writeDataTo1629_2(buf_display[3][i]);
 	}
-	send_command_2(0x8C);	//设置显示控制命令：打开显示，并设置为11/16.
+	send_command_2(0x88 + temp);	//设置显示控制命令：打开显示，并设置为11/16.
 	TM1629_STB2 = 1;
 
 	send_command_3(0x40);	//设置数据命令:普通模式、地址自增1，写数据到显存
@@ -132,9 +133,10 @@ void display(void) //3个TM1629显示函数
 		writeDataTo1629_3(buf_display[4][i]);
 		writeDataTo1629_3(buf_display[5][i]);
 	}
-	send_command_3(0x8C);	//设置显示控制命令：打开显示，并设置为11/16.
+	send_command_3(0x88 + temp);	//设置显示控制命令：打开显示，并设置为11/16.
 	TM1629_STB3 = 1;
 }
+
 
 void tm1629_init(void) //TM1629开机初始化函数
 {

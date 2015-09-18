@@ -550,7 +550,7 @@ void KeyProcess(void)
 				else Two_Menu_F6_E4++;
 				break;
 			case TWO_MENU_F6_E5_SET:
-				if (Two_Menu_F6_E5 == 9) Two_Menu_F6_E5 = 0;	//F6_E5屏幕亮度调整
+				if (Two_Menu_F6_E5 == 7) Two_Menu_F6_E5 = 0;	//F6_E5屏幕亮度调整
 				else Two_Menu_F6_E5++;
 				break;
 			case TWO_MENU_F7_E1_SET:
@@ -769,7 +769,7 @@ void KeyProcess(void)
 				else Two_Menu_F6_E4--;
 				break;
 			case TWO_MENU_F6_E5_SET:
-				if (Two_Menu_F6_E5 == 0) Two_Menu_F6_E5 = 9;	//F6_E5屏幕亮度调整
+				if (Two_Menu_F6_E5 == 0) Two_Menu_F6_E5 = 7;	//F6_E5屏幕亮度调整
 				else Two_Menu_F6_E5--;
 				break;
 			case TWO_MENU_F7_E1_SET:
