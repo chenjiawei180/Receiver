@@ -3,6 +3,7 @@
 #include "usart.h"
 #include "ds1302.h"
 #include "key.h"
+#include "menu.h"
 
 unsigned char const CODE[] = { 0x3F, 0x06, 0x5B, 0x4F, 0x66, 0x6D, 0x7D, 0x07, 0x7F, 0x6F, 0x77, 0x7C, 0x39, 0x5E, 0x79, 0x71, 0x76, 0x38, 0x5c, 0x73, 0x3e };//0-9 abcdef 显示器码数组
 unsigned char const INIT_CODE[] = { 0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80 };//逐段点亮数码管数组
@@ -342,6 +343,28 @@ void mcuram_to_mcuram_up(unsigned char* a) //a为MCURAM缓存区区   向上压一组数据
 	*(a + 3) = *(a + 9);
 	*(a + 4) = *(a + 10);
 	*(a + 5) = *(a + 11);
+}
+
+void Logout(void)
+{
+	unsigned char i;
+	unsigned char Two_Menu_F3_E2_temp= 0;
+	Two_Menu_F3_E2_temp = return_Two_Menu_F3_E2();
+	/*销号处理函数*/
+	for (i = 0; i<(Two_Menu_F3_E2_temp - 1); i++)
+	{
+		mcuram_to_mcuram_up(display_ram + i * 6);
+	}
+	for (i = (Two_Menu_F3_E2_temp - 1) * 6; i<Two_Menu_F3_E2_temp * 6; i++)
+	{
+		display_ram[i] = 0;
+	}
+	tm1629_load();
+	display();
+	if (display_ram[0] == 0)
+	{
+		set_func_index(MENU_STANDBY);
+	}
 }
 
 

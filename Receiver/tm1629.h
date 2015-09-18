@@ -145,10 +145,6 @@ extern void fun97(void);
 extern void fun98(void);
 extern void fun99(void);
 
-extern void buftobuf(unsigned char a[48], unsigned char* b);
-extern void romtobuf(unsigned char* a, unsigned char* index);
-extern void ramtoram_down(unsigned char* a);
-extern void ramtoram_up(unsigned char* a);
 extern void LogoutProcess(void);
 extern void CycleProcess(void);
 extern void Logout(void);

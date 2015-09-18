@@ -355,7 +355,14 @@ void KeyProcess(void)
 				clear_main_press_time();
 			}
 			 break;
-		case KEY_RETURN:	func_index = table[func_index].esc; break;
+		case KEY_RETURN:	
+			if (func_index == DECODER_MENU)
+			{
+				Logout();
+			}
+			else
+			func_index = table[func_index].esc; 
+			break;
 		case KEY_UP:
 			switch (func_index)
 			{
