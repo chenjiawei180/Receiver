@@ -214,8 +214,8 @@
 #define QING      62
 #define DAO       63
 #define GUITAI    64
-#define HUJIAO    65
-#define QUXIAO    66
+#define QUXIAO    65
+#define HUJIAO    66
 #define JIUSHUI   67
 #define JIEZHANG  68
 #define MAIDANG   69

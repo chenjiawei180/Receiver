@@ -17,15 +17,19 @@ void DecoderProcess(void)
 
 	unsigned char func_index_temp = 0;		//创建临时变量，用于放回其他外部变量
 	unsigned char Two_Menu_F8_E1_temp = 0;	//创建临时变量，用于放回其他外部变量
+	unsigned char Two_Menu_F8_E2_temp = 0;	//创建临时变量，用于放回其他外部变量
 	unsigned char Two_Menu_F3_E1_temp = 0;	//创建临时变量，用于放回其他外部变量	
 	unsigned char Two_Menu_F3_E2_temp = 0;	//创建临时变量，用于放回其他外部变量
 	unsigned char Two_Menu_F7_E1_temp = 0;	//创建临时变量，用于放回其他外部变量
+	
 
 	func_index_temp = return_func_index();	//返回所需要的外部变量
 	Two_Menu_F8_E1_temp = return_Two_Menu_F8_E1();	//返回所需要的外部变量
+	Two_Menu_F8_E2_temp = return_Two_Menu_F8_E2();	//返回所需要的外部变量
 	Two_Menu_F3_E1_temp = return_Two_Menu_F3_E1();	//返回所需要的外部变量
 	Two_Menu_F3_E2_temp = return_Two_Menu_F3_E2();	//返回所需要的外部变量
 	Two_Menu_F7_E1_temp = return_Two_Menu_F7_E1();	//返回所需要的外部变量
+
 
 	receive_rf_decoder();	//解码函数
 
@@ -449,6 +453,35 @@ void DecoderProcess(void)
 			}
 			break;
 		}
+		case TWO_MENU_F8_E2_SET :
+
+			if (Two_Menu_F8_E1_temp == 1)
+			{
+				single_key[old2_RF_RECE_REG[2] & 0x0f] = Two_Menu_F8_E2_temp;
+			}
+			else
+			{
+				multiple_key[old2_RF_RECE_REG[2] & 0x0f] = Two_Menu_F8_E2_temp;
+			}
+#ifdef DEBUG
+			uart_printf("single_key：  ");
+			for (i = 0; i < 16; i++)
+			{
+				
+				uart_printf("%02d ", (unsigned int)single_key[i]);
+			}
+			uart_printf(" \r\n");
+
+			uart_printf("multiple_key：");
+			for (i = 0; i < 16; i++)
+			{
+
+				uart_printf("%2d ", (unsigned int)multiple_key[i]);
+			}
+			uart_printf(" \r\n");
+#endif	
+
+			break;
 
 
 		default:break;//默认的break

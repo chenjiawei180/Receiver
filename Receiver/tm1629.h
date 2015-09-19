@@ -15,6 +15,8 @@ sbit TM1629_STB2 = P0 ^ 3;
 sbit TM1629_STB3 = P5 ^ 4;
 
 extern unsigned char display_ram[240];
+extern unsigned char multiple_key[16];
+extern unsigned char single_key[16];
 
 
 #define nop _nop_();_nop_();_nop_();_nop_();_nop_();_nop_();
