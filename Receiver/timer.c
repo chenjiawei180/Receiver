@@ -98,15 +98,24 @@ void Timer0_isr(void) interrupt 1  //定时器0中断服务程序
 			set_func_index(MENU_STANDBY);
 		}
 	}
-
 }
 
 void Timer1_isr(void) interrupt 3  //定时器1中断服务程序
 {
+	unsigned char func_index_temp = 0;
+	func_index_temp = return_func_index();
 	TF1 = 0;
 	TH1 = (65536 - 100) >> 8;		  //重新赋值 100us
 	TL1 = (65536 - 100) & 0xff;
-	RF_decode_main();
+	if (func_index_temp == TWO_MENU_FA_SET)
+	{
+		RF_decode_main_sjz_test();
+	}
+	else
+	{
+		RF_decode_main();
+	}
+	
 }
 
 unsigned char return_await_number_table(void)	//返回await_number_table变量的值

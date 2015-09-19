@@ -5,10 +5,13 @@
 
 sbit P3_RF_RXD = P3 ^ 2; //–≈∫≈ ‰»ÎΩ≈
 
+#define TUNNING_STEP 15   /*step for tunning the receiving code length*/
+
 extern void exint0_init(void);
 extern void RF_ini_receive(void);
 extern void RF_decode_main(void);
 extern void receive_rf_decoder(void);
+extern void RF_decode_main_sjz_test(void);
 
 extern unsigned char old2_RF_RECE_REG[3];
 

@@ -13,11 +13,19 @@ unsigned char RF_RECE_REG[3] = { 0 };
 
 unsigned int measure_sync_count1 = 70; //波长保存变量
 unsigned int measure_sync_count2 = 120;//同上
+unsigned int RF_trans1_test_count = 0; //码长测试变量
+unsigned int RF_trans0_test_count = 0; //码长测试变量
+unsigned int RF_trans_count = 0;	   //码长测试变量
+unsigned int measure_sync_count1_saved = 70;
+unsigned int measure_sync_count2_saved = 120;
+unsigned int tunning_finish_count = 0;
 
 unsigned char receive_rf_decoder_finished = 0;      //一次解码完成标志位
 unsigned char again_receive_rf_decoder_finished = 0;//二次解码完成标志位
 unsigned char rx_table = 0;							//二次解码switch步骤变量
 unsigned char again_and_again_decoder_table = 0;     //二次编码成功标志位
+
+
 
 unsigned char old1_RF_RECE_REG[3] = { 0 };//用于校验
 unsigned char old2_RF_RECE_REG[3] = { 0 };//用于读取
@@ -241,6 +249,142 @@ void receive_rf_decoder(void)
 		}
 		EX0 = 1;
 		receive_rf_decoder_finished = 0;
+	}
+}
+
+void RF_decode_main_sjz_test(void)
+{
+
+	if (P3_RF_RXD == 1)
+	{
+		++RF_trans1;
+	}
+	else
+	{
+		++RF_trans0;
+	}
+	Timer0_interrupt_count++;
+	if (Timer0_interrupt_count>4000)/*4000*100us=400ms,*/
+	{
+		TR1 = 0;/*shut down timer0 interrupt sjz*/
+		EX0 = 1;
+		RF_ini_receive();
+		return;
+	}
+	switch (P_RF_INT)
+	{
+	case 0:  //等待长低电平同步
+		if (RF_trans1 > 0)
+		{
+			//包含的高脉冲太多
+
+			EX0 = 1;
+			TR1 = 0;
+			RF_ini_receive();
+			return;
+		}
+		if (RF_trans0 >(60 + RF_trans1_test_count*TUNNING_STEP))
+		{
+			//长低同步完成
+			P_RF_INT++;
+			measure_sync_count1 = 60 + RF_trans1_test_count*TUNNING_STEP;
+			RF_trans0 = RF_trans1 = 0;
+		}
+		break;
+	case 1: //等待真正的同步头
+		if ((RF_trans0 + RF_trans1) >(120 + RF_trans0_test_count*TUNNING_STEP))//120)/*sjz change from 150 to 120,to shorten the detection when  the header of synchronization coming*/
+		{
+			//10mS没有同步高脉冲
+			// measure_sync_count2=RF_trans0;
+			if (RF_trans1 == 0)
+			{
+				RF_trans0_test_count++;
+				RF_trans1_test_count++;
+			}
+			RF_ini_receive();
+			EX0 = 1;
+			TR1 = 0;
+			return;
+		}
+
+		if (RF_trans1 > 1)
+		{
+			measure_sync_count2 = 120 + RF_trans0_test_count*TUNNING_STEP;
+			RF_trans0_test_count = 0;
+			RF_trans1_test_count = 0;
+			//高电平同步到了(最少检测到 2 次)
+			if (EX0 == 1)
+			{
+				EX0 = 0;/*double check,since we have already detect the synchronization,if EXTINT0 is enable,need to disable  sjz*/
+			}
+			P_RF_INT++;
+			RF_trans0 = 0;
+			// RF_L_wait_H = 1;
+		}
+		break;
+	case 2:
+		if (RF_trans0 > 0)
+		{
+			Save_RF_trans1 = RF_trans1;
+			RF_trans1 = 0;
+			P_RF_INT++;
+		}
+		if (RF_trans1>((measure_sync_count2 + measure_sync_count1) >> 3))//20) /*if the high level is bigger than 25*100us,Then should be setted as noise instead of useful signal sjz*/
+		{
+			RF_ini_receive();//KEY_HOLD = 0;
+			EX0 = 1;
+			TR1 = 0;
+			return;
+		}
+		break;
+	case 3:if (RF_trans1 > 0)
+	{
+			   Save_RF_trans0 = RF_trans0;
+			   RF_trans0 = 0;
+			   P_RF_INT = 2;
+			   RF_RECE_REG[RF_BIT_COUNTER / 8] <<= 1;
+			   if (Save_RF_trans1 >Save_RF_trans0)
+			   {
+				   RF_RECE_REG[(RF_BIT_COUNTER) / 8] |= 0x01;
+			   }
+			   RF_trans_count = Save_RF_trans1 + Save_RF_trans0;
+			   ++RF_BIT_COUNTER;
+			   if (RF_BIT_COUNTER >23)
+			   {
+				   TR1 = 0;
+				   RF_ini_receive();
+				   receive_rf_decoder_finished = 1;
+				   /*sjz*/
+				   tunning_finish_count++;
+				   measure_sync_count2_saved = measure_sync_count2_saved + measure_sync_count2;
+				   measure_sync_count2 = measure_sync_count2_saved >> 1;
+				   measure_sync_count2_saved = measure_sync_count2;
+
+				   if ((tunning_finish_count>1) && ((measure_sync_count1 - measure_sync_count1_saved <= 30) || (measure_sync_count1_saved - measure_sync_count1 <= 30)))
+				   {
+					   measure_sync_count1_saved = measure_sync_count1_saved + measure_sync_count1;
+					   measure_sync_count1 = measure_sync_count1_saved >> 1;
+					   measure_sync_count1_saved = measure_sync_count1;
+				   }
+
+				   EX0 = 1;
+				   break;
+			   }
+	}
+		   if (RF_trans0>((measure_sync_count2 + measure_sync_count1) >> 3))//20)
+		   {
+			   RF_ini_receive();
+			   EX0 = 1;
+			   TR1 = 0;
+			   return;
+		   }
+		   break;
+	default: //异常处理
+	{
+				 RF_ini_receive();
+				 EX0 = 1;
+				 TR1 = 0;
+	}break;
 	}
 }
 

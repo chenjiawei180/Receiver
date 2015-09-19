@@ -147,6 +147,7 @@
 #define DECODER_MENU        95 //解码显示菜单
 
 
+
 //以下为声音定义
 #define ZERO      0
 #define ONE       1
