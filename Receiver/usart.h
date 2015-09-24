@@ -23,12 +23,20 @@ this file will define all  usart  function
 
 #define PARITYBIT NONE_PARITY   //定义校验位
 
+#define S2RI  0x01              //S2CON.0
+#define S2TI  0x02              //S2CON.1
+#define S2RB8 0x04              //S2CON.2
+#define S2TB8 0x08              //S2CON.3
+
+#define S2_S0 0x01              //P_SW2.0
 
 #define S1_S0 0x40              //P_SW1.6
 #define S1_S1 0x80              //P_SW1.7
 
-void SendData(BYTE dat);
-void SendString(char *s);
+void Usart1_SendData(BYTE dat);
+void Usart1_SendString(char *s);
+void Usart2_SendData(BYTE dat);
+void Usart2_SendString(char *s);
 void UsartInit(void);
 void uart_printf(const char *fmt, ...);
 //void usart1_SendData(void);

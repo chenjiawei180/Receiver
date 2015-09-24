@@ -1,4 +1,4 @@
-C51 COMPILER V9.00   DECODER                                                               09/19/2015 14:52:40 PAGE 1   
+C51 COMPILER V9.00   DECODER                                                               09/24/2015 12:29:34 PAGE 1   
 
 
 C51 COMPILER V9.00, COMPILATION OF MODULE DECODER
@@ -62,7 +62,7 @@ line level    source
   50   5              {
   51   6                temp_buff[0] = single_key[old2_RF_RECE_REG[2] & 0x0f] ;
   52   6              }
-C51 COMPILER V9.00   DECODER                                                               09/19/2015 14:52:40 PAGE 2   
+C51 COMPILER V9.00   DECODER                                                               09/24/2015 12:29:34 PAGE 2   
 
   53   5              else
   54   5              {
@@ -126,7 +126,7 @@ line level    source
  107   8      
  108   8                      set_func_index(DECODER_MENU);;//此时跳入解码菜单，为下一次解码做准备
  109   8                      clear_again_receive_rf_decoder_finished();//清除解码完成标志位
-C51 COMPILER V9.00   DECODER                                                               09/19/2015 14:52:40 PAGE 3   
+C51 COMPILER V9.00   DECODER                                                               09/24/2015 12:29:34 PAGE 3   
 
  110   8                      break;
  111   8                      break;
@@ -190,7 +190,7 @@ line level    source
  166   5              //clear_again_receive_rf_decoder_finished();//清除解码完成标志位
  167   5              break;
  168   5            }
-C51 COMPILER V9.00   DECODER                                                               09/19/2015 14:52:40 PAGE 4   
+C51 COMPILER V9.00   DECODER                                                               09/24/2015 12:29:34 PAGE 4   
 
  169   4            //呼叫器注册,搜索所需要的呼叫器
  170   4            for (j = 0; j<CALL_TABLE_NUMBER + ALARM_TABLE_NUMBER + CANCEL_TABLE_NUMBER; j++)//搜索标志位
@@ -254,7 +254,7 @@ line level    source
  223   8      #endif
  224   8                    clear_again_receive_rf_decoder_finished();
  225   8                    break;
-C51 COMPILER V9.00   DECODER                                                               09/19/2015 14:52:40 PAGE 5   
+C51 COMPILER V9.00   DECODER                                                               09/24/2015 12:29:34 PAGE 5   
 
  226   8                    break;
  227   8                  }
@@ -318,7 +318,7 @@ line level    source
  283   7                  else
  284   7                  {
  285   8                    Two_Menu_F1_E1[1]++;
-C51 COMPILER V9.00   DECODER                                                               09/19/2015 14:52:40 PAGE 6   
+C51 COMPILER V9.00   DECODER                                                               09/24/2015 12:29:34 PAGE 6   
 
  286   8                    Two_Menu_F1_E1[2] = 0;
  287   8                    Two_Menu_F1_E1[3] = 0;
@@ -382,7 +382,7 @@ line level    source
  343   8      
  344   8      
  345   8                              }
-C51 COMPILER V9.00   DECODER                                                               09/19/2015 14:52:40 PAGE 7   
+C51 COMPILER V9.00   DECODER                                                               09/24/2015 12:29:34 PAGE 7   
 
  346   7                              else
  347   7                              {
@@ -446,7 +446,7 @@ line level    source
  403   8                    {
  404   9                      Two_Menu_F1_E3[3] = 1;
  405   9                    }
-C51 COMPILER V9.00   DECODER                                                               09/19/2015 14:52:40 PAGE 8   
+C51 COMPILER V9.00   DECODER                                                               09/24/2015 12:29:34 PAGE 8   
 
  406   8                  }
  407   7                  else
@@ -510,7 +510,7 @@ line level    source
  463   8                    {
  464   9                      Two_Menu_F1_E4[3] = 1;
  465   9                    }
-C51 COMPILER V9.00   DECODER                                                               09/19/2015 14:52:40 PAGE 9   
+C51 COMPILER V9.00   DECODER                                                               09/24/2015 12:29:34 PAGE 9   
 
  466   8                  }
  467   7                  else
@@ -574,7 +574,7 @@ line level    source
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
    CODE SIZE        =   3028    ----
-C51 COMPILER V9.00   DECODER                                                               09/19/2015 14:52:40 PAGE 10  
+C51 COMPILER V9.00   DECODER                                                               09/24/2015 12:29:34 PAGE 10  
 
    CONSTANT SIZE    =    535    ----
    XDATA SIZE       =      8      50

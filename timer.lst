@@ -1,4 +1,4 @@
-C51 COMPILER V9.00   TIMER                                                                 09/19/2015 14:52:40 PAGE 1   
+C51 COMPILER V9.00   TIMER                                                                 09/24/2015 12:29:34 PAGE 1   
 
 
 C51 COMPILER V9.00, COMPILATION OF MODULE TIMER
@@ -62,7 +62,7 @@ line level    source
   49   1        //  || func_index_temp == TWO_MENU_F1_E1_D3 || func_index_temp == TWO_MENU_F1_E1_D4 || func_index_temp == 
              -TWO_MENU_F1_E2_D1
   50   1        //  || func_index_temp == TWO_MENU_F1_E2_D2 || func_index_temp == TWO_MENU_F1_E2_D3 || func_index_temp == 
-C51 COMPILER V9.00   TIMER                                                                 09/19/2015 14:52:40 PAGE 2   
+C51 COMPILER V9.00   TIMER                                                                 09/24/2015 12:29:34 PAGE 2   
 
              -TWO_MENU_F1_E2_D4 
   51   1        //  )
@@ -126,7 +126,7 @@ line level    source
  109   1        TL1 = (65536 - 100) & 0xff;
  110   1        if (func_index_temp == TWO_MENU_FA_SET)
  111   1        {
-C51 COMPILER V9.00   TIMER                                                                 09/19/2015 14:52:40 PAGE 3   
+C51 COMPILER V9.00   TIMER                                                                 09/24/2015 12:29:34 PAGE 3   
 
  112   2          RF_decode_main_sjz_test();
  113   2        }
@@ -190,7 +190,7 @@ MODULE INFORMATION:   STATIC OVERLAYABLE
    XDATA SIZE       =      8       1
    PDATA SIZE       =   ----    ----
    DATA SIZE        =   ----    ----
-C51 COMPILER V9.00   TIMER                                                                 09/19/2015 14:52:40 PAGE 4   
+C51 COMPILER V9.00   TIMER                                                                 09/24/2015 12:29:34 PAGE 4   
 
    IDATA SIZE       =   ----    ----
    BIT SIZE         =   ----    ----
