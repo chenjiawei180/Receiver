@@ -6,6 +6,8 @@
 #include "ds1302.h"
 #include "at24c256.h"
 
+unsigned char sound_table = 0;
+
 unsigned char func_index = 0; //多级菜单索引变量
 void(*current_operation_index)();// 多级菜单函数指针
 
@@ -169,33 +171,33 @@ key_table code table[100] =
 unsigned int KeyScan(void)  //Keyboard scan function
 {
 	unsigned int Val = 0;
-	HKeyPort |= 0x1f;//Row height
+	HKeyPort |= 0x7C;//Row height
 	LKeyPort &= 0x07;
-	if ((HKeyPort & 0x1f) != 0x1f)//Press button
+	if ((HKeyPort & 0x7C) != 0x1f)//Press button
 	{
 		delay10ms();  //Remove jitter
-		if ((HKeyPort & 0x1f) != 0x1f)   //Press button
+		if ((HKeyPort & 0x7C) != 0x7C)   //Press button
 		{
 			clear_return_standby_time();
 
-			HKeyPort |= 0x1f; //检测第一列
+			HKeyPort |= 0x7C; //检测第一列
 			LKeyPort |= 0xf8;
 			LKeyPort &= 0x7f;
-			if ((HKeyPort & 0x1f) != 0x1f)
+			if ((HKeyPort & 0x7C) != 0x7C)
 			{
-				//	return_standby_time=0;
-				//	sound_table=1;
-				Val = HKeyPort & 0x1f;
+				
+				sound_table=1;
+				Val = HKeyPort & 0x7C;
 				Val <<= 8;
 				Val += (LKeyPort & 0xf8);
-				if (Val == 0x1e78)
+				if (Val == 0x7878)
 				{
 					clear_main_press_time();	//清除菜单键按下的时间计算变量
 					set_main_press_time_table(1); //设置相应的标志位，开始计算时间
 				}
-				while ((HKeyPort & 0x1f) != 0x1f);
+				while ((HKeyPort & 0x7C) != 0x7C);
 				delay10ms();
-				while ((HKeyPort & 0x1f) != 0x1f);
+				while ((HKeyPort & 0x7C) != 0x7C);
 				set_main_press_time_table(0);//按键释放，清除相应的标志位
 				set_logout_cycle_table(0);//循环跟销号重新计数
 				return Val;
@@ -252,10 +254,10 @@ unsigned char KeyDecoder(void)
 #endif
 	switch (key_val)
 	{
-	case 0x1778:return KEY_RETURN; break;//1 按下相应的键显示相对应的码值
-	case 0x1d78:return KEY_DOWN; break;//2  
-	case 0x1b78:return KEY_UP; break;//4
-	case 0x1e78:return KEY_FUNC; break;//5 按下相应的键显示相对应的码值
+	case 0x5c78:return KEY_RETURN; break;//1 按下相应的键显示相对应的码值
+	case 0x6c78:return KEY_DOWN; break;//2  
+	case 0x7478:return KEY_UP; break;//4
+	case 0x7878:return KEY_FUNC; break;//5 按下相应的键显示相对应的码值
 	default:return 0xff; break;
 	}
 }
@@ -577,7 +579,7 @@ void KeyProcess(void)
 				else Two_Menu_F8_E1 = 1 ;
 				break;
 			case TWO_MENU_F8_E2_SET:
-				if (Two_Menu_F8_E2 == 50) Two_Menu_F8_E2 = 0;	//F8_E2键位设置
+				if (Two_Menu_F8_E2 == 43) Two_Menu_F8_E2 = 0;	//F8_E2键位设置
 				else Two_Menu_F8_E2++;
 				break;
 			case DECODER_MENU:
@@ -799,7 +801,7 @@ void KeyProcess(void)
 				else Two_Menu_F8_E1 = 1;
 				break;
 			case TWO_MENU_F8_E2_SET:
-				if (Two_Menu_F8_E2 == 0) Two_Menu_F8_E2 = 50;	//F8_E2键位设置
+				if (Two_Menu_F8_E2 == 0) Two_Menu_F8_E2 = 43;	//F8_E2键位设置
 				else Two_Menu_F8_E2--;
 				break;
 			case DECODER_MENU:
@@ -939,4 +941,16 @@ unsigned char return_Two_Menu_F8_E2(void)
 	unsigned char temp = 0;
 	temp = Two_Menu_F8_E2;
 	return temp;
+}
+
+unsigned char return_sound_table(void)
+{
+	unsigned char temp = 0;
+	temp = sound_table;
+	return temp;
+}
+
+void set_sound_table(unsigned char temp)
+{
+	sound_table = temp;
 }

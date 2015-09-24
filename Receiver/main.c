@@ -6,6 +6,8 @@
 #include "ds1302.h"
 #include "ev1527.h"
 #include "decoder.h"
+#include "gd5800.h"
+#include "menu.h"
 
 
 void main()
@@ -34,16 +36,22 @@ void main()
 #ifdef DEBUG
 	uart_printf("Ds1302_Init Complete! \r\n");
 #endif
-	Init_Timer1();
+	GD5800_initialization();
+#ifdef DEBUG
+	uart_printf("GD5800_initialization Complete! \r\n");
+#endif
 	//Ds1302_Write_Time();
 
 	P3M1 = 0X0C; //IO口设置为输入 必须添加 否则无法解码
 	P3M0 = 0X00;
 
+	GD5800_select_chapter(CHUSHIHUA);
 	while (1)
 	{
 		KeyProcess();
 		DecoderProcess();
 	}
 }
+
+
 

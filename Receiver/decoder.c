@@ -6,6 +6,7 @@
 #include "menu.h"
 #include "tm1629.h"
 #include "timer.h"
+#include "gd5800.h"
 
 unsigned char buf_eeprom[8] = { 0 };//写入EEPROM_buf
 
@@ -21,7 +22,8 @@ void DecoderProcess(void)
 	unsigned char Two_Menu_F3_E1_temp = 0;	//创建临时变量，用于放回其他外部变量	
 	unsigned char Two_Menu_F3_E2_temp = 0;	//创建临时变量，用于放回其他外部变量
 	unsigned char Two_Menu_F7_E1_temp = 0;	//创建临时变量，用于放回其他外部变量
-	
+	unsigned char Two_Menu_F6_E1_temp = 0;	//创建临时变量，用于放回其他外部变量
+	unsigned char Two_Menu_F6_E2_temp = 0;	//创建临时变量，用于放回其他外部变量
 
 	func_index_temp = return_func_index();	//返回所需要的外部变量
 	Two_Menu_F8_E1_temp = return_Two_Menu_F8_E1();	//返回所需要的外部变量
@@ -29,7 +31,8 @@ void DecoderProcess(void)
 	Two_Menu_F3_E1_temp = return_Two_Menu_F3_E1();	//返回所需要的外部变量
 	Two_Menu_F3_E2_temp = return_Two_Menu_F3_E2();	//返回所需要的外部变量
 	Two_Menu_F7_E1_temp = return_Two_Menu_F7_E1();	//返回所需要的外部变量
-
+	Two_Menu_F6_E1_temp = return_Two_Menu_F6_E1();	//返回所需要的外部变量
+	Two_Menu_F6_E2_temp = return_Two_Menu_F6_E2();	//返回所需要的外部变量
 
 	receive_rf_decoder();	//解码函数
 
@@ -44,7 +47,7 @@ void DecoderProcess(void)
 		{
 			set_logout_cycle_table(0);//循环跟销号重新计数
 			//键盘规则
-			if ((old2_RF_RECE_REG[2] & 0xf0) == 0x00 && (((old2_RF_RECE_REG[0] >> 4) == Two_Menu_F7_E1_temp) || (Two_Menu_F7_E1_temp == 11)))//键盘规则，程序按默认的来编
+			if ((old2_RF_RECE_REG[2] & 0xf0) == 0x00 && (((old2_RF_RECE_REG[0] >> 4) == Two_Menu_F7_E1_temp) || (Two_Menu_F7_E1_temp == 10)))//键盘规则，程序按默认的来编
 			{
 				if (Two_Menu_F8_E1_temp == 1)  //为按键值
 				{
@@ -59,6 +62,8 @@ void DecoderProcess(void)
 				temp_buff[3] = old2_RF_RECE_REG[1] >> 4;	//为3位组码第二位
 				temp_buff[4] = old2_RF_RECE_REG[1] & 0x0f;	//为3位组码第三位
 				temp_buff[5] = old2_RF_RECE_REG[0];			//备用项,暂且存第一位ID码
+
+				submenuf6_1(Two_Menu_F6_E1_temp, temp_buff, temp_buff[0], old2_RF_RECE_REG[2] & 0x0f);
 
 				tm1629_clear();//清屏
 				decoder_temp_to_mcuram(display_ram, temp_buff);//将临时数组的数据移入单片机暂存数组 8字节转6字节
@@ -85,14 +90,19 @@ void DecoderProcess(void)
 						delay10ms();
 						if (((Two_Menu_F8_E1_temp != 1) && temp_buff[5] == old2_RF_RECE_REG[0] && temp_buff[6] == old2_RF_RECE_REG[1] && ((temp_buff[7] >> 4) == (old2_RF_RECE_REG[2] >> 4))) || ((Two_Menu_F8_E1_temp == 1) && temp_buff[5] == old2_RF_RECE_REG[0] && temp_buff[6] == old2_RF_RECE_REG[1] && temp_buff[7] == old2_RF_RECE_REG[2]))// 进行对比，看看数据是否符合
 						{
+							if (j <= CALL_TABLE_NUMBER)
+							{
 								if (Two_Menu_F8_E1_temp == 1)  //为按键值
 								{
+
 									temp_buff[0] = single_key[old2_RF_RECE_REG[2] & 0x0f];
 								}
 								else
 								{
+
 									temp_buff[0] = multiple_key[old2_RF_RECE_REG[2] & 0x0f];
 								}
+							}
 								tm1629_clear();//清屏
 								decoder_temp_to_mcuram(display_ram, temp_buff);//如果符合的话  将临时数组的数据移入单片机暂存数组 8字节转6字节
 								tm1629_load();//单片机把数组内容载入数码管显存数组中
@@ -120,7 +130,7 @@ void DecoderProcess(void)
 		{
 			set_logout_cycle_table(0);//循环跟销号重新计数
 			 //键盘规则
-			if ((old2_RF_RECE_REG[2] & 0xf0) == 0x00 && (((old2_RF_RECE_REG[0] >> 4) == Two_Menu_F7_E1_temp) || (Two_Menu_F7_E1_temp == 11)))//键盘规则，程序按默认的来编
+			if ((old2_RF_RECE_REG[2] & 0xf0) == 0x00 && (((old2_RF_RECE_REG[0] >> 4) == Two_Menu_F7_E1_temp) || (Two_Menu_F7_E1_temp == 10)))//键盘规则，程序按默认的来编
 			{
 				if (Two_Menu_F8_E1_temp == 1)  //为按键值
 				{
@@ -179,14 +189,20 @@ void DecoderProcess(void)
 						delay10ms();
 						if (((Two_Menu_F8_E1_temp != 1) && temp_buff[5] == old2_RF_RECE_REG[0] && temp_buff[6] == old2_RF_RECE_REG[1] && ((temp_buff[7] >> 4) == (old2_RF_RECE_REG[2] >> 4))) || ((Two_Menu_F8_E1_temp == 1) && temp_buff[5] == old2_RF_RECE_REG[0] && temp_buff[6] == old2_RF_RECE_REG[1] && temp_buff[7] == old2_RF_RECE_REG[2]))
 						{
-							if (Two_Menu_F8_E1_temp == 1)  //为按键值
+							if (j <= CALL_TABLE_NUMBER)
 							{
-								temp_buff[0] = single_key[old2_RF_RECE_REG[2] & 0x0f];
+								if (Two_Menu_F8_E1_temp == 1)  //为按键值
+								{
+
+									temp_buff[0] = single_key[old2_RF_RECE_REG[2] & 0x0f];
+								}
+								else
+								{
+
+									temp_buff[0] = multiple_key[old2_RF_RECE_REG[2] & 0x0f];
+								}
 							}
-							else
-							{
-								temp_buff[0] = multiple_key[old2_RF_RECE_REG[2] & 0x0f];
-							}
+			
 							if (Two_Menu_F3_E1_temp == 1)//为即时模式
 							{
 								for (l = Two_Menu_F3_E2_temp; l>1; l--) //整体往下移一组数据
@@ -368,7 +384,7 @@ void DecoderProcess(void)
 		case TWO_MENU_F1_E3_D4:
 		{
 			set_func_index(TWO_MENU_F1_E3_D4);
-			buf_eeprom[0] = old2_RF_RECE_REG[2] & 0x0f;//按键值保存到0字节
+			buf_eeprom[0] = BAOJING_1;//按键值保存到0字节
 			buf_eeprom[1] = Two_Menu_F1_E3[0];/*数值存入1 2 3 4字节*/
 			buf_eeprom[2] = Two_Menu_F1_E3[1];
 			buf_eeprom[3] = Two_Menu_F1_E3[2];
@@ -428,7 +444,7 @@ void DecoderProcess(void)
 		case TWO_MENU_F1_E4_D4:
 		{
 			set_func_index(TWO_MENU_F1_E4_D4);
-			buf_eeprom[0] = old2_RF_RECE_REG[2] & 0x0f;//按键值保存到0字节
+			buf_eeprom[0] = QUXIAO_1;//按键值保存到0字节
 			buf_eeprom[1] = Two_Menu_F1_E4[0];/*数值存入1 2 3 4字节*/
 			buf_eeprom[2] = Two_Menu_F1_E4[1];
 			buf_eeprom[3] = Two_Menu_F1_E4[2];

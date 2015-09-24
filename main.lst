@@ -1,4 +1,4 @@
-C51 COMPILER V9.00   MAIN                                                                  09/24/2015 12:29:33 PAGE 1   
+C51 COMPILER V9.00   MAIN                                                                  09/24/2015 16:36:24 PAGE 1   
 
 
 C51 COMPILER V9.00, COMPILATION OF MODULE MAIN
@@ -16,54 +16,62 @@ line level    source
    6          #include "ds1302.h"
    7          #include "ev1527.h"
    8          #include "decoder.h"
-   9          
-  10          
-  11          void main()
-  12          { 
-  13   1        UsartInit();  //串口初始化
-  14   1      #ifdef DEBUG
-  15   1        uart_printf("UsartInit Complete! \r\n");
-  16   1      #endif
-  17   1        tm1629_init();
-  18   1      #ifdef DEBUG
-  19   1        uart_printf("tm1629_init Complete! \r\n");
-  20   1      #endif
-  21   1        Init_Timer0();
-  22   1      #ifdef DEBUG
-  23   1        uart_printf("Init_Timer0 Complete! \r\n");
-  24   1      #endif
-  25   1        Init_Timer1();
-  26   1      #ifdef DEBUG
-  27   1        uart_printf("Init_Timer1 Complete! \r\n");
-  28   1      #endif
-  29   1        exint0_init();
-  30   1      #ifdef DEBUG
-  31   1        uart_printf("exint0_init Complete! \r\n");
-  32   1      #endif
-  33   1        Ds1302_Init();
-  34   1      #ifdef DEBUG
-  35   1        uart_printf("Ds1302_Init Complete! \r\n");
-  36   1      #endif
-  37   1        Init_Timer1();
-  38   1        //Ds1302_Write_Time();
-  39   1      
-  40   1        P3M1 = 0X0C; //IO口设置为输入 必须添加 否则无法解码
-  41   1        P3M0 = 0X00;
-  42   1      
-  43   1        while (1)
-  44   1        {
-  45   2          KeyProcess();
-  46   2          DecoderProcess();
-  47   2        }
-  48   1      }
-  49          
+   9          #include "gd5800.h"
+  10          #include "menu.h"
+  11          
+  12          
+  13          void main()
+  14          { 
+  15   1        UsartInit();  //串口初始化
+  16   1      #ifdef DEBUG
+  17   1        uart_printf("UsartInit Complete! \r\n");
+  18   1      #endif
+  19   1        tm1629_init();
+  20   1      #ifdef DEBUG
+  21   1        uart_printf("tm1629_init Complete! \r\n");
+  22   1      #endif
+  23   1        Init_Timer0();
+  24   1      #ifdef DEBUG
+  25   1        uart_printf("Init_Timer0 Complete! \r\n");
+  26   1      #endif
+  27   1        Init_Timer1();
+  28   1      #ifdef DEBUG
+  29   1        uart_printf("Init_Timer1 Complete! \r\n");
+  30   1      #endif
+  31   1        exint0_init();
+  32   1      #ifdef DEBUG
+  33   1        uart_printf("exint0_init Complete! \r\n");
+  34   1      #endif
+  35   1        Ds1302_Init();
+  36   1      #ifdef DEBUG
+  37   1        uart_printf("Ds1302_Init Complete! \r\n");
+  38   1      #endif
+  39   1        GD5800_initialization();
+  40   1      #ifdef DEBUG
+  41   1        uart_printf("GD5800_initialization Complete! \r\n");
+  42   1      #endif
+  43   1        //Ds1302_Write_Time();
+  44   1      
+  45   1        P3M1 = 0X0C; //IO口设置为输入 必须添加 否则无法解码
+  46   1        P3M0 = 0X00;
+  47   1      
+  48   1        GD5800_select_chapter(CHUSHIHUA);
+  49   1        while (1)
+  50   1        {
+  51   2          KeyProcess();
+  52   2          DecoderProcess();
+  53   2        }
+  54   1      }
+C51 COMPILER V9.00   MAIN                                                                  09/24/2015 16:36:24 PAGE 2   
+
+  55          
+  56          
+  57          
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =     89    ----
-   CONSTANT SIZE    =    148    ----
-C51 COMPILER V9.00   MAIN                                                                  09/24/2015 12:29:33 PAGE 2   
-
+   CODE SIZE        =    104    ----
+   CONSTANT SIZE    =    183    ----
    XDATA SIZE       =   ----    ----
    PDATA SIZE       =   ----    ----
    DATA SIZE        =   ----    ----

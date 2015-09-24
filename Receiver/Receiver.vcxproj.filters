@@ -42,6 +42,9 @@
     <ClCompile Include="at24c256.c">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="gd5800.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="key.h">
@@ -69,6 +72,9 @@
       <Filter>源文件</Filter>
     </ClInclude>
     <ClInclude Include="at24c256.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="gd5800.h">
       <Filter>源文件</Filter>
     </ClInclude>
   </ItemGroup>

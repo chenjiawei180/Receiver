@@ -410,6 +410,11 @@
               <FileType>1</FileType>
               <FilePath>.\Receiver\at24c256.c</FilePath>
             </File>
+            <File>
+              <FileName>gd5800.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Receiver\gd5800.c</FilePath>
+            </File>
           </Files>
         </Group>
       </Groups>

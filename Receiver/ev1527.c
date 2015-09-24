@@ -1,5 +1,6 @@
 #include "ev1527.h"
 #include "timer.h"
+#include "key.h"
 
 /********************解码方式专用变量*******************************/
 unsigned char Save_RF_trans1 = 0;
@@ -235,7 +236,7 @@ void receive_rf_decoder(void)
 				old1_RF_RECE_REG[0] = 0;
 				old1_RF_RECE_REG[1] = 0;
 				old1_RF_RECE_REG[2] = 0;
-				//sound_table = 1;
+				set_sound_table(1);
 				//func_f1_1_4_table = 1;
 				rx_table = 0;
 			}

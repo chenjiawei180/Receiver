@@ -53,5 +53,8 @@ extern unsigned char return_Two_Menu_F7_E3(void);
 extern unsigned char return_Two_Menu_F7_E4(void);
 extern unsigned char return_Two_Menu_F8_E1(void);
 extern unsigned char return_Two_Menu_F8_E2(void);
+
+extern unsigned char return_sound_table(void);
+extern void set_sound_table(unsigned char temp);
 #endif
 

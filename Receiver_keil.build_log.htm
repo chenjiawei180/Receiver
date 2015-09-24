@@ -18,16 +18,58 @@ compiling ds1302.c...
 compiling ev1527.c...
 compiling decoder.c...
 compiling at24c256.c...
+compiling gd5800.c...
 linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_USART2_SENDSTRING?USART
 *** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
     SEGMENT: ?PR?TM1629_AWAIT?TM1629
 *** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
     SEGMENT: ?PR?_DELAYMS?AT24C256
 *** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
     SEGMENT: ?PR?DELETE_ALL_DATA?AT24C256
-Program Size: data=15.3 xdata=1720 code=21796
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_GD5800_SOUND_VOLUME?GD5800
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?GD5800_PLAY_MUSIC?GD5800
+Program Size: data=15.3 xdata=1728 code=22917
 creating hex file from "Receiver_keil"...
-"Receiver_keil" - 0 Error(s), 3 Warning(s).
+"Receiver_keil" - 0 Error(s), 6 Warning(s).
 </pre>
 </body>
 </html>
+ file from "Receiver_keil"...
+"Receiver_keil" - 0 Error(s), 7 Warning(s).
+il"...
+"Receiver_keil" - 0 Error(s), 8 Warning(s).
+ _GD5800_SELECT_CHAPTER
+    MODULE:  main.obj (MAIN)
+    ADDRESS: 3F8AH
+Program Size: data=15.3 xdata=1738 code=18886
+creating hex file from "Receiver_keil"...
+"Receiver_keil" - 0 Error(s), 9 Warning(s).
+<string>'
+RECEIVER\MAIN.C(37): error C132: 'uart_printf': not in formal parameter list
+RECEIVER\MAIN.C(39): error C132: 'GD5800_initialization': not in formal parameter list
+RECEIVER\MAIN.C(41): error C141: syntax error near '<string>'
+RECEIVER\MAIN.C(41): error C132: 'uart_printf': not in formal parameter list
+RECEIVER\MAIN.C(45): error C244: 'P3M1': can't initialize, bad type or class
+RECEIVER\MAIN.C(45): error C132: 'P3M1': not in formal parameter list
+RECEIVER\MAIN.C(46): error C244: 'P3M0': can't initialize, bad type or class
+RECEIVER\MAIN.C(46): error C132: 'P3M0': not in formal parameter list
+RECEIVER\MAIN.C(48): error C141: syntax error near '129'
+RECEIVER\MAIN.C(48): error C132: 'GD5800_select_chapter': not in formal parameter list
+RECEIVER\MAIN.C(49): error C141: syntax error near 'while'
+RECEIVER\MAIN.C(49): error C141: syntax error near '1'
+RECEIVER\MAIN.C(51): error C231: 'KeyProcess': redefinition
+RECEIVER\MAIN.C(52): error C231: 'DecoderProcess': redefinition
+RECEIVER\MAIN.C(53): error C141: syntax error near '}'
+compiling usart.c...
+compiling key.c...
+compiling tm1629.c...
+compiling timer.c...
+compiling ds1302.c...
+compiling ev1527.c...
+compiling decoder.c...
+compiling at24c256.c...
+Target not created

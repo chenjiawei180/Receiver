@@ -68,6 +68,7 @@
     <ClCompile Include="decoder.c" />
     <ClCompile Include="ds1302.c" />
     <ClCompile Include="ev1527.c" />
+    <ClCompile Include="gd5800.c" />
     <ClCompile Include="key.c" />
     <ClCompile Include="main.c" />
     <ClCompile Include="timer.c" />
@@ -79,6 +80,7 @@
     <ClInclude Include="decoder.h" />
     <ClInclude Include="ds1302.h" />
     <ClInclude Include="ev1527.h" />
+    <ClInclude Include="gd5800.h" />
     <ClInclude Include="key.h" />
     <ClInclude Include="menu.h" />
     <ClInclude Include="timer.h" />

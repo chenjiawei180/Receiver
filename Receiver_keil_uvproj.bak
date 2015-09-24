@@ -405,6 +405,11 @@
               <FileType>1</FileType>
               <FilePath>.\Receiver\decoder.c</FilePath>
             </File>
+            <File>
+              <FileName>at24c256.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Receiver\at24c256.c</FilePath>
+            </File>
           </Files>
         </Group>
       </Groups>

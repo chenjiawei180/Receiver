@@ -8,10 +8,11 @@ UART 中断服务程序
 -----------------------------*/
 void Uart() interrupt 4 using 1
 {
+	unsigned char temp=0;
     if (RI)
     {
         RI = 0;                 //清除RI位
-			//  computer_send_data_to_mcu();
+	  //  computer_send_data_to_mcu();
       //  P0 = SBUF;              //P0显示串口数据
       //  P22 = RB8;              //P2.2显示校验位
     }
@@ -162,8 +163,8 @@ void UsartInit(void)
 	IE2 = 0x01;                 //使能串口2中断
     EA = 1;
 
-	Usart1_SendString("STC15F2K60S2\r\nUart Test !\r\n");
-	Usart2_SendString("STC15F2K60S2\r\nUart2 Test !\r\n");
+	//Usart1_SendString("STC15F2K60S2\r\nUart Test !\r\n");
+	//Usart2_SendString("STC15F2K60S2\r\nUart2 Test !\r\n");
 	
 }
 

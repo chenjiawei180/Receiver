@@ -4,6 +4,7 @@
 #include "ds1302.h"
 #include "key.h"
 #include "menu.h"
+#include "gd5800.h"
 
 unsigned char const CODE[] = { 0x3F, 0x06, 0x5B, 0x4F, 0x66, 0x6D, 0x7D, 0x07, 0x7F, 0x6F, 0x77, 0x7C, 0x39, 0x5E, 0x79, 0x71, 0x76, 0x38, 0x5c, 0x73, 0x3e };//0-9 abcdef 显示器码数组
 unsigned char const INIT_CODE[] = { 0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80 };//逐段点亮数码管数组
@@ -1440,6 +1441,14 @@ void fun94(void) //F8_E2键位设置
 	unsigned char temp = 0;
 	temp = return_Two_Menu_F8_E2();
 	Show_two_number(temp);
+	if (return_sound_table() == 1)
+	{
+		GD5800_stop_music();
+		delay10ms();
+		GD5800_select_chapter(temp + QUXIAO);
+		//GD5800_play_music();
+		set_sound_table(0);
+	}
 }
 
 void fun95(void) //解码菜单

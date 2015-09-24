@@ -1,4 +1,4 @@
-C51 COMPILER V9.00   EV1527                                                                09/24/2015 12:29:34 PAGE 1   
+C51 COMPILER V9.00   EV1527                                                                09/24/2015 16:36:25 PAGE 1   
 
 
 C51 COMPILER V9.00, COMPILATION OF MODULE EV1527
@@ -10,445 +10,446 @@ line level    source
 
    1          #include "ev1527.h"
    2          #include "timer.h"
-   3          
-   4          /********************解码方式专用变量*******************************/
-   5          unsigned char Save_RF_trans1 = 0;
-   6          unsigned char Save_RF_trans0 = 0;
-   7          unsigned char RF_trans0 = 0;
-   8          unsigned char RF_trans1 = 0;
-   9          unsigned char RF_BIT_COUNTER = 0; 
-  10          unsigned char Timer0_interrupt_count = 0; //进入中断后400MS  无结果 恢复初始化操作
-  11          unsigned char P_RF_INT = 0x00;
-  12          unsigned char RF_RECE_REG[3] = { 0 };
-  13          
-  14          unsigned int measure_sync_count1 = 70; //波长保存变量
-  15          unsigned int measure_sync_count2 = 120;//同上
-  16          unsigned int RF_trans1_test_count = 0; //码长测试变量
-  17          unsigned int RF_trans0_test_count = 0; //码长测试变量
-  18          unsigned int RF_trans_count = 0;     //码长测试变量
-  19          unsigned int measure_sync_count1_saved = 70;
-  20          unsigned int measure_sync_count2_saved = 120;
-  21          unsigned int tunning_finish_count = 0;
-  22          
-  23          unsigned char receive_rf_decoder_finished = 0;      //一次解码完成标志位
-  24          unsigned char again_receive_rf_decoder_finished = 0;//二次解码完成标志位
-  25          unsigned char rx_table = 0;             //二次解码switch步骤变量
-  26          unsigned char again_and_again_decoder_table = 0;     //二次编码成功标志位
-  27          
+   3          #include "key.h"
+   4          
+   5          /********************解码方式专用变量*******************************/
+   6          unsigned char Save_RF_trans1 = 0;
+   7          unsigned char Save_RF_trans0 = 0;
+   8          unsigned char RF_trans0 = 0;
+   9          unsigned char RF_trans1 = 0;
+  10          unsigned char RF_BIT_COUNTER = 0; 
+  11          unsigned char Timer0_interrupt_count = 0; //进入中断后400MS  无结果 恢复初始化操作
+  12          unsigned char P_RF_INT = 0x00;
+  13          unsigned char RF_RECE_REG[3] = { 0 };
+  14          
+  15          unsigned int measure_sync_count1 = 70; //波长保存变量
+  16          unsigned int measure_sync_count2 = 120;//同上
+  17          unsigned int RF_trans1_test_count = 0; //码长测试变量
+  18          unsigned int RF_trans0_test_count = 0; //码长测试变量
+  19          unsigned int RF_trans_count = 0;     //码长测试变量
+  20          unsigned int measure_sync_count1_saved = 70;
+  21          unsigned int measure_sync_count2_saved = 120;
+  22          unsigned int tunning_finish_count = 0;
+  23          
+  24          unsigned char receive_rf_decoder_finished = 0;      //一次解码完成标志位
+  25          unsigned char again_receive_rf_decoder_finished = 0;//二次解码完成标志位
+  26          unsigned char rx_table = 0;             //二次解码switch步骤变量
+  27          unsigned char again_and_again_decoder_table = 0;     //二次编码成功标志位
   28          
   29          
-  30          unsigned char old1_RF_RECE_REG[3] = { 0 };//用于校验
-  31          unsigned char old2_RF_RECE_REG[3] = { 0 };//用于读取
-  32          
-  33          void exint0_init(void) //外部中断0 初始化
-  34          {
-  35   1        EA = 1;
-  36   1        EX0 = 1;
-  37   1        IT0 = 1;
-  38   1      }
-  39          
-  40          void exint0() interrupt 0 //外部中断0中断服务函数
-  41          {
-  42   1        EX0 = 0;
-  43   1        if (TR1 == 0)
-  44   1        {
-  45   2          //Init_Timer1();//sjz add for initialization timer0 before enable it
-  46   2          TR1 = 1;
-  47   2        }
-  48   1      }
-  49          
-  50          void RF_ini_receive(void) //初始化所有解码所用到的变量
-  51          {
-  52   1        Save_RF_trans1 = 0; Save_RF_trans0 = 0;
-  53   1        RF_trans0 = RF_trans1 = 0;
-  54   1        RF_BIT_COUNTER = 0;
-C51 COMPILER V9.00   EV1527                                                                09/24/2015 12:29:34 PAGE 2   
+  30          
+  31          unsigned char old1_RF_RECE_REG[3] = { 0 };//用于校验
+  32          unsigned char old2_RF_RECE_REG[3] = { 0 };//用于读取
+  33          
+  34          void exint0_init(void) //外部中断0 初始化
+  35          {
+  36   1        EA = 1;
+  37   1        EX0 = 1;
+  38   1        IT0 = 1;
+  39   1      }
+  40          
+  41          void exint0() interrupt 0 //外部中断0中断服务函数
+  42          {
+  43   1        EX0 = 0;
+  44   1        if (TR1 == 0)
+  45   1        {
+  46   2          //Init_Timer1();//sjz add for initialization timer0 before enable it
+  47   2          TR1 = 1;
+  48   2        }
+  49   1      }
+  50          
+  51          void RF_ini_receive(void) //初始化所有解码所用到的变量
+  52          {
+  53   1        Save_RF_trans1 = 0; Save_RF_trans0 = 0;
+  54   1        RF_trans0 = RF_trans1 = 0;
+C51 COMPILER V9.00   EV1527                                                                09/24/2015 16:36:25 PAGE 2   
 
-  55   1        P_RF_INT = 0x00;
-  56   1        Timer0_interrupt_count = 0;//sjz
-  57   1      }
-  58          
-  59          void RF_decode_main(void)
-  60          {
-  61   1        if (P3_RF_RXD == 1)
-  62   1        {
-  63   2          ++RF_trans1;
-  64   2        }
-  65   1        else
-  66   1        {
-  67   2          ++RF_trans0;
-  68   2        }
-  69   1        Timer0_interrupt_count++;
-  70   1        if (Timer0_interrupt_count>4000)/*4000*100us=400ms,*/
-  71   1        {
-  72   2          TR1 = 0;/*shut down timer0 interrupt sjz*/
-  73   2          EX0 = 1;
-  74   2          RF_ini_receive();
-  75   2          return;
-  76   2      
-  77   2        }
-  78   1        switch (P_RF_INT)
-  79   1        {
-  80   2        case 0:  //等待长低电平同步
-  81   2          if (RF_trans1 > 0)
-  82   2          {
-  83   3            //包含的高脉冲太多
-  84   3            RF_ini_receive();
-  85   3            EX0 = 1;
-  86   3            TR1 = 0;
-  87   3            return;
-  88   3          }
-  89   2          if (RF_trans0 > measure_sync_count1)
-  90   2          {
-  91   3            //长低同步完成
-  92   3            P_RF_INT++;
-  93   3            RF_trans0 = RF_trans1 = 0;
-  94   3          }
-  95   2          break;
-  96   2        case 1: //等待真正的同步头
-  97   2          if ((RF_trans0 + RF_trans1) >measure_sync_count2)/*sjz change from 150 to 120,to shorten the detection w
+  55   1        RF_BIT_COUNTER = 0;
+  56   1        P_RF_INT = 0x00;
+  57   1        Timer0_interrupt_count = 0;//sjz
+  58   1      }
+  59          
+  60          void RF_decode_main(void)
+  61          {
+  62   1        if (P3_RF_RXD == 1)
+  63   1        {
+  64   2          ++RF_trans1;
+  65   2        }
+  66   1        else
+  67   1        {
+  68   2          ++RF_trans0;
+  69   2        }
+  70   1        Timer0_interrupt_count++;
+  71   1        if (Timer0_interrupt_count>4000)/*4000*100us=400ms,*/
+  72   1        {
+  73   2          TR1 = 0;/*shut down timer0 interrupt sjz*/
+  74   2          EX0 = 1;
+  75   2          RF_ini_receive();
+  76   2          return;
+  77   2      
+  78   2        }
+  79   1        switch (P_RF_INT)
+  80   1        {
+  81   2        case 0:  //等待长低电平同步
+  82   2          if (RF_trans1 > 0)
+  83   2          {
+  84   3            //包含的高脉冲太多
+  85   3            RF_ini_receive();
+  86   3            EX0 = 1;
+  87   3            TR1 = 0;
+  88   3            return;
+  89   3          }
+  90   2          if (RF_trans0 > measure_sync_count1)
+  91   2          {
+  92   3            //长低同步完成
+  93   3            P_RF_INT++;
+  94   3            RF_trans0 = RF_trans1 = 0;
+  95   3          }
+  96   2          break;
+  97   2        case 1: //等待真正的同步头
+  98   2          if ((RF_trans0 + RF_trans1) >measure_sync_count2)/*sjz change from 150 to 120,to shorten the detection w
              -hen  the header of synchronization coming*/
-  98   2          {
-  99   3            //10mS没有同步高脉冲
- 100   3            RF_ini_receive();
- 101   3            EX0 = 1;
- 102   3            TR1 = 0;
- 103   3            return;
- 104   3          }
- 105   2          if (RF_trans1 > 1)
- 106   2          {
- 107   3            //高电平同步到了(最少检测到 2 次)
- 108   3            if (EX0 == 1)
- 109   3            {
- 110   4              EX0 = 0;/*double check,since we have already detect the synchronization,if EXTINT0 is enable,need to d
+  99   2          {
+ 100   3            //10mS没有同步高脉冲
+ 101   3            RF_ini_receive();
+ 102   3            EX0 = 1;
+ 103   3            TR1 = 0;
+ 104   3            return;
+ 105   3          }
+ 106   2          if (RF_trans1 > 1)
+ 107   2          {
+ 108   3            //高电平同步到了(最少检测到 2 次)
+ 109   3            if (EX0 == 1)
+ 110   3            {
+ 111   4              EX0 = 0;/*double check,since we have already detect the synchronization,if EXTINT0 is enable,need to d
              -isable  sjz*/
- 111   4            }
- 112   3            P_RF_INT++;
- 113   3            RF_trans0 = 0;
- 114   3            // RF_L_wait_H = 1;
-C51 COMPILER V9.00   EV1527                                                                09/24/2015 12:29:34 PAGE 3   
+ 112   4            }
+ 113   3            P_RF_INT++;
+ 114   3            RF_trans0 = 0;
+C51 COMPILER V9.00   EV1527                                                                09/24/2015 16:36:25 PAGE 3   
 
- 115   3          }
- 116   2          break;
- 117   2        case 2:
- 118   2          if (RF_trans0 > 0)
- 119   2          {
- 120   3            Save_RF_trans1 = RF_trans1;
- 121   3            RF_trans1 = 0;
- 122   3            P_RF_INT++;
- 123   3          }
- 124   2          if (RF_trans1>((measure_sync_count2 + measure_sync_count1) >> 3)) /*if the high level is bigger than 25*
+ 115   3            // RF_L_wait_H = 1;
+ 116   3          }
+ 117   2          break;
+ 118   2        case 2:
+ 119   2          if (RF_trans0 > 0)
+ 120   2          {
+ 121   3            Save_RF_trans1 = RF_trans1;
+ 122   3            RF_trans1 = 0;
+ 123   3            P_RF_INT++;
+ 124   3          }
+ 125   2          if (RF_trans1>((measure_sync_count2 + measure_sync_count1) >> 3)) /*if the high level is bigger than 25*
              -100us,Then should be setted as noise instead of useful signal sjz*/
- 125   2          {
- 126   3            RF_ini_receive();//KEY_HOLD = 0;
- 127   3            EX0 = 1;
- 128   3            TR1 = 0;
- 129   3            return;
- 130   3          }
- 131   2          break;
- 132   2        case 3:if (RF_trans1 > 0)
- 133   2        {
- 134   3               Save_RF_trans0 = RF_trans0;
- 135   3               RF_trans0 = 0;
- 136   3               P_RF_INT = 2;
- 137   3               RF_RECE_REG[RF_BIT_COUNTER / 8] <<= 1;
- 138   3               if (Save_RF_trans1 >Save_RF_trans0)
- 139   3               {
- 140   4                 RF_RECE_REG[(RF_BIT_COUNTER) / 8] |= 0x01;
- 141   4               }
- 142   3               ++RF_BIT_COUNTER;
- 143   3               if (RF_BIT_COUNTER >23)
- 144   3               {
- 145   4                 TR1 = 0;
- 146   4                 RF_ini_receive();
- 147   4                 receive_rf_decoder_finished = 1;
- 148   4                 EX0 = 1;
- 149   4                 break;
- 150   4               }
- 151   3        }
- 152   2             if (RF_trans0>((measure_sync_count2 + measure_sync_count1) >> 3))
- 153   2             {
- 154   3               RF_ini_receive();
- 155   3               EX0 = 1;
- 156   3               TR1 = 0;
- 157   3               return;
- 158   3             }
- 159   2             break;
- 160   2        default: //异常处理
- 161   2        {
- 162   3               RF_ini_receive();
- 163   3               EX0 = 1;
- 164   3               TR1 = 0;
- 165   3        }break;
- 166   2        }
- 167   1      }
- 168          
- 169          void receive_rf_decoder(void)
- 170          {
- 171   1        //unsigned char i, j;
- 172   1        //unsigned char temp_buff[8];
- 173   1        //unsigned char temp_buff1[32];
- 174   1      
- 175   1        if (receive_rf_decoder_finished == 1)
-C51 COMPILER V9.00   EV1527                                                                09/24/2015 12:29:34 PAGE 4   
+ 126   2          {
+ 127   3            RF_ini_receive();//KEY_HOLD = 0;
+ 128   3            EX0 = 1;
+ 129   3            TR1 = 0;
+ 130   3            return;
+ 131   3          }
+ 132   2          break;
+ 133   2        case 3:if (RF_trans1 > 0)
+ 134   2        {
+ 135   3               Save_RF_trans0 = RF_trans0;
+ 136   3               RF_trans0 = 0;
+ 137   3               P_RF_INT = 2;
+ 138   3               RF_RECE_REG[RF_BIT_COUNTER / 8] <<= 1;
+ 139   3               if (Save_RF_trans1 >Save_RF_trans0)
+ 140   3               {
+ 141   4                 RF_RECE_REG[(RF_BIT_COUNTER) / 8] |= 0x01;
+ 142   4               }
+ 143   3               ++RF_BIT_COUNTER;
+ 144   3               if (RF_BIT_COUNTER >23)
+ 145   3               {
+ 146   4                 TR1 = 0;
+ 147   4                 RF_ini_receive();
+ 148   4                 receive_rf_decoder_finished = 1;
+ 149   4                 EX0 = 1;
+ 150   4                 break;
+ 151   4               }
+ 152   3        }
+ 153   2             if (RF_trans0>((measure_sync_count2 + measure_sync_count1) >> 3))
+ 154   2             {
+ 155   3               RF_ini_receive();
+ 156   3               EX0 = 1;
+ 157   3               TR1 = 0;
+ 158   3               return;
+ 159   3             }
+ 160   2             break;
+ 161   2        default: //异常处理
+ 162   2        {
+ 163   3               RF_ini_receive();
+ 164   3               EX0 = 1;
+ 165   3               TR1 = 0;
+ 166   3        }break;
+ 167   2        }
+ 168   1      }
+ 169          
+ 170          void receive_rf_decoder(void)
+ 171          {
+ 172   1        //unsigned char i, j;
+ 173   1        //unsigned char temp_buff[8];
+ 174   1        //unsigned char temp_buff1[32];
+ 175   1      
+C51 COMPILER V9.00   EV1527                                                                09/24/2015 16:36:25 PAGE 4   
 
- 176   1        {
- 177   2          EX0 = 0;
- 178   2          switch (rx_table)
- 179   2          {
- 180   3          case 0: //第一次取得码
- 181   3            old1_RF_RECE_REG[0] = RF_RECE_REG[0];
- 182   3            old1_RF_RECE_REG[1] = RF_RECE_REG[1];
- 183   3            old1_RF_RECE_REG[2] = RF_RECE_REG[2];
- 184   3            rx_table = 1;
- 185   3            break;
- 186   3          case 1:
- 187   3            if (old1_RF_RECE_REG[0] == RF_RECE_REG[0] && old1_RF_RECE_REG[1] == RF_RECE_REG[1] && old1_RF_RECE_REG[
+ 176   1        if (receive_rf_decoder_finished == 1)
+ 177   1        {
+ 178   2          EX0 = 0;
+ 179   2          switch (rx_table)
+ 180   2          {
+ 181   3          case 0: //第一次取得码
+ 182   3            old1_RF_RECE_REG[0] = RF_RECE_REG[0];
+ 183   3            old1_RF_RECE_REG[1] = RF_RECE_REG[1];
+ 184   3            old1_RF_RECE_REG[2] = RF_RECE_REG[2];
+ 185   3            rx_table = 1;
+ 186   3            break;
+ 187   3          case 1:
+ 188   3            if (old1_RF_RECE_REG[0] == RF_RECE_REG[0] && old1_RF_RECE_REG[1] == RF_RECE_REG[1] && old1_RF_RECE_REG[
              -2] == RF_RECE_REG[2])
- 188   3            {
- 189   4              if (old2_RF_RECE_REG[0] == RF_RECE_REG[0] && old2_RF_RECE_REG[1] == RF_RECE_REG[1] && old2_RF_RECE_REG
+ 189   3            {
+ 190   4              if (old2_RF_RECE_REG[0] == RF_RECE_REG[0] && old2_RF_RECE_REG[1] == RF_RECE_REG[1] && old2_RF_RECE_REG
              -[2] == RF_RECE_REG[2])
- 190   4              {
- 191   5                if (again_and_again_decoder_table == 0) //如果该位不等于0  代表着上一次解码等于这次
- 192   5                {
- 193   6                  old2_RF_RECE_REG[0] = RF_RECE_REG[0];
- 194   6                  old2_RF_RECE_REG[1] = RF_RECE_REG[1];
- 195   6                  old2_RF_RECE_REG[2] = RF_RECE_REG[2];
- 196   6                  again_receive_rf_decoder_finished = 1;
- 197   6                }
- 198   5      
- 199   5              }
- 200   4              else
- 201   4              {
- 202   5                old2_RF_RECE_REG[0] = RF_RECE_REG[0];
- 203   5                old2_RF_RECE_REG[1] = RF_RECE_REG[1];
- 204   5                old2_RF_RECE_REG[2] = RF_RECE_REG[2];
- 205   5                again_receive_rf_decoder_finished = 1;
- 206   5              }
- 207   4              again_and_again_decoder_table = 1;
- 208   4              clear_return_standby_time();
- 209   4      
+ 191   4              {
+ 192   5                if (again_and_again_decoder_table == 0) //如果该位不等于0  代表着上一次解码等于这次
+ 193   5                {
+ 194   6                  old2_RF_RECE_REG[0] = RF_RECE_REG[0];
+ 195   6                  old2_RF_RECE_REG[1] = RF_RECE_REG[1];
+ 196   6                  old2_RF_RECE_REG[2] = RF_RECE_REG[2];
+ 197   6                  again_receive_rf_decoder_finished = 1;
+ 198   6                }
+ 199   5      
+ 200   5              }
+ 201   4              else
+ 202   4              {
+ 203   5                old2_RF_RECE_REG[0] = RF_RECE_REG[0];
+ 204   5                old2_RF_RECE_REG[1] = RF_RECE_REG[1];
+ 205   5                old2_RF_RECE_REG[2] = RF_RECE_REG[2];
+ 206   5                again_receive_rf_decoder_finished = 1;
+ 207   5              }
+ 208   4              again_and_again_decoder_table = 1;
+ 209   4              clear_return_standby_time();
  210   4      
- 211   4              //for (j = 0; j<4; j++)
- 212   4              //{
- 213   4              //  IRcvStr(0xa0, HOST_CODE_TABLE_START + j*PAGE_LENGTH, temp_buff1, PAGE_LENGTH);
- 214   4              //  delay10ms();
- 215   4              //  for (i = 0; i<PAGE_LENGTH; i++)
- 216   4              //  {
- 217   4              //    if (temp_buff1[i] == 0)
- 218   4              //    {
- 219   4              //      IRcvStr(0xa0, HOST_CODE_DATA_START + (j*PAGE_LENGTH + i) * 8, temp_buff, 8);
- 220   4              //      delay10ms();
- 221   4              //      if (temp_buff[4] == old2_RF_RECE_REG[0] && temp_buff[5] == old2_RF_RECE_REG[1] && ((temp_buff[6] 
+ 211   4      
+ 212   4              //for (j = 0; j<4; j++)
+ 213   4              //{
+ 214   4              //  IRcvStr(0xa0, HOST_CODE_TABLE_START + j*PAGE_LENGTH, temp_buff1, PAGE_LENGTH);
+ 215   4              //  delay10ms();
+ 216   4              //  for (i = 0; i<PAGE_LENGTH; i++)
+ 217   4              //  {
+ 218   4              //    if (temp_buff1[i] == 0)
+ 219   4              //    {
+ 220   4              //      IRcvStr(0xa0, HOST_CODE_DATA_START + (j*PAGE_LENGTH + i) * 8, temp_buff, 8);
+ 221   4              //      delay10ms();
+ 222   4              //      if (temp_buff[4] == old2_RF_RECE_REG[0] && temp_buff[5] == old2_RF_RECE_REG[1] && ((temp_buff[6] 
              ->> 4) == (old2_RF_RECE_REG[2] >> 4)))
- 222   4              //      {
- 223   4              //        register_manager = 1;
- 224   4              //        clear_return_standby_time();
- 225   4              //        break;
+ 223   4              //      {
+ 224   4              //        register_manager = 1;
+ 225   4              //        clear_return_standby_time();
  226   4              //        break;
- 227   4              //      }
- 228   4              //    }
- 229   4              //  }
- 230   4              //}
- 231   4      
- 232   4              RF_RECE_REG[0] = 0;
- 233   4              RF_RECE_REG[1] = 0;
- 234   4              RF_RECE_REG[2] = 0;
-C51 COMPILER V9.00   EV1527                                                                09/24/2015 12:29:34 PAGE 5   
+ 227   4              //        break;
+ 228   4              //      }
+ 229   4              //    }
+ 230   4              //  }
+ 231   4              //}
+ 232   4      
+ 233   4              RF_RECE_REG[0] = 0;
+ 234   4              RF_RECE_REG[1] = 0;
+C51 COMPILER V9.00   EV1527                                                                09/24/2015 16:36:25 PAGE 5   
 
- 235   4              old1_RF_RECE_REG[0] = 0;
- 236   4              old1_RF_RECE_REG[1] = 0;
- 237   4              old1_RF_RECE_REG[2] = 0;
- 238   4              //sound_table = 1;
- 239   4              //func_f1_1_4_table = 1;
- 240   4              rx_table = 0;
- 241   4            }
- 242   3            else
- 243   3            {
- 244   4              old1_RF_RECE_REG[0] = RF_RECE_REG[0];
- 245   4              old1_RF_RECE_REG[1] = RF_RECE_REG[1];
- 246   4              old1_RF_RECE_REG[2] = RF_RECE_REG[2];
- 247   4            }
- 248   3            break;
- 249   3          }
- 250   2          EX0 = 1;
- 251   2          receive_rf_decoder_finished = 0;
- 252   2        }
- 253   1      }
- 254          
- 255          void RF_decode_main_sjz_test(void)
- 256          {
- 257   1      
- 258   1        if (P3_RF_RXD == 1)
- 259   1        {
- 260   2          ++RF_trans1;
- 261   2        }
- 262   1        else
- 263   1        {
- 264   2          ++RF_trans0;
- 265   2        }
- 266   1        Timer0_interrupt_count++;
- 267   1        if (Timer0_interrupt_count>4000)/*4000*100us=400ms,*/
- 268   1        {
- 269   2          TR1 = 0;/*shut down timer0 interrupt sjz*/
- 270   2          EX0 = 1;
- 271   2          RF_ini_receive();
- 272   2          return;
- 273   2        }
- 274   1        switch (P_RF_INT)
- 275   1        {
- 276   2        case 0:  //等待长低电平同步
- 277   2          if (RF_trans1 > 0)
- 278   2          {
- 279   3            //包含的高脉冲太多
- 280   3      
- 281   3            EX0 = 1;
- 282   3            TR1 = 0;
- 283   3            RF_ini_receive();
- 284   3            return;
- 285   3          }
- 286   2          if (RF_trans0 >(60 + RF_trans1_test_count*TUNNING_STEP))
- 287   2          {
- 288   3            //长低同步完成
- 289   3            P_RF_INT++;
- 290   3            measure_sync_count1 = 60 + RF_trans1_test_count*TUNNING_STEP;
- 291   3            RF_trans0 = RF_trans1 = 0;
- 292   3          }
- 293   2          break;
- 294   2        case 1: //等待真正的同步头
- 295   2          if ((RF_trans0 + RF_trans1) >(120 + RF_trans0_test_count*TUNNING_STEP))//120)/*sjz change from 150 to 12
+ 235   4              RF_RECE_REG[2] = 0;
+ 236   4              old1_RF_RECE_REG[0] = 0;
+ 237   4              old1_RF_RECE_REG[1] = 0;
+ 238   4              old1_RF_RECE_REG[2] = 0;
+ 239   4              set_sound_table(1);
+ 240   4              //func_f1_1_4_table = 1;
+ 241   4              rx_table = 0;
+ 242   4            }
+ 243   3            else
+ 244   3            {
+ 245   4              old1_RF_RECE_REG[0] = RF_RECE_REG[0];
+ 246   4              old1_RF_RECE_REG[1] = RF_RECE_REG[1];
+ 247   4              old1_RF_RECE_REG[2] = RF_RECE_REG[2];
+ 248   4            }
+ 249   3            break;
+ 250   3          }
+ 251   2          EX0 = 1;
+ 252   2          receive_rf_decoder_finished = 0;
+ 253   2        }
+ 254   1      }
+ 255          
+ 256          void RF_decode_main_sjz_test(void)
+ 257          {
+ 258   1      
+ 259   1        if (P3_RF_RXD == 1)
+ 260   1        {
+ 261   2          ++RF_trans1;
+ 262   2        }
+ 263   1        else
+ 264   1        {
+ 265   2          ++RF_trans0;
+ 266   2        }
+ 267   1        Timer0_interrupt_count++;
+ 268   1        if (Timer0_interrupt_count>4000)/*4000*100us=400ms,*/
+ 269   1        {
+ 270   2          TR1 = 0;/*shut down timer0 interrupt sjz*/
+ 271   2          EX0 = 1;
+ 272   2          RF_ini_receive();
+ 273   2          return;
+ 274   2        }
+ 275   1        switch (P_RF_INT)
+ 276   1        {
+ 277   2        case 0:  //等待长低电平同步
+ 278   2          if (RF_trans1 > 0)
+ 279   2          {
+ 280   3            //包含的高脉冲太多
+ 281   3      
+ 282   3            EX0 = 1;
+ 283   3            TR1 = 0;
+ 284   3            RF_ini_receive();
+ 285   3            return;
+ 286   3          }
+ 287   2          if (RF_trans0 >(60 + RF_trans1_test_count*TUNNING_STEP))
+ 288   2          {
+ 289   3            //长低同步完成
+ 290   3            P_RF_INT++;
+ 291   3            measure_sync_count1 = 60 + RF_trans1_test_count*TUNNING_STEP;
+ 292   3            RF_trans0 = RF_trans1 = 0;
+ 293   3          }
+ 294   2          break;
+ 295   2        case 1: //等待真正的同步头
+ 296   2          if ((RF_trans0 + RF_trans1) >(120 + RF_trans0_test_count*TUNNING_STEP))//120)/*sjz change from 150 to 12
+C51 COMPILER V9.00   EV1527                                                                09/24/2015 16:36:25 PAGE 6   
+
              -0,to shorten the detection when  the header of synchronization coming*/
-C51 COMPILER V9.00   EV1527                                                                09/24/2015 12:29:34 PAGE 6   
-
- 296   2          {
- 297   3            //10mS没有同步高脉冲
- 298   3            // measure_sync_count2=RF_trans0;
- 299   3            if (RF_trans1 == 0)
- 300   3            {
- 301   4              RF_trans0_test_count++;
- 302   4              RF_trans1_test_count++;
- 303   4            }
- 304   3            RF_ini_receive();
- 305   3            EX0 = 1;
- 306   3            TR1 = 0;
- 307   3            return;
- 308   3          }
- 309   2      
- 310   2          if (RF_trans1 > 1)
- 311   2          {
- 312   3            measure_sync_count2 = 120 + RF_trans0_test_count*TUNNING_STEP;
- 313   3            RF_trans0_test_count = 0;
- 314   3            RF_trans1_test_count = 0;
- 315   3            //高电平同步到了(最少检测到 2 次)
- 316   3            if (EX0 == 1)
- 317   3            {
- 318   4              EX0 = 0;/*double check,since we have already detect the synchronization,if EXTINT0 is enable,need to d
+ 297   2          {
+ 298   3            //10mS没有同步高脉冲
+ 299   3            // measure_sync_count2=RF_trans0;
+ 300   3            if (RF_trans1 == 0)
+ 301   3            {
+ 302   4              RF_trans0_test_count++;
+ 303   4              RF_trans1_test_count++;
+ 304   4            }
+ 305   3            RF_ini_receive();
+ 306   3            EX0 = 1;
+ 307   3            TR1 = 0;
+ 308   3            return;
+ 309   3          }
+ 310   2      
+ 311   2          if (RF_trans1 > 1)
+ 312   2          {
+ 313   3            measure_sync_count2 = 120 + RF_trans0_test_count*TUNNING_STEP;
+ 314   3            RF_trans0_test_count = 0;
+ 315   3            RF_trans1_test_count = 0;
+ 316   3            //高电平同步到了(最少检测到 2 次)
+ 317   3            if (EX0 == 1)
+ 318   3            {
+ 319   4              EX0 = 0;/*double check,since we have already detect the synchronization,if EXTINT0 is enable,need to d
              -isable  sjz*/
- 319   4            }
- 320   3            P_RF_INT++;
- 321   3            RF_trans0 = 0;
- 322   3            // RF_L_wait_H = 1;
- 323   3          }
- 324   2          break;
- 325   2        case 2:
- 326   2          if (RF_trans0 > 0)
- 327   2          {
- 328   3            Save_RF_trans1 = RF_trans1;
- 329   3            RF_trans1 = 0;
- 330   3            P_RF_INT++;
- 331   3          }
- 332   2          if (RF_trans1>((measure_sync_count2 + measure_sync_count1) >> 3))//20) /*if the high level is bigger tha
+ 320   4            }
+ 321   3            P_RF_INT++;
+ 322   3            RF_trans0 = 0;
+ 323   3            // RF_L_wait_H = 1;
+ 324   3          }
+ 325   2          break;
+ 326   2        case 2:
+ 327   2          if (RF_trans0 > 0)
+ 328   2          {
+ 329   3            Save_RF_trans1 = RF_trans1;
+ 330   3            RF_trans1 = 0;
+ 331   3            P_RF_INT++;
+ 332   3          }
+ 333   2          if (RF_trans1>((measure_sync_count2 + measure_sync_count1) >> 3))//20) /*if the high level is bigger tha
              -n 25*100us,Then should be setted as noise instead of useful signal sjz*/
- 333   2          {
- 334   3            RF_ini_receive();//KEY_HOLD = 0;
- 335   3            EX0 = 1;
- 336   3            TR1 = 0;
- 337   3            return;
- 338   3          }
- 339   2          break;
- 340   2        case 3:if (RF_trans1 > 0)
- 341   2        {
- 342   3               Save_RF_trans0 = RF_trans0;
- 343   3               RF_trans0 = 0;
- 344   3               P_RF_INT = 2;
- 345   3               RF_RECE_REG[RF_BIT_COUNTER / 8] <<= 1;
- 346   3               if (Save_RF_trans1 >Save_RF_trans0)
- 347   3               {
- 348   4                 RF_RECE_REG[(RF_BIT_COUNTER) / 8] |= 0x01;
- 349   4               }
- 350   3               RF_trans_count = Save_RF_trans1 + Save_RF_trans0;
- 351   3               ++RF_BIT_COUNTER;
- 352   3               if (RF_BIT_COUNTER >23)
- 353   3               {
- 354   4                 TR1 = 0;
- 355   4                 RF_ini_receive();
-C51 COMPILER V9.00   EV1527                                                                09/24/2015 12:29:34 PAGE 7   
+ 334   2          {
+ 335   3            RF_ini_receive();//KEY_HOLD = 0;
+ 336   3            EX0 = 1;
+ 337   3            TR1 = 0;
+ 338   3            return;
+ 339   3          }
+ 340   2          break;
+ 341   2        case 3:if (RF_trans1 > 0)
+ 342   2        {
+ 343   3               Save_RF_trans0 = RF_trans0;
+ 344   3               RF_trans0 = 0;
+ 345   3               P_RF_INT = 2;
+ 346   3               RF_RECE_REG[RF_BIT_COUNTER / 8] <<= 1;
+ 347   3               if (Save_RF_trans1 >Save_RF_trans0)
+ 348   3               {
+ 349   4                 RF_RECE_REG[(RF_BIT_COUNTER) / 8] |= 0x01;
+ 350   4               }
+ 351   3               RF_trans_count = Save_RF_trans1 + Save_RF_trans0;
+ 352   3               ++RF_BIT_COUNTER;
+ 353   3               if (RF_BIT_COUNTER >23)
+ 354   3               {
+ 355   4                 TR1 = 0;
+C51 COMPILER V9.00   EV1527                                                                09/24/2015 16:36:25 PAGE 7   
 
- 356   4                 receive_rf_decoder_finished = 1;
- 357   4                 /*sjz*/
- 358   4                 tunning_finish_count++;
- 359   4                 measure_sync_count2_saved = measure_sync_count2_saved + measure_sync_count2;
- 360   4                 measure_sync_count2 = measure_sync_count2_saved >> 1;
- 361   4                 measure_sync_count2_saved = measure_sync_count2;
- 362   4      
- 363   4                 if ((tunning_finish_count>1) && ((measure_sync_count1 - measure_sync_count1_saved <= 30) || (measur
+ 356   4                 RF_ini_receive();
+ 357   4                 receive_rf_decoder_finished = 1;
+ 358   4                 /*sjz*/
+ 359   4                 tunning_finish_count++;
+ 360   4                 measure_sync_count2_saved = measure_sync_count2_saved + measure_sync_count2;
+ 361   4                 measure_sync_count2 = measure_sync_count2_saved >> 1;
+ 362   4                 measure_sync_count2_saved = measure_sync_count2;
+ 363   4      
+ 364   4                 if ((tunning_finish_count>1) && ((measure_sync_count1 - measure_sync_count1_saved <= 30) || (measur
              -e_sync_count1_saved - measure_sync_count1 <= 30)))
- 364   4                 {
- 365   5                   measure_sync_count1_saved = measure_sync_count1_saved + measure_sync_count1;
- 366   5                   measure_sync_count1 = measure_sync_count1_saved >> 1;
- 367   5                   measure_sync_count1_saved = measure_sync_count1;
- 368   5                 }
- 369   4      
- 370   4                 EX0 = 1;
- 371   4                 break;
- 372   4               }
- 373   3        }
- 374   2             if (RF_trans0>((measure_sync_count2 + measure_sync_count1) >> 3))//20)
- 375   2             {
- 376   3               RF_ini_receive();
- 377   3               EX0 = 1;
- 378   3               TR1 = 0;
- 379   3               return;
- 380   3             }
- 381   2             break;
- 382   2        default: //异常处理
- 383   2        {
- 384   3               RF_ini_receive();
- 385   3               EX0 = 1;
- 386   3               TR1 = 0;
- 387   3        }break;
- 388   2        }
- 389   1      }
- 390          
- 391          unsigned char return_again_receive_rf_decoder_finished(void)
- 392          {
- 393   1        unsigned char temp;
- 394   1        temp = again_receive_rf_decoder_finished;
- 395   1        return temp;
- 396   1      }
- 397          
- 398          void clear_again_receive_rf_decoder_finished(void)
- 399          {
- 400   1        again_receive_rf_decoder_finished = 0;
- 401   1      }
- 402          
- 403          unsigned char return_again_and_again_decoder_table(void)
- 404          {
- 405   1        unsigned char temp;
- 406   1        temp = again_and_again_decoder_table;
- 407   1        return temp;
- 408   1      }
- 409          
- 410          void clear_again_and_again_decoder_table(void)
- 411          {
- 412   1        again_and_again_decoder_table = 0;
- 413   1      }
+ 365   4                 {
+ 366   5                   measure_sync_count1_saved = measure_sync_count1_saved + measure_sync_count1;
+ 367   5                   measure_sync_count1 = measure_sync_count1_saved >> 1;
+ 368   5                   measure_sync_count1_saved = measure_sync_count1;
+ 369   5                 }
+ 370   4      
+ 371   4                 EX0 = 1;
+ 372   4                 break;
+ 373   4               }
+ 374   3        }
+ 375   2             if (RF_trans0>((measure_sync_count2 + measure_sync_count1) >> 3))//20)
+ 376   2             {
+ 377   3               RF_ini_receive();
+ 378   3               EX0 = 1;
+ 379   3               TR1 = 0;
+ 380   3               return;
+ 381   3             }
+ 382   2             break;
+ 383   2        default: //异常处理
+ 384   2        {
+ 385   3               RF_ini_receive();
+ 386   3               EX0 = 1;
+ 387   3               TR1 = 0;
+ 388   3        }break;
+ 389   2        }
+ 390   1      }
+ 391          
+ 392          unsigned char return_again_receive_rf_decoder_finished(void)
+ 393          {
+ 394   1        unsigned char temp;
+ 395   1        temp = again_receive_rf_decoder_finished;
+ 396   1        return temp;
+ 397   1      }
+ 398          
+ 399          void clear_again_receive_rf_decoder_finished(void)
+ 400          {
+ 401   1        again_receive_rf_decoder_finished = 0;
+ 402   1      }
+ 403          
+ 404          unsigned char return_again_and_again_decoder_table(void)
+ 405          {
+ 406   1        unsigned char temp;
+ 407   1        temp = again_and_again_decoder_table;
+ 408   1        return temp;
+ 409   1      }
+ 410          
+ 411          void clear_again_and_again_decoder_table(void)
+ 412          {
+ 413   1        again_and_again_decoder_table = 0;
+ 414   1      }
 
+
+C51 COMPILER V9.00   EV1527                                                                09/24/2015 16:36:25 PAGE 8   
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-C51 COMPILER V9.00   EV1527                                                                09/24/2015 12:29:34 PAGE 8   
-
-   CODE SIZE        =   1362    ----
+   CODE SIZE        =   1368    ----
    CONSTANT SIZE    =   ----    ----
    XDATA SIZE       =     36    ----
    PDATA SIZE       =   ----    ----
