@@ -293,9 +293,9 @@ bit register_call_function(unsigned char *buf)
 			}
 		}
 		//如果程序执行到这里，则代表ID码没有注册过
-		for (base_address = CALL_TABLE_START; base_address<CALL_TABLE_NUMBER; base_address++)
+		for (base_address = 0; base_address<CALL_TABLE_NUMBER; base_address++)
 		{
-			IRcvStr(I2C_ADDRESS, base_address*PAGE_LENGTH, at24c64_buff, PAGE_LENGTH);//从AT24C64里面读出32个字节的标志位
+			IRcvStr(I2C_ADDRESS, CALL_TABLE_START + base_address*PAGE_LENGTH, at24c64_buff, PAGE_LENGTH);//从AT24C64里面读出32个字节的标志位
 			delay10ms();
 			for (offset_address = 0; offset_address<PAGE_LENGTH; offset_address++)//主要32个字节标志位里面没有0的就OK
 			{
@@ -304,11 +304,13 @@ bit register_call_function(unsigned char *buf)
 					ISendStr(I2C_ADDRESS, (CALL_DATA_START + ((base_address*PAGE_LENGTH) + offset_address) * 8), buf, 8);
 					delay10ms();
 					at24c64_buff[offset_address] = 0;
-					ISendStr(I2C_ADDRESS, base_address*PAGE_LENGTH, at24c64_buff, PAGE_LENGTH);
+					ISendStr(I2C_ADDRESS, CALL_TABLE_START+base_address*PAGE_LENGTH, at24c64_buff, PAGE_LENGTH);
 					delay10ms();
 					//将标志位以及数据分别写到标志区跟数据区
 #ifdef DEBUG
 					uart_printf("caller register is new! \n\r");
+					uart_printf("标志地址为 %x ! \n\r", (unsigned int)(CALL_TABLE_START + base_address*PAGE_LENGTH) );
+					uart_printf("存储地址为 %x ! \n\r", CALL_DATA_START + ((base_address*PAGE_LENGTH) + offset_address) * 8);
 #endif
 //					if (sound_table == 1)
 //					{
@@ -366,9 +368,9 @@ bit register_host_function(unsigned char *buf)
 		}
 	}
 	//如果程序执行到这里，则代表ID码没有注册过
-	for (base_address = HOST_TABLE_START; base_address<HOST_TABLE_NUMBER; base_address++)
+	for (base_address = 0; base_address<HOST_TABLE_NUMBER; base_address++)
 	{
-		IRcvStr(I2C_ADDRESS, base_address*PAGE_LENGTH, at24c64_buff, PAGE_LENGTH);//从AT24C64里面读出32个字节的标志位
+		IRcvStr(I2C_ADDRESS, HOST_TABLE_START + base_address*PAGE_LENGTH, at24c64_buff, PAGE_LENGTH);//从AT24C64里面读出32个字节的标志位
 		delay10ms();
 		for (offset_address = 0; offset_address<PAGE_LENGTH; offset_address++)//主要32个字节标志位里面没有0的就OK
 		{
@@ -377,7 +379,7 @@ bit register_host_function(unsigned char *buf)
 				ISendStr(I2C_ADDRESS, (HOST_DATA_START + ((base_address*PAGE_LENGTH) + offset_address) * 8), buf, 8);
 				delay10ms();
 				at24c64_buff[offset_address] = 0;
-				ISendStr(I2C_ADDRESS, base_address*PAGE_LENGTH, at24c64_buff, PAGE_LENGTH);
+				ISendStr(I2C_ADDRESS,HOST_TABLE_START + base_address*PAGE_LENGTH, at24c64_buff, PAGE_LENGTH);
 				delay10ms();
 				//将标志位以及数据分别写到标志区跟数据区
 #ifdef DEBUG
@@ -439,9 +441,9 @@ bit register_alarm_function(unsigned char *buf)
 		}
 	}
 	//如果程序执行到这里，则代表ID码没有注册过
-	for (base_address = ALARM_TABLE_START; base_address<ALARM_TABLE_NUMBER; base_address++)
+	for (base_address = 0; base_address<ALARM_TABLE_NUMBER; base_address++)
 	{
-		IRcvStr(I2C_ADDRESS, base_address*PAGE_LENGTH, at24c64_buff, PAGE_LENGTH);//从AT24C64里面读出32个字节的标志位
+		IRcvStr(I2C_ADDRESS, ALARM_TABLE_START + base_address*PAGE_LENGTH, at24c64_buff, PAGE_LENGTH);//从AT24C64里面读出32个字节的标志位
 		delay10ms();
 		for (offset_address = 0; offset_address<PAGE_LENGTH; offset_address++)//主要32个字节标志位里面没有0的就OK
 		{
@@ -450,11 +452,13 @@ bit register_alarm_function(unsigned char *buf)
 				ISendStr(I2C_ADDRESS, (ALARM_DATA_START + ((base_address*PAGE_LENGTH) + offset_address) * 8), buf, 8);
 				delay10ms();
 				at24c64_buff[offset_address] = 0;
-				ISendStr(I2C_ADDRESS, base_address*PAGE_LENGTH, at24c64_buff, PAGE_LENGTH);
+				ISendStr(I2C_ADDRESS,ALARM_TABLE_START+base_address*PAGE_LENGTH, at24c64_buff, PAGE_LENGTH);
 				delay10ms();
 				//将标志位以及数据分别写到标志区跟数据区
 #ifdef DEBUG
 				uart_printf("alarmer register is new! \n\r");
+				uart_printf("标志地址为 %x ! \n\r", ALARM_TABLE_START + base_address*PAGE_LENGTH);
+				uart_printf("存储地址为 %x ! \n\r", ALARM_DATA_START + ((base_address*PAGE_LENGTH) + offset_address) * 8);
 #endif
 				//					if (sound_table == 1)
 				//					{
@@ -512,9 +516,9 @@ bit register_cancel_function(unsigned char *buf)
 		}
 	}
 	//如果程序执行到这里，则代表ID码没有注册过
-	for (base_address = CANCEL_TABLE_START; base_address<CANCEL_TABLE_NUMBER; base_address++)
+	for (base_address = 0; base_address<CANCEL_TABLE_NUMBER; base_address++)
 	{
-		IRcvStr(I2C_ADDRESS, base_address*PAGE_LENGTH, at24c64_buff, PAGE_LENGTH);//从AT24C64里面读出32个字节的标志位
+		IRcvStr(I2C_ADDRESS, CANCEL_TABLE_START + base_address*PAGE_LENGTH, at24c64_buff, PAGE_LENGTH);//从AT24C64里面读出32个字节的标志位
 		delay10ms();
 		for (offset_address = 0; offset_address<PAGE_LENGTH; offset_address++)//主要32个字节标志位里面没有0的就OK
 		{
@@ -523,11 +527,13 @@ bit register_cancel_function(unsigned char *buf)
 				ISendStr(I2C_ADDRESS, (CANCEL_DATA_START + ((base_address*PAGE_LENGTH) + offset_address) * 8), buf, 8);
 				delay10ms();
 				at24c64_buff[offset_address] = 0;
-				ISendStr(I2C_ADDRESS, base_address*PAGE_LENGTH, at24c64_buff, PAGE_LENGTH);
+				ISendStr(I2C_ADDRESS,CANCEL_TABLE_START+base_address*PAGE_LENGTH, at24c64_buff, PAGE_LENGTH);
 				delay10ms();
 				//将标志位以及数据分别写到标志区跟数据区
 #ifdef DEBUG
 				uart_printf("canceler register is new! \n\r");
+				uart_printf("标志地址为 %x ! \n\r", CANCEL_TABLE_START + base_address*PAGE_LENGTH);
+				uart_printf("存储地址为 %x ! \n\r", CANCEL_DATA_START + ((base_address*PAGE_LENGTH) + offset_address) * 8);
 #endif
 				//					if (sound_table == 1)
 				//					{
@@ -549,7 +555,7 @@ bit delete_call_function(unsigned char *buf)//buf为组码数组的指针
 	unsigned char base_address = 0;
 	unsigned char offset_address = 0;
 
-	for (base_address = CALL_TABLE_START; base_address<CALL_TABLE_NUMBER; base_address++)
+	for (base_address = 0; base_address<CALL_TABLE_NUMBER; base_address++)
 	{
 		IRcvStr(I2C_ADDRESS, base_address*PAGE_LENGTH, at24c64_buff, PAGE_LENGTH); //取出32个标志位
 		delay10ms();
@@ -593,7 +599,7 @@ bit delete_host_function(unsigned char *buf)//buf为组码数组的指针
 	unsigned char base_address = 0;
 	unsigned char offset_address = 0;
 
-	for (base_address = HOST_TABLE_START; base_address<HOST_TABLE_NUMBER; base_address++)
+	for (base_address = CALL_TABLE_NUMBER + ALARM_TABLE_NUMBER + CANCEL_TABLE_NUMBER; base_address<ALL_TABLE_NUMBER; base_address++)
 	{
 		IRcvStr(I2C_ADDRESS, base_address*PAGE_LENGTH, at24c64_buff, PAGE_LENGTH); //取出32个标志位
 		delay10ms();
@@ -637,7 +643,7 @@ bit delete_alarm_function(unsigned char *buf)//buf为组码数组的指针
 	unsigned char base_address = 0;
 	unsigned char offset_address = 0;
 
-	for (base_address = ALARM_TABLE_START; base_address<ALARM_TABLE_NUMBER; base_address++)
+	for (base_address = CALL_TABLE_NUMBER; base_address<CALL_TABLE_NUMBER + ALARM_TABLE_NUMBER; base_address++)
 	{
 		IRcvStr(I2C_ADDRESS, base_address*PAGE_LENGTH, at24c64_buff, PAGE_LENGTH); //取出32个标志位
 		delay10ms();
@@ -681,7 +687,7 @@ bit delete_cancel_function(unsigned char *buf)//buf为组码数组的指针
 	unsigned char base_address = 0;
 	unsigned char offset_address = 0;
 
-	for (base_address = CANCEL_TABLE_START; base_address<CANCEL_TABLE_NUMBER; base_address++)
+	for (base_address = CALL_TABLE_NUMBER + ALARM_TABLE_NUMBER; base_address<CALL_TABLE_NUMBER + ALARM_TABLE_NUMBER +CANCEL_TABLE_NUMBER; base_address++)
 	{
 		IRcvStr(I2C_ADDRESS, base_address*PAGE_LENGTH, at24c64_buff, PAGE_LENGTH); //取出32个标志位
 		delay10ms();

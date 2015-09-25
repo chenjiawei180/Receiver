@@ -89,19 +89,29 @@ void DecoderProcess(void)
 			{
 				IRcvStr(I2C_ADDRESS, j*PAGE_LENGTH, temp_buff1, PAGE_LENGTH);//读出32个字节标志位
 				delay10ms();
+				uart_printf("j = %02x \r\n",(unsigned int)j);
 				for (i = 0; i<PAGE_LENGTH; i++) //对读出的32字节标志位进行查看，看是否为0
 				{
 					if (temp_buff1[i] == 0)//标志位为0代表该标志位所对应的数据区有数据
 					{	
 #ifdef DEBUG
-						uart_printf("find a table!");
+						uart_printf("发现一个标志位 \r\n");
 #endif
 						IRcvStr(I2C_ADDRESS, CALL_DATA_START + (j * 32 + i) * 8, temp_buff, 8);//读出对应的8个字节的数据
 						delay10ms();
 						if (((Two_Menu_F8_E1_temp != 1) && temp_buff[5] == old2_RF_RECE_REG[0] && temp_buff[6] == old2_RF_RECE_REG[1] && ((temp_buff[7] >> 4) == (old2_RF_RECE_REG[2] >> 4))) || ((Two_Menu_F8_E1_temp == 1) && temp_buff[5] == old2_RF_RECE_REG[0] && temp_buff[6] == old2_RF_RECE_REG[1] && temp_buff[7] == old2_RF_RECE_REG[2]))// 进行对比，看看数据是否符合
 						{
-							if (j <= CALL_TABLE_NUMBER)
+#ifdef DEBUG
+							uart_printf("对码成功 \r\n");
+							uart_printf("遥控器码是 %02x %02x %02x.\r\n", (unsigned int)old2_RF_RECE_REG[0], (unsigned int)old2_RF_RECE_REG[1], (unsigned int)old2_RF_RECE_REG[2]); //测试按键键值
+							uart_printf("标志地址为 %x ! \n\r", (unsigned int)(j*PAGE_LENGTH+i));
+							uart_printf("存储地址为 %x ! \n\r", CALL_DATA_START + (j * 32 + i) * 8);
+#endif
+							if (temp_buff[0] < 50)
 							{
+#ifdef DEBUG
+								uart_printf("temp_buff[0] < 50 \r\n");
+#endif
 								if (Two_Menu_F8_E1_temp == 1)  //为按键值
 								{
 
@@ -113,14 +123,22 @@ void DecoderProcess(void)
 									temp_buff[0] = multiple_key[old2_RF_RECE_REG[2] & 0x0f];
 								}
 							}
-
+#ifdef DEBUG
+							uart_printf("cancen funtion \r\n");
+#endif
 							//语音函数
 							if (temp_buff[0] != QUXIAO_1 && temp_buff[0])
 							{
+#ifdef DEBUG
+								uart_printf("cancen funtion fault \r\n");
+#endif
 								submenuf6_1(Two_Menu_F6_E1_temp, temp_buff, temp_buff[0], old2_RF_RECE_REG[2] & 0x0f);
 							}
 							else
 							{
+#ifdef DEBUG
+								uart_printf("cancen funtion success \r\n");
+#endif
 								Cancel_funtion(temp_buff, display_ram);//取消函数
 								tm1629_load();
 								display();
@@ -134,10 +152,6 @@ void DecoderProcess(void)
 								display();//显示数码管
 #ifdef DEBUG
 								uart_printf("decoder success!"); 
-#endif
-
-#ifdef DEBUG
-								uart_printf("display_ram is %02x %02x %02x %02x.\r\n", (unsigned int)display_ram[0], (unsigned int)display_ram[1], (unsigned int)display_ram[2], (unsigned int)display_ram[3]); //测试按键键值
 #endif
 
 								set_func_index(DECODER_MENU);;//此时跳入解码菜单，为下一次解码做准备
@@ -226,7 +240,10 @@ void DecoderProcess(void)
 						delay10ms();
 						if (((Two_Menu_F8_E1_temp != 1) && temp_buff[5] == old2_RF_RECE_REG[0] && temp_buff[6] == old2_RF_RECE_REG[1] && ((temp_buff[7] >> 4) == (old2_RF_RECE_REG[2] >> 4))) || ((Two_Menu_F8_E1_temp == 1) && temp_buff[5] == old2_RF_RECE_REG[0] && temp_buff[6] == old2_RF_RECE_REG[1] && temp_buff[7] == old2_RF_RECE_REG[2]))
 						{
-							if (j <= CALL_TABLE_NUMBER)
+#ifdef DEBUG
+							uart_printf("你好 \r\n");
+#endif
+							if (temp_buff[0] < 50)
 							{
 								if (Two_Menu_F8_E1_temp == 1)  //为按键值
 								{
@@ -243,7 +260,7 @@ void DecoderProcess(void)
 							if (Two_Menu_F3_E1_temp == 1)//为即时模式
 							{
 
-								if (temp_buff[0] != QUXIAO_1 && temp_buff[0])
+								if ( (temp_buff[0] != QUXIAO_1) && temp_buff[0])
 								{
 									submenuf6_1(Two_Menu_F6_E1_temp, temp_buff, temp_buff[0], old2_RF_RECE_REG[2] & 0x0f);
 								}
@@ -300,7 +317,7 @@ void DecoderProcess(void)
 
 		case TWO_MENU_F1_E1_D1:
 		case TWO_MENU_F1_E1_D2:
-		case g:
+		case TWO_MENU_F1_E1_D3:
 		case TWO_MENU_F1_E1_D4:
 		{
 			set_func_index(TWO_MENU_F1_E1_D4);
@@ -485,7 +502,7 @@ void DecoderProcess(void)
 					}
 				}
 				else
-					Two_Menu_F1_E2[3]++;
+					Two_Menu_F1_E3[3]++;
 			}
 			break;
 		}

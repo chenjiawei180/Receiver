@@ -1437,6 +1437,7 @@ void fun87(void) //F6_E4音量大小调整
 {
 	unsigned char temp = 0;
 	temp = return_Two_Menu_F6_E4();
+	GD5800_sound_volume(temp * 3);
 	Show_one_number(temp);
 }
 
