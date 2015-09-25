@@ -37,6 +37,7 @@ void main()
 	uart_printf("Ds1302_Init Complete! \r\n");
 #endif
 	GD5800_initialization();
+	delay10ms();
 #ifdef DEBUG
 	uart_printf("GD5800_initialization Complete! \r\n");
 #endif
@@ -46,6 +47,7 @@ void main()
 	P3M0 = 0X00;
 
 	GD5800_select_chapter(CHUSHIHUA);
+
 	while (1)
 	{
 		KeyProcess();

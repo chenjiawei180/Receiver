@@ -5,6 +5,7 @@
 #include "timer.h"
 #include "ds1302.h"
 #include "at24c256.h"
+#include "gd5800.h"
 
 unsigned char sound_table = 0;
 
@@ -40,9 +41,9 @@ unsigned char Two_Menu_F7_E4 = 0; // E4其他键盘规则 9999*99
 unsigned char Two_Menu_F8_E1 = 2; // 单按键与 多按键切换
 unsigned char Two_Menu_F8_E2 = 0; // 键位设置
 
-unsigned char Two_Menu_Fb_E1 = 0; // 设置主机有没有销号功能
-unsigned char Two_Menu_FC_E1 = 0; // 设置万年历待机与----待机的切换
-unsigned char Two_Menu_Fd_E1 = 0; // E1 E2 E3 E4 E5 E6
+unsigned char Two_Menu_Fb_E1 = 1; // 设置主机有没有销号功能
+unsigned char Two_Menu_FC_E1 = 1; // 设置万年历待机与----待机的切换
+unsigned char Two_Menu_Fd_E1 = 1; // E1 E2 E3 E4 E5 E6
 
 key_table code table[100] =
 {	// 目标索引		    上				下          确认		 退出         函数
@@ -185,7 +186,7 @@ unsigned int KeyScan(void)  //Keyboard scan function
 			LKeyPort &= 0x7f;
 			if ((HKeyPort & 0x7C) != 0x7C)
 			{
-				
+				//GD5800_select_chapter(DI);
 				sound_table=1;
 				Val = HKeyPort & 0x7C;
 				Val <<= 8;
@@ -585,6 +586,9 @@ void KeyProcess(void)
 			case DECODER_MENU:
 				CycleUp();
 				break;
+			case TWO_MENU_FC_SET:
+				if (Two_Menu_FC_E1 == 1) Two_Menu_FC_E1 = 2;
+				else Two_Menu_FC_E1 = 1;
 
 				default:break;
 			}	
@@ -807,6 +811,9 @@ void KeyProcess(void)
 			case DECODER_MENU:
 				CycleDown();
 				break;
+			case TWO_MENU_FC_SET:
+				if (Two_Menu_FC_E1 == 1) Two_Menu_FC_E1 = 2;
+				else Two_Menu_FC_E1 = 1;
 
 				default:break;
 			}
@@ -953,4 +960,11 @@ unsigned char return_sound_table(void)
 void set_sound_table(unsigned char temp)
 {
 	sound_table = temp;
+}
+
+unsigned char return_Two_Menu_FC_E1(void)
+{
+	unsigned char temp = 0;
+	temp = Two_Menu_FC_E1;
+	return temp;
 }

@@ -63,7 +63,17 @@ void DecoderProcess(void)
 				temp_buff[4] = old2_RF_RECE_REG[1] & 0x0f;	//为3位组码第三位
 				temp_buff[5] = old2_RF_RECE_REG[0];			//备用项,暂且存第一位ID码
 
-				submenuf6_1(Two_Menu_F6_E1_temp, temp_buff, temp_buff[0], old2_RF_RECE_REG[2] & 0x0f);
+				if (temp_buff[0] != QUXIAO_1 && temp_buff[0])
+				{
+					submenuf6_1(Two_Menu_F6_E1_temp, temp_buff, temp_buff[0], old2_RF_RECE_REG[2] & 0x0f);
+				}
+				else
+				{
+					Cancel_funtion(temp_buff,display_ram);//取消函数
+					tm1629_load();
+					display();
+					break;
+				}		
 
 				tm1629_clear();//清屏
 				decoder_temp_to_mcuram(display_ram, temp_buff);//将临时数组的数据移入单片机暂存数组 8字节转6字节
@@ -103,6 +113,21 @@ void DecoderProcess(void)
 									temp_buff[0] = multiple_key[old2_RF_RECE_REG[2] & 0x0f];
 								}
 							}
+
+							//语音函数
+							if (temp_buff[0] != QUXIAO_1 && temp_buff[0])
+							{
+								submenuf6_1(Two_Menu_F6_E1_temp, temp_buff, temp_buff[0], old2_RF_RECE_REG[2] & 0x0f);
+							}
+							else
+							{
+								Cancel_funtion(temp_buff, display_ram);//取消函数
+								tm1629_load();
+								display();
+								break;
+								break;
+							}
+
 								tm1629_clear();//清屏
 								decoder_temp_to_mcuram(display_ram, temp_buff);//如果符合的话  将临时数组的数据移入单片机暂存数组 8字节转6字节
 								tm1629_load();//单片机把数组内容载入数码管显存数组中
@@ -146,7 +171,19 @@ void DecoderProcess(void)
 				temp_buff[4] = old2_RF_RECE_REG[1] & 0x0f;	//为3位组码第三位
 				temp_buff[5] = old2_RF_RECE_REG[0];			//备用项,暂且存第一位ID码
 				if (Two_Menu_F3_E1_temp == 1)				//为即时模式
-				{
+				{	
+					if (temp_buff[0] != QUXIAO_1 && temp_buff[0])
+					{
+						submenuf6_1(Two_Menu_F6_E1_temp, temp_buff, temp_buff[0], old2_RF_RECE_REG[2] & 0x0f);
+					}
+					else
+					{
+						Cancel_funtion(temp_buff, display_ram);//取消函数
+						tm1629_load();
+						display();
+						break;
+					}
+
 					for (l = Two_Menu_F3_E2_temp; l>1; l--) //整体往下移一组数据
 					{
 						mcuram_to_mcuram_down(display_ram + (l - 2) * 6);
@@ -205,6 +242,20 @@ void DecoderProcess(void)
 			
 							if (Two_Menu_F3_E1_temp == 1)//为即时模式
 							{
+
+								if (temp_buff[0] != QUXIAO_1 && temp_buff[0])
+								{
+									submenuf6_1(Two_Menu_F6_E1_temp, temp_buff, temp_buff[0], old2_RF_RECE_REG[2] & 0x0f);
+								}
+								else
+								{
+									Cancel_funtion(temp_buff, display_ram);//取消函数
+									tm1629_load();
+									display();
+									break;
+									break;
+								}
+
 								for (l = Two_Menu_F3_E2_temp; l>1; l--) //整体往下移一组数据
 								{
 									mcuram_to_mcuram_down(display_ram + (l - 2) * 6);
@@ -249,7 +300,7 @@ void DecoderProcess(void)
 
 		case TWO_MENU_F1_E1_D1:
 		case TWO_MENU_F1_E1_D2:
-		case TWO_MENU_F1_E1_D3:
+		case g:
 		case TWO_MENU_F1_E1_D4:
 		{
 			set_func_index(TWO_MENU_F1_E1_D4);

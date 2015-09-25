@@ -16,6 +16,8 @@ unsigned char logout_cycle_table = 0;
 
 unsigned char return_standby_time = 0;//一段时间未操作  返回待机界面
 
+unsigned char second_times = 0;
+
 void Init_Timer0(void)
 {
 	TMOD |= 0x01;	  //使用模式1，16位定时器，使用"|"符号可以在使用多个定时器时不受影响	
@@ -39,10 +41,12 @@ void Init_Timer1(void)
 void Timer0_isr(void) interrupt 1  //定时器0中断服务程序
 {
 	unsigned char func_index_temp = 0;
+	unsigned char Two_Menu_FC_E1_temp = 0;
 	TF0 = 0;
 	TH0 = (65536 - TIMER50MS) >> 8;		  //重新赋值 50ms
 	TL0 = (65536 - TIMER50MS) & 0xff;
 	func_index_temp = return_func_index();
+	Two_Menu_FC_E1_temp = return_Two_Menu_FC_E1();
 	//if (func_index_temp == MENU_STANDBY || func_index_temp == TWO_MENU_F0_YEAR || func_index_temp == TWO_MENU_F0_MOUTH 
 	//	|| func_index_temp == TWO_MENU_F0_DAY || func_index_temp == TWO_MENU_F0_WEEK || func_index_temp == TWO_MENU_F0_HOUR
 	//	|| func_index_temp == TWO_MENU_F0_MINUTE || func_index_temp == TWO_MENU_F1_E1_D1 || func_index_temp == TWO_MENU_F1_E1_D2
@@ -98,6 +102,17 @@ void Timer0_isr(void) interrupt 1  //定时器0中断服务程序
 			set_func_index(MENU_STANDBY);
 		}
 	}
+
+	if (func_index_temp == MENU_STANDBY && Two_Menu_FC_E1_temp == 2)
+	{
+		second_times++;
+		if (second_times >= 10)
+		{
+			P55 = ~P55;
+			second_times = 0;
+		}
+	}
+
 }
 
 void Timer1_isr(void) interrupt 3  //定时器1中断服务程序

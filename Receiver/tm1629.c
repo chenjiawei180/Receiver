@@ -14,7 +14,7 @@ unsigned char display_ram[240] = { 0 }; //程序运行时记录显示数据的内存
 unsigned char await_time_table= 0 ;//用于记录待机显示横杠数码管次数 
 
 unsigned char single_key[16]   = { 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01 };//单键位设置存储数组
-unsigned char multiple_key[16] = { 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01 };//多键位设置存储数组
+unsigned char multiple_key[16] = { 0x01, QUXIAO-QUXIAO, JIEZHANG-QUXIAO, 0x01, JIUSHUI-QUXIAO, 0X01, 0x01, 0x01, HUJIAO - QUXIAO, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01 };//多键位设置存储数组
 
 void writeDataTo1629(unsigned char p) //写数据给第一个TM1629
 {
@@ -508,13 +508,57 @@ void CycleDown(void)
 	display();
 }
 
+void Cancel_funtion(unsigned char* id_number, unsigned char* buff)//id_number为解码的temp数组，buff为显示缓存
+{
+	/*
+	id_number  //  序号、接收号*3、ID*3、区号
+	buff	//		  序号、类别、区号、接收号
+	*/
 
+	unsigned char i, index, Two_Menu_F3_E2_temp;
+	unsigned char temp[6] = { 0 };
+	index = return_Two_Menu_F3_E2();
+	Two_Menu_F3_E2_temp = return_Two_Menu_F3_E2();
+
+	for (i = 0; i<Two_Menu_F3_E2_temp; i++)
+	{
+		if (*(id_number + 1) == *(buff + i * 6 + 1) && *(id_number + 2) == *(buff + i * 6 + 2) && *(id_number + 3) == *(buff + i * 6 + 3) && *(id_number + 4) == *(buff + i * 6 + 4))
+		{
+			index = i;
+			break;
+		}
+	}
+	for (i = index; i<Two_Menu_F3_E2_temp; i++)
+	{
+		mcuram_to_mcuram_up(buff + i * 6);
+	}
+	if (index != Two_Menu_F3_E2_temp)
+	{
+		for (i = 0; i<6; i++)
+		{
+			*(buff + (Two_Menu_F3_E2_temp - 1) * 6 + i) = 0;
+		}
+	}
+	if (*(buff) == 0)
+	{
+		set_func_index(MENU_STANDBY);
+	}
+}
 
 
 void fun0(void) //待机显示函数
 {
-	//tm1629_await();
-	Display_time();
+	unsigned char temp = 0;
+	temp = return_Two_Menu_FC_E1();
+	if (temp == 1)
+	{
+		tm1629_await();
+	}
+	else
+	{
+		Display_time();
+	}
+	
 }
 
 void fun1(void) //一级菜单F0
@@ -864,7 +908,9 @@ void fun47(void) //二级菜单Fb
 
 void fun48(void) //二级菜单FC
 {
-	tm1629_f(0x0f);
+	unsigned char temp = 0;
+	temp = return_Two_Menu_FC_E1();
+	tm1629_f(temp);
 }
 
 void fun49(void) //二级菜单Fd
@@ -1443,9 +1489,11 @@ void fun94(void) //F8_E2键位设置
 	Show_two_number(temp);
 	if (return_sound_table() == 1)
 	{
+		delay10ms();
 		GD5800_stop_music();
 		delay10ms();
 		GD5800_select_chapter(temp + QUXIAO);
+		delay10ms();
 		//GD5800_play_music();
 		set_sound_table(0);
 	}

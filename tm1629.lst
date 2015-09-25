@@ -1,4 +1,4 @@
-C51 COMPILER V9.00   TM1629                                                                09/24/2015 16:36:25 PAGE 1   
+C51 COMPILER V9.00   TM1629                                                                09/25/2015 11:42:24 PAGE 1   
 
 
 C51 COMPILER V9.00, COMPILATION OF MODULE TM1629
@@ -26,8 +26,8 @@ line level    source
   15          
   16          unsigned char single_key[16]   = { 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01,
              - 0x01, 0x01, 0x01, 0x01 };//µ¥¼üÎ»ÉèÖÃ´æ´¢Êý×é
-  17          unsigned char multiple_key[16] = { 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01,
-             - 0x01, 0x01, 0x01, 0x01 };//¶à¼üÎ»ÉèÖÃ´æ´¢Êý×é
+  17          unsigned char multiple_key[16] = { 0x01, QUXIAO-QUXIAO, JIEZHANG-QUXIAO, 0x01, JIUSHUI-QUXIAO, 0X01, 0x01,
+             - 0x01, HUJIAO - QUXIAO, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01 };//¶à¼üÎ»ÉèÖÃ´æ´¢Êý×é
   18          
   19          void writeDataTo1629(unsigned char p) //Ð´Êý¾Ý¸øµÚÒ»¸öTM1629
   20          {
@@ -62,7 +62,7 @@ line level    source
   49   2            TM1629_DIO = 1;
   50   2          else
   51   2            TM1629_DIO = 0;
-C51 COMPILER V9.00   TM1629                                                                09/24/2015 16:36:25 PAGE 2   
+C51 COMPILER V9.00   TM1629                                                                09/25/2015 11:42:24 PAGE 2   
 
   52   2          _nop_();
   53   2          _nop_();
@@ -126,7 +126,7 @@ line level    source
  111   1        unsigned char i,temp;
  112   1        temp = return_Two_Menu_F6_E5();
  113   1        send_command(0x40); //ÉèÖÃÊý¾ÝÃüÁî:ÆÕÍ¨Ä£Ê½¡¢µØÖ·×ÔÔö1£¬Ð´Êý¾Ýµ½ÏÔ´æ
-C51 COMPILER V9.00   TM1629                                                                09/24/2015 16:36:25 PAGE 3   
+C51 COMPILER V9.00   TM1629                                                                09/25/2015 11:42:24 PAGE 3   
 
  114   1        send_command(0xc0); //ÉèÖÃÏÔÊ¾µØÖ·ÃüÁî£º´Ó00H¿ªÊ¼
  115   1        for (i = 0; i<8; i++) //·¢ËÍ16×Ö½ÚµÄÏÔ´æÊý¾Ý
@@ -190,7 +190,7 @@ line level    source
  173   4      
  174   4            }
  175   3          }
-C51 COMPILER V9.00   TM1629                                                                09/24/2015 16:36:25 PAGE 4   
+C51 COMPILER V9.00   TM1629                                                                09/25/2015 11:42:24 PAGE 4   
 
  176   2        }
  177   1      }
@@ -254,7 +254,7 @@ line level    source
  235   1      
  236   1        display();
  237   1      
-C51 COMPILER V9.00   TM1629                                                                09/24/2015 16:36:25 PAGE 5   
+C51 COMPILER V9.00   TM1629                                                                09/25/2015 11:42:24 PAGE 5   
 
  238   1      }
  239          
@@ -318,7 +318,7 @@ line level    source
  297   1        if (*(display_ram + 30) != 0)
  298   1          mcuram_to_displayram(buf_display[2] + 7, display_ram + 30);
  299   1        if (*(display_ram + 24) != 0)
-C51 COMPILER V9.00   TM1629                                                                09/24/2015 16:36:25 PAGE 6   
+C51 COMPILER V9.00   TM1629                                                                09/25/2015 11:42:24 PAGE 6   
 
  300   1          mcuram_to_displayram(buf_display[2] + 3, display_ram + 24);
  301   1        if (*(display_ram + 18) != 0)
@@ -382,7 +382,7 @@ line level    source
  357   1        unsigned char f5_xunhuan, f4_xiaohao, logout_cycle_table_temp;
  358   1        unsigned char temp[6] = { 0 };
  359   1        f5_xunhuan = return_Two_Menu_F5_E1();
-C51 COMPILER V9.00   TM1629                                                                09/24/2015 16:36:25 PAGE 7   
+C51 COMPILER V9.00   TM1629                                                                09/25/2015 11:42:24 PAGE 7   
 
  360   1        f4_xiaohao = return_Two_Menu_F4_E1();
  361   1        logout_cycle_table_temp = return_logout_cycle_table();
@@ -446,7 +446,7 @@ line level    source
  419   1      }
  420          
  421          
-C51 COMPILER V9.00   TM1629                                                                09/24/2015 16:36:25 PAGE 8   
+C51 COMPILER V9.00   TM1629                                                                09/25/2015 11:42:24 PAGE 8   
 
  422          
  423          
@@ -510,7 +510,7 @@ line level    source
  481   1        unsigned char temp[6] = { 0 };
  482   1        index = return_Two_Menu_F3_E2();
  483   1        Two_Menu_F3_E2_temp = return_Two_Menu_F3_E2();
-C51 COMPILER V9.00   TM1629                                                                09/24/2015 16:36:25 PAGE 9   
+C51 COMPILER V9.00   TM1629                                                                09/25/2015 11:42:24 PAGE 9   
 
  484   1        /*Ñ­»·´¦Àíº¯Êý*/
  485   1        for (i = 0; i<Two_Menu_F3_E2_temp; i++)
@@ -539,990 +539,1042 @@ line level    source
  508   1        display();
  509   1      }
  510          
- 511          
- 512          
- 513          
- 514          void fun0(void) //´ý»úÏÔÊ¾º¯Êý
- 515          {
- 516   1        //tm1629_await();
- 517   1        Display_time();
- 518   1      }
- 519          
- 520          void fun1(void) //Ò»¼¶²Ëµ¥F0
- 521          {
- 522   1        tm1629_f(0x00);
- 523   1      }
- 524          
- 525          void fun2(void) //Ò»¼¶²Ëµ¥F1
- 526          {
- 527   1        tm1629_f(0x01);
- 528   1      }
- 529          
- 530          void fun3(void) //Ò»¼¶²Ëµ¥F2
- 531          {
- 532   1        tm1629_f(0x02);
- 533   1      }
- 534          
- 535          void fun4(void) //Ò»¼¶²Ëµ¥F3
- 536          {
- 537   1        tm1629_f(0x03);
- 538   1      }
- 539          
- 540          void fun5(void) //Ò»¼¶²Ëµ¥F4
- 541          {
- 542   1        tm1629_f(0x04);
- 543   1      }
- 544          
- 545          void fun6(void) //Ò»¼¶²Ëµ¥F5
-C51 COMPILER V9.00   TM1629                                                                09/24/2015 16:36:25 PAGE 10  
+ 511          void Cancel_funtion(unsigned char* id_number, unsigned char* buff)//id_numberÎª½âÂëµÄtempÊý×é£¬buffÎªÏÔÊ¾»
+             -º´æ
+ 512          {
+ 513   1        /*
+ 514   1        id_number  //  ÐòºÅ¡¢½ÓÊÕºÅ*3¡¢ID*3¡¢ÇøºÅ
+ 515   1        buff  //      ÐòºÅ¡¢Àà±ð¡¢ÇøºÅ¡¢½ÓÊÕºÅ
+ 516   1        */
+ 517   1      
+ 518   1        unsigned char i, index, Two_Menu_F3_E2_temp;
+ 519   1        unsigned char temp[6] = { 0 };
+ 520   1        index = return_Two_Menu_F3_E2();
+ 521   1        Two_Menu_F3_E2_temp = return_Two_Menu_F3_E2();
+ 522   1      
+ 523   1        for (i = 0; i<Two_Menu_F3_E2_temp; i++)
+ 524   1        {
+ 525   2          if (*(id_number + 1) == *(buff + i * 6 + 1) && *(id_number + 2) == *(buff + i * 6 + 2) && *(id_number + 
+             -3) == *(buff + i * 6 + 3) && *(id_number + 4) == *(buff + i * 6 + 4))
+ 526   2          {
+ 527   3            index = i;
+ 528   3            break;
+ 529   3          }
+ 530   2        }
+ 531   1        for (i = index; i<Two_Menu_F3_E2_temp; i++)
+ 532   1        {
+ 533   2          mcuram_to_mcuram_up(buff + i * 6);
+ 534   2        }
+ 535   1        if (index != Two_Menu_F3_E2_temp)
+ 536   1        {
+ 537   2          for (i = 0; i<6; i++)
+ 538   2          {
+ 539   3            *(buff + (Two_Menu_F3_E2_temp - 1) * 6 + i) = 0;
+ 540   3          }
+ 541   2        }
+ 542   1        if (*(buff) == 0)
+ 543   1        {
+C51 COMPILER V9.00   TM1629                                                                09/25/2015 11:42:24 PAGE 10  
 
- 546          {
- 547   1        tm1629_f(0x05);
- 548   1      }
- 549          
- 550          void fun7(void) //Ò»¼¶²Ëµ¥F6
- 551          {
- 552   1        tm1629_f(0x06);
- 553   1      }
- 554          
- 555          void fun8(void) //Ò»¼¶²Ëµ¥F7
- 556          {
- 557   1        tm1629_f(0x07);
- 558   1      }
- 559          
- 560          void fun9(void) //Ò»¼¶²Ëµ¥F8
- 561          {
- 562   1        tm1629_f(0x08);
- 563   1      }
- 564          
- 565          void fun10(void) //Ò»¼¶²Ëµ¥F9
- 566          {
- 567   1        tm1629_f(0x09);
- 568   1      }
- 569          
- 570          void fun11(void) //Ò»¼¶²Ëµ¥FA
- 571          {
- 572   1        tm1629_f(0x0a);
- 573   1      }
- 574          
- 575          void fun12(void) //Ò»¼¶²Ëµ¥Fb
- 576          {
- 577   1        tm1629_f(0x0b);
- 578   1      }
- 579          
- 580          void fun13(void) //Ò»¼¶²Ëµ¥FC
- 581          {
- 582   1        tm1629_f(0x0c);
- 583   1      }
- 584          
- 585          void fun14(void) //Ò»¼¶²Ëµ¥Fd
- 586          {
- 587   1        tm1629_f(0x0d);
- 588   1      }
- 589          
- 590          void fun15(void) //ÉèÖÃÄê·Ý
- 591          {
- 592   1        if (return_await_number_table() == 1)
- 593   1        {
- 594   2          Display_time();
- 595   2          set_await_number_table(2);
- 596   2        }
- 597   1        if (return_await_number_table() == 3)
- 598   1        {
- 599   2          buf_display[1][7] = 0;
- 600   2          buf_display[1][6] = 0;
- 601   2          buf_display[1][5] = 0;
- 602   2          buf_display[1][4] = 0;
- 603   2          display();
- 604   2          set_await_number_table(0);
- 605   2        }
- 606   1        Ds1302_Write_Time();
+ 544   2          set_func_index(MENU_STANDBY);
+ 545   2        }
+ 546   1      }
+ 547          
+ 548          
+ 549          void fun0(void) //´ý»úÏÔÊ¾º¯Êý
+ 550          {
+ 551   1        unsigned char temp = 0;
+ 552   1        temp = return_Two_Menu_FC_E1();
+ 553   1        if (temp == 1)
+ 554   1        {
+ 555   2          tm1629_await();
+ 556   2        }
+ 557   1        else
+ 558   1        {
+ 559   2          Display_time();
+ 560   2        }
+ 561   1        
+ 562   1      }
+ 563          
+ 564          void fun1(void) //Ò»¼¶²Ëµ¥F0
+ 565          {
+ 566   1        tm1629_f(0x00);
+ 567   1      }
+ 568          
+ 569          void fun2(void) //Ò»¼¶²Ëµ¥F1
+ 570          {
+ 571   1        tm1629_f(0x01);
+ 572   1      }
+ 573          
+ 574          void fun3(void) //Ò»¼¶²Ëµ¥F2
+ 575          {
+ 576   1        tm1629_f(0x02);
+ 577   1      }
+ 578          
+ 579          void fun4(void) //Ò»¼¶²Ëµ¥F3
+ 580          {
+ 581   1        tm1629_f(0x03);
+ 582   1      }
+ 583          
+ 584          void fun5(void) //Ò»¼¶²Ëµ¥F4
+ 585          {
+ 586   1        tm1629_f(0x04);
+ 587   1      }
+ 588          
+ 589          void fun6(void) //Ò»¼¶²Ëµ¥F5
+ 590          {
+ 591   1        tm1629_f(0x05);
+ 592   1      }
+ 593          
+ 594          void fun7(void) //Ò»¼¶²Ëµ¥F6
+ 595          {
+ 596   1        tm1629_f(0x06);
+ 597   1      }
+ 598          
+ 599          void fun8(void) //Ò»¼¶²Ëµ¥F7
+ 600          {
+ 601   1        tm1629_f(0x07);
+ 602   1      }
+ 603          
+ 604          void fun9(void) //Ò»¼¶²Ëµ¥F8
+ 605          {
+C51 COMPILER V9.00   TM1629                                                                09/25/2015 11:42:24 PAGE 11  
+
+ 606   1        tm1629_f(0x08);
  607   1      }
-C51 COMPILER V9.00   TM1629                                                                09/24/2015 16:36:25 PAGE 11  
-
  608          
- 609          void fun16(void) //ÉèÖÃÔÂ·Ý
+ 609          void fun10(void) //Ò»¼¶²Ëµ¥F9
  610          {
- 611   1        if (return_await_number_table() == 1)
- 612   1        {
- 613   2          Display_time();
- 614   2          set_await_number_table(2);
- 615   2        }
- 616   1        if (return_await_number_table() == 3)
- 617   1        {
- 618   2          buf_display[1][2] = 0;
- 619   2          buf_display[1][1] = 0;
- 620   2          display();
- 621   2          set_await_number_table(0);
- 622   2        }
- 623   1        Ds1302_Write_Time();
- 624   1      }
- 625          
- 626          void fun17(void) //ÉèÖÃÈÕÆÚ
- 627          {
- 628   1        if (return_await_number_table() == 1)
- 629   1        {
- 630   2          Display_time();
- 631   2          set_await_number_table(2);
- 632   2        }
- 633   1        if (return_await_number_table() == 3)
- 634   1        {
- 635   2          buf_display[0][7] = 0;
- 636   2          buf_display[0][6] = 0;
- 637   2          display();
- 638   2          set_await_number_table(0);
- 639   2        }
- 640   1        Ds1302_Write_Time();
- 641   1      }
- 642          
- 643          void fun18(void) //ÉèÖÃÐÇÆÚ
- 644          {
- 645   1        if (return_await_number_table() == 1)
- 646   1        {
- 647   2          Display_time();
- 648   2          set_await_number_table(2);
+ 611   1        tm1629_f(0x09);
+ 612   1      }
+ 613          
+ 614          void fun11(void) //Ò»¼¶²Ëµ¥FA
+ 615          {
+ 616   1        tm1629_f(0x0a);
+ 617   1      }
+ 618          
+ 619          void fun12(void) //Ò»¼¶²Ëµ¥Fb
+ 620          {
+ 621   1        tm1629_f(0x0b);
+ 622   1      }
+ 623          
+ 624          void fun13(void) //Ò»¼¶²Ëµ¥FC
+ 625          {
+ 626   1        tm1629_f(0x0c);
+ 627   1      }
+ 628          
+ 629          void fun14(void) //Ò»¼¶²Ëµ¥Fd
+ 630          {
+ 631   1        tm1629_f(0x0d);
+ 632   1      }
+ 633          
+ 634          void fun15(void) //ÉèÖÃÄê·Ý
+ 635          {
+ 636   1        if (return_await_number_table() == 1)
+ 637   1        {
+ 638   2          Display_time();
+ 639   2          set_await_number_table(2);
+ 640   2        }
+ 641   1        if (return_await_number_table() == 3)
+ 642   1        {
+ 643   2          buf_display[1][7] = 0;
+ 644   2          buf_display[1][6] = 0;
+ 645   2          buf_display[1][5] = 0;
+ 646   2          buf_display[1][4] = 0;
+ 647   2          display();
+ 648   2          set_await_number_table(0);
  649   2        }
- 650   1        if (return_await_number_table() == 3)
- 651   1        {
- 652   2          buf_display[0][5] = 0;
- 653   2          display();
- 654   2          set_await_number_table(0);
- 655   2        }
- 656   1        Ds1302_Write_Time();
- 657   1      }
- 658          
- 659          void fun19(void) //ÉèÖÃÐ¡Ê±
- 660          {
- 661   1        if (return_await_number_table() == 1)
- 662   1        {
- 663   2          Display_time();
- 664   2          set_await_number_table(2);
- 665   2        }
- 666   1        if (return_await_number_table() == 3)
- 667   1        {
- 668   2          buf_display[0][3] = 0;
- 669   2          buf_display[0][2] = 0;
-C51 COMPILER V9.00   TM1629                                                                09/24/2015 16:36:25 PAGE 12  
+ 650   1        Ds1302_Write_Time();
+ 651   1      }
+ 652          
+ 653          void fun16(void) //ÉèÖÃÔÂ·Ý
+ 654          {
+ 655   1        if (return_await_number_table() == 1)
+ 656   1        {
+ 657   2          Display_time();
+ 658   2          set_await_number_table(2);
+ 659   2        }
+ 660   1        if (return_await_number_table() == 3)
+ 661   1        {
+ 662   2          buf_display[1][2] = 0;
+ 663   2          buf_display[1][1] = 0;
+ 664   2          display();
+ 665   2          set_await_number_table(0);
+ 666   2        }
+ 667   1        Ds1302_Write_Time();
+C51 COMPILER V9.00   TM1629                                                                09/25/2015 11:42:24 PAGE 12  
 
- 670   2          display();
- 671   2          set_await_number_table(0);
- 672   2        }
- 673   1        Ds1302_Write_Time();
- 674   1      }
- 675          
- 676          void fun20(void) //ÉèÖÃ·ÖÖÓ
- 677          {
- 678   1        if (return_await_number_table() == 1)
- 679   1        {
- 680   2          Display_time();
- 681   2          set_await_number_table(2);
- 682   2        }
- 683   1        if (return_await_number_table() == 3)
- 684   1        {
- 685   2          buf_display[0][1] = 0;
- 686   2          buf_display[0][0] = 0;
- 687   2          display();
- 688   2          set_await_number_table(0);
- 689   2        }
- 690   1        Ds1302_Write_Time();
- 691   1      }
- 692          
- 693          void fun21(void) //¶þ¼¶²Ëµ¥F1-E1
- 694          {
- 695   1        tm1629_E(0x01);
- 696   1        Two_Menu_F1_E1[0] = 0;
- 697   1        Two_Menu_F1_E1[1] = 0;
- 698   1        Two_Menu_F1_E1[2] = 0;
- 699   1        Two_Menu_F1_E1[3] = 1;
- 700   1      }
- 701          
- 702          void fun22(void) //¶þ¼¶²Ëµ¥F1-E2
- 703          {
- 704   1        tm1629_E(0x02);
- 705   1        Two_Menu_F1_E2[0] = 0;
- 706   1        Two_Menu_F1_E2[1] = 0;
- 707   1        Two_Menu_F1_E2[2] = 0;
- 708   1        Two_Menu_F1_E2[3] = 1;
- 709   1      }
- 710          
- 711          void fun23(void) //¶þ¼¶²Ëµ¥F1-E3
- 712          {
- 713   1        tm1629_E(0x03);
- 714   1        Two_Menu_F1_E3[0] = 0;
- 715   1        Two_Menu_F1_E3[1] = 0;
- 716   1        Two_Menu_F1_E3[2] = 0;
- 717   1        Two_Menu_F1_E3[3] = 1;
+ 668   1      }
+ 669          
+ 670          void fun17(void) //ÉèÖÃÈÕÆÚ
+ 671          {
+ 672   1        if (return_await_number_table() == 1)
+ 673   1        {
+ 674   2          Display_time();
+ 675   2          set_await_number_table(2);
+ 676   2        }
+ 677   1        if (return_await_number_table() == 3)
+ 678   1        {
+ 679   2          buf_display[0][7] = 0;
+ 680   2          buf_display[0][6] = 0;
+ 681   2          display();
+ 682   2          set_await_number_table(0);
+ 683   2        }
+ 684   1        Ds1302_Write_Time();
+ 685   1      }
+ 686          
+ 687          void fun18(void) //ÉèÖÃÐÇÆÚ
+ 688          {
+ 689   1        if (return_await_number_table() == 1)
+ 690   1        {
+ 691   2          Display_time();
+ 692   2          set_await_number_table(2);
+ 693   2        }
+ 694   1        if (return_await_number_table() == 3)
+ 695   1        {
+ 696   2          buf_display[0][5] = 0;
+ 697   2          display();
+ 698   2          set_await_number_table(0);
+ 699   2        }
+ 700   1        Ds1302_Write_Time();
+ 701   1      }
+ 702          
+ 703          void fun19(void) //ÉèÖÃÐ¡Ê±
+ 704          {
+ 705   1        if (return_await_number_table() == 1)
+ 706   1        {
+ 707   2          Display_time();
+ 708   2          set_await_number_table(2);
+ 709   2        }
+ 710   1        if (return_await_number_table() == 3)
+ 711   1        {
+ 712   2          buf_display[0][3] = 0;
+ 713   2          buf_display[0][2] = 0;
+ 714   2          display();
+ 715   2          set_await_number_table(0);
+ 716   2        }
+ 717   1        Ds1302_Write_Time();
  718   1      }
  719          
- 720          void fun24(void) //¶þ¼¶²Ëµ¥F1-E4
+ 720          void fun20(void) //ÉèÖÃ·ÖÖÓ
  721          {
- 722   1        tm1629_E(0x04);
- 723   1        Two_Menu_F1_E4[0] = 0;
- 724   1        Two_Menu_F1_E4[1] = 0;
- 725   1        Two_Menu_F1_E4[2] = 0;
- 726   1        Two_Menu_F1_E4[3] = 1;
- 727   1      }
- 728          
- 729          void fun25(void) //¶þ¼¶²Ëµ¥F2-E1
- 730          {
- 731   1        tm1629_E(0x01);
-C51 COMPILER V9.00   TM1629                                                                09/24/2015 16:36:25 PAGE 13  
+ 722   1        if (return_await_number_table() == 1)
+ 723   1        {
+ 724   2          Display_time();
+ 725   2          set_await_number_table(2);
+ 726   2        }
+ 727   1        if (return_await_number_table() == 3)
+ 728   1        {
+ 729   2          buf_display[0][1] = 0;
+C51 COMPILER V9.00   TM1629                                                                09/25/2015 11:42:24 PAGE 13  
 
- 732   1        Two_Menu_F2_E1[0] = 0;
- 733   1        Two_Menu_F2_E1[1] = 0;
- 734   1        Two_Menu_F2_E1[2] = 0;
- 735   1        Two_Menu_F2_E1[3] = 1;
- 736   1      }
- 737          
- 738          void fun26(void) //¶þ¼¶²Ëµ¥F2-E2
- 739          {
- 740   1        tm1629_E(0x02);
- 741   1        Two_Menu_F2_E2[0] = 0;
- 742   1        Two_Menu_F2_E2[1] = 0;
- 743   1        Two_Menu_F2_E2[2] = 0;
- 744   1        Two_Menu_F2_E2[3] = 1;
- 745   1      }
- 746          
- 747          void fun27(void) //¶þ¼¶²Ëµ¥F2-E3
- 748          {
- 749   1        tm1629_E(0x03);
- 750   1        Two_Menu_F2_E3[0] = 0;
- 751   1        Two_Menu_F2_E3[1] = 0;
- 752   1        Two_Menu_F2_E3[2] = 0;
- 753   1        Two_Menu_F2_E3[3] = 1;
- 754   1      }
- 755          
- 756          void fun28(void) //¶þ¼¶²Ëµ¥F2-E4
- 757          {
- 758   1        tm1629_E(0x04);
- 759   1        Two_Menu_F2_E4[0] = 0;
- 760   1        Two_Menu_F2_E4[1] = 0;
- 761   1        Two_Menu_F2_E4[2] = 0;
- 762   1        Two_Menu_F2_E4[3] = 1;
- 763   1      }
- 764          
- 765          void fun29(void) //¶þ¼¶²Ëµ¥F3-E1
- 766          {
- 767   1        tm1629_E(0x01);
- 768   1      }
- 769          
- 770          void fun30(void) //¶þ¼¶²Ëµ¥F3-E2
- 771          {
- 772   1        tm1629_E(0x02);
- 773   1      }
- 774          
- 775          void fun31(void) //¶þ¼¶²Ëµ¥F4
- 776          {
- 777   1        unsigned char temp = 0;
- 778   1        temp = return_Two_Menu_F4_E1();
- 779   1        Show_two_number(temp);
+ 730   2          buf_display[0][0] = 0;
+ 731   2          display();
+ 732   2          set_await_number_table(0);
+ 733   2        }
+ 734   1        Ds1302_Write_Time();
+ 735   1      }
+ 736          
+ 737          void fun21(void) //¶þ¼¶²Ëµ¥F1-E1
+ 738          {
+ 739   1        tm1629_E(0x01);
+ 740   1        Two_Menu_F1_E1[0] = 0;
+ 741   1        Two_Menu_F1_E1[1] = 0;
+ 742   1        Two_Menu_F1_E1[2] = 0;
+ 743   1        Two_Menu_F1_E1[3] = 1;
+ 744   1      }
+ 745          
+ 746          void fun22(void) //¶þ¼¶²Ëµ¥F1-E2
+ 747          {
+ 748   1        tm1629_E(0x02);
+ 749   1        Two_Menu_F1_E2[0] = 0;
+ 750   1        Two_Menu_F1_E2[1] = 0;
+ 751   1        Two_Menu_F1_E2[2] = 0;
+ 752   1        Two_Menu_F1_E2[3] = 1;
+ 753   1      }
+ 754          
+ 755          void fun23(void) //¶þ¼¶²Ëµ¥F1-E3
+ 756          {
+ 757   1        tm1629_E(0x03);
+ 758   1        Two_Menu_F1_E3[0] = 0;
+ 759   1        Two_Menu_F1_E3[1] = 0;
+ 760   1        Two_Menu_F1_E3[2] = 0;
+ 761   1        Two_Menu_F1_E3[3] = 1;
+ 762   1      }
+ 763          
+ 764          void fun24(void) //¶þ¼¶²Ëµ¥F1-E4
+ 765          {
+ 766   1        tm1629_E(0x04);
+ 767   1        Two_Menu_F1_E4[0] = 0;
+ 768   1        Two_Menu_F1_E4[1] = 0;
+ 769   1        Two_Menu_F1_E4[2] = 0;
+ 770   1        Two_Menu_F1_E4[3] = 1;
+ 771   1      }
+ 772          
+ 773          void fun25(void) //¶þ¼¶²Ëµ¥F2-E1
+ 774          {
+ 775   1        tm1629_E(0x01);
+ 776   1        Two_Menu_F2_E1[0] = 0;
+ 777   1        Two_Menu_F2_E1[1] = 0;
+ 778   1        Two_Menu_F2_E1[2] = 0;
+ 779   1        Two_Menu_F2_E1[3] = 1;
  780   1      }
  781          
- 782          void fun32(void) //¶þ¼¶²Ëµ¥F5
+ 782          void fun26(void) //¶þ¼¶²Ëµ¥F2-E2
  783          {
- 784   1        unsigned char temp = 0;
- 785   1        temp = return_Two_Menu_F5_E1();
- 786   1        Show_two_number(temp);
- 787   1      }
- 788          
- 789          void fun33(void) //¶þ¼¶²Ëµ¥F6-E1
- 790          {
- 791   1        tm1629_E(0x01);
- 792   1      }
- 793          
-C51 COMPILER V9.00   TM1629                                                                09/24/2015 16:36:25 PAGE 14  
+ 784   1        tm1629_E(0x02);
+ 785   1        Two_Menu_F2_E2[0] = 0;
+ 786   1        Two_Menu_F2_E2[1] = 0;
+ 787   1        Two_Menu_F2_E2[2] = 0;
+ 788   1        Two_Menu_F2_E2[3] = 1;
+ 789   1      }
+ 790          
+ 791          void fun27(void) //¶þ¼¶²Ëµ¥F2-E3
+C51 COMPILER V9.00   TM1629                                                                09/25/2015 11:42:24 PAGE 14  
 
- 794          void fun34(void) //¶þ¼¶²Ëµ¥F6-E2
- 795          {
- 796   1        tm1629_E(0x02);
- 797   1      }
- 798          
- 799          void fun35(void) //¶þ¼¶²Ëµ¥F6-E3
- 800          {
- 801   1        tm1629_E(0x03);
- 802   1      }
- 803          
- 804          void fun36(void) //¶þ¼¶²Ëµ¥F6-E4
- 805          {
- 806   1        tm1629_E(0x04);
+ 792          {
+ 793   1        tm1629_E(0x03);
+ 794   1        Two_Menu_F2_E3[0] = 0;
+ 795   1        Two_Menu_F2_E3[1] = 0;
+ 796   1        Two_Menu_F2_E3[2] = 0;
+ 797   1        Two_Menu_F2_E3[3] = 1;
+ 798   1      }
+ 799          
+ 800          void fun28(void) //¶þ¼¶²Ëµ¥F2-E4
+ 801          {
+ 802   1        tm1629_E(0x04);
+ 803   1        Two_Menu_F2_E4[0] = 0;
+ 804   1        Two_Menu_F2_E4[1] = 0;
+ 805   1        Two_Menu_F2_E4[2] = 0;
+ 806   1        Two_Menu_F2_E4[3] = 1;
  807   1      }
  808          
- 809          void fun37(void) //¶þ¼¶²Ëµ¥F6-E5
+ 809          void fun29(void) //¶þ¼¶²Ëµ¥F3-E1
  810          {
- 811   1        tm1629_E(0x05);
+ 811   1        tm1629_E(0x01);
  812   1      }
  813          
- 814          void fun38(void) //¶þ¼¶²Ëµ¥F7-E1
+ 814          void fun30(void) //¶þ¼¶²Ëµ¥F3-E2
  815          {
- 816   1        tm1629_E(0x01);
+ 816   1        tm1629_E(0x02);
  817   1      }
  818          
- 819          void fun39(void) //¶þ¼¶²Ëµ¥F7-E2
+ 819          void fun31(void) //¶þ¼¶²Ëµ¥F4
  820          {
- 821   1        tm1629_E(0x02);
- 822   1      }
- 823          
- 824          void fun40(void) //¶þ¼¶²Ëµ¥F7-E3
- 825          {
- 826   1        tm1629_E(0x03);
- 827   1      }
- 828          
- 829          void fun41(void) //¶þ¼¶²Ëµ¥F7-E4
- 830          {
- 831   1        tm1629_E(0x04);
- 832   1      }
- 833          
- 834          void fun42(void) //¶þ¼¶²Ëµ¥F8-E1
- 835          {
- 836   1        tm1629_E(0x01);
- 837   1      }
- 838          
- 839          void fun43(void) //¶þ¼¶²Ëµ¥F8-E2
- 840          {
- 841   1        tm1629_E(0x02);
- 842   1      }
- 843          
- 844          void fun44(void) //¶þ¼¶²Ëµ¥F9-E1
- 845          {
- 846   1        tm1629_E(0x01);
- 847   1      }
- 848          
- 849          void fun45(void) //¶þ¼¶²Ëµ¥F9-E2
- 850          {
- 851   1        tm1629_E(0x02);
- 852   1      }
- 853          
- 854          void fun46(void) //¶þ¼¶²Ëµ¥FA
- 855          {
-C51 COMPILER V9.00   TM1629                                                                09/24/2015 16:36:25 PAGE 15  
+ 821   1        unsigned char temp = 0;
+ 822   1        temp = return_Two_Menu_F4_E1();
+ 823   1        Show_two_number(temp);
+ 824   1      }
+ 825          
+ 826          void fun32(void) //¶þ¼¶²Ëµ¥F5
+ 827          {
+ 828   1        unsigned char temp = 0;
+ 829   1        temp = return_Two_Menu_F5_E1();
+ 830   1        Show_two_number(temp);
+ 831   1      }
+ 832          
+ 833          void fun33(void) //¶þ¼¶²Ëµ¥F6-E1
+ 834          {
+ 835   1        tm1629_E(0x01);
+ 836   1      }
+ 837          
+ 838          void fun34(void) //¶þ¼¶²Ëµ¥F6-E2
+ 839          {
+ 840   1        tm1629_E(0x02);
+ 841   1      }
+ 842          
+ 843          void fun35(void) //¶þ¼¶²Ëµ¥F6-E3
+ 844          {
+ 845   1        tm1629_E(0x03);
+ 846   1      }
+ 847          
+ 848          void fun36(void) //¶þ¼¶²Ëµ¥F6-E4
+ 849          {
+ 850   1        tm1629_E(0x04);
+ 851   1      }
+ 852          
+ 853          void fun37(void) //¶þ¼¶²Ëµ¥F6-E5
+C51 COMPILER V9.00   TM1629                                                                09/25/2015 11:42:24 PAGE 15  
 
- 856   1        tm1629_f(0x0f);
- 857   1      }
- 858          
- 859          
- 860          void fun47(void) //¶þ¼¶²Ëµ¥Fb
- 861          {
- 862   1        tm1629_f(0x0f);
- 863   1      }
- 864          
- 865          void fun48(void) //¶þ¼¶²Ëµ¥FC
- 866          {
- 867   1        tm1629_f(0x0f);
- 868   1      }
- 869          
- 870          void fun49(void) //¶þ¼¶²Ëµ¥Fd
- 871          {
- 872   1        tm1629_f(0x0f);
- 873   1      }
- 874          
- 875          void fun50(void) //F1_E1 Ç§Î»ÉÁË¸
- 876          {
- 877   1        if (return_await_number_table() == 1)
- 878   1        {
- 879   2          Show_four_number(Two_Menu_F1_E1);
- 880   2          set_await_number_table(2);
- 881   2        }
- 882   1        if (return_await_number_table() == 3)
- 883   1        {
- 884   2          buf_display[0][3] = 0;
- 885   2          display();
- 886   2          set_await_number_table(0);
- 887   2        }
- 888   1      }
- 889          
- 890          void fun51(void) //F1_E1 °ÙÎ»ÉÁË¸
- 891          {
- 892   1        if (return_await_number_table() == 1)
- 893   1        {
- 894   2          Show_four_number(Two_Menu_F1_E1);
- 895   2          set_await_number_table(2);
- 896   2        }
- 897   1        if (return_await_number_table() == 3)
- 898   1        {
- 899   2          buf_display[0][2] = 0;
- 900   2          display();
- 901   2          set_await_number_table(0);
- 902   2        }
- 903   1      }
- 904          
- 905          void fun52(void)  //F1_E1 Ê®Î»ÉÁË¸
- 906          {
- 907   1        if (return_await_number_table() == 1)
- 908   1        {
- 909   2          Show_four_number(Two_Menu_F1_E1);
- 910   2          set_await_number_table(2);
- 911   2        }
- 912   1        if (return_await_number_table() == 3)
- 913   1        {
- 914   2          buf_display[0][1] = 0;
- 915   2          display();
- 916   2          set_await_number_table(0);
- 917   2        }
-C51 COMPILER V9.00   TM1629                                                                09/24/2015 16:36:25 PAGE 16  
+ 854          {
+ 855   1        tm1629_E(0x05);
+ 856   1      }
+ 857          
+ 858          void fun38(void) //¶þ¼¶²Ëµ¥F7-E1
+ 859          {
+ 860   1        tm1629_E(0x01);
+ 861   1      }
+ 862          
+ 863          void fun39(void) //¶þ¼¶²Ëµ¥F7-E2
+ 864          {
+ 865   1        tm1629_E(0x02);
+ 866   1      }
+ 867          
+ 868          void fun40(void) //¶þ¼¶²Ëµ¥F7-E3
+ 869          {
+ 870   1        tm1629_E(0x03);
+ 871   1      }
+ 872          
+ 873          void fun41(void) //¶þ¼¶²Ëµ¥F7-E4
+ 874          {
+ 875   1        tm1629_E(0x04);
+ 876   1      }
+ 877          
+ 878          void fun42(void) //¶þ¼¶²Ëµ¥F8-E1
+ 879          {
+ 880   1        tm1629_E(0x01);
+ 881   1      }
+ 882          
+ 883          void fun43(void) //¶þ¼¶²Ëµ¥F8-E2
+ 884          {
+ 885   1        tm1629_E(0x02);
+ 886   1      }
+ 887          
+ 888          void fun44(void) //¶þ¼¶²Ëµ¥F9-E1
+ 889          {
+ 890   1        tm1629_E(0x01);
+ 891   1      }
+ 892          
+ 893          void fun45(void) //¶þ¼¶²Ëµ¥F9-E2
+ 894          {
+ 895   1        tm1629_E(0x02);
+ 896   1      }
+ 897          
+ 898          void fun46(void) //¶þ¼¶²Ëµ¥FA
+ 899          {
+ 900   1        tm1629_f(0x0f);
+ 901   1      }
+ 902          
+ 903          
+ 904          void fun47(void) //¶þ¼¶²Ëµ¥Fb
+ 905          {
+ 906   1        tm1629_f(0x0f);
+ 907   1      }
+ 908          
+ 909          void fun48(void) //¶þ¼¶²Ëµ¥FC
+ 910          {
+ 911   1        unsigned char temp = 0;
+ 912   1        temp = return_Two_Menu_FC_E1();
+ 913   1        tm1629_f(temp);
+ 914   1      }
+ 915          
+C51 COMPILER V9.00   TM1629                                                                09/25/2015 11:42:24 PAGE 16  
 
- 918   1      }
- 919          
- 920          void fun53(void) //F1_E1 ¸öÎ»ÉÁË¸
- 921          {
- 922   1        if (return_await_number_table() == 1)
- 923   1        {
- 924   2          Show_four_number(Two_Menu_F1_E1);
- 925   2          set_await_number_table(2);
- 926   2        }
- 927   1        if (return_await_number_table() == 3)
- 928   1        {
- 929   2          buf_display[0][0] = 0;
- 930   2          display();
- 931   2          set_await_number_table(0);
- 932   2        }
- 933   1      }
- 934          
- 935          void fun54(void) //F1_E2 Ç§Î»ÉÁË¸
- 936          {
- 937   1        if (return_await_number_table() == 1)
- 938   1        {
- 939   2          Show_four_number(Two_Menu_F1_E2);
- 940   2          set_await_number_table(2);
- 941   2        }
- 942   1        if (return_await_number_table() == 3)
- 943   1        {
- 944   2          buf_display[0][3] = 0;
- 945   2          display();
- 946   2          set_await_number_table(0);
- 947   2        }
- 948   1      }
- 949          
- 950          void fun55(void) //F1_E2 °ÙÎ»ÉÁË¸
- 951          {
- 952   1        if (return_await_number_table() == 1)
- 953   1        {
- 954   2          Show_four_number(Two_Menu_F1_E2);
- 955   2          set_await_number_table(2);
- 956   2        }
- 957   1        if (return_await_number_table() == 3)
- 958   1        {
- 959   2          buf_display[0][2] = 0;
- 960   2          display();
- 961   2          set_await_number_table(0);
- 962   2        }
- 963   1      }
- 964          
- 965          void fun56(void) //F1_E2 Ê®Î»ÉÁË¸
- 966          {
- 967   1        if (return_await_number_table() == 1)
- 968   1        {
- 969   2          Show_four_number(Two_Menu_F1_E2);
- 970   2          set_await_number_table(2);
- 971   2        }
- 972   1        if (return_await_number_table() == 3)
- 973   1        {
- 974   2          buf_display[0][1] = 0;
- 975   2          display();
- 976   2          set_await_number_table(0);
- 977   2        }
- 978   1      }
- 979          
-C51 COMPILER V9.00   TM1629                                                                09/24/2015 16:36:25 PAGE 17  
+ 916          void fun49(void) //¶þ¼¶²Ëµ¥Fd
+ 917          {
+ 918   1        tm1629_f(0x0f);
+ 919   1      }
+ 920          
+ 921          void fun50(void) //F1_E1 Ç§Î»ÉÁË¸
+ 922          {
+ 923   1        if (return_await_number_table() == 1)
+ 924   1        {
+ 925   2          Show_four_number(Two_Menu_F1_E1);
+ 926   2          set_await_number_table(2);
+ 927   2        }
+ 928   1        if (return_await_number_table() == 3)
+ 929   1        {
+ 930   2          buf_display[0][3] = 0;
+ 931   2          display();
+ 932   2          set_await_number_table(0);
+ 933   2        }
+ 934   1      }
+ 935          
+ 936          void fun51(void) //F1_E1 °ÙÎ»ÉÁË¸
+ 937          {
+ 938   1        if (return_await_number_table() == 1)
+ 939   1        {
+ 940   2          Show_four_number(Two_Menu_F1_E1);
+ 941   2          set_await_number_table(2);
+ 942   2        }
+ 943   1        if (return_await_number_table() == 3)
+ 944   1        {
+ 945   2          buf_display[0][2] = 0;
+ 946   2          display();
+ 947   2          set_await_number_table(0);
+ 948   2        }
+ 949   1      }
+ 950          
+ 951          void fun52(void)  //F1_E1 Ê®Î»ÉÁË¸
+ 952          {
+ 953   1        if (return_await_number_table() == 1)
+ 954   1        {
+ 955   2          Show_four_number(Two_Menu_F1_E1);
+ 956   2          set_await_number_table(2);
+ 957   2        }
+ 958   1        if (return_await_number_table() == 3)
+ 959   1        {
+ 960   2          buf_display[0][1] = 0;
+ 961   2          display();
+ 962   2          set_await_number_table(0);
+ 963   2        }
+ 964   1      }
+ 965          
+ 966          void fun53(void) //F1_E1 ¸öÎ»ÉÁË¸
+ 967          {
+ 968   1        if (return_await_number_table() == 1)
+ 969   1        {
+ 970   2          Show_four_number(Two_Menu_F1_E1);
+ 971   2          set_await_number_table(2);
+ 972   2        }
+ 973   1        if (return_await_number_table() == 3)
+ 974   1        {
+ 975   2          buf_display[0][0] = 0;
+ 976   2          display();
+ 977   2          set_await_number_table(0);
+C51 COMPILER V9.00   TM1629                                                                09/25/2015 11:42:24 PAGE 17  
 
- 980          void fun57(void) //F1_E2 ¸öÎ»ÉÁË¸
- 981          {
- 982   1        if (return_await_number_table() == 1)
- 983   1        {
- 984   2          Show_four_number(Two_Menu_F1_E2);
- 985   2          set_await_number_table(2);
- 986   2        }
- 987   1        if (return_await_number_table() == 3)
- 988   1        {
- 989   2          buf_display[0][0] = 0;
- 990   2          display();
- 991   2          set_await_number_table(0);
- 992   2        }
- 993   1      }
- 994          
- 995          void fun58(void) //F1_E3 Ç§Î»ÉÁË¸
- 996          {
- 997   1        if (return_await_number_table() == 1)
- 998   1        {
- 999   2          Show_four_number(Two_Menu_F1_E3);
-1000   2          set_await_number_table(2);
-1001   2        }
-1002   1        if (return_await_number_table() == 3)
-1003   1        {
-1004   2          buf_display[0][3] = 0;
-1005   2          display();
-1006   2          set_await_number_table(0);
-1007   2        }
-1008   1      }
-1009          
-1010          void fun59(void) //F1_E3 °ÙÎ»ÉÁË¸
-1011          {
-1012   1        if (return_await_number_table() == 1)
-1013   1        {
-1014   2          Show_four_number(Two_Menu_F1_E3);
-1015   2          set_await_number_table(2);
-1016   2        }
-1017   1        if (return_await_number_table() == 3)
-1018   1        {
-1019   2          buf_display[0][2] = 0;
-1020   2          display();
-1021   2          set_await_number_table(0);
-1022   2        }
-1023   1      }
-1024          
-1025          void fun60(void) //F1_E3 Ê®Î»ÉÁË¸
-1026          {
-1027   1        if (return_await_number_table() == 1)
-1028   1        {
-1029   2          Show_four_number(Two_Menu_F1_E3);
-1030   2          set_await_number_table(2);
-1031   2        }
-1032   1        if (return_await_number_table() == 3)
-1033   1        {
-1034   2          buf_display[0][1] = 0;
-1035   2          display();
-1036   2          set_await_number_table(0);
-1037   2        }
-1038   1      }
-1039          
-1040          void fun61(void) //F1_E3 ¸öÎ»ÉÁË¸
-1041          {
-C51 COMPILER V9.00   TM1629                                                                09/24/2015 16:36:25 PAGE 18  
+ 978   2        }
+ 979   1      }
+ 980          
+ 981          void fun54(void) //F1_E2 Ç§Î»ÉÁË¸
+ 982          {
+ 983   1        if (return_await_number_table() == 1)
+ 984   1        {
+ 985   2          Show_four_number(Two_Menu_F1_E2);
+ 986   2          set_await_number_table(2);
+ 987   2        }
+ 988   1        if (return_await_number_table() == 3)
+ 989   1        {
+ 990   2          buf_display[0][3] = 0;
+ 991   2          display();
+ 992   2          set_await_number_table(0);
+ 993   2        }
+ 994   1      }
+ 995          
+ 996          void fun55(void) //F1_E2 °ÙÎ»ÉÁË¸
+ 997          {
+ 998   1        if (return_await_number_table() == 1)
+ 999   1        {
+1000   2          Show_four_number(Two_Menu_F1_E2);
+1001   2          set_await_number_table(2);
+1002   2        }
+1003   1        if (return_await_number_table() == 3)
+1004   1        {
+1005   2          buf_display[0][2] = 0;
+1006   2          display();
+1007   2          set_await_number_table(0);
+1008   2        }
+1009   1      }
+1010          
+1011          void fun56(void) //F1_E2 Ê®Î»ÉÁË¸
+1012          {
+1013   1        if (return_await_number_table() == 1)
+1014   1        {
+1015   2          Show_four_number(Two_Menu_F1_E2);
+1016   2          set_await_number_table(2);
+1017   2        }
+1018   1        if (return_await_number_table() == 3)
+1019   1        {
+1020   2          buf_display[0][1] = 0;
+1021   2          display();
+1022   2          set_await_number_table(0);
+1023   2        }
+1024   1      }
+1025          
+1026          void fun57(void) //F1_E2 ¸öÎ»ÉÁË¸
+1027          {
+1028   1        if (return_await_number_table() == 1)
+1029   1        {
+1030   2          Show_four_number(Two_Menu_F1_E2);
+1031   2          set_await_number_table(2);
+1032   2        }
+1033   1        if (return_await_number_table() == 3)
+1034   1        {
+1035   2          buf_display[0][0] = 0;
+1036   2          display();
+1037   2          set_await_number_table(0);
+1038   2        }
+1039   1      }
+C51 COMPILER V9.00   TM1629                                                                09/25/2015 11:42:24 PAGE 18  
 
-1042   1        if (return_await_number_table() == 1)
-1043   1        {
-1044   2          Show_four_number(Two_Menu_F1_E3);
-1045   2          set_await_number_table(2);
-1046   2        }
-1047   1        if (return_await_number_table() == 3)
-1048   1        {
-1049   2          buf_display[0][0] = 0;
-1050   2          display();
-1051   2          set_await_number_table(0);
-1052   2        }
-1053   1      }
-1054          
-1055          void fun62(void) //F1_E4 Ç§Î»ÉÁË¸
-1056          {
-1057   1        if (return_await_number_table() == 1)
-1058   1        {
-1059   2          Show_four_number(Two_Menu_F1_E4);
-1060   2          set_await_number_table(2);
-1061   2        }
-1062   1        if (return_await_number_table() == 3)
-1063   1        {
-1064   2          buf_display[0][3] = 0;
-1065   2          display();
-1066   2          set_await_number_table(0);
-1067   2        }
-1068   1      }
-1069          
-1070          void fun63(void) //F1_E4 °ÙÎ»ÉÁË¸
-1071          {
-1072   1        if (return_await_number_table() == 1)
-1073   1        {
-1074   2          Show_four_number(Two_Menu_F1_E4);
-1075   2          set_await_number_table(2);
-1076   2        }
-1077   1        if (return_await_number_table() == 3)
-1078   1        {
-1079   2          buf_display[0][2] = 0;
-1080   2          display();
-1081   2          set_await_number_table(0);
-1082   2        }
-1083   1      }
-1084          
-1085          void fun64(void) //F1_E4 Ê®Î»ÉÁË¸
-1086          {
-1087   1        if (return_await_number_table() == 1)
-1088   1        {
-1089   2          Show_four_number(Two_Menu_F1_E4);
-1090   2          set_await_number_table(2);
-1091   2        }
-1092   1        if (return_await_number_table() == 3)
-1093   1        {
-1094   2          buf_display[0][1] = 0;
-1095   2          display();
-1096   2          set_await_number_table(0);
-1097   2        }
-1098   1      }
-1099          
-1100          void fun65(void) //F1_E4 ¸öÎ»ÉÁË¸
-1101          {
-1102   1        if (return_await_number_table() == 1)
-1103   1        {
-C51 COMPILER V9.00   TM1629                                                                09/24/2015 16:36:25 PAGE 19  
+1040          
+1041          void fun58(void) //F1_E3 Ç§Î»ÉÁË¸
+1042          {
+1043   1        if (return_await_number_table() == 1)
+1044   1        {
+1045   2          Show_four_number(Two_Menu_F1_E3);
+1046   2          set_await_number_table(2);
+1047   2        }
+1048   1        if (return_await_number_table() == 3)
+1049   1        {
+1050   2          buf_display[0][3] = 0;
+1051   2          display();
+1052   2          set_await_number_table(0);
+1053   2        }
+1054   1      }
+1055          
+1056          void fun59(void) //F1_E3 °ÙÎ»ÉÁË¸
+1057          {
+1058   1        if (return_await_number_table() == 1)
+1059   1        {
+1060   2          Show_four_number(Two_Menu_F1_E3);
+1061   2          set_await_number_table(2);
+1062   2        }
+1063   1        if (return_await_number_table() == 3)
+1064   1        {
+1065   2          buf_display[0][2] = 0;
+1066   2          display();
+1067   2          set_await_number_table(0);
+1068   2        }
+1069   1      }
+1070          
+1071          void fun60(void) //F1_E3 Ê®Î»ÉÁË¸
+1072          {
+1073   1        if (return_await_number_table() == 1)
+1074   1        {
+1075   2          Show_four_number(Two_Menu_F1_E3);
+1076   2          set_await_number_table(2);
+1077   2        }
+1078   1        if (return_await_number_table() == 3)
+1079   1        {
+1080   2          buf_display[0][1] = 0;
+1081   2          display();
+1082   2          set_await_number_table(0);
+1083   2        }
+1084   1      }
+1085          
+1086          void fun61(void) //F1_E3 ¸öÎ»ÉÁË¸
+1087          {
+1088   1        if (return_await_number_table() == 1)
+1089   1        {
+1090   2          Show_four_number(Two_Menu_F1_E3);
+1091   2          set_await_number_table(2);
+1092   2        }
+1093   1        if (return_await_number_table() == 3)
+1094   1        {
+1095   2          buf_display[0][0] = 0;
+1096   2          display();
+1097   2          set_await_number_table(0);
+1098   2        }
+1099   1      }
+1100          
+1101          void fun62(void) //F1_E4 Ç§Î»ÉÁË¸
+C51 COMPILER V9.00   TM1629                                                                09/25/2015 11:42:24 PAGE 19  
 
-1104   2          Show_four_number(Two_Menu_F1_E4);
-1105   2          set_await_number_table(2);
-1106   2        }
-1107   1        if (return_await_number_table() == 3)
-1108   1        {
-1109   2          buf_display[0][0] = 0;
-1110   2          display();
-1111   2          set_await_number_table(0);
-1112   2        }
-1113   1      }
-1114          
-1115          void fun66(void) //F2_E1 Ç§Î»ÉÁË¸
-1116          {
-1117   1        if (return_await_number_table() == 1)
-1118   1        {
-1119   2          Show_four_number(Two_Menu_F2_E1);
-1120   2          set_await_number_table(2);
-1121   2        }
-1122   1        if (return_await_number_table() == 3)
-1123   1        {
-1124   2          buf_display[0][3] = 0;
-1125   2          display();
-1126   2          set_await_number_table(0);
-1127   2        }
-1128   1      }
-1129          
-1130          void fun67(void) //F2_E1 °ÙÎ»ÉÁË¸
-1131          {
-1132   1        if (return_await_number_table() == 1)
-1133   1        {
-1134   2          Show_four_number(Two_Menu_F2_E1);
-1135   2          set_await_number_table(2);
-1136   2        }
-1137   1        if (return_await_number_table() == 3)
-1138   1        {
-1139   2          buf_display[0][2] = 0;
-1140   2          display();
-1141   2          set_await_number_table(0);
-1142   2        }
-1143   1      }
-1144          
-1145          void fun68(void) //F2_E1 Ê®Î»ÉÁË¸
-1146          {
-1147   1        if (return_await_number_table() == 1)
-1148   1        {
-1149   2          Show_four_number(Two_Menu_F2_E1);
-1150   2          set_await_number_table(2);
-1151   2        }
-1152   1        if (return_await_number_table() == 3)
-1153   1        {
-1154   2          buf_display[0][1] = 0;
-1155   2          display();
-1156   2          set_await_number_table(0);
-1157   2        }
-1158   1      }
-1159          
-1160          void fun69(void) //F2_E1 ¸öÎ»ÉÁË¸
-1161          {
-1162   1        if (return_await_number_table() == 1)
-1163   1        {
-1164   2          Show_four_number(Two_Menu_F2_E1);
-1165   2          set_await_number_table(2);
-C51 COMPILER V9.00   TM1629                                                                09/24/2015 16:36:25 PAGE 20  
+1102          {
+1103   1        if (return_await_number_table() == 1)
+1104   1        {
+1105   2          Show_four_number(Two_Menu_F1_E4);
+1106   2          set_await_number_table(2);
+1107   2        }
+1108   1        if (return_await_number_table() == 3)
+1109   1        {
+1110   2          buf_display[0][3] = 0;
+1111   2          display();
+1112   2          set_await_number_table(0);
+1113   2        }
+1114   1      }
+1115          
+1116          void fun63(void) //F1_E4 °ÙÎ»ÉÁË¸
+1117          {
+1118   1        if (return_await_number_table() == 1)
+1119   1        {
+1120   2          Show_four_number(Two_Menu_F1_E4);
+1121   2          set_await_number_table(2);
+1122   2        }
+1123   1        if (return_await_number_table() == 3)
+1124   1        {
+1125   2          buf_display[0][2] = 0;
+1126   2          display();
+1127   2          set_await_number_table(0);
+1128   2        }
+1129   1      }
+1130          
+1131          void fun64(void) //F1_E4 Ê®Î»ÉÁË¸
+1132          {
+1133   1        if (return_await_number_table() == 1)
+1134   1        {
+1135   2          Show_four_number(Two_Menu_F1_E4);
+1136   2          set_await_number_table(2);
+1137   2        }
+1138   1        if (return_await_number_table() == 3)
+1139   1        {
+1140   2          buf_display[0][1] = 0;
+1141   2          display();
+1142   2          set_await_number_table(0);
+1143   2        }
+1144   1      }
+1145          
+1146          void fun65(void) //F1_E4 ¸öÎ»ÉÁË¸
+1147          {
+1148   1        if (return_await_number_table() == 1)
+1149   1        {
+1150   2          Show_four_number(Two_Menu_F1_E4);
+1151   2          set_await_number_table(2);
+1152   2        }
+1153   1        if (return_await_number_table() == 3)
+1154   1        {
+1155   2          buf_display[0][0] = 0;
+1156   2          display();
+1157   2          set_await_number_table(0);
+1158   2        }
+1159   1      }
+1160          
+1161          void fun66(void) //F2_E1 Ç§Î»ÉÁË¸
+1162          {
+1163   1        if (return_await_number_table() == 1)
+C51 COMPILER V9.00   TM1629                                                                09/25/2015 11:42:24 PAGE 20  
 
-1166   2        }
-1167   1        if (return_await_number_table() == 3)
-1168   1        {
-1169   2          buf_display[0][0] = 0;
-1170   2          display();
-1171   2          set_await_number_table(0);
-1172   2        }
-1173   1      }
-1174          
-1175          void fun70(void) //F2_E2 Ç§Î»ÉÁË¸
-1176          {
-1177   1        if (return_await_number_table() == 1)
-1178   1        {
-1179   2          Show_four_number(Two_Menu_F2_E2);
-1180   2          set_await_number_table(2);
-1181   2        }
-1182   1        if (return_await_number_table() == 3)
-1183   1        {
-1184   2          buf_display[0][3] = 0;
-1185   2          display();
-1186   2          set_await_number_table(0);
-1187   2        }
-1188   1      }
-1189          
-1190          void fun71(void) //F2_E2 °ÙÎ»ÉÁË¸
-1191          {
-1192   1        if (return_await_number_table() == 1)
-1193   1        {
-1194   2          Show_four_number(Two_Menu_F2_E2);
-1195   2          set_await_number_table(2);
-1196   2        }
-1197   1        if (return_await_number_table() == 3)
-1198   1        {
-1199   2          buf_display[0][2] = 0;
-1200   2          display();
-1201   2          set_await_number_table(0);
-1202   2        }
-1203   1      }
-1204          
-1205          void fun72(void) //F2_E2 Ê®Î»ÉÁË¸
-1206          {
-1207   1        if (return_await_number_table() == 1)
-1208   1        {
-1209   2          Show_four_number(Two_Menu_F2_E2);
-1210   2          set_await_number_table(2);
-1211   2        }
-1212   1        if (return_await_number_table() == 3)
-1213   1        {
-1214   2          buf_display[0][1] = 0;
-1215   2          display();
-1216   2          set_await_number_table(0);
-1217   2        }
-1218   1      }
-1219          
-1220          void fun73(void) //F2_E2 ¸öÎ»ÉÁË¸
-1221          {
-1222   1        if (return_await_number_table() == 1)
-1223   1        {
-1224   2          Show_four_number(Two_Menu_F2_E2);
-1225   2          set_await_number_table(2);
-1226   2        }
-1227   1        if (return_await_number_table() == 3)
-C51 COMPILER V9.00   TM1629                                                                09/24/2015 16:36:25 PAGE 21  
+1164   1        {
+1165   2          Show_four_number(Two_Menu_F2_E1);
+1166   2          set_await_number_table(2);
+1167   2        }
+1168   1        if (return_await_number_table() == 3)
+1169   1        {
+1170   2          buf_display[0][3] = 0;
+1171   2          display();
+1172   2          set_await_number_table(0);
+1173   2        }
+1174   1      }
+1175          
+1176          void fun67(void) //F2_E1 °ÙÎ»ÉÁË¸
+1177          {
+1178   1        if (return_await_number_table() == 1)
+1179   1        {
+1180   2          Show_four_number(Two_Menu_F2_E1);
+1181   2          set_await_number_table(2);
+1182   2        }
+1183   1        if (return_await_number_table() == 3)
+1184   1        {
+1185   2          buf_display[0][2] = 0;
+1186   2          display();
+1187   2          set_await_number_table(0);
+1188   2        }
+1189   1      }
+1190          
+1191          void fun68(void) //F2_E1 Ê®Î»ÉÁË¸
+1192          {
+1193   1        if (return_await_number_table() == 1)
+1194   1        {
+1195   2          Show_four_number(Two_Menu_F2_E1);
+1196   2          set_await_number_table(2);
+1197   2        }
+1198   1        if (return_await_number_table() == 3)
+1199   1        {
+1200   2          buf_display[0][1] = 0;
+1201   2          display();
+1202   2          set_await_number_table(0);
+1203   2        }
+1204   1      }
+1205          
+1206          void fun69(void) //F2_E1 ¸öÎ»ÉÁË¸
+1207          {
+1208   1        if (return_await_number_table() == 1)
+1209   1        {
+1210   2          Show_four_number(Two_Menu_F2_E1);
+1211   2          set_await_number_table(2);
+1212   2        }
+1213   1        if (return_await_number_table() == 3)
+1214   1        {
+1215   2          buf_display[0][0] = 0;
+1216   2          display();
+1217   2          set_await_number_table(0);
+1218   2        }
+1219   1      }
+1220          
+1221          void fun70(void) //F2_E2 Ç§Î»ÉÁË¸
+1222          {
+1223   1        if (return_await_number_table() == 1)
+1224   1        {
+1225   2          Show_four_number(Two_Menu_F2_E2);
+C51 COMPILER V9.00   TM1629                                                                09/25/2015 11:42:24 PAGE 21  
 
-1228   1        {
-1229   2          buf_display[0][0] = 0;
-1230   2          display();
-1231   2          set_await_number_table(0);
-1232   2        }
-1233   1      }
-1234          
-1235          void fun74(void) //F2_E3 Ç§Î»ÉÁË¸
-1236          {
-1237   1        if (return_await_number_table() == 1)
-1238   1        {
-1239   2          Show_four_number(Two_Menu_F2_E3);
-1240   2          set_await_number_table(2);
-1241   2        }
-1242   1        if (return_await_number_table() == 3)
-1243   1        {
-1244   2          buf_display[0][3] = 0;
-1245   2          display();
-1246   2          set_await_number_table(0);
-1247   2        }
-1248   1      }
-1249          
-1250          void fun75(void) //F2_E3 °ÙÎ»ÉÁË¸
-1251          {
-1252   1        if (return_await_number_table() == 1)
-1253   1        {
-1254   2          Show_four_number(Two_Menu_F2_E3);
-1255   2          set_await_number_table(2);
-1256   2        }
-1257   1        if (return_await_number_table() == 3)
-1258   1        {
-1259   2          buf_display[0][2] = 0;
-1260   2          display();
-1261   2          set_await_number_table(0);
-1262   2        }
-1263   1      }
-1264          
-1265          void fun76(void) //F2_E3 Ê®Î»ÉÁË¸
-1266          {
-1267   1        if (return_await_number_table() == 1)
-1268   1        {
-1269   2          Show_four_number(Two_Menu_F2_E3);
-1270   2          set_await_number_table(2);
-1271   2        }
-1272   1        if (return_await_number_table() == 3)
-1273   1        {
-1274   2          buf_display[0][1] = 0;
-1275   2          display();
-1276   2          set_await_number_table(0);
-1277   2        }
-1278   1      }
-1279          
-1280          void fun77(void) //F2_E3 ¸öÎ»ÉÁË¸
-1281          {
-1282   1        if (return_await_number_table() == 1)
-1283   1        {
-1284   2          Show_four_number(Two_Menu_F2_E3);
-1285   2          set_await_number_table(2);
-1286   2        }
-1287   1        if (return_await_number_table() == 3)
-1288   1        {
-1289   2          buf_display[0][0] = 0;
-C51 COMPILER V9.00   TM1629                                                                09/24/2015 16:36:25 PAGE 22  
+1226   2          set_await_number_table(2);
+1227   2        }
+1228   1        if (return_await_number_table() == 3)
+1229   1        {
+1230   2          buf_display[0][3] = 0;
+1231   2          display();
+1232   2          set_await_number_table(0);
+1233   2        }
+1234   1      }
+1235          
+1236          void fun71(void) //F2_E2 °ÙÎ»ÉÁË¸
+1237          {
+1238   1        if (return_await_number_table() == 1)
+1239   1        {
+1240   2          Show_four_number(Two_Menu_F2_E2);
+1241   2          set_await_number_table(2);
+1242   2        }
+1243   1        if (return_await_number_table() == 3)
+1244   1        {
+1245   2          buf_display[0][2] = 0;
+1246   2          display();
+1247   2          set_await_number_table(0);
+1248   2        }
+1249   1      }
+1250          
+1251          void fun72(void) //F2_E2 Ê®Î»ÉÁË¸
+1252          {
+1253   1        if (return_await_number_table() == 1)
+1254   1        {
+1255   2          Show_four_number(Two_Menu_F2_E2);
+1256   2          set_await_number_table(2);
+1257   2        }
+1258   1        if (return_await_number_table() == 3)
+1259   1        {
+1260   2          buf_display[0][1] = 0;
+1261   2          display();
+1262   2          set_await_number_table(0);
+1263   2        }
+1264   1      }
+1265          
+1266          void fun73(void) //F2_E2 ¸öÎ»ÉÁË¸
+1267          {
+1268   1        if (return_await_number_table() == 1)
+1269   1        {
+1270   2          Show_four_number(Two_Menu_F2_E2);
+1271   2          set_await_number_table(2);
+1272   2        }
+1273   1        if (return_await_number_table() == 3)
+1274   1        {
+1275   2          buf_display[0][0] = 0;
+1276   2          display();
+1277   2          set_await_number_table(0);
+1278   2        }
+1279   1      }
+1280          
+1281          void fun74(void) //F2_E3 Ç§Î»ÉÁË¸
+1282          {
+1283   1        if (return_await_number_table() == 1)
+1284   1        {
+1285   2          Show_four_number(Two_Menu_F2_E3);
+1286   2          set_await_number_table(2);
+1287   2        }
+C51 COMPILER V9.00   TM1629                                                                09/25/2015 11:42:24 PAGE 22  
 
-1290   2          display();
-1291   2          set_await_number_table(0);
-1292   2        }
-1293   1      }
-1294          
-1295          void fun78(void) //F2_E4 Ç§Î»ÉÁË¸
-1296          {
-1297   1        if (return_await_number_table() == 1)
-1298   1        {
-1299   2          Show_four_number(Two_Menu_F2_E4);
-1300   2          set_await_number_table(2);
-1301   2        }
-1302   1        if (return_await_number_table() == 3)
-1303   1        {
-1304   2          buf_display[0][3] = 0;
-1305   2          display();
-1306   2          set_await_number_table(0);
-1307   2        }
-1308   1      }
-1309          
-1310          void fun79(void) //F2_E4 °ÙÎ»ÉÁË¸
-1311          {
-1312   1        if (return_await_number_table() == 1)
-1313   1        {
-1314   2          Show_four_number(Two_Menu_F2_E4);
-1315   2          set_await_number_table(2);
-1316   2        }
-1317   1        if (return_await_number_table() == 3)
-1318   1        {
-1319   2          buf_display[0][2] = 0;
-1320   2          display();
-1321   2          set_await_number_table(0);
-1322   2        }
-1323   1      }
-1324          
-1325          void fun80(void) //F2_E4 Ê®Î»ÉÁË¸
-1326          {
-1327   1        if (return_await_number_table() == 1)
-1328   1        {
-1329   2          Show_four_number(Two_Menu_F2_E4);
-1330   2          set_await_number_table(2);
-1331   2        }
-1332   1        if (return_await_number_table() == 3)
-1333   1        {
-1334   2          buf_display[0][1] = 0;
-1335   2          display();
-1336   2          set_await_number_table(0);
-1337   2        }
-1338   1      }
-1339          
-1340          void fun81(void) //F2_E4 ¸öÎ»ÉÁË¸
-1341          {
-1342   1        if (return_await_number_table() == 1)
-1343   1        {
-1344   2          Show_four_number(Two_Menu_F2_E4);
-1345   2          set_await_number_table(2);
-1346   2        }
-1347   1        if (return_await_number_table() == 3)
-1348   1        {
-1349   2          buf_display[0][0] = 0;
-1350   2          display();
-1351   2          set_await_number_table(0);
-C51 COMPILER V9.00   TM1629                                                                09/24/2015 16:36:25 PAGE 23  
+1288   1        if (return_await_number_table() == 3)
+1289   1        {
+1290   2          buf_display[0][3] = 0;
+1291   2          display();
+1292   2          set_await_number_table(0);
+1293   2        }
+1294   1      }
+1295          
+1296          void fun75(void) //F2_E3 °ÙÎ»ÉÁË¸
+1297          {
+1298   1        if (return_await_number_table() == 1)
+1299   1        {
+1300   2          Show_four_number(Two_Menu_F2_E3);
+1301   2          set_await_number_table(2);
+1302   2        }
+1303   1        if (return_await_number_table() == 3)
+1304   1        {
+1305   2          buf_display[0][2] = 0;
+1306   2          display();
+1307   2          set_await_number_table(0);
+1308   2        }
+1309   1      }
+1310          
+1311          void fun76(void) //F2_E3 Ê®Î»ÉÁË¸
+1312          {
+1313   1        if (return_await_number_table() == 1)
+1314   1        {
+1315   2          Show_four_number(Two_Menu_F2_E3);
+1316   2          set_await_number_table(2);
+1317   2        }
+1318   1        if (return_await_number_table() == 3)
+1319   1        {
+1320   2          buf_display[0][1] = 0;
+1321   2          display();
+1322   2          set_await_number_table(0);
+1323   2        }
+1324   1      }
+1325          
+1326          void fun77(void) //F2_E3 ¸öÎ»ÉÁË¸
+1327          {
+1328   1        if (return_await_number_table() == 1)
+1329   1        {
+1330   2          Show_four_number(Two_Menu_F2_E3);
+1331   2          set_await_number_table(2);
+1332   2        }
+1333   1        if (return_await_number_table() == 3)
+1334   1        {
+1335   2          buf_display[0][0] = 0;
+1336   2          display();
+1337   2          set_await_number_table(0);
+1338   2        }
+1339   1      }
+1340          
+1341          void fun78(void) //F2_E4 Ç§Î»ÉÁË¸
+1342          {
+1343   1        if (return_await_number_table() == 1)
+1344   1        {
+1345   2          Show_four_number(Two_Menu_F2_E4);
+1346   2          set_await_number_table(2);
+1347   2        }
+1348   1        if (return_await_number_table() == 3)
+1349   1        {
+C51 COMPILER V9.00   TM1629                                                                09/25/2015 11:42:24 PAGE 23  
 
-1352   2        }
-1353   1      }
-1354          
-1355          void fun82(void) //ÏÔÊ¾¼´Ê±ÏÔÊ¾ »¹ÊÇÑ­»·ÏÔÊ¾
-1356          {
-1357   1        unsigned char temp=0;
-1358   1        temp = return_Two_Menu_F3_E1();
-1359   1        Show_one_number(temp);
-1360   1      }
-1361          
-1362          void fun83(void) //¶ÓÁÐ´æ´¢¸öÊý
-1363          {
-1364   1        unsigned char temp = 0;
-1365   1        temp = return_Two_Menu_F3_E2();
-1366   1        Show_two_number(temp);
-1367   1      }
-1368          
-1369          void fun84(void) //F6_E1ÓïÒôÑ¡Ôñ
-1370          {
-1371   1        unsigned char temp = 0;
-1372   1        temp = return_Two_Menu_F6_E1();
-1373   1        Show_one_number(temp);
-1374   1      }
-1375          
-1376          void fun85(void) //F6_E2ÓïÒô±¨¶Á´ÎÊý
-1377          {
-1378   1        unsigned char temp = 0;
-1379   1        temp = return_Two_Menu_F6_E2();
-1380   1        Show_one_number(temp);
-1381   1      }
-1382          
-1383          void fun86(void) //F6_E3Ñ­»·Ê±ºòÊÇ·ñ±¨¶Á
-1384          {
-1385   1        unsigned char temp = 0;
-1386   1        temp = return_Two_Menu_F6_E3();
-1387   1        Show_one_number(temp);
-1388   1      }
-1389          
-1390          void fun87(void) //F6_E4ÒôÁ¿´óÐ¡µ÷Õû
-1391          {
-1392   1        unsigned char temp = 0;
-1393   1        temp = return_Two_Menu_F6_E4();
-1394   1        Show_one_number(temp);
-1395   1      }
-1396          
-1397          void fun88(void) //F6_E5ÆÁÄ»ÁÁ¶Èµ÷Õû
-1398          {
-1399   1        unsigned char temp = 0;
-1400   1        temp = return_Two_Menu_F6_E5();
-1401   1        Show_one_number(temp);
-1402   1      }
-1403          
-1404          void fun89(void) //F7_E1 999*9
-1405          {
-1406   1        unsigned char temp = 0;
-1407   1        temp = return_Two_Menu_F7_E1();
-1408   1        Show_one_number(temp);
-1409   1      }
-1410          
-1411          void fun90(void) //F7_E2 9999*9
-1412          {
-1413   1        unsigned char temp = 0;
-C51 COMPILER V9.00   TM1629                                                                09/24/2015 16:36:25 PAGE 24  
+1350   2          buf_display[0][3] = 0;
+1351   2          display();
+1352   2          set_await_number_table(0);
+1353   2        }
+1354   1      }
+1355          
+1356          void fun79(void) //F2_E4 °ÙÎ»ÉÁË¸
+1357          {
+1358   1        if (return_await_number_table() == 1)
+1359   1        {
+1360   2          Show_four_number(Two_Menu_F2_E4);
+1361   2          set_await_number_table(2);
+1362   2        }
+1363   1        if (return_await_number_table() == 3)
+1364   1        {
+1365   2          buf_display[0][2] = 0;
+1366   2          display();
+1367   2          set_await_number_table(0);
+1368   2        }
+1369   1      }
+1370          
+1371          void fun80(void) //F2_E4 Ê®Î»ÉÁË¸
+1372          {
+1373   1        if (return_await_number_table() == 1)
+1374   1        {
+1375   2          Show_four_number(Two_Menu_F2_E4);
+1376   2          set_await_number_table(2);
+1377   2        }
+1378   1        if (return_await_number_table() == 3)
+1379   1        {
+1380   2          buf_display[0][1] = 0;
+1381   2          display();
+1382   2          set_await_number_table(0);
+1383   2        }
+1384   1      }
+1385          
+1386          void fun81(void) //F2_E4 ¸öÎ»ÉÁË¸
+1387          {
+1388   1        if (return_await_number_table() == 1)
+1389   1        {
+1390   2          Show_four_number(Two_Menu_F2_E4);
+1391   2          set_await_number_table(2);
+1392   2        }
+1393   1        if (return_await_number_table() == 3)
+1394   1        {
+1395   2          buf_display[0][0] = 0;
+1396   2          display();
+1397   2          set_await_number_table(0);
+1398   2        }
+1399   1      }
+1400          
+1401          void fun82(void) //ÏÔÊ¾¼´Ê±ÏÔÊ¾ »¹ÊÇÑ­»·ÏÔÊ¾
+1402          {
+1403   1        unsigned char temp=0;
+1404   1        temp = return_Two_Menu_F3_E1();
+1405   1        Show_one_number(temp);
+1406   1      }
+1407          
+1408          void fun83(void) //¶ÓÁÐ´æ´¢¸öÊý
+1409          {
+1410   1        unsigned char temp = 0;
+1411   1        temp = return_Two_Menu_F3_E2();
+C51 COMPILER V9.00   TM1629                                                                09/25/2015 11:42:24 PAGE 24  
 
-1414   1        temp = return_Two_Menu_F7_E2();
-1415   1        Show_one_number(temp);
-1416   1      }
-1417          
-1418          void fun91(void) //F7_E3 999*99
-1419          {
-1420   1        unsigned char temp = 0;
-1421   1        temp = return_Two_Menu_F7_E3();
-1422   1        Show_one_number(temp);
-1423   1      }
-1424          
-1425          void fun92(void) //F7_E4 9999*99
-1426          {
-1427   1        unsigned char temp = 0;
-1428   1        temp = return_Two_Menu_F7_E4();
-1429   1        Show_one_number(temp);
-1430   1      }
-1431          
-1432          void fun93(void) //F8_E1µ¥¼üÎ»¸ú¶à¼üÎ»ÇÐ»»
-1433          {
-1434   1        unsigned char temp = 0;
-1435   1        temp = return_Two_Menu_F8_E1();
-1436   1        Show_one_number(temp);
-1437   1      }
-1438          
-1439          void fun94(void) //F8_E2¼üÎ»ÉèÖÃ
-1440          {
-1441   1        unsigned char temp = 0;
-1442   1        temp = return_Two_Menu_F8_E2();
-1443   1        Show_two_number(temp);
-1444   1        if (return_sound_table() == 1)
-1445   1        {
-1446   2          GD5800_stop_music();
-1447   2          delay10ms();
-1448   2          GD5800_select_chapter(temp + QUXIAO);
-1449   2          //GD5800_play_music();
-1450   2          set_sound_table(0);
-1451   2        }
-1452   1      }
-1453          
-1454          void fun95(void) //½âÂë²Ëµ¥
-1455          {
-1456   1        tm1629_load();
-1457   1        display();;
-1458   1      }
+1412   1        Show_two_number(temp);
+1413   1      }
+1414          
+1415          void fun84(void) //F6_E1ÓïÒôÑ¡Ôñ
+1416          {
+1417   1        unsigned char temp = 0;
+1418   1        temp = return_Two_Menu_F6_E1();
+1419   1        Show_one_number(temp);
+1420   1      }
+1421          
+1422          void fun85(void) //F6_E2ÓïÒô±¨¶Á´ÎÊý
+1423          {
+1424   1        unsigned char temp = 0;
+1425   1        temp = return_Two_Menu_F6_E2();
+1426   1        Show_one_number(temp);
+1427   1      }
+1428          
+1429          void fun86(void) //F6_E3Ñ­»·Ê±ºòÊÇ·ñ±¨¶Á
+1430          {
+1431   1        unsigned char temp = 0;
+1432   1        temp = return_Two_Menu_F6_E3();
+1433   1        Show_one_number(temp);
+1434   1      }
+1435          
+1436          void fun87(void) //F6_E4ÒôÁ¿´óÐ¡µ÷Õû
+1437          {
+1438   1        unsigned char temp = 0;
+1439   1        temp = return_Two_Menu_F6_E4();
+1440   1        Show_one_number(temp);
+1441   1      }
+1442          
+1443          void fun88(void) //F6_E5ÆÁÄ»ÁÁ¶Èµ÷Õû
+1444          {
+1445   1        unsigned char temp = 0;
+1446   1        temp = return_Two_Menu_F6_E5();
+1447   1        Show_one_number(temp);
+1448   1      }
+1449          
+1450          void fun89(void) //F7_E1 999*9
+1451          {
+1452   1        unsigned char temp = 0;
+1453   1        temp = return_Two_Menu_F7_E1();
+1454   1        Show_one_number(temp);
+1455   1      }
+1456          
+1457          void fun90(void) //F7_E2 9999*9
+1458          {
+1459   1        unsigned char temp = 0;
+1460   1        temp = return_Two_Menu_F7_E2();
+1461   1        Show_one_number(temp);
+1462   1      }
+1463          
+1464          void fun91(void) //F7_E3 999*99
+1465          {
+1466   1        unsigned char temp = 0;
+1467   1        temp = return_Two_Menu_F7_E3();
+1468   1        Show_one_number(temp);
+1469   1      }
+1470          
+1471          void fun92(void) //F7_E4 9999*99
+1472          {
+1473   1        unsigned char temp = 0;
+C51 COMPILER V9.00   TM1629                                                                09/25/2015 11:42:24 PAGE 25  
+
+1474   1        temp = return_Two_Menu_F7_E4();
+1475   1        Show_one_number(temp);
+1476   1      }
+1477          
+1478          void fun93(void) //F8_E1µ¥¼üÎ»¸ú¶à¼üÎ»ÇÐ»»
+1479          {
+1480   1        unsigned char temp = 0;
+1481   1        temp = return_Two_Menu_F8_E1();
+1482   1        Show_one_number(temp);
+1483   1      }
+1484          
+1485          void fun94(void) //F8_E2¼üÎ»ÉèÖÃ
+1486          {
+1487   1        unsigned char temp = 0;
+1488   1        temp = return_Two_Menu_F8_E2();
+1489   1        Show_two_number(temp);
+1490   1        if (return_sound_table() == 1)
+1491   1        {
+1492   2          delay10ms();
+1493   2          GD5800_stop_music();
+1494   2          delay10ms();
+1495   2          GD5800_select_chapter(temp + QUXIAO);
+1496   2          delay10ms();
+1497   2          //GD5800_play_music();
+1498   2          set_sound_table(0);
+1499   2        }
+1500   1      }
+1501          
+1502          void fun95(void) //½âÂë²Ëµ¥
+1503          {
+1504   1        tm1629_load();
+1505   1        display();;
+1506   1      }
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =   4878    ----
-   CONSTANT SIZE    =     18    ----
-   XDATA SIZE       =    352      47
+   CODE SIZE        =   5324    ----
+   CONSTANT SIZE    =     24    ----
+   XDATA SIZE       =    352      62
    PDATA SIZE       =   ----    ----
    DATA SIZE        =   ----    ----
    IDATA SIZE       =   ----    ----
