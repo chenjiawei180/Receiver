@@ -30,7 +30,7 @@ void GD5800_sound_volume(unsigned char volume)
 	Usart2_SendData(0x7E);       /***frame command ****/
 	Usart2_SendData(0X03);
 	Usart2_SendData(0X31);
-	Usart2_SendData(volume * 8);
+	Usart2_SendData(volume);
 	Usart2_SendData(0XEF);
 
 }
