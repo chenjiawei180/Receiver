@@ -5,6 +5,7 @@
 #include "key.h"
 #include "menu.h"
 #include "gd5800.h"
+#include "at24c256.h"
 
 unsigned char const CODE[] = { 0x3F, 0x06, 0x5B, 0x4F, 0x66, 0x6D, 0x7D, 0x07, 0x7F, 0x6F, 0x77, 0x7C, 0x39, 0x5E, 0x79, 0x71, 0x76, 0x38, 0x5c, 0x73, 0x3e };//0-9 abcdef 显示器码数组
 unsigned char const INIT_CODE[] = { 0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80 };//逐段点亮数码管数组
@@ -12,6 +13,7 @@ unsigned char const SHANGSHUO[] = { 0x40, 0x00 }; // 点亮数码管中间段以及灭
 unsigned char buf_display[6][8] = { 0 }; //3个TM1629显存数组
 unsigned char display_ram[240] = { 0 }; //程序运行时记录显示数据的内存 
 unsigned char await_time_table= 0 ;//用于记录待机显示横杠数码管次数 
+unsigned char Two_Menu_F8_E1_save =0;
 
 unsigned char single_key[16]   = { 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01 };//单键位设置存储数组
 unsigned char multiple_key[16] = { 0x01, QUXIAO-QUXIAO, JIEZHANG-QUXIAO, 0x01, JIUSHUI-QUXIAO, 0X01, 0x01, 0x01, HUJIAO - QUXIAO, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01 };//多键位设置存储数组
@@ -886,6 +888,7 @@ void fun41(void) //二级菜单F7-E4
 void fun42(void) //二级菜单F8-E1
 {
 	tm1629_E(0x01);
+	Two_Menu_F8_E1_save = return_Two_Menu_F8_E1();
 }
 
 void fun43(void) //二级菜单F8-E2
@@ -1489,6 +1492,11 @@ void fun93(void) //F8_E1单键位跟多键位切换
 	unsigned char temp = 0;
 	temp = return_Two_Menu_F8_E1();
 	Show_one_number(temp);
+	if (temp != Two_Menu_F8_E1_save)
+	{
+		Delete_all_data();
+		Two_Menu_F8_E1_save = temp;
+	}
 }
 
 void fun94(void) //F8_E2键位设置

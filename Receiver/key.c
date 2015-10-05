@@ -39,6 +39,7 @@ unsigned char Two_Menu_F7_E3 = 0; // E3其他键盘规则 999*99
 unsigned char Two_Menu_F7_E4 = 0; // E4其他键盘规则 9999*99
 
 unsigned char Two_Menu_F8_E1 = 2; // 单按键与 多按键切换
+
 unsigned char Two_Menu_F8_E2 = 0; // 键位设置
 
 unsigned char Two_Menu_Fb_E1 = 1; // 设置主机有没有销号功能
