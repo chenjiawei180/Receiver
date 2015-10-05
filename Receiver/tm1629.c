@@ -261,6 +261,21 @@ void tm1629_E(unsigned char f_number) //第一行倒数二个显示F,倒数第一个显示f_numb
 	buf_display[0][0] = CODE[f_number];
 	display();
 }
+void Show_on(void)
+{
+	tm1629_clear();
+	buf_display[0][1] = CODE[0];
+	buf_display[0][0] = 0x54;
+	display();
+}
+
+void Show_off(void)
+{
+	tm1629_clear();
+	buf_display[0][1] = CODE[0x00];
+	buf_display[0][0] = CODE[0x0f];
+	display();
+}
 
 void Show_one_number(unsigned char f_number) //显示一个数字
 {
@@ -1463,7 +1478,18 @@ void fun89(void) //F7_E1 999*9
 {
 	unsigned char temp = 0;
 	temp = return_Two_Menu_F7_E1();
-	Show_one_number(temp);
+	if (temp < 10)
+	{
+		Show_one_number(temp);
+	}
+	else if (temp<11)
+	{
+		Show_on();
+	}
+	else
+	{
+		Show_off();
+	}
 }
 
 void fun90(void) //F7_E2 9999*9

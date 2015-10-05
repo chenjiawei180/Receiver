@@ -33,7 +33,7 @@ unsigned char Two_Menu_F6_E3 = 0; //循环时候是否报读
 unsigned char Two_Menu_F6_E4 = 0; //音量大小调整
 unsigned char Two_Menu_F6_E5 = 0; //显示屏LED亮度调整
 
-unsigned char Two_Menu_F7_E1 = 0; // E1默认键盘规则 999*9
+unsigned char Two_Menu_F7_E1 = 11; // E1默认键盘规则 999*9
 unsigned char Two_Menu_F7_E2 = 0; // E2其他键盘规则 9999*9
 unsigned char Two_Menu_F7_E3 = 0; // E3其他键盘规则 999*99
 unsigned char Two_Menu_F7_E4 = 0; // E4其他键盘规则 9999*99

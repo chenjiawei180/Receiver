@@ -42,6 +42,8 @@ extern void mcuram_to_mcuram_up(unsigned char* a);
 
 extern void tm1629_f(unsigned char f_number);
 extern void tm1629_E(unsigned char f_number);
+extern void Show_on(void);
+extern void Show_off(void);
 extern void Show_one_number(unsigned char f_number);
 extern void Show_two_number(unsigned char f_number);
 extern void Show_four_number(unsigned char* temp);
