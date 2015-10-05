@@ -119,7 +119,7 @@ void submenuf6_1_voiceselect(unsigned char report_mode, unsigned char *report_nu
 			GD5800_select_chapter(DINGDONG);
 			break;
 		case LINGDANG_type:
-			GD5800_select_chapter(DINGDONG);
+			GD5800_select_chapter(YINGYUEYI);
 			break;
 		case EMERGENCY_type:
 			GD5800_select_chapter(BAOJING);
@@ -238,14 +238,21 @@ void submenuf6_1(unsigned char report_mode, unsigned char *report_number, unsign
 		}
 		else if (mode != NOT_REPORT)
 		{
-			GD5800_select_chapter(type + QUXIAO);
+			if (type < 50)
+			{
+				GD5800_select_chapter(type + QUXIAO);
+			}
+			else if (type == BAOJING_1)
+			{
+				GD5800_select_chapter(BAOJING);
+			}			
 		}
 	}
 	else
 	{
-		if (type == 52)
+		if (type == BAOJING_1)
 		{
-			GD5800_select_chapter(BAOJIE);
+			GD5800_select_chapter(BAOJING);
 		}
 		else
 		{
