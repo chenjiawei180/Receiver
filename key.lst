@@ -1,4 +1,4 @@
-C51 COMPILER V9.00   KEY                                                                   10/05/2015 14:17:00 PAGE 1   
+C51 COMPILER V9.00   KEY                                                                   10/05/2015 14:44:14 PAGE 1   
 
 
 C51 COMPILER V9.00, COMPILATION OF MODULE KEY
@@ -62,7 +62,7 @@ line level    source
   52                  { ONE_MENU_F0, ONE_MENU_F1, ONE_MENU_Fd, TWO_MENU_F0_YEAR , MENU_STANDBY, (*fun1) }, //F0-F9
   53                  { ONE_MENU_F1, ONE_MENU_F2, ONE_MENU_F0, TWO_MENU_F1_E1   , MENU_STANDBY, (*fun2) },
   54                  { ONE_MENU_F2, ONE_MENU_F3, ONE_MENU_F1, TWO_MENU_F2_E1   , MENU_STANDBY, (*fun3) },
-C51 COMPILER V9.00   KEY                                                                   10/05/2015 14:17:00 PAGE 2   
+C51 COMPILER V9.00   KEY                                                                   10/05/2015 14:44:14 PAGE 2   
 
   55                  { ONE_MENU_F3, ONE_MENU_F4, ONE_MENU_F2, TWO_MENU_F3_E1   , MENU_STANDBY, (*fun4) },
   56                  { ONE_MENU_F4, ONE_MENU_F5, ONE_MENU_F3, TWO_MENU_F4_SET  , MENU_STANDBY, (*fun5) },
@@ -126,7 +126,7 @@ line level    source
   94                  { TWO_MENU_F6_E5, TWO_MENU_F6_E1, TWO_MENU_F6_E4, TWO_MENU_F6_E5_SET, ONE_MENU_F6, (*fun37) }, //F6子菜单
              -E5
   95          
-C51 COMPILER V9.00   KEY                                                                   10/05/2015 14:17:00 PAGE 3   
+C51 COMPILER V9.00   KEY                                                                   10/05/2015 14:44:14 PAGE 3   
 
   96                  { TWO_MENU_F7_E1, TWO_MENU_F7_E2, TWO_MENU_F7_E4, TWO_MENU_F7_E1_SET, ONE_MENU_F7, (*fun38) }, //F7子菜单
              -E1
@@ -190,7 +190,7 @@ line level    source
              - //F2_E1删除呼叫器
  133                  { TWO_MENU_F2_E1_D2, TWO_MENU_F2_E1_D2, TWO_MENU_F2_E1_D2, TWO_MENU_F2_E1_D1, TWO_MENU_F2_E1, (*fun67) },
              - //F2_E1删除呼叫器
-C51 COMPILER V9.00   KEY                                                                   10/05/2015 14:17:00 PAGE 4   
+C51 COMPILER V9.00   KEY                                                                   10/05/2015 14:44:14 PAGE 4   
 
  134                  { TWO_MENU_F2_E1_D3, TWO_MENU_F2_E1_D3, TWO_MENU_F2_E1_D3, TWO_MENU_F2_E1_D2, TWO_MENU_F2_E1, (*fun68) },
              - //F2_E1删除呼叫器
@@ -254,7 +254,7 @@ line level    source
  167                  { TWO_MENU_F8_E2_SET, TWO_MENU_F8_E2_SET, TWO_MENU_F8_E2_SET, TWO_MENU_F8_E2_SET, TWO_MENU_F8_E2, (*fun94
              -) }, //F8_E2 键位设置
  168          
-C51 COMPILER V9.00   KEY                                                                   10/05/2015 14:17:00 PAGE 5   
+C51 COMPILER V9.00   KEY                                                                   10/05/2015 14:44:14 PAGE 5   
 
  169                  { DECODER_MENU, DECODER_MENU, DECODER_MENU, DECODER_MENU, DECODER_MENU, (*fun95)},
  170          };
@@ -318,7 +318,7 @@ line level    source
                                               }
                                               else
                                               {
-C51 COMPILER V9.00   KEY                                                                   10/05/2015 14:17:00 PAGE 6   
+C51 COMPILER V9.00   KEY                                                                   10/05/2015 14:44:14 PAGE 6   
 
                                                       accumulate_decoder = 0;
                                               }
@@ -382,7 +382,7 @@ line level    source
  289   4                                              clear_main_press_time();
  290   4      //                                      if (sound_table == 1)
  291   4      //                                      {
-C51 COMPILER V9.00   KEY                                                                   10/05/2015 14:17:00 PAGE 7   
+C51 COMPILER V9.00   KEY                                                                   10/05/2015 14:44:14 PAGE 7   
 
  292   4      //#if SOUND
  293   4      //                                              GD5800_select_chapter(SETSUCCESS_POSITION);
@@ -446,7 +446,7 @@ line level    source
  348   4                                              //                                      {
  349   4                                              //#if SOUND
  350   4                                              //                                              GD5800_select_chapter(SETSUCCESS_POSITION);
-C51 COMPILER V9.00   KEY                                                                   10/05/2015 14:17:00 PAGE 8   
+C51 COMPILER V9.00   KEY                                                                   10/05/2015 14:44:14 PAGE 8   
 
  351   4                                              //#endif
  352   4                                              //                                              sound_table = 0;
@@ -510,7 +510,7 @@ line level    source
  410   3                                      break;
  411   3                              case TWO_MENU_F1_E1_D4:
  412   3                                      if (Two_Menu_F1_E1[3] == 9) Two_Menu_F1_E1[3] = 0;      //设置F1_E1个位
-C51 COMPILER V9.00   KEY                                                                   10/05/2015 14:17:00 PAGE 9   
+C51 COMPILER V9.00   KEY                                                                   10/05/2015 14:44:14 PAGE 9   
 
  413   3                                      else Two_Menu_F1_E1[3]++;
  414   3                                      break;
@@ -574,7 +574,7 @@ line level    source
  472   3                                      if (Two_Menu_F2_E1[2] == 9) Two_Menu_F2_E1[2] = 0;      //设置F2_E1十位
  473   3                                      else Two_Menu_F2_E1[2]++;
  474   3                                      break;
-C51 COMPILER V9.00   KEY                                                                   10/05/2015 14:17:00 PAGE 10  
+C51 COMPILER V9.00   KEY                                                                   10/05/2015 14:44:14 PAGE 10  
 
  475   3                              case TWO_MENU_F2_E1_D4:
  476   3                                      if (Two_Menu_F2_E1[3] == 9) Two_Menu_F2_E1[3] = 0;      //设置F2_E1个位
@@ -638,7 +638,7 @@ line level    source
  534   3                              case TWO_MENU_F4_SET:
  535   3                                      if (Two_Menu_F4_E1 == 99) Two_Menu_F4_E1 = 0;   //销号时间设置
  536   3                                      else Two_Menu_F4_E1++;
-C51 COMPILER V9.00   KEY                                                                   10/05/2015 14:17:00 PAGE 11  
+C51 COMPILER V9.00   KEY                                                                   10/05/2015 14:44:14 PAGE 11  
 
  537   3                                      break;
  538   3                              case TWO_MENU_F5_SET:
@@ -702,7 +702,7 @@ line level    source
  596   2                      case KEY_DOWN:
  597   2                              switch (func_index)
  598   2                              {
-C51 COMPILER V9.00   KEY                                                                   10/05/2015 14:17:00 PAGE 12  
+C51 COMPILER V9.00   KEY                                                                   10/05/2015 14:44:14 PAGE 12  
 
  599   3                              case TWO_MENU_F0_YEAR:
  600   3                                      if (time_buf1[1] == 0) time_buf1[1] = 99;       //设置万年历 年
@@ -766,7 +766,7 @@ line level    source
  658   3                                      break;
  659   3                              case TWO_MENU_F1_E3_D2:
  660   3                                      if (Two_Menu_F1_E3[1] == 0) Two_Menu_F1_E3[1] = 9;      //设置F1_E3百位
-C51 COMPILER V9.00   KEY                                                                   10/05/2015 14:17:00 PAGE 13  
+C51 COMPILER V9.00   KEY                                                                   10/05/2015 14:44:14 PAGE 13  
 
  661   3                                      else Two_Menu_F1_E3[1]--;
  662   3                                      break;
@@ -830,7 +830,7 @@ line level    source
  720   3                                      if (Two_Menu_F2_E3[0] == 0) Two_Menu_F2_E3[0] = 20;     //设置F2_E3千位
  721   3                                      else Two_Menu_F2_E3[0]--;
  722   3                                      break;
-C51 COMPILER V9.00   KEY                                                                   10/05/2015 14:17:00 PAGE 14  
+C51 COMPILER V9.00   KEY                                                                   10/05/2015 14:44:14 PAGE 14  
 
  723   3                              case TWO_MENU_F2_E3_D2:
  724   3                                      if (Two_Menu_F2_E3[1] == 0) Two_Menu_F2_E3[1] = 9;      //设置F2_E3百位
@@ -894,7 +894,7 @@ line level    source
  782   3                                      break;
  783   3                              case TWO_MENU_F6_E5_SET:
  784   3                                      if (Two_Menu_F6_E5 == 0) Two_Menu_F6_E5 = 7;    //F6_E5屏幕亮度调整
-C51 COMPILER V9.00   KEY                                                                   10/05/2015 14:17:00 PAGE 15  
+C51 COMPILER V9.00   KEY                                                                   10/05/2015 14:44:14 PAGE 15  
 
  785   3                                      else Two_Menu_F6_E5--;
  786   3                                      break;
@@ -958,7 +958,7 @@ line level    source
  844          {
  845   1              func_index = temp;
  846   1      }
-C51 COMPILER V9.00   KEY                                                                   10/05/2015 14:17:00 PAGE 16  
+C51 COMPILER V9.00   KEY                                                                   10/05/2015 14:44:14 PAGE 16  
 
  847          
  848          unsigned char return_Two_Menu_F3_E1(void)
@@ -1022,7 +1022,7 @@ line level    source
  906   1              unsigned char temp = 0;
  907   1              temp = Two_Menu_F6_E5;
  908   1              return temp;
-C51 COMPILER V9.00   KEY                                                                   10/05/2015 14:17:00 PAGE 17  
+C51 COMPILER V9.00   KEY                                                                   10/05/2015 14:44:14 PAGE 17  
 
  909   1      }
  910          
@@ -1086,7 +1086,7 @@ line level    source
  968   1              temp = Two_Menu_FC_E1;
  969   1              return temp;
  970   1      }
-C51 COMPILER V9.00   KEY                                                                   10/05/2015 14:17:00 PAGE 18  
+C51 COMPILER V9.00   KEY                                                                   10/05/2015 14:44:14 PAGE 18  
 
 
 

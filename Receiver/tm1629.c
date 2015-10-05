@@ -367,7 +367,7 @@ void CycleProcess(void)
 	f4_xiaohao = return_Two_Menu_F4_E1();
 	logout_cycle_table_temp = return_logout_cycle_table();
 	/*循环处理函数*/
-	if (f5_xunhuan<f4_xiaohao && logout_cycle_table_temp>f5_xunhuan&&f5_xunhuan != 0)
+	if ((f5_xunhuan<f4_xiaohao && logout_cycle_table_temp>f5_xunhuan && f4_xiaohao && f5_xunhuan) || (f4_xiaohao == 0 && f5_xunhuan &&logout_cycle_table_temp>f5_xunhuan))
 	{
 		for (i = 0; i<10; i++)
 		{
@@ -380,15 +380,16 @@ void CycleProcess(void)
 
 		for (i = 0; i<6; i++)
 		{
-			temp[i] = display_ram[i];
+			temp[i] = display_ram[(index - 1) * 6 + i];
 		}
-		for (i = 0; i<index; i++)
+
+		for (i = index; i>1; i--)
 		{
-			mcuram_to_mcuram_up(display_ram + i * 6);
+			mcuram_to_mcuram_down(display_ram + (i - 2) * 6);
 		}
 		for (i = 0; i<6; i++)
 		{
-			display_ram[(index - 1) * 6 + i] = temp[i];
+			display_ram[i] = temp[i];
 		}
 		tm1629_load();
 		display();
@@ -405,7 +406,7 @@ void LogoutProcess(void)
 	logout_cycle_table_temp = return_logout_cycle_table();
 	Two_Menu_F3_E2_temp = return_Two_Menu_F3_E2();
 	/*销号处理函数*/
-	if (f4_xiaohao<f5_xunhuan&& logout_cycle_table_temp>f4_xiaohao&&f4_xiaohao != 0)
+	if ((f4_xiaohao<f5_xunhuan&& logout_cycle_table_temp>f4_xiaohao && f5_xunhuan && f4_xiaohao) || (f5_xunhuan == 0 && f4_xiaohao && logout_cycle_table_temp>f4_xiaohao))
 	{
 		for (i = 0; i<(Two_Menu_F3_E2_temp - 1); i++)
 		{
