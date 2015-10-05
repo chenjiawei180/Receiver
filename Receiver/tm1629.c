@@ -188,6 +188,13 @@ void tm1629_clear(void)//全部归零
 	}
 }
 
+void tm1629_display_buff_clear(void)//清除队列缓存
+{
+	unsigned char i;
+	for (i = 0; i<120; i++)
+		display_ram[i] = 0;
+}
+
 void tm1629_await(void)
 {
 	unsigned char i;	//k控制显示的具体数字，i和j控制buf_display的刷新
@@ -558,7 +565,7 @@ void fun0(void) //待机显示函数
 	{
 		Display_time();
 	}
-	
+	tm1629_display_buff_clear();
 }
 
 void fun1(void) //一级菜单F0

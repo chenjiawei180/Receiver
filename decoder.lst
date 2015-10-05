@@ -1,4 +1,4 @@
-C51 COMPILER V9.00   DECODER                                                               10/05/2015 14:02:11 PAGE 1   
+C51 COMPILER V9.00   DECODER                                                               10/05/2015 14:17:01 PAGE 1   
 
 
 C51 COMPILER V9.00, COMPILATION OF MODULE DECODER
@@ -62,7 +62,7 @@ line level    source
              -o_Menu_F7_E1_temp == 10)))//键盘规则，程序按默认的来编
   51   4                              {
   52   5                                      if (Two_Menu_F8_E1_temp == 1)  //为按键值
-C51 COMPILER V9.00   DECODER                                                               10/05/2015 14:02:11 PAGE 2   
+C51 COMPILER V9.00   DECODER                                                               10/05/2015 14:17:01 PAGE 2   
 
   53   5                                      {
   54   6                                              temp_buff[0] = single_key[old2_RF_RECE_REG[2] & 0x0f] ;
@@ -126,7 +126,7 @@ line level    source
  108   8                                                              uart_printf("存储地址为 %x ! \n\r", CALL_DATA_START + (j * 32 + i) * 8);
  109   8      #endif
  110   8                                                              if (temp_buff[0] < 50)
-C51 COMPILER V9.00   DECODER                                                               10/05/2015 14:02:11 PAGE 3   
+C51 COMPILER V9.00   DECODER                                                               10/05/2015 14:17:01 PAGE 3   
 
  111   8                                                              {
  112   9      #ifdef DEBUG
@@ -190,7 +190,7 @@ line level    source
  169   3                      {
  170   4                              set_logout_cycle_table(0);//循环跟销号重新计数
  171   4                               //键盘规则
-C51 COMPILER V9.00   DECODER                                                               10/05/2015 14:02:11 PAGE 4   
+C51 COMPILER V9.00   DECODER                                                               10/05/2015 14:17:01 PAGE 4   
 
  172   4                              if ((old2_RF_RECE_REG[2] & 0xf0) == 0x00 && (((old2_RF_RECE_REG[0] >> 4) == Two_Menu_F7_E1_temp) || (Tw
              -o_Menu_F7_E1_temp == 10)))//键盘规则，程序按默认的来编
@@ -254,7 +254,7 @@ line level    source
  228   5                                      break;
  229   5                              }
  230   4                              //呼叫器注册,搜索所需要的呼叫器
-C51 COMPILER V9.00   DECODER                                                               10/05/2015 14:02:11 PAGE 5   
+C51 COMPILER V9.00   DECODER                                                               10/05/2015 14:17:01 PAGE 5   
 
  231   4                              for (j = 0; j<CALL_TABLE_NUMBER + ALARM_TABLE_NUMBER + CANCEL_TABLE_NUMBER; j++)//搜索标志位
  232   4                              {
@@ -318,7 +318,7 @@ line level    source
  287   9                                                              }
  288   8                                                      else if (Two_Menu_F3_E1_temp == 2)//为循环模式
  289   8                                                      {
-C51 COMPILER V9.00   DECODER                                                               10/05/2015 14:02:11 PAGE 6   
+C51 COMPILER V9.00   DECODER                                                               10/05/2015 14:17:01 PAGE 6   
 
  290   9                                                              for (k = 0; k < Two_Menu_F3_E2_temp; k++)
  291   9                                                              {
@@ -382,7 +382,7 @@ line level    source
  345   5                                      uart_printf("caller is rigister success \r\n");
  346   5      #endif                                  
  347   5                                      delay10ms();
-C51 COMPILER V9.00   DECODER                                                               10/05/2015 14:02:11 PAGE 7   
+C51 COMPILER V9.00   DECODER                                                               10/05/2015 14:17:01 PAGE 7   
 
  348   5                                      if (Two_Menu_F1_E1[3] == 9)
  349   5                                      {
@@ -446,7 +446,7 @@ line level    source
              -Two_Menu_F1_E2[1], (unsigned int)Two_Menu_F1_E2[2], (unsigned int)Two_Menu_F1_E2[3]);
  406   5                                                                                uart_printf("host is rigister success \r\n");
  407   5      #endif                                  
-C51 COMPILER V9.00   DECODER                                                               10/05/2015 14:02:11 PAGE 8   
+C51 COMPILER V9.00   DECODER                                                               10/05/2015 14:17:01 PAGE 8   
 
  408   5                                                                                delay10ms();
  409   5                                                                                if (Two_Menu_F1_E2[3] == 9)
@@ -510,7 +510,7 @@ line level    source
  467   5                                      uart_printf("alarm is %02x %02x %02x .\r\n", (unsigned int)buf_eeprom[5], (unsigned int)buf_eeprom[6],
              - (unsigned int)buf_eeprom[7]); //测试按键键值
  468   5                                      uart_printf("alarm is %02x %02x %02x %02x.\r\n", (unsigned int)Two_Menu_F1_E3[0], (unsigned int)Two_Me
-C51 COMPILER V9.00   DECODER                                                               10/05/2015 14:02:11 PAGE 9   
+C51 COMPILER V9.00   DECODER                                                               10/05/2015 14:17:01 PAGE 9   
 
              -nu_F1_E3[1], (unsigned int)Two_Menu_F1_E3[2], (unsigned int)Two_Menu_F1_E3[3]);
  469   5                                      uart_printf("alarm is rigister success \r\n");
@@ -574,7 +574,7 @@ line level    source
  527   5                                      uart_printf("cancel is %02x %02x %02x .\r\n", (unsigned int)buf_eeprom[5], (unsigned int)buf_eeprom[6]
              -, (unsigned int)buf_eeprom[7]); //测试按键键值
  528   5                                      uart_printf("cancel is %02x %02x %02x %02x.\r\n", (unsigned int)Two_Menu_F1_E4[0], (unsigned int)Two_M
-C51 COMPILER V9.00   DECODER                                                               10/05/2015 14:02:11 PAGE 10  
+C51 COMPILER V9.00   DECODER                                                               10/05/2015 14:17:01 PAGE 10  
 
              -enu_F1_E4[1], (unsigned int)Two_Menu_F1_E4[2], (unsigned int)Two_Menu_F1_E4[3]);
  529   5                                      uart_printf("cancel is rigister success \r\n");
@@ -638,7 +638,7 @@ line level    source
  587   3      
  588   3                              uart_printf("multiple_key：");
  589   3                              for (i = 0; i < 16; i++)
-C51 COMPILER V9.00   DECODER                                                               10/05/2015 14:02:11 PAGE 11  
+C51 COMPILER V9.00   DECODER                                                               10/05/2015 14:17:01 PAGE 11  
 
  590   3                              {
  591   4      
