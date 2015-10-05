@@ -658,21 +658,30 @@ void fun14(void) //一级菜单Fd
 
 void fun15(void) //设置年份
 {
-	if (return_await_number_table() == 1)
+	unsigned char temp;
+	temp = return_Two_Menu_FC_E1();
+	if (temp == 1)//如果为----  则不让进入F0
 	{
-		Display_time();
-		set_await_number_table(2);
+		set_func_index(ONE_MENU_F0);
 	}
-	if (return_await_number_table() == 3)
+	else
 	{
-		buf_display[1][7] = 0;
-		buf_display[1][6] = 0;
-		buf_display[1][5] = 0;
-		buf_display[1][4] = 0;
-		display();
-		set_await_number_table(0);
+		if (return_await_number_table() == 1)
+		{
+			Display_time();
+			set_await_number_table(2);
+		}
+		if (return_await_number_table() == 3)
+		{
+			buf_display[1][7] = 0;
+			buf_display[1][6] = 0;
+			buf_display[1][5] = 0;
+			buf_display[1][4] = 0;
+			display();
+			set_await_number_table(0);
+		}
+		Ds1302_Write_Time();
 	}
-	Ds1302_Write_Time();
 }
 
 void fun16(void) //设置月份
@@ -936,7 +945,7 @@ void fun48(void) //二级菜单FC
 {
 	unsigned char temp = 0;
 	temp = return_Two_Menu_FC_E1();
-	tm1629_f(temp);
+	Show_one_number(temp);
 }
 
 void fun49(void) //二级菜单Fd

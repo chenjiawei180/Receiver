@@ -276,7 +276,7 @@ void KeyProcess(void)
 				main_press_time_temp = return_main_press_time();
 				if (main_press_time_temp >= 20)
 				{
-					func_index = ONE_MENU_F0;
+					func_index = ONE_MENU_F1;
 					clear_main_press_time();
 				}
 			}
