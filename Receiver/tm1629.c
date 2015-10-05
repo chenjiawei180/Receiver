@@ -938,7 +938,9 @@ void fun46(void) //二级菜单FA
 
 void fun47(void) //二级菜单Fb
 {
-	tm1629_f(0x0f);
+	unsigned char temp = 0;
+	temp = return_Two_Menu_Fb_E1();
+	Show_one_number(temp);
 }
 
 void fun48(void) //二级菜单FC

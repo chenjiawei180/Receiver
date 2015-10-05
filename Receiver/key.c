@@ -363,7 +363,7 @@ void KeyProcess(void)
 			}
 			 break;
 		case KEY_RETURN:	
-			if (func_index == DECODER_MENU)
+			if (func_index == DECODER_MENU  && return_Two_Menu_Fb_E1() )
 			{
 				Logout();
 			}
@@ -590,6 +590,9 @@ void KeyProcess(void)
 			case TWO_MENU_FC_SET:
 				if (Two_Menu_FC_E1 == 1) Two_Menu_FC_E1 = 2;
 				else Two_Menu_FC_E1 = 1;
+			case TWO_MENU_Fb_SET:
+				if (Two_Menu_Fb_E1 == 1) Two_Menu_Fb_E1 = 0;
+				else Two_Menu_Fb_E1 = 1;
 
 				default:break;
 			}	
@@ -815,6 +818,9 @@ void KeyProcess(void)
 			case TWO_MENU_FC_SET:
 				if (Two_Menu_FC_E1 == 1) Two_Menu_FC_E1 = 2;
 				else Two_Menu_FC_E1 = 1;
+			case TWO_MENU_Fb_SET:
+				if (Two_Menu_Fb_E1 == 1) Two_Menu_Fb_E1 = 0;
+				else Two_Menu_Fb_E1 = 1;
 
 				default:break;
 			}
@@ -967,5 +973,12 @@ unsigned char return_Two_Menu_FC_E1(void)
 {
 	unsigned char temp = 0;
 	temp = Two_Menu_FC_E1;
+	return temp;
+}
+
+unsigned char return_Two_Menu_Fb_E1(void)
+{
+	unsigned char temp = 0;
+	temp = Two_Menu_Fb_E1;
 	return temp;
 }
