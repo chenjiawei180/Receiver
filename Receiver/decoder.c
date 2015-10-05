@@ -260,12 +260,18 @@ void DecoderProcess(void)
 							if (Two_Menu_F3_E1_temp == 1)//为即时模式
 							{
 
-								if ( (temp_buff[0] != QUXIAO_1) && temp_buff[0])
+								if (temp_buff[0] != QUXIAO_1 && temp_buff[0])
 								{
+#ifdef DEBUG
+									uart_printf("cancen funtion fault \r\n");
+#endif
 									submenuf6_1(Two_Menu_F6_E1_temp, temp_buff, temp_buff[0], old2_RF_RECE_REG[2] & 0x0f);
 								}
 								else
 								{
+#ifdef DEBUG
+									uart_printf("cancen funtion success \r\n");
+#endif
 									Cancel_funtion(temp_buff, display_ram);//取消函数
 									tm1629_load();
 									display();

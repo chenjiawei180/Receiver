@@ -1,4 +1,4 @@
-C51 COMPILER V9.00   TM1629                                                                10/05/2015 16:36:40 PAGE 1   
+C51 COMPILER V9.00   TM1629                                                                10/05/2015 17:39:48 PAGE 1   
 
 
 C51 COMPILER V9.00, COMPILATION OF MODULE TM1629
@@ -62,7 +62,7 @@ line level    source
   49   2                      TM1629_CLK = 0;
   50   2                      if (p & 0x01)
   51   2                              TM1629_DIO = 1;
-C51 COMPILER V9.00   TM1629                                                                10/05/2015 16:36:40 PAGE 2   
+C51 COMPILER V9.00   TM1629                                                                10/05/2015 17:39:48 PAGE 2   
 
   52   2                      else
   53   2                              TM1629_DIO = 0;
@@ -126,7 +126,7 @@ line level    source
  111          void display(void) //3个TM1629显示函数
  112          {
  113   1              unsigned char i,temp;
-C51 COMPILER V9.00   TM1629                                                                10/05/2015 16:36:40 PAGE 3   
+C51 COMPILER V9.00   TM1629                                                                10/05/2015 17:39:48 PAGE 3   
 
  114   1              temp = return_Two_Menu_F6_E5();
  115   1              send_command(0x40);     //设置数据命令:普通模式、地址自增1，写数据到显存
@@ -190,7 +190,7 @@ line level    source
  173   3                              {
  174   4                                      ;
  175   4      
-C51 COMPILER V9.00   TM1629                                                                10/05/2015 16:36:40 PAGE 4   
+C51 COMPILER V9.00   TM1629                                                                10/05/2015 17:39:48 PAGE 4   
 
  176   4                              }
  177   3                      }
@@ -254,7 +254,7 @@ line level    source
  235   1              buf_display[0][7] = CODE[time_buf1[3] / 10];
  236   1              buf_display[0][6] = CODE[time_buf1[3] % 10];//日
  237   1      
-C51 COMPILER V9.00   TM1629                                                                10/05/2015 16:36:40 PAGE 5   
+C51 COMPILER V9.00   TM1629                                                                10/05/2015 17:39:48 PAGE 5   
 
  238   1              buf_display[0][5] = CODE[time_buf1[7]];         //星期
  239   1      
@@ -318,7 +318,7 @@ line level    source
  297          {
  298   1              tm1629_clear();
  299   1              buf_display[0][3] = CODE[*(temp)];
-C51 COMPILER V9.00   TM1629                                                                10/05/2015 16:36:40 PAGE 6   
+C51 COMPILER V9.00   TM1629                                                                10/05/2015 17:39:48 PAGE 6   
 
  300   1              buf_display[0][2] = CODE[*(temp+1)];
  301   1              buf_display[0][1] = CODE[*(temp+2)];
@@ -382,7 +382,7 @@ line level    source
  357          void mcuram_to_mcuram_down(unsigned char* a) //a为MCURAM缓存区区   向下压一组数据
  358          {
  359   1              *(a + 6) = *(a);                //ram区元素下移6个
-C51 COMPILER V9.00   TM1629                                                                10/05/2015 16:36:40 PAGE 7   
+C51 COMPILER V9.00   TM1629                                                                10/05/2015 17:39:48 PAGE 7   
 
  360   1              *(a + 7) = *(a + 1);
  361   1              *(a + 8) = *(a + 2);
@@ -446,7 +446,7 @@ line level    source
  418          {
  419   1              unsigned char i;
  420   1              unsigned char f5_xunhuan, f4_xiaohao, logout_cycle_table_temp, Two_Menu_F3_E2_temp;
-C51 COMPILER V9.00   TM1629                                                                10/05/2015 16:36:40 PAGE 8   
+C51 COMPILER V9.00   TM1629                                                                10/05/2015 17:39:48 PAGE 8   
 
  421   1              f5_xunhuan = return_Two_Menu_F5_E1();
  422   1              f4_xiaohao = return_Two_Menu_F4_E1();
@@ -510,7 +510,7 @@ line level    source
  479   1              for (i = 0; i<Two_Menu_F3_E2_temp; i++)
  480   1              {
  481   2                      if (display_ram[i * 6 ] == 0)
-C51 COMPILER V9.00   TM1629                                                                10/05/2015 16:36:40 PAGE 9   
+C51 COMPILER V9.00   TM1629                                                                10/05/2015 17:39:48 PAGE 9   
 
  482   2                      {
  483   3                              index = i;
@@ -574,7 +574,7 @@ line level    source
  540   1              buff    //                序号、类别、区号、接收号
  541   1              */
  542   1      
-C51 COMPILER V9.00   TM1629                                                                10/05/2015 16:36:40 PAGE 10  
+C51 COMPILER V9.00   TM1629                                                                10/05/2015 17:39:48 PAGE 10  
 
  543   1              unsigned char i, index, Two_Menu_F3_E2_temp;
  544   1              unsigned char temp[6] = { 0 };
@@ -638,7 +638,7 @@ line level    source
  601   1              tm1629_f(0x02);
  602   1      }
  603          
-C51 COMPILER V9.00   TM1629                                                                10/05/2015 16:36:40 PAGE 11  
+C51 COMPILER V9.00   TM1629                                                                10/05/2015 17:39:48 PAGE 11  
 
  604          void fun4(void) //一级菜单F3
  605          {
@@ -702,7 +702,7 @@ line level    source
  663   1              if (temp == 1)//如果为----  则不让进入F0
  664   1              {
  665   2                      set_func_index(ONE_MENU_F0);
-C51 COMPILER V9.00   TM1629                                                                10/05/2015 16:36:40 PAGE 12  
+C51 COMPILER V9.00   TM1629                                                                10/05/2015 17:39:48 PAGE 12  
 
  666   2              }
  667   1              else
@@ -766,7 +766,7 @@ line level    source
  725   2                      Display_time();
  726   2                      set_await_number_table(2);
  727   2              }
-C51 COMPILER V9.00   TM1629                                                                10/05/2015 16:36:40 PAGE 13  
+C51 COMPILER V9.00   TM1629                                                                10/05/2015 17:39:48 PAGE 13  
 
  728   1              if (return_await_number_table() == 3)
  729   1              {
@@ -830,7 +830,7 @@ line level    source
  787   1      }
  788          
  789          void fun23(void) //二级菜单F1-E3
-C51 COMPILER V9.00   TM1629                                                                10/05/2015 16:36:40 PAGE 14  
+C51 COMPILER V9.00   TM1629                                                                10/05/2015 17:39:48 PAGE 14  
 
  790          {
  791   1              tm1629_E(0x03);
@@ -894,7 +894,7 @@ line level    source
  849          {
  850   1              tm1629_E(0x02);
  851   1      }
-C51 COMPILER V9.00   TM1629                                                                10/05/2015 16:36:40 PAGE 15  
+C51 COMPILER V9.00   TM1629                                                                10/05/2015 17:39:48 PAGE 15  
 
  852          
  853          void fun31(void) //二级菜单F4
@@ -958,7 +958,7 @@ line level    source
  911          
  912          void fun42(void) //二级菜单F8-E1
  913          {
-C51 COMPILER V9.00   TM1629                                                                10/05/2015 16:36:40 PAGE 16  
+C51 COMPILER V9.00   TM1629                                                                10/05/2015 17:39:48 PAGE 16  
 
  914   1              tm1629_E(0x01);
  915   1              Two_Menu_F8_E1_save = return_Two_Menu_F8_E1();
@@ -1022,7 +1022,7 @@ line level    source
  973          void fun51(void) //F1_E1 百位闪烁
  974          {
  975   1              if (return_await_number_table() == 1)
-C51 COMPILER V9.00   TM1629                                                                10/05/2015 16:36:40 PAGE 17  
+C51 COMPILER V9.00   TM1629                                                                10/05/2015 17:39:48 PAGE 17  
 
  976   1              {
  977   2                      Show_four_number(Two_Menu_F1_E1);
@@ -1086,7 +1086,7 @@ line level    source
 1035   1              if (return_await_number_table() == 1)
 1036   1              {
 1037   2                      Show_four_number(Two_Menu_F1_E2);
-C51 COMPILER V9.00   TM1629                                                                10/05/2015 16:36:40 PAGE 18  
+C51 COMPILER V9.00   TM1629                                                                10/05/2015 17:39:48 PAGE 18  
 
 1038   2                      set_await_number_table(2);
 1039   2              }
@@ -1150,7 +1150,7 @@ line level    source
 1097   2                      Show_four_number(Two_Menu_F1_E3);
 1098   2                      set_await_number_table(2);
 1099   2              }
-C51 COMPILER V9.00   TM1629                                                                10/05/2015 16:36:40 PAGE 19  
+C51 COMPILER V9.00   TM1629                                                                10/05/2015 17:39:48 PAGE 19  
 
 1100   1              if (return_await_number_table() == 3)
 1101   1              {
@@ -1214,7 +1214,7 @@ line level    source
 1159   2              }
 1160   1              if (return_await_number_table() == 3)
 1161   1              {
-C51 COMPILER V9.00   TM1629                                                                10/05/2015 16:36:40 PAGE 20  
+C51 COMPILER V9.00   TM1629                                                                10/05/2015 17:39:48 PAGE 20  
 
 1162   2                      buf_display[0][2] = 0;
 1163   2                      display();
@@ -1278,7 +1278,7 @@ line level    source
 1221   1              {
 1222   2                      buf_display[0][2] = 0;
 1223   2                      display();
-C51 COMPILER V9.00   TM1629                                                                10/05/2015 16:36:40 PAGE 21  
+C51 COMPILER V9.00   TM1629                                                                10/05/2015 17:39:48 PAGE 21  
 
 1224   2                      set_await_number_table(0);
 1225   2              }
@@ -1342,7 +1342,7 @@ line level    source
 1283   2                      display();
 1284   2                      set_await_number_table(0);
 1285   2              }
-C51 COMPILER V9.00   TM1629                                                                10/05/2015 16:36:40 PAGE 22  
+C51 COMPILER V9.00   TM1629                                                                10/05/2015 17:39:48 PAGE 22  
 
 1286   1      }
 1287          
@@ -1406,7 +1406,7 @@ line level    source
 1345   2              }
 1346   1      }
 1347          
-C51 COMPILER V9.00   TM1629                                                                10/05/2015 16:36:40 PAGE 23  
+C51 COMPILER V9.00   TM1629                                                                10/05/2015 17:39:48 PAGE 23  
 
 1348          void fun76(void) //F2_E3 十位闪烁
 1349          {
@@ -1470,7 +1470,7 @@ line level    source
 1407          
 1408          void fun80(void) //F2_E4 十位闪烁
 1409          {
-C51 COMPILER V9.00   TM1629                                                                10/05/2015 16:36:40 PAGE 24  
+C51 COMPILER V9.00   TM1629                                                                10/05/2015 17:39:48 PAGE 24  
 
 1410   1              if (return_await_number_table() == 1)
 1411   1              {
@@ -1534,7 +1534,7 @@ line level    source
 1469   1              temp = return_Two_Menu_F6_E3();
 1470   1              Show_one_number(temp);
 1471   1      }
-C51 COMPILER V9.00   TM1629                                                                10/05/2015 16:36:40 PAGE 25  
+C51 COMPILER V9.00   TM1629                                                                10/05/2015 17:39:48 PAGE 25  
 
 1472          
 1473          void fun87(void) //F6_E4音量大小调整
@@ -1598,7 +1598,7 @@ line level    source
 1531   1              Show_one_number(temp);
 1532   1              if (temp != Two_Menu_F8_E1_save)
 1533   1              {
-C51 COMPILER V9.00   TM1629                                                                10/05/2015 16:36:40 PAGE 26  
+C51 COMPILER V9.00   TM1629                                                                10/05/2015 17:39:48 PAGE 26  
 
 1534   2                      Delete_all_data();
 1535   2                      Two_Menu_F8_E1_save = temp;
