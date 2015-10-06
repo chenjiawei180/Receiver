@@ -285,16 +285,17 @@ void KeyProcess(void)
 				main_press_time_temp = return_main_press_time();
 				if (main_press_time_temp >= 10)
 				{
-					delete_call_function(Two_Menu_F2_E1);
+					if (delete_call_function(Two_Menu_F2_E1))
+					{
+						if (return_sound_table() == 1)
+						{
+							GD5800_select_chapter(CHENGGONG);
+
+							set_sound_table(0);
+						}
+					}
 					delay10ms();
 					clear_main_press_time();
-//					if (sound_table == 1)
-//					{
-//#if SOUND
-//						GD5800_select_chapter(SETSUCCESS_POSITION);
-//#endif
-//						sound_table = 0;
-//					}
 				}
 				else
 					func_index = table[func_index].enter;
@@ -304,16 +305,17 @@ void KeyProcess(void)
 				main_press_time_temp = return_main_press_time();
 				if (main_press_time_temp >= 10)
 				{
-					delete_host_function(Two_Menu_F2_E2);
+					if (delete_host_function(Two_Menu_F2_E2))
+					{
+						if (return_sound_table() == 1)
+						{
+							GD5800_select_chapter(CHENGGONG);
+
+							set_sound_table(0);
+						}
+					}
 					delay10ms();
 					clear_main_press_time();
-					//					if (sound_table == 1)
-					//					{
-					//#if SOUND
-					//						GD5800_select_chapter(SETSUCCESS_POSITION);
-					//#endif
-					//						sound_table = 0;
-					//					}
 				}
 				else
 					func_index = table[func_index].enter;
@@ -323,16 +325,17 @@ void KeyProcess(void)
 				main_press_time_temp = return_main_press_time();
 				if (main_press_time_temp >= 10)
 				{
-					delete_alarm_function(Two_Menu_F2_E3);
+					if (delete_alarm_function(Two_Menu_F2_E3))
+					{
+						if (return_sound_table() == 1)
+						{
+							GD5800_select_chapter(CHENGGONG);
+
+							set_sound_table(0);
+						}
+					}
 					delay10ms();
 					clear_main_press_time();
-					//					if (sound_table == 1)
-					//					{
-					//#if SOUND
-					//						GD5800_select_chapter(SETSUCCESS_POSITION);
-					//#endif
-					//						sound_table = 0;
-					//					}
 				}
 				else
 					func_index = table[func_index].enter;
@@ -342,16 +345,17 @@ void KeyProcess(void)
 				main_press_time_temp = return_main_press_time();
 				if (main_press_time_temp >= 10)
 				{
-					delete_cancel_function(Two_Menu_F2_E4);
+					if (delete_cancel_function(Two_Menu_F2_E4))
+					{
+						if (return_sound_table() == 1)
+						{
+							GD5800_select_chapter(CHENGGONG);
+
+							set_sound_table(0);
+						}
+					}
 					delay10ms();
-					clear_main_press_time();
-					//					if (sound_table == 1)
-					//					{
-					//#if SOUND
-					//						GD5800_select_chapter(SETSUCCESS_POSITION);
-					//#endif
-					//						sound_table = 0;
-					//					}
+					clear_main_press_time();			
 				}
 				else
 					func_index = table[func_index].enter;

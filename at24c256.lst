@@ -1,4 +1,4 @@
-C51 COMPILER V9.00   AT24C256                                                              10/06/2015 11:29:53 PAGE 1   
+C51 COMPILER V9.00   AT24C256                                                              10/06/2015 11:47:06 PAGE 1   
 
 
 C51 COMPILER V9.00, COMPILATION OF MODULE AT24C256
@@ -11,342 +11,342 @@ line level    source
    1          #include "at24c256.h"
    2          #include "key.h"
    3          #include "usart.h"
-   4          
-   5          bit ack;                      //Ó¦´ð±êÖ¾Î»
-   6          unsigned char xdata at24c64_buff[PAGE_LENGTH] = { 0 }; //24C256Ò³Ãæ´æ´¢»º´æ
-   7          unsigned char xdata eeprom_buff[8] = { 0 };                        //×¢²áÊý×é»º´æ
-   8          
-   9          void DelayUs2x(unsigned char t)
-  10          {
-  11   1              while (--t);
-  12   1      }
-  13          /*------------------------------------------------
-  14          mSÑÓÊ±º¯Êý£¬º¬ÓÐÊäÈë²ÎÊý unsigned char t£¬ÎÞ·µ»ØÖµ
-  15          unsigned char ÊÇ¶¨ÒåÎÞ·ûºÅ×Ö·û±äÁ¿£¬ÆäÖµµÄ·¶Î§ÊÇ
-  16          0~255 ÕâÀïÊ¹ÓÃ¾§Õñ12M£¬¾«È·ÑÓÊ±ÇëÊ¹ÓÃ»ã±à
-  17          ------------------------------------------------*/
-  18          void DelayMs(unsigned char t)
-  19          {
-  20   1              while (t--)
-  21   1              {
-  22   2                      //´óÖÂÑÓÊ±1mS
-  23   2                      DelayUs2x(245);
-  24   2                      DelayUs2x(245);
-  25   2              }
-  26   1      }
-  27          
-  28          
-  29          /*------------------------------------------------
-  30          Æô¶¯×ÜÏß
-  31          ------------------------------------------------*/
-  32          void Start_I2c()
-  33          {
-  34   1              SDA = 1;   //·¢ËÍÆðÊ¼Ìõ¼þµÄÊý¾ÝÐÅºÅ
-  35   1              _Nop();
-  36   1              SCL = 1;
-  37   1              _Nop();    //ÆðÊ¼Ìõ¼þ½¨Á¢Ê±¼ä´óÓÚ4.7us,ÑÓÊ±
-  38   1              _Nop();
-  39   1              _Nop();
+   4          #include "menu.h"
+   5          #include "gd5800.h"
+   6          
+   7          bit ack;                      //Ó¦´ð±êÖ¾Î»
+   8          unsigned char xdata at24c64_buff[PAGE_LENGTH] = { 0 }; //24C256Ò³Ãæ´æ´¢»º´æ
+   9          unsigned char xdata eeprom_buff[8] = { 0 };                        //×¢²áÊý×é»º´æ
+  10          
+  11          void DelayUs2x(unsigned char t)
+  12          {
+  13   1              while (--t);
+  14   1      }
+  15          /*------------------------------------------------
+  16          mSÑÓÊ±º¯Êý£¬º¬ÓÐÊäÈë²ÎÊý unsigned char t£¬ÎÞ·µ»ØÖµ
+  17          unsigned char ÊÇ¶¨ÒåÎÞ·ûºÅ×Ö·û±äÁ¿£¬ÆäÖµµÄ·¶Î§ÊÇ
+  18          0~255 ÕâÀïÊ¹ÓÃ¾§Õñ12M£¬¾«È·ÑÓÊ±ÇëÊ¹ÓÃ»ã±à
+  19          ------------------------------------------------*/
+  20          void DelayMs(unsigned char t)
+  21          {
+  22   1              while (t--)
+  23   1              {
+  24   2                      //´óÖÂÑÓÊ±1mS
+  25   2                      DelayUs2x(245);
+  26   2                      DelayUs2x(245);
+  27   2              }
+  28   1      }
+  29          
+  30          
+  31          /*------------------------------------------------
+  32          Æô¶¯×ÜÏß
+  33          ------------------------------------------------*/
+  34          void Start_I2c()
+  35          {
+  36   1              SDA = 1;   //·¢ËÍÆðÊ¼Ìõ¼þµÄÊý¾ÝÐÅºÅ
+  37   1              _Nop();
+  38   1              SCL = 1;
+  39   1              _Nop();    //ÆðÊ¼Ìõ¼þ½¨Á¢Ê±¼ä´óÓÚ4.7us,ÑÓÊ±
   40   1              _Nop();
   41   1              _Nop();
-  42   1              SDA = 0;     //·¢ËÍÆðÊ¼ÐÅºÅ
-  43   1              _Nop();    //ÆðÊ¼Ìõ¼þËø¶¨Ê±¼ä´óÓÚ4¦Ì
-  44   1              _Nop();
-  45   1              _Nop();
+  42   1              _Nop();
+  43   1              _Nop();
+  44   1              SDA = 0;     //·¢ËÍÆðÊ¼ÐÅºÅ
+  45   1              _Nop();    //ÆðÊ¼Ìõ¼þËø¶¨Ê±¼ä´óÓÚ4¦Ì
   46   1              _Nop();
   47   1              _Nop();
-  48   1              SCL = 0;    //Ç¯×¡I2C×ÜÏß£¬×¼±¸·¢ËÍ»ò½ÓÊÕÊý¾Ý
+  48   1              _Nop();
   49   1              _Nop();
-  50   1              _Nop();
-  51   1      }
-  52          /*------------------------------------------------
-  53          ½áÊø×ÜÏß
-  54          ------------------------------------------------*/
-C51 COMPILER V9.00   AT24C256                                                              10/06/2015 11:29:53 PAGE 2   
+  50   1              SCL = 0;    //Ç¯×¡I2C×ÜÏß£¬×¼±¸·¢ËÍ»ò½ÓÊÕÊý¾Ý
+  51   1              _Nop();
+  52   1              _Nop();
+  53   1      }
+  54          /*------------------------------------------------
+C51 COMPILER V9.00   AT24C256                                                              10/06/2015 11:47:06 PAGE 2   
 
-  55          void Stop_I2c()
-  56          {
-  57   1              SDA = 0;    //·¢ËÍ½áÊøÌõ¼þµÄÊý¾ÝÐÅºÅ
-  58   1              _Nop();   //·¢ËÍ½áÊøÌõ¼þµÄÊ±ÖÓÐÅºÅ
-  59   1              SCL = 1;    //½áÊøÌõ¼þ½¨Á¢Ê±¼ä´óÓÚ4¦Ì
-  60   1              _Nop();
-  61   1              _Nop();
+  55          ½áÊø×ÜÏß
+  56          ------------------------------------------------*/
+  57          void Stop_I2c()
+  58          {
+  59   1              SDA = 0;    //·¢ËÍ½áÊøÌõ¼þµÄÊý¾ÝÐÅºÅ
+  60   1              _Nop();   //·¢ËÍ½áÊøÌõ¼þµÄÊ±ÖÓÐÅºÅ
+  61   1              SCL = 1;    //½áÊøÌõ¼þ½¨Á¢Ê±¼ä´óÓÚ4¦Ì
   62   1              _Nop();
   63   1              _Nop();
   64   1              _Nop();
-  65   1              SDA = 1;    //·¢ËÍI2C×ÜÏß½áÊøÐÅºÅ
+  65   1              _Nop();
   66   1              _Nop();
-  67   1              _Nop();
+  67   1              SDA = 1;    //·¢ËÍI2C×ÜÏß½áÊøÐÅºÅ
   68   1              _Nop();
   69   1              _Nop();
-  70   1      }
-  71          
-  72          /*----------------------------------------------------------------
-  73          ×Ö½ÚÊý¾Ý´«ËÍº¯Êý
-  74          º¯ÊýÔ­ÐÍ: void  SendByte(unsigned char c);
-  75          ¹¦ÄÜ:  ½«Êý¾Ýc·¢ËÍ³öÈ¥,¿ÉÒÔÊÇµØÖ·,Ò²¿ÉÒÔÊÇÊý¾Ý,·¢ÍêºóµÈ´ýÓ¦´ð,²¢¶Ô
-  76          ´Ë×´Ì¬Î»½øÐÐ²Ù×÷.(²»Ó¦´ð»ò·ÇÓ¦´ð¶¼Ê¹ack=0 ¼Ù)
-  77          ·¢ËÍÊý¾ÝÕý³££¬ack=1; ack=0±íÊ¾±»¿ØÆ÷ÎÞÓ¦´ð»òËð»µ¡£
-  78          ------------------------------------------------------------------*/
-  79          void  SendByte(unsigned char c)
-  80          {
-  81   1              unsigned char BitCnt;
-  82   1              for (BitCnt = 0; BitCnt<8; BitCnt++)  //Òª´«ËÍµÄÊý¾Ý³¤¶ÈÎª8Î»
-  83   1              {
-  84   2                      if ((c << BitCnt) & 0x80)
-  85   2                              SDA = 1;   //ÅÐ¶Ï·¢ËÍÎ»
-  86   2                      else
-  87   2                              SDA = 0;
-  88   2                      _Nop();
-  89   2                      SCL = 1;               //ÖÃÊ±ÖÓÏßÎª¸ß£¬Í¨Öª±»¿ØÆ÷¿ªÊ¼½ÓÊÕÊý¾ÝÎ»
+  70   1              _Nop();
+  71   1              _Nop();
+  72   1      }
+  73          
+  74          /*----------------------------------------------------------------
+  75          ×Ö½ÚÊý¾Ý´«ËÍº¯Êý
+  76          º¯ÊýÔ­ÐÍ: void  SendByte(unsigned char c);
+  77          ¹¦ÄÜ:  ½«Êý¾Ýc·¢ËÍ³öÈ¥,¿ÉÒÔÊÇµØÖ·,Ò²¿ÉÒÔÊÇÊý¾Ý,·¢ÍêºóµÈ´ýÓ¦´ð,²¢¶Ô
+  78          ´Ë×´Ì¬Î»½øÐÐ²Ù×÷.(²»Ó¦´ð»ò·ÇÓ¦´ð¶¼Ê¹ack=0 ¼Ù)
+  79          ·¢ËÍÊý¾ÝÕý³££¬ack=1; ack=0±íÊ¾±»¿ØÆ÷ÎÞÓ¦´ð»òËð»µ¡£
+  80          ------------------------------------------------------------------*/
+  81          void  SendByte(unsigned char c)
+  82          {
+  83   1              unsigned char BitCnt;
+  84   1              for (BitCnt = 0; BitCnt<8; BitCnt++)  //Òª´«ËÍµÄÊý¾Ý³¤¶ÈÎª8Î»
+  85   1              {
+  86   2                      if ((c << BitCnt) & 0x80)
+  87   2                              SDA = 1;   //ÅÐ¶Ï·¢ËÍÎ»
+  88   2                      else
+  89   2                              SDA = 0;
   90   2                      _Nop();
-  91   2                      _Nop();             //±£Ö¤Ê±ÖÓ¸ßµçÆ½ÖÜÆÚ´óÓÚ4¦Ì
+  91   2                      SCL = 1;               //ÖÃÊ±ÖÓÏßÎª¸ß£¬Í¨Öª±»¿ØÆ÷¿ªÊ¼½ÓÊÕÊý¾ÝÎ»
   92   2                      _Nop();
-  93   2                      _Nop();
+  93   2                      _Nop();             //±£Ö¤Ê±ÖÓ¸ßµçÆ½ÖÜÆÚ´óÓÚ4¦Ì
   94   2                      _Nop();
-  95   2                      SCL = 0;
-  96   2              }
-  97   1              _Nop();
-  98   1              _Nop();
-  99   1              SDA = 1;               //8Î»·¢ËÍÍêºóÊÍ·ÅÊý¾ÝÏß£¬×¼±¸½ÓÊÕÓ¦´ðÎ»
+  95   2                      _Nop();
+  96   2                      _Nop();
+  97   2                      SCL = 0;
+  98   2              }
+  99   1              _Nop();
  100   1              _Nop();
- 101   1              _Nop();
- 102   1              SCL = 1;
+ 101   1              SDA = 1;               //8Î»·¢ËÍÍêºóÊÍ·ÅÊý¾ÝÏß£¬×¼±¸½ÓÊÕÓ¦´ðÎ»
+ 102   1              _Nop();
  103   1              _Nop();
- 104   1              _Nop();
+ 104   1              SCL = 1;
  105   1              _Nop();
- 106   1              if (SDA == 1)ack = 0;
- 107   1              else ack = 1;        //ÅÐ¶ÏÊÇ·ñ½ÓÊÕµ½Ó¦´ðÐÅºÅ
- 108   1              SCL = 0;
- 109   1              _Nop();
- 110   1              _Nop();
- 111   1      }
- 112          
- 113          /*----------------------------------------------------------------
- 114          ×Ö½ÚÊý¾Ý´«ËÍº¯Êý
- 115          º¯ÊýÔ­ÐÍ: unsigned char  RcvByte();
- 116          ¹¦ÄÜ:  ÓÃÀ´½ÓÊÕ´ÓÆ÷¼þ´«À´µÄÊý¾Ý,²¢ÅÐ¶Ï×ÜÏß´íÎó(²»·¢Ó¦´ðÐÅºÅ)£¬
-C51 COMPILER V9.00   AT24C256                                                              10/06/2015 11:29:53 PAGE 3   
+ 106   1              _Nop();
+ 107   1              _Nop();
+ 108   1              if (SDA == 1)ack = 0;
+ 109   1              else ack = 1;        //ÅÐ¶ÏÊÇ·ñ½ÓÊÕµ½Ó¦´ðÐÅºÅ
+ 110   1              SCL = 0;
+ 111   1              _Nop();
+ 112   1              _Nop();
+ 113   1      }
+ 114          
+ 115          /*----------------------------------------------------------------
+ 116          ×Ö½ÚÊý¾Ý´«ËÍº¯Êý
+C51 COMPILER V9.00   AT24C256                                                              10/06/2015 11:47:06 PAGE 3   
 
- 117          ·¢ÍêºóÇëÓÃÓ¦´ðº¯Êý¡£
- 118          ------------------------------------------------------------------*/
- 119          unsigned char  RcvByte()
- 120          {
- 121   1              unsigned char retc;
- 122   1              unsigned char BitCnt;
- 123   1              retc = 0;
- 124   1              SDA = 1;             //ÖÃÊý¾ÝÏßÎªÊäÈë·½Ê½
- 125   1              for (BitCnt = 0; BitCnt<8; BitCnt++)
- 126   1              {
- 127   2                      _Nop();
- 128   2                      SCL = 0;       //ÖÃÊ±ÖÓÏßÎªµÍ£¬×¼±¸½ÓÊÕÊý¾ÝÎ»
+ 117          º¯ÊýÔ­ÐÍ: unsigned char  RcvByte();
+ 118          ¹¦ÄÜ:  ÓÃÀ´½ÓÊÕ´ÓÆ÷¼þ´«À´µÄÊý¾Ý,²¢ÅÐ¶Ï×ÜÏß´íÎó(²»·¢Ó¦´ðÐÅºÅ)£¬
+ 119          ·¢ÍêºóÇëÓÃÓ¦´ðº¯Êý¡£
+ 120          ------------------------------------------------------------------*/
+ 121          unsigned char  RcvByte()
+ 122          {
+ 123   1              unsigned char retc;
+ 124   1              unsigned char BitCnt;
+ 125   1              retc = 0;
+ 126   1              SDA = 1;             //ÖÃÊý¾ÝÏßÎªÊäÈë·½Ê½
+ 127   1              for (BitCnt = 0; BitCnt<8; BitCnt++)
+ 128   1              {
  129   2                      _Nop();
- 130   2                      _Nop();      //Ê±ÖÓµÍµçÆ½ÖÜÆÚ´óÓÚ4.7us
+ 130   2                      SCL = 0;       //ÖÃÊ±ÖÓÏßÎªµÍ£¬×¼±¸½ÓÊÕÊý¾ÝÎ»
  131   2                      _Nop();
- 132   2                      _Nop();
+ 132   2                      _Nop();      //Ê±ÖÓµÍµçÆ½ÖÜÆÚ´óÓÚ4.7us
  133   2                      _Nop();
- 134   2                      SCL = 1;       //ÖÃÊ±ÖÓÏßÎª¸ßÊ¹Êý¾ÝÏßÉÏÊý¾ÝÓÐÐ§
+ 134   2                      _Nop();
  135   2                      _Nop();
- 136   2                      _Nop();
- 137   2                      retc = retc << 1;
- 138   2                      if (SDA == 1)retc = retc + 1; //¶ÁÊý¾ÝÎ»,½ÓÊÕµÄÊý¾ÝÎ»·ÅÈëretcÖÐ
- 139   2                      _Nop();
- 140   2                      _Nop();
- 141   2              }
- 142   1              SCL = 0;
- 143   1              _Nop();
- 144   1              _Nop();
- 145   1              return(retc);
- 146   1      }
- 147          
- 148          
- 149          /*----------------------------------------------------------------
- 150          Ó¦´ð×Óº¯Êý
- 151          Ô­ÐÍ:  void Ack_I2c(void);
- 152          
- 153          ----------------------------------------------------------------*/
- 154          void Ack_I2c(void)
- 155          {
- 156   1              SDA = 0;
- 157   1              _Nop();
- 158   1              _Nop();
+ 136   2                      SCL = 1;       //ÖÃÊ±ÖÓÏßÎª¸ßÊ¹Êý¾ÝÏßÉÏÊý¾ÝÓÐÐ§
+ 137   2                      _Nop();
+ 138   2                      _Nop();
+ 139   2                      retc = retc << 1;
+ 140   2                      if (SDA == 1)retc = retc + 1; //¶ÁÊý¾ÝÎ»,½ÓÊÕµÄÊý¾ÝÎ»·ÅÈëretcÖÐ
+ 141   2                      _Nop();
+ 142   2                      _Nop();
+ 143   2              }
+ 144   1              SCL = 0;
+ 145   1              _Nop();
+ 146   1              _Nop();
+ 147   1              return(retc);
+ 148   1      }
+ 149          
+ 150          
+ 151          /*----------------------------------------------------------------
+ 152          Ó¦´ð×Óº¯Êý
+ 153          Ô­ÐÍ:  void Ack_I2c(void);
+ 154          
+ 155          ----------------------------------------------------------------*/
+ 156          void Ack_I2c(void)
+ 157          {
+ 158   1              SDA = 0;
  159   1              _Nop();
- 160   1              SCL = 1;
+ 160   1              _Nop();
  161   1              _Nop();
- 162   1              _Nop();              //Ê±ÖÓµÍµçÆ½ÖÜÆÚ´óÓÚ4¦Ì
+ 162   1              SCL = 1;
  163   1              _Nop();
- 164   1              _Nop();
+ 164   1              _Nop();              //Ê±ÖÓµÍµçÆ½ÖÜÆÚ´óÓÚ4¦Ì
  165   1              _Nop();
- 166   1              SCL = 0;               //ÇåÊ±ÖÓÏß£¬Ç¯×¡I2C×ÜÏßÒÔ±ã¼ÌÐø½ÓÊÕ
+ 166   1              _Nop();
  167   1              _Nop();
- 168   1              _Nop();
- 169   1      }
- 170          
- 171          /*----------------------------------------------------------------
- 172          ·ÇÓ¦´ð×Óº¯Êý
- 173          Ô­ÐÍ:  void NoAck_I2c(void);
- 174          
- 175          ----------------------------------------------------------------*/
- 176          void NoAck_I2c(void)
- 177          {
- 178   1              SDA = 1;
-C51 COMPILER V9.00   AT24C256                                                              10/06/2015 11:29:53 PAGE 4   
+ 168   1              SCL = 0;               //ÇåÊ±ÖÓÏß£¬Ç¯×¡I2C×ÜÏßÒÔ±ã¼ÌÐø½ÓÊÕ
+ 169   1              _Nop();
+ 170   1              _Nop();
+ 171   1      }
+ 172          
+ 173          /*----------------------------------------------------------------
+ 174          ·ÇÓ¦´ð×Óº¯Êý
+ 175          Ô­ÐÍ:  void NoAck_I2c(void);
+ 176          
+ 177          ----------------------------------------------------------------*/
+ 178          void NoAck_I2c(void)
+C51 COMPILER V9.00   AT24C256                                                              10/06/2015 11:47:06 PAGE 4   
 
- 179   1              _Nop();
- 180   1              _Nop();
+ 179          {
+ 180   1              SDA = 1;
  181   1              _Nop();
- 182   1              SCL = 1;
+ 182   1              _Nop();
  183   1              _Nop();
- 184   1              _Nop();              //Ê±ÖÓµÍµçÆ½ÖÜÆÚ´óÓÚ4¦Ì
+ 184   1              SCL = 1;
  185   1              _Nop();
- 186   1              _Nop();
+ 186   1              _Nop();              //Ê±ÖÓµÍµçÆ½ÖÜÆÚ´óÓÚ4¦Ì
  187   1              _Nop();
- 188   1              SCL = 0;                //ÇåÊ±ÖÓÏß£¬Ç¯×¡I2C×ÜÏßÒÔ±ã¼ÌÐø½ÓÊÕ
+ 188   1              _Nop();
  189   1              _Nop();
- 190   1              _Nop();
- 191   1      }
- 192          
- 193          /*----------------------------------------------------------------
- 194          ÏòÓÐ×ÓµØÖ·Æ÷¼þ·¢ËÍ¶à×Ö½ÚÊý¾Ýº¯Êý
- 195          º¯ÊýÔ­ÐÍ: bit  ISendStr(unsigned char sla,unsigned char suba,ucahr *s,unsigned char no);
- 196          ¹¦ÄÜ:     ´ÓÆô¶¯×ÜÏßµ½·¢ËÍµØÖ·£¬×ÓµØÖ·,Êý¾Ý£¬½áÊø×ÜÏßµÄÈ«¹ý³Ì,´ÓÆ÷¼þ
- 197          µØÖ·sla£¬×ÓµØÖ·suba£¬·¢ËÍÄÚÈÝÊÇsÖ¸ÏòµÄÄÚÈÝ£¬·¢ËÍno¸ö×Ö½Ú¡£
- 198          Èç¹û·µ»Ø1±íÊ¾²Ù×÷³É¹¦£¬·ñÔò²Ù×÷ÓÐÎó¡£
- 199          ×¢Òâ£º    Ê¹ÓÃÇ°±ØÐëÒÑ½áÊø×ÜÏß¡£
- 200          ----------------------------------------------------------------*/
- 201          bit ISendStr(unsigned char sla, unsigned int suba, unsigned char *s, unsigned char no)
- 202          {
- 203   1              unsigned char i;
- 204   1              Start_I2c();               //Æô¶¯×ÜÏß
- 205   1              SendByte(sla);             //·¢ËÍÆ÷¼þµØÖ·
- 206   1              if (ack == 0)return(0);
- 207   1              SendByte(suba >> 8);            //·¢ËÍÆ÷¼þ×ÓµØÖ·
+ 190   1              SCL = 0;                //ÇåÊ±ÖÓÏß£¬Ç¯×¡I2C×ÜÏßÒÔ±ã¼ÌÐø½ÓÊÕ
+ 191   1              _Nop();
+ 192   1              _Nop();
+ 193   1      }
+ 194          
+ 195          /*----------------------------------------------------------------
+ 196          ÏòÓÐ×ÓµØÖ·Æ÷¼þ·¢ËÍ¶à×Ö½ÚÊý¾Ýº¯Êý
+ 197          º¯ÊýÔ­ÐÍ: bit  ISendStr(unsigned char sla,unsigned char suba,ucahr *s,unsigned char no);
+ 198          ¹¦ÄÜ:     ´ÓÆô¶¯×ÜÏßµ½·¢ËÍµØÖ·£¬×ÓµØÖ·,Êý¾Ý£¬½áÊø×ÜÏßµÄÈ«¹ý³Ì,´ÓÆ÷¼þ
+ 199          µØÖ·sla£¬×ÓµØÖ·suba£¬·¢ËÍÄÚÈÝÊÇsÖ¸ÏòµÄÄÚÈÝ£¬·¢ËÍno¸ö×Ö½Ú¡£
+ 200          Èç¹û·µ»Ø1±íÊ¾²Ù×÷³É¹¦£¬·ñÔò²Ù×÷ÓÐÎó¡£
+ 201          ×¢Òâ£º    Ê¹ÓÃÇ°±ØÐëÒÑ½áÊø×ÜÏß¡£
+ 202          ----------------------------------------------------------------*/
+ 203          bit ISendStr(unsigned char sla, unsigned int suba, unsigned char *s, unsigned char no)
+ 204          {
+ 205   1              unsigned char i;
+ 206   1              Start_I2c();               //Æô¶¯×ÜÏß
+ 207   1              SendByte(sla);             //·¢ËÍÆ÷¼þµØÖ·
  208   1              if (ack == 0)return(0);
- 209   1              SendByte(suba);
+ 209   1              SendByte(suba >> 8);            //·¢ËÍÆ÷¼þ×ÓµØÖ·
  210   1              if (ack == 0)return(0);
- 211   1              for (i = 0; i<no; i++)
- 212   1              {
- 213   2                      SendByte(*s);            //·¢ËÍÊý¾Ý
- 214   2                      if (ack == 0)return(0);
- 215   2                      s++;
- 216   2              }
- 217   1              Stop_I2c();                  //½áÊø×ÜÏß
- 218   1              return(1);
- 219   1      }
- 220          
- 221          
- 222          /*----------------------------------------------------------------
- 223          ÏòÓÐ×ÓµØÖ·Æ÷¼þ¶ÁÈ¡¶à×Ö½ÚÊý¾Ýº¯Êý
- 224          º¯ÊýÔ­ÐÍ: bit  ISendStr(unsigned char sla,unsigned char suba,ucahr *s,unsigned char no);
- 225          ¹¦ÄÜ:     ´ÓÆô¶¯×ÜÏßµ½·¢ËÍµØÖ·£¬×ÓµØÖ·,¶ÁÊý¾Ý£¬½áÊø×ÜÏßµÄÈ«¹ý³Ì,´ÓÆ÷¼þ
- 226          µØÖ·sla£¬×ÓµØÖ·suba£¬¶Á³öµÄÄÚÈÝ·ÅÈësÖ¸ÏòµÄ´æ´¢Çø£¬¶Áno¸ö×Ö½Ú¡£
- 227          Èç¹û·µ»Ø1±íÊ¾²Ù×÷³É¹¦£¬·ñÔò²Ù×÷ÓÐÎó¡£
- 228          ×¢Òâ£º    Ê¹ÓÃÇ°±ØÐëÒÑ½áÊø×ÜÏß¡£
- 229          ----------------------------------------------------------------*/
- 230          bit IRcvStr(unsigned char sla, unsigned int suba, unsigned char *s, unsigned char no)
- 231          {
- 232   1              unsigned char i;
- 233   1              Start_I2c();               //Æô¶¯×ÜÏß
- 234   1              SendByte(sla);             //·¢ËÍÆ÷¼þµØÖ·
- 235   1              if (ack == 0)return(0);
- 236   1              SendByte(suba >> 8);            //·¢ËÍÆ÷¼þ×ÓµØÖ·
+ 211   1              SendByte(suba);
+ 212   1              if (ack == 0)return(0);
+ 213   1              for (i = 0; i<no; i++)
+ 214   1              {
+ 215   2                      SendByte(*s);            //·¢ËÍÊý¾Ý
+ 216   2                      if (ack == 0)return(0);
+ 217   2                      s++;
+ 218   2              }
+ 219   1              Stop_I2c();                  //½áÊø×ÜÏß
+ 220   1              return(1);
+ 221   1      }
+ 222          
+ 223          
+ 224          /*----------------------------------------------------------------
+ 225          ÏòÓÐ×ÓµØÖ·Æ÷¼þ¶ÁÈ¡¶à×Ö½ÚÊý¾Ýº¯Êý
+ 226          º¯ÊýÔ­ÐÍ: bit  ISendStr(unsigned char sla,unsigned char suba,ucahr *s,unsigned char no);
+ 227          ¹¦ÄÜ:     ´ÓÆô¶¯×ÜÏßµ½·¢ËÍµØÖ·£¬×ÓµØÖ·,¶ÁÊý¾Ý£¬½áÊø×ÜÏßµÄÈ«¹ý³Ì,´ÓÆ÷¼þ
+ 228          µØÖ·sla£¬×ÓµØÖ·suba£¬¶Á³öµÄÄÚÈÝ·ÅÈësÖ¸ÏòµÄ´æ´¢Çø£¬¶Áno¸ö×Ö½Ú¡£
+ 229          Èç¹û·µ»Ø1±íÊ¾²Ù×÷³É¹¦£¬·ñÔò²Ù×÷ÓÐÎó¡£
+ 230          ×¢Òâ£º    Ê¹ÓÃÇ°±ØÐëÒÑ½áÊø×ÜÏß¡£
+ 231          ----------------------------------------------------------------*/
+ 232          bit IRcvStr(unsigned char sla, unsigned int suba, unsigned char *s, unsigned char no)
+ 233          {
+ 234   1              unsigned char i;
+ 235   1              Start_I2c();               //Æô¶¯×ÜÏß
+ 236   1              SendByte(sla);             //·¢ËÍÆ÷¼þµØÖ·
  237   1              if (ack == 0)return(0);
- 238   1              SendByte(suba);            //·¢ËÍÆ÷¼þ×ÓµØÖ·
+ 238   1              SendByte(suba >> 8);            //·¢ËÍÆ÷¼þ×ÓµØÖ·
  239   1              if (ack == 0)return(0);
- 240   1              Start_I2c();
-C51 COMPILER V9.00   AT24C256                                                              10/06/2015 11:29:53 PAGE 5   
+ 240   1              SendByte(suba);            //·¢ËÍÆ÷¼þ×ÓµØÖ·
+C51 COMPILER V9.00   AT24C256                                                              10/06/2015 11:47:06 PAGE 5   
 
- 241   1              SendByte(sla + 1);
- 242   1              if (ack == 0)return(0);
- 243   1              for (i = 0; i<no - 1; i++)
- 244   1              {
- 245   2                      *s = RcvByte();              //·¢ËÍÊý¾Ý
- 246   2                      Ack_I2c();                //·¢ËÍ¾Í´ðÎ» 
- 247   2                      s++;
- 248   2              }
- 249   1              *s = RcvByte();
- 250   1              NoAck_I2c();                 //·¢ËÍ·ÇÓ¦Î»
- 251   1              Stop_I2c();                    //½áÊø×ÜÏß
- 252   1              return(1);
- 253   1      }
- 254          
- 255          bit register_call_function(unsigned char *buf)
- 256          {
- 257   1                      unsigned char base_address = 0;//»ù×¼µØÖ·   
- 258   1                      unsigned char offset_address = 0;//Æ«ÒÆµØÖ·
- 259   1                      //µØÖ·=  »ù×¼µØÖ·*32 +Æ«ÒÆµØÖ·
- 260   1                      /*ÏÈÑ°ÕÒÕâ¸öIDÂëÊÇ·ñ´æÔÚ*/
- 261   1                      for (base_address = CALL_TABLE_START; base_address<ALL_TABLE_NUMBER; base_address++)    //32*32 =1024¸ö±êÖ¾
+ 241   1              if (ack == 0)return(0);
+ 242   1              Start_I2c();
+ 243   1              SendByte(sla + 1);
+ 244   1              if (ack == 0)return(0);
+ 245   1              for (i = 0; i<no - 1; i++)
+ 246   1              {
+ 247   2                      *s = RcvByte();              //·¢ËÍÊý¾Ý
+ 248   2                      Ack_I2c();                //·¢ËÍ¾Í´ðÎ» 
+ 249   2                      s++;
+ 250   2              }
+ 251   1              *s = RcvByte();
+ 252   1              NoAck_I2c();                 //·¢ËÍ·ÇÓ¦Î»
+ 253   1              Stop_I2c();                    //½áÊø×ÜÏß
+ 254   1              return(1);
+ 255   1      }
+ 256          
+ 257          bit register_call_function(unsigned char *buf)
+ 258          {
+ 259   1                      unsigned char base_address = 0;//»ù×¼µØÖ·   
+ 260   1                      unsigned char offset_address = 0;//Æ«ÒÆµØÖ·
+ 261   1                      //µØÖ·=  »ù×¼µØÖ·*32 +Æ«ÒÆµØÖ·
+ 262   1                      /*ÏÈÑ°ÕÒÕâ¸öIDÂëÊÇ·ñ´æÔÚ*/
+ 263   1                      for (base_address = CALL_TABLE_START; base_address<ALL_TABLE_NUMBER; base_address++)    //32*32 =1024¸ö±êÖ¾
              -Î»
- 262   1                      {
- 263   2                              IRcvStr(I2C_ADDRESS, base_address*PAGE_LENGTH, at24c64_buff, PAGE_LENGTH);//´ÓAT24C256ÀïÃæ¶Á³ö32¸ö×Ö½Úµ
+ 264   1                      {
+ 265   2                              IRcvStr(I2C_ADDRESS, base_address*PAGE_LENGTH, at24c64_buff, PAGE_LENGTH);//´ÓAT24C256ÀïÃæ¶Á³ö32¸ö×Ö½Úµ
              -Ä±êÖ¾Î»
- 264   2                              delay10ms();
- 265   2                              for (offset_address = 0; offset_address<PAGE_LENGTH; offset_address++)//Ö÷Òª32¸ö×Ö½Ú±êÖ¾Î»ÀïÃæÃ»ÓÐ0µÄ¾Í
+ 266   2                              delay10ms();
+ 267   2                              for (offset_address = 0; offset_address<PAGE_LENGTH; offset_address++)//Ö÷Òª32¸ö×Ö½Ú±êÖ¾Î»ÀïÃæÃ»ÓÐ0µÄ¾Í
              -OK
- 266   2                              {
- 267   3                                      if (at24c64_buff[offset_address] == 0) //Èç¹û±êÖ¾Î»µÈÓÚ0  ÔòÕÒÕÒ¿´ Õâ¸öIDÂëÊÇ·ñ×¢²á¹ý
- 268   3                                      {
- 269   4                                              IRcvStr(I2C_ADDRESS, (CALL_DATA_START + (base_address*PAGE_LENGTH + offset_address) * 8), eeprom_buff
+ 268   2                              {
+ 269   3                                      if (at24c64_buff[offset_address] == 0) //Èç¹û±êÖ¾Î»µÈÓÚ0  ÔòÕÒÕÒ¿´ Õâ¸öIDÂëÊÇ·ñ×¢²á¹ý
+ 270   3                                      {
+ 271   4                                              IRcvStr(I2C_ADDRESS, (CALL_DATA_START + (base_address*PAGE_LENGTH + offset_address) * 8), eeprom_buff
              -, 8);
- 270   4                                              delay10ms();
- 271   4      
- 272   4                                              if ((*(eeprom_buff + 5) == *(buf + 5)) && (*(eeprom_buff + 6) == *(buf + 6)) && (*(eeprom_buff + 7) =
+ 272   4                                              delay10ms();
+ 273   4      
+ 274   4                                              if ((*(eeprom_buff + 5) == *(buf + 5)) && (*(eeprom_buff + 6) == *(buf + 6)) && (*(eeprom_buff + 7) =
              -= *(buf + 7)))
- 273   4                                              {
- 274   5                                                      //IFÌõ¼þ³ÉÁ¢ ÔòÕâ¸öIDÂë×¢²á¹ý
- 275   5                                                      Two_Menu_F1_E1[0] = *(eeprom_buff + 1);
- 276   5                                                      Two_Menu_F1_E1[1] = *(eeprom_buff + 2);
- 277   5                                                      Two_Menu_F1_E1[2] = *(eeprom_buff + 3);
- 278   5                                                      Two_Menu_F1_E1[3] = *(eeprom_buff + 4);
- 279   5      #ifdef DEBUG
- 280   5                                                      uart_printf("caller register is old! \n\r"); 
- 281   5      #endif
- 282   5      
- 283   5      //                                              if (sound_table == 1)
- 284   5      //                                              {
- 285   5      //#if SOUND
- 286   5      //                                                      GD5800_select_chapter(SETERROR_POSITION);
- 287   5      //#endif
- 288   5      //                                                      sound_table = 0;
- 289   5      //                                              }
- 290   5                                                      return 0;
- 291   5                                              }
- 292   4                                      }
- 293   3                              }
- 294   2                      }
- 295   1                      //Èç¹û³ÌÐòÖ´ÐÐµ½ÕâÀï£¬Ôò´ú±íIDÂëÃ»ÓÐ×¢²á¹ý
- 296   1                      for (base_address = 0; base_address<CALL_TABLE_NUMBER; base_address++)
- 297   1                      {
-C51 COMPILER V9.00   AT24C256                                                              10/06/2015 11:29:53 PAGE 6   
+ 275   4                                              {
+ 276   5                                                      //IFÌõ¼þ³ÉÁ¢ ÔòÕâ¸öIDÂë×¢²á¹ý
+ 277   5                                                      Two_Menu_F1_E1[0] = *(eeprom_buff + 1);
+ 278   5                                                      Two_Menu_F1_E1[1] = *(eeprom_buff + 2);
+ 279   5                                                      Two_Menu_F1_E1[2] = *(eeprom_buff + 3);
+ 280   5                                                      Two_Menu_F1_E1[3] = *(eeprom_buff + 4);
+ 281   5      #ifdef DEBUG
+                                                              uart_printf("caller register is old! \n\r"); 
+              #endif
+ 284   5      
+ 285   5                                                      if (return_sound_table() == 1)
+ 286   5                                                      {
+ 287   6                                                              GD5800_select_chapter(SHIBAI);
+ 288   6      
+ 289   6                                                              set_sound_table(0);
+ 290   6                                                      }
+ 291   5                                                      return 0;
+ 292   5                                              }
+ 293   4                                      }
+ 294   3                              }
+ 295   2                      }
+ 296   1                      //Èç¹û³ÌÐòÖ´ÐÐµ½ÕâÀï£¬Ôò´ú±íIDÂëÃ»ÓÐ×¢²á¹ý
+ 297   1                      for (base_address = 0; base_address<CALL_TABLE_NUMBER; base_address++)
+C51 COMPILER V9.00   AT24C256                                                              10/06/2015 11:47:06 PAGE 6   
 
- 298   2                              IRcvStr(I2C_ADDRESS, CALL_TABLE_START + base_address*PAGE_LENGTH, at24c64_buff, PAGE_LENGTH);//´ÓAT24C6
+ 298   1                      {
+ 299   2                              IRcvStr(I2C_ADDRESS, CALL_TABLE_START + base_address*PAGE_LENGTH, at24c64_buff, PAGE_LENGTH);//´ÓAT24C6
              -4ÀïÃæ¶Á³ö32¸ö×Ö½ÚµÄ±êÖ¾Î»
- 299   2                              delay10ms();
- 300   2                              for (offset_address = 0; offset_address<PAGE_LENGTH; offset_address++)//Ö÷Òª32¸ö×Ö½Ú±êÖ¾Î»ÀïÃæÃ»ÓÐ0µÄ¾Í
+ 300   2                              delay10ms();
+ 301   2                              for (offset_address = 0; offset_address<PAGE_LENGTH; offset_address++)//Ö÷Òª32¸ö×Ö½Ú±êÖ¾Î»ÀïÃæÃ»ÓÐ0µÄ¾Í
              -OK
- 301   2                              {
- 302   3                                      if (at24c64_buff[offset_address] != 0)
- 303   3                                      {
- 304   4                                              ISendStr(I2C_ADDRESS, (CALL_DATA_START + ((base_address*PAGE_LENGTH) + offset_address) * 8), buf, 8);
- 305   4                                              delay10ms();
- 306   4                                              at24c64_buff[offset_address] = 0;
- 307   4                                              ISendStr(I2C_ADDRESS, CALL_TABLE_START+base_address*PAGE_LENGTH, at24c64_buff, PAGE_LENGTH);
- 308   4                                              delay10ms();
- 309   4                                              //½«±êÖ¾Î»ÒÔ¼°Êý¾Ý·Ö±ðÐ´µ½±êÖ¾Çø¸úÊý¾ÝÇø
- 310   4      #ifdef DEBUG
- 311   4                                              uart_printf("caller register is new! \n\r");
- 312   4                                              uart_printf("±êÖ¾µØÖ·Îª %x ! \n\r", (unsigned int)(CALL_TABLE_START + base_address*PAGE_LENGTH) );
- 313   4                                              uart_printf("´æ´¢µØÖ·Îª %x ! \n\r", CALL_DATA_START + ((base_address*PAGE_LENGTH) + offset_address) *
+ 302   2                              {
+ 303   3                                      if (at24c64_buff[offset_address] != 0)
+ 304   3                                      {
+ 305   4                                              ISendStr(I2C_ADDRESS, (CALL_DATA_START + ((base_address*PAGE_LENGTH) + offset_address) * 8), buf, 8);
+ 306   4                                              delay10ms();
+ 307   4                                              at24c64_buff[offset_address] = 0;
+ 308   4                                              ISendStr(I2C_ADDRESS, CALL_TABLE_START+base_address*PAGE_LENGTH, at24c64_buff, PAGE_LENGTH);
+ 309   4                                              delay10ms();
+ 310   4                                              //½«±êÖ¾Î»ÒÔ¼°Êý¾Ý·Ö±ðÐ´µ½±êÖ¾Çø¸úÊý¾ÝÇø
+ 311   4      #ifdef DEBUG
+                                                      uart_printf("caller register is new! \n\r");
+                                                      uart_printf("±êÖ¾µØÖ·Îª %x ! \n\r", (unsigned int)(CALL_TABLE_START + base_address*PAGE_LENGTH) );
+                                                      uart_printf("´æ´¢µØÖ·Îª %x ! \n\r", CALL_DATA_START + ((base_address*PAGE_LENGTH) + offset_address) *
              - 8);
- 314   4      #endif
- 315   4      //                                      if (sound_table == 1)
- 316   4      //                                      {
- 317   4      //#if SOUND
- 318   4      //                                              GD5800_select_chapter(SETSUCCESS_POSITION);
- 319   4      //#endif
- 320   4      //                                              sound_table = 0;
- 321   4      //                                      }
+              #endif
+ 316   4                                              if (return_sound_table() == 1)
+ 317   4                                              {
+ 318   5                                                      GD5800_select_chapter(CHENGGONG);
+ 319   5      
+ 320   5                                                      set_sound_table(0);
+ 321   5                                              }
  322   4                                              return 1;
  323   4                                              //ÌáÊ¾³É¹¦                              
  324   4                                      }
@@ -382,456 +382,448 @@ line level    source
  349   5                                              //IFÌõ¼þ³ÉÁ¢ ÔòÕâ¸öIDÂë×¢²á¹ý
  350   5                                              Two_Menu_F1_E2[0] = *(eeprom_buff + 1);
  351   5                                              Two_Menu_F1_E2[1] = *(eeprom_buff + 2);
-C51 COMPILER V9.00   AT24C256                                                              10/06/2015 11:29:53 PAGE 7   
+C51 COMPILER V9.00   AT24C256                                                              10/06/2015 11:47:06 PAGE 7   
 
  352   5                                              Two_Menu_F1_E2[2] = *(eeprom_buff + 3);
  353   5                                              Two_Menu_F1_E2[3] = *(eeprom_buff + 4);
  354   5      #ifdef DEBUG
- 355   5                                              uart_printf("host register is old! \n\r");
- 356   5      #endif
+                                                      uart_printf("host register is old! \n\r");
+              #endif
  357   5      
- 358   5                                              //                                              if (sound_table == 1)
- 359   5                                              //                                              {
- 360   5                                              //#if SOUND
- 361   5                                              //                                                      GD5800_select_chapter(SETERROR_POSITION);
- 362   5                                              //#endif
- 363   5                                              //                                                      sound_table = 0;
- 364   5                                              //                                              }
- 365   5                                              return 0;
- 366   5                                      }
- 367   4                              }
- 368   3                      }
- 369   2              }
- 370   1              //Èç¹û³ÌÐòÖ´ÐÐµ½ÕâÀï£¬Ôò´ú±íIDÂëÃ»ÓÐ×¢²á¹ý
- 371   1              for (base_address = 0; base_address<HOST_TABLE_NUMBER; base_address++)
- 372   1              {
- 373   2                      IRcvStr(I2C_ADDRESS, HOST_TABLE_START + base_address*PAGE_LENGTH, at24c64_buff, PAGE_LENGTH);//´ÓAT24C64
+ 358   5                                              if (return_sound_table() == 1)
+ 359   5                                              {
+ 360   6                                                      GD5800_select_chapter(SHIBAI);
+ 361   6      
+ 362   6                                                      set_sound_table(0);
+ 363   6                                              }
+ 364   5                                              return 0;
+ 365   5                                      }
+ 366   4                              }
+ 367   3                      }
+ 368   2              }
+ 369   1              //Èç¹û³ÌÐòÖ´ÐÐµ½ÕâÀï£¬Ôò´ú±íIDÂëÃ»ÓÐ×¢²á¹ý
+ 370   1              for (base_address = 0; base_address<HOST_TABLE_NUMBER; base_address++)
+ 371   1              {
+ 372   2                      IRcvStr(I2C_ADDRESS, HOST_TABLE_START + base_address*PAGE_LENGTH, at24c64_buff, PAGE_LENGTH);//´ÓAT24C64
              -ÀïÃæ¶Á³ö32¸ö×Ö½ÚµÄ±êÖ¾Î»
- 374   2                      delay10ms();
- 375   2                      for (offset_address = 0; offset_address<PAGE_LENGTH; offset_address++)//Ö÷Òª32¸ö×Ö½Ú±êÖ¾Î»ÀïÃæÃ»ÓÐ0µÄ¾ÍO
+ 373   2                      delay10ms();
+ 374   2                      for (offset_address = 0; offset_address<PAGE_LENGTH; offset_address++)//Ö÷Òª32¸ö×Ö½Ú±êÖ¾Î»ÀïÃæÃ»ÓÐ0µÄ¾ÍO
              -K
- 376   2                      {
- 377   3                              if (at24c64_buff[offset_address] != 0)
- 378   3                              {
- 379   4                                      ISendStr(I2C_ADDRESS, (HOST_DATA_START + ((base_address*PAGE_LENGTH) + offset_address) * 8), buf, 8);
- 380   4                                      delay10ms();
- 381   4                                      at24c64_buff[offset_address] = 0;
- 382   4                                      ISendStr(I2C_ADDRESS,HOST_TABLE_START + base_address*PAGE_LENGTH, at24c64_buff, PAGE_LENGTH);
- 383   4                                      delay10ms();
- 384   4                                      //½«±êÖ¾Î»ÒÔ¼°Êý¾Ý·Ö±ðÐ´µ½±êÖ¾Çø¸úÊý¾ÝÇø
- 385   4      #ifdef DEBUG
- 386   4                                      uart_printf("host register is new! \n\r");
- 387   4      #endif
- 388   4                                      //                                      if (sound_table == 1)
- 389   4                                      //                                      {
- 390   4                                      //#if SOUND
- 391   4                                      //                                              GD5800_select_chapter(SETSUCCESS_POSITION);
- 392   4                                      //#endif
- 393   4                                      //                                              sound_table = 0;
- 394   4                                      //                                      }
- 395   4                                      return 1;
- 396   4                                      //ÌáÊ¾³É¹¦                              
- 397   4                              }
- 398   3                      }
- 399   2              }
- 400   1              return 0;
- 401   1      }
- 402          
- 403          bit register_alarm_function(unsigned char *buf)
- 404          {
- 405   1              unsigned char base_address = 0;//»ù×¼µØÖ·   
- 406   1              unsigned char offset_address = 0;//Æ«ÒÆµØÖ·
- 407   1              //µØÖ·=  »ù×¼µØÖ·*32 +Æ«ÒÆµØÖ·
- 408   1              /*ÏÈÑ°ÕÒÕâ¸öIDÂëÊÇ·ñ´æÔÚ*/
- 409   1              for (base_address = CALL_TABLE_START; base_address<ALL_TABLE_NUMBER; base_address++)    //32*32 =1024¸ö±êÖ¾Î
+ 375   2                      {
+ 376   3                              if (at24c64_buff[offset_address] != 0)
+ 377   3                              {
+ 378   4                                      ISendStr(I2C_ADDRESS, (HOST_DATA_START + ((base_address*PAGE_LENGTH) + offset_address) * 8), buf, 8);
+ 379   4                                      delay10ms();
+ 380   4                                      at24c64_buff[offset_address] = 0;
+ 381   4                                      ISendStr(I2C_ADDRESS,HOST_TABLE_START + base_address*PAGE_LENGTH, at24c64_buff, PAGE_LENGTH);
+ 382   4                                      delay10ms();
+ 383   4                                      //½«±êÖ¾Î»ÒÔ¼°Êý¾Ý·Ö±ðÐ´µ½±êÖ¾Çø¸úÊý¾ÝÇø
+ 384   4      #ifdef DEBUG
+                                              uart_printf("host register is new! \n\r");
+              #endif
+ 387   4                                      if (return_sound_table() == 1)
+ 388   4                                      {
+ 389   5                                              GD5800_select_chapter(CHENGGONG);
+ 390   5      
+ 391   5                                              set_sound_table(0);
+ 392   5                                      }
+ 393   4                                      return 1;
+ 394   4                                      //ÌáÊ¾³É¹¦                              
+ 395   4                              }
+ 396   3                      }
+ 397   2              }
+ 398   1              return 0;
+ 399   1      }
+ 400          
+ 401          bit register_alarm_function(unsigned char *buf)
+ 402          {
+ 403   1              unsigned char base_address = 0;//»ù×¼µØÖ·   
+ 404   1              unsigned char offset_address = 0;//Æ«ÒÆµØÖ·
+ 405   1              //µØÖ·=  »ù×¼µØÖ·*32 +Æ«ÒÆµØÖ·
+ 406   1              /*ÏÈÑ°ÕÒÕâ¸öIDÂëÊÇ·ñ´æÔÚ*/
+ 407   1              for (base_address = CALL_TABLE_START; base_address<ALL_TABLE_NUMBER; base_address++)    //32*32 =1024¸ö±êÖ¾Î
              -»
- 410   1              {
-C51 COMPILER V9.00   AT24C256                                                              10/06/2015 11:29:53 PAGE 8   
-
- 411   2                      IRcvStr(I2C_ADDRESS, base_address*PAGE_LENGTH, at24c64_buff, PAGE_LENGTH);//´ÓAT24C256ÀïÃæ¶Á³ö32¸ö×Ö½ÚµÄ
+ 408   1              {
+ 409   2                      IRcvStr(I2C_ADDRESS, base_address*PAGE_LENGTH, at24c64_buff, PAGE_LENGTH);//´ÓAT24C256ÀïÃæ¶Á³ö32¸ö×Ö½ÚµÄ
              -±êÖ¾Î»
- 412   2                      delay10ms();
- 413   2                      for (offset_address = 0; offset_address<PAGE_LENGTH; offset_address++)//Ö÷Òª32¸ö×Ö½Ú±êÖ¾Î»ÀïÃæÃ»ÓÐ0µÄ¾ÍO
+C51 COMPILER V9.00   AT24C256                                                              10/06/2015 11:47:06 PAGE 8   
+
+ 410   2                      delay10ms();
+ 411   2                      for (offset_address = 0; offset_address<PAGE_LENGTH; offset_address++)//Ö÷Òª32¸ö×Ö½Ú±êÖ¾Î»ÀïÃæÃ»ÓÐ0µÄ¾ÍO
              -K
- 414   2                      {
- 415   3                              if (at24c64_buff[offset_address] == 0) //Èç¹û±êÖ¾Î»µÈÓÚ0  ÔòÕÒÕÒ¿´ Õâ¸öIDÂëÊÇ·ñ×¢²á¹ý
- 416   3                              {
- 417   4                                      IRcvStr(I2C_ADDRESS, (CALL_DATA_START + (base_address*PAGE_LENGTH + offset_address) * 8), eeprom_buff,
+ 412   2                      {
+ 413   3                              if (at24c64_buff[offset_address] == 0) //Èç¹û±êÖ¾Î»µÈÓÚ0  ÔòÕÒÕÒ¿´ Õâ¸öIDÂëÊÇ·ñ×¢²á¹ý
+ 414   3                              {
+ 415   4                                      IRcvStr(I2C_ADDRESS, (CALL_DATA_START + (base_address*PAGE_LENGTH + offset_address) * 8), eeprom_buff,
              - 8);
- 418   4                                      delay10ms();
- 419   4      
- 420   4                                      if ((*(eeprom_buff + 5) == *(buf + 5)) && (*(eeprom_buff + 6) == *(buf + 6)) && (*(eeprom_buff + 7) ==
+ 416   4                                      delay10ms();
+ 417   4      
+ 418   4                                      if ((*(eeprom_buff + 5) == *(buf + 5)) && (*(eeprom_buff + 6) == *(buf + 6)) && (*(eeprom_buff + 7) ==
              - *(buf + 7)))
- 421   4                                      {
- 422   5                                              //IFÌõ¼þ³ÉÁ¢ ÔòÕâ¸öIDÂë×¢²á¹ý
- 423   5                                              Two_Menu_F1_E3[0] = *(eeprom_buff + 1);
- 424   5                                              Two_Menu_F1_E3[1] = *(eeprom_buff + 2);
- 425   5                                              Two_Menu_F1_E3[2] = *(eeprom_buff + 3);
- 426   5                                              Two_Menu_F1_E3[3] = *(eeprom_buff + 4);
- 427   5      #ifdef DEBUG
- 428   5                                              uart_printf("alarmer register is old! \n\r");
- 429   5      #endif
- 430   5      
- 431   5                                              //                                              if (sound_table == 1)
- 432   5                                              //                                              {
- 433   5                                              //#if SOUND
- 434   5                                              //                                                      GD5800_select_chapter(SETERROR_POSITION);
- 435   5                                              //#endif
- 436   5                                              //                                                      sound_table = 0;
- 437   5                                              //                                              }
- 438   5                                              return 0;
- 439   5                                      }
- 440   4                              }
- 441   3                      }
- 442   2              }
- 443   1              //Èç¹û³ÌÐòÖ´ÐÐµ½ÕâÀï£¬Ôò´ú±íIDÂëÃ»ÓÐ×¢²á¹ý
- 444   1              for (base_address = 0; base_address<ALARM_TABLE_NUMBER; base_address++)
- 445   1              {
- 446   2                      IRcvStr(I2C_ADDRESS, ALARM_TABLE_START + base_address*PAGE_LENGTH, at24c64_buff, PAGE_LENGTH);//´ÓAT24C6
+ 419   4                                      {
+ 420   5                                              //IFÌõ¼þ³ÉÁ¢ ÔòÕâ¸öIDÂë×¢²á¹ý
+ 421   5                                              Two_Menu_F1_E3[0] = *(eeprom_buff + 1);
+ 422   5                                              Two_Menu_F1_E3[1] = *(eeprom_buff + 2);
+ 423   5                                              Two_Menu_F1_E3[2] = *(eeprom_buff + 3);
+ 424   5                                              Two_Menu_F1_E3[3] = *(eeprom_buff + 4);
+ 425   5      #ifdef DEBUG
+                                                      uart_printf("alarmer register is old! \n\r");
+              #endif
+ 428   5      
+ 429   5                                              if (return_sound_table() == 1)
+ 430   5                                              {
+ 431   6                                                      GD5800_select_chapter(SHIBAI);
+ 432   6      
+ 433   6                                                      set_sound_table(0);
+ 434   6                                              }
+ 435   5                                              return 0;
+ 436   5                                      }
+ 437   4                              }
+ 438   3                      }
+ 439   2              }
+ 440   1              //Èç¹û³ÌÐòÖ´ÐÐµ½ÕâÀï£¬Ôò´ú±íIDÂëÃ»ÓÐ×¢²á¹ý
+ 441   1              for (base_address = 0; base_address<ALARM_TABLE_NUMBER; base_address++)
+ 442   1              {
+ 443   2                      IRcvStr(I2C_ADDRESS, ALARM_TABLE_START + base_address*PAGE_LENGTH, at24c64_buff, PAGE_LENGTH);//´ÓAT24C6
              -4ÀïÃæ¶Á³ö32¸ö×Ö½ÚµÄ±êÖ¾Î»
- 447   2                      delay10ms();
- 448   2                      for (offset_address = 0; offset_address<PAGE_LENGTH; offset_address++)//Ö÷Òª32¸ö×Ö½Ú±êÖ¾Î»ÀïÃæÃ»ÓÐ0µÄ¾ÍO
+ 444   2                      delay10ms();
+ 445   2                      for (offset_address = 0; offset_address<PAGE_LENGTH; offset_address++)//Ö÷Òª32¸ö×Ö½Ú±êÖ¾Î»ÀïÃæÃ»ÓÐ0µÄ¾ÍO
              -K
- 449   2                      {
- 450   3                              if (at24c64_buff[offset_address] != 0)
- 451   3                              {
- 452   4                                      ISendStr(I2C_ADDRESS, (ALARM_DATA_START + ((base_address*PAGE_LENGTH) + offset_address) * 8), buf, 8);
+ 446   2                      {
+ 447   3                              if (at24c64_buff[offset_address] != 0)
+ 448   3                              {
+ 449   4                                      ISendStr(I2C_ADDRESS, (ALARM_DATA_START + ((base_address*PAGE_LENGTH) + offset_address) * 8), buf, 8);
+ 450   4                                      delay10ms();
+ 451   4                                      at24c64_buff[offset_address] = 0;
+ 452   4                                      ISendStr(I2C_ADDRESS,ALARM_TABLE_START+base_address*PAGE_LENGTH, at24c64_buff, PAGE_LENGTH);
  453   4                                      delay10ms();
- 454   4                                      at24c64_buff[offset_address] = 0;
- 455   4                                      ISendStr(I2C_ADDRESS,ALARM_TABLE_START+base_address*PAGE_LENGTH, at24c64_buff, PAGE_LENGTH);
- 456   4                                      delay10ms();
- 457   4                                      //½«±êÖ¾Î»ÒÔ¼°Êý¾Ý·Ö±ðÐ´µ½±êÖ¾Çø¸úÊý¾ÝÇø
- 458   4      #ifdef DEBUG
- 459   4                                      uart_printf("alarmer register is new! \n\r");
- 460   4                                      uart_printf("±êÖ¾µØÖ·Îª %x ! \n\r", ALARM_TABLE_START + base_address*PAGE_LENGTH);
- 461   4                                      uart_printf("´æ´¢µØÖ·Îª %x ! \n\r", ALARM_DATA_START + ((base_address*PAGE_LENGTH) + offset_address) *
+ 454   4                                      //½«±êÖ¾Î»ÒÔ¼°Êý¾Ý·Ö±ðÐ´µ½±êÖ¾Çø¸úÊý¾ÝÇø
+ 455   4      #ifdef DEBUG
+                                              uart_printf("alarmer register is new! \n\r");
+                                              uart_printf("±êÖ¾µØÖ·Îª %x ! \n\r", ALARM_TABLE_START + base_address*PAGE_LENGTH);
+                                              uart_printf("´æ´¢µØÖ·Îª %x ! \n\r", ALARM_DATA_START + ((base_address*PAGE_LENGTH) + offset_address) *
              - 8);
- 462   4      #endif
- 463   4                                      //                                      if (sound_table == 1)
- 464   4                                      //                                      {
- 465   4                                      //#if SOUND
-C51 COMPILER V9.00   AT24C256                                                              10/06/2015 11:29:53 PAGE 9   
+              #endif
+ 460   4                                      if (return_sound_table() == 1)
+ 461   4                                      {
+ 462   5                                              GD5800_select_chapter(CHENGGONG);
+ 463   5      
+ 464   5                                              set_sound_table(0);
+ 465   5                                      }
+C51 COMPILER V9.00   AT24C256                                                              10/06/2015 11:47:06 PAGE 9   
 
- 466   4                                      //                                              GD5800_select_chapter(SETSUCCESS_POSITION);
- 467   4                                      //#endif
- 468   4                                      //                                              sound_table = 0;
- 469   4                                      //                                      }
- 470   4                                      return 1;
- 471   4                                      //ÌáÊ¾³É¹¦                              
- 472   4                              }
- 473   3                      }
- 474   2              }
- 475   1              return 0;
- 476   1      }
- 477          
- 478          bit register_cancel_function(unsigned char *buf)
- 479          {
- 480   1              unsigned char base_address = 0;//»ù×¼µØÖ·   
- 481   1              unsigned char offset_address = 0;//Æ«ÒÆµØÖ·
- 482   1              //µØÖ·=  »ù×¼µØÖ·*32 +Æ«ÒÆµØÖ·
- 483   1              /*ÏÈÑ°ÕÒÕâ¸öIDÂëÊÇ·ñ´æÔÚ*/
- 484   1              for (base_address = CALL_TABLE_START; base_address<ALL_TABLE_NUMBER; base_address++)    //32*32 =1024¸ö±êÖ¾Î
+ 466   4                                      return 1;
+ 467   4                                      //ÌáÊ¾³É¹¦                              
+ 468   4                              }
+ 469   3                      }
+ 470   2              }
+ 471   1              return 0;
+ 472   1      }
+ 473          
+ 474          bit register_cancel_function(unsigned char *buf)
+ 475          {
+ 476   1              unsigned char base_address = 0;//»ù×¼µØÖ·   
+ 477   1              unsigned char offset_address = 0;//Æ«ÒÆµØÖ·
+ 478   1              //µØÖ·=  »ù×¼µØÖ·*32 +Æ«ÒÆµØÖ·
+ 479   1              /*ÏÈÑ°ÕÒÕâ¸öIDÂëÊÇ·ñ´æÔÚ*/
+ 480   1              for (base_address = CALL_TABLE_START; base_address<ALL_TABLE_NUMBER; base_address++)    //32*32 =1024¸ö±êÖ¾Î
              -»
- 485   1              {
- 486   2                      IRcvStr(I2C_ADDRESS, base_address*PAGE_LENGTH, at24c64_buff, PAGE_LENGTH);//´ÓAT24C256ÀïÃæ¶Á³ö32¸ö×Ö½ÚµÄ
+ 481   1              {
+ 482   2                      IRcvStr(I2C_ADDRESS, base_address*PAGE_LENGTH, at24c64_buff, PAGE_LENGTH);//´ÓAT24C256ÀïÃæ¶Á³ö32¸ö×Ö½ÚµÄ
              -±êÖ¾Î»
- 487   2                      delay10ms();
- 488   2                      for (offset_address = 0; offset_address<PAGE_LENGTH; offset_address++)//Ö÷Òª32¸ö×Ö½Ú±êÖ¾Î»ÀïÃæÃ»ÓÐ0µÄ¾ÍO
+ 483   2                      delay10ms();
+ 484   2                      for (offset_address = 0; offset_address<PAGE_LENGTH; offset_address++)//Ö÷Òª32¸ö×Ö½Ú±êÖ¾Î»ÀïÃæÃ»ÓÐ0µÄ¾ÍO
              -K
- 489   2                      {
- 490   3                              if (at24c64_buff[offset_address] == 0) //Èç¹û±êÖ¾Î»µÈÓÚ0  ÔòÕÒÕÒ¿´ Õâ¸öIDÂëÊÇ·ñ×¢²á¹ý
- 491   3                              {
- 492   4                                      IRcvStr(I2C_ADDRESS, (CALL_DATA_START + (base_address*PAGE_LENGTH + offset_address) * 8), eeprom_buff,
+ 485   2                      {
+ 486   3                              if (at24c64_buff[offset_address] == 0) //Èç¹û±êÖ¾Î»µÈÓÚ0  ÔòÕÒÕÒ¿´ Õâ¸öIDÂëÊÇ·ñ×¢²á¹ý
+ 487   3                              {
+ 488   4                                      IRcvStr(I2C_ADDRESS, (CALL_DATA_START + (base_address*PAGE_LENGTH + offset_address) * 8), eeprom_buff,
              - 8);
- 493   4                                      delay10ms();
- 494   4      
- 495   4                                      if ((*(eeprom_buff + 5) == *(buf + 5)) && (*(eeprom_buff + 6) == *(buf + 6)) && (*(eeprom_buff + 7) ==
+ 489   4                                      delay10ms();
+ 490   4      
+ 491   4                                      if ((*(eeprom_buff + 5) == *(buf + 5)) && (*(eeprom_buff + 6) == *(buf + 6)) && (*(eeprom_buff + 7) ==
              - *(buf + 7)))
- 496   4                                      {
- 497   5                                              //IFÌõ¼þ³ÉÁ¢ ÔòÕâ¸öIDÂë×¢²á¹ý
- 498   5                                              Two_Menu_F1_E4[0] = *(eeprom_buff + 1);
- 499   5                                              Two_Menu_F1_E4[1] = *(eeprom_buff + 2);
- 500   5                                              Two_Menu_F1_E4[2] = *(eeprom_buff + 3);
- 501   5                                              Two_Menu_F1_E4[3] = *(eeprom_buff + 4);
- 502   5      #ifdef DEBUG
- 503   5                                              uart_printf("canceler register is old! \n\r");
- 504   5      #endif
- 505   5      
- 506   5                                              //                                              if (sound_table == 1)
- 507   5                                              //                                              {
- 508   5                                              //#if SOUND
- 509   5                                              //                                                      GD5800_select_chapter(SETERROR_POSITION);
- 510   5                                              //#endif
- 511   5                                              //                                                      sound_table = 0;
- 512   5                                              //                                              }
- 513   5                                              return 0;
- 514   5                                      }
- 515   4                              }
- 516   3                      }
- 517   2              }
- 518   1              //Èç¹û³ÌÐòÖ´ÐÐµ½ÕâÀï£¬Ôò´ú±íIDÂëÃ»ÓÐ×¢²á¹ý
- 519   1              for (base_address = 0; base_address<CANCEL_TABLE_NUMBER; base_address++)
- 520   1              {
- 521   2                      IRcvStr(I2C_ADDRESS, CANCEL_TABLE_START + base_address*PAGE_LENGTH, at24c64_buff, PAGE_LENGTH);//´ÓAT24C
+ 492   4                                      {
+ 493   5                                              //IFÌõ¼þ³ÉÁ¢ ÔòÕâ¸öIDÂë×¢²á¹ý
+ 494   5                                              Two_Menu_F1_E4[0] = *(eeprom_buff + 1);
+ 495   5                                              Two_Menu_F1_E4[1] = *(eeprom_buff + 2);
+ 496   5                                              Two_Menu_F1_E4[2] = *(eeprom_buff + 3);
+ 497   5                                              Two_Menu_F1_E4[3] = *(eeprom_buff + 4);
+ 498   5      #ifdef DEBUG
+                                                      uart_printf("canceler register is old! \n\r");
+              #endif
+ 501   5      
+ 502   5                                              if (return_sound_table() == 1)
+ 503   5                                              {
+ 504   6                                                      GD5800_select_chapter(SHIBAI);
+ 505   6      
+ 506   6                                                      set_sound_table(0);
+ 507   6                                              }
+ 508   5                                              return 0;
+ 509   5                                      }
+ 510   4                              }
+ 511   3                      }
+ 512   2              }
+ 513   1              //Èç¹û³ÌÐòÖ´ÐÐµ½ÕâÀï£¬Ôò´ú±íIDÂëÃ»ÓÐ×¢²á¹ý
+ 514   1              for (base_address = 0; base_address<CANCEL_TABLE_NUMBER; base_address++)
+ 515   1              {
+ 516   2                      IRcvStr(I2C_ADDRESS, CANCEL_TABLE_START + base_address*PAGE_LENGTH, at24c64_buff, PAGE_LENGTH);//´ÓAT24C
              -64ÀïÃæ¶Á³ö32¸ö×Ö½ÚµÄ±êÖ¾Î»
-C51 COMPILER V9.00   AT24C256                                                              10/06/2015 11:29:53 PAGE 10  
-
- 522   2                      delay10ms();
- 523   2                      for (offset_address = 0; offset_address<PAGE_LENGTH; offset_address++)//Ö÷Òª32¸ö×Ö½Ú±êÖ¾Î»ÀïÃæÃ»ÓÐ0µÄ¾ÍO
+ 517   2                      delay10ms();
+ 518   2                      for (offset_address = 0; offset_address<PAGE_LENGTH; offset_address++)//Ö÷Òª32¸ö×Ö½Ú±êÖ¾Î»ÀïÃæÃ»ÓÐ0µÄ¾ÍO
              -K
- 524   2                      {
- 525   3                              if (at24c64_buff[offset_address] != 0)
- 526   3                              {
- 527   4                                      ISendStr(I2C_ADDRESS, (CANCEL_DATA_START + ((base_address*PAGE_LENGTH) + offset_address) * 8), buf, 8)
+ 519   2                      {
+ 520   3                              if (at24c64_buff[offset_address] != 0)
+C51 COMPILER V9.00   AT24C256                                                              10/06/2015 11:47:06 PAGE 10  
+
+ 521   3                              {
+ 522   4                                      ISendStr(I2C_ADDRESS, (CANCEL_DATA_START + ((base_address*PAGE_LENGTH) + offset_address) * 8), buf, 8)
              -;
- 528   4                                      delay10ms();
- 529   4                                      at24c64_buff[offset_address] = 0;
- 530   4                                      ISendStr(I2C_ADDRESS,CANCEL_TABLE_START+base_address*PAGE_LENGTH, at24c64_buff, PAGE_LENGTH);
- 531   4                                      delay10ms();
- 532   4                                      //½«±êÖ¾Î»ÒÔ¼°Êý¾Ý·Ö±ðÐ´µ½±êÖ¾Çø¸úÊý¾ÝÇø
- 533   4      #ifdef DEBUG
- 534   4                                      uart_printf("canceler register is new! \n\r");
- 535   4                                      uart_printf("±êÖ¾µØÖ·Îª %x ! \n\r", CANCEL_TABLE_START + base_address*PAGE_LENGTH);
- 536   4                                      uart_printf("´æ´¢µØÖ·Îª %x ! \n\r", CANCEL_DATA_START + ((base_address*PAGE_LENGTH) + offset_address) 
+ 523   4                                      delay10ms();
+ 524   4                                      at24c64_buff[offset_address] = 0;
+ 525   4                                      ISendStr(I2C_ADDRESS,CANCEL_TABLE_START+base_address*PAGE_LENGTH, at24c64_buff, PAGE_LENGTH);
+ 526   4                                      delay10ms();
+ 527   4                                      //½«±êÖ¾Î»ÒÔ¼°Êý¾Ý·Ö±ðÐ´µ½±êÖ¾Çø¸úÊý¾ÝÇø
+ 528   4      #ifdef DEBUG
+                                              uart_printf("canceler register is new! \n\r");
+                                              uart_printf("±êÖ¾µØÖ·Îª %x ! \n\r", CANCEL_TABLE_START + base_address*PAGE_LENGTH);
+                                              uart_printf("´æ´¢µØÖ·Îª %x ! \n\r", CANCEL_DATA_START + ((base_address*PAGE_LENGTH) + offset_address) 
              -* 8);
- 537   4      #endif
- 538   4                                      //                                      if (sound_table == 1)
- 539   4                                      //                                      {
- 540   4                                      //#if SOUND
- 541   4                                      //                                              GD5800_select_chapter(SETSUCCESS_POSITION);
- 542   4                                      //#endif
- 543   4                                      //                                              sound_table = 0;
- 544   4                                      //                                      }
- 545   4                                      return 1;
- 546   4                                      //ÌáÊ¾³É¹¦                              
- 547   4                              }
- 548   3                      }
- 549   2              }
- 550   1              return 0;
- 551   1      }
- 552          
- 553          bit delete_call_function(unsigned char *buf)//bufÎª×éÂëÊý×éµÄÖ¸Õë
- 554          {
- 555   1              unsigned char base_address = 0;
- 556   1              unsigned char offset_address = 0;
- 557   1      
- 558   1              for (base_address = 0; base_address<CALL_TABLE_NUMBER; base_address++)
- 559   1              {
- 560   2                      IRcvStr(I2C_ADDRESS, base_address*PAGE_LENGTH, at24c64_buff, PAGE_LENGTH); //È¡³ö32¸ö±êÖ¾Î»
- 561   2                      delay10ms();
- 562   2                      for (offset_address = 0; offset_address<PAGE_LENGTH; offset_address++)//Ö÷Òª32¸ö×Ö½ÚÀïÃæÃ»ÓÐ0µÄ¾ÍOK
- 563   2                      {
- 564   3                              if (*(buf) == 0 && *(buf + 1) == 0 && *(buf + 2) == 0 && *(buf + 3) == 0) //È«²¿É¾³ý
- 565   3                              {
- 566   4                                      at24c64_buff[offset_address] = 0xff;//±êÖ¾Î»ÉèÖÃÎª·Ç0
- 567   4      #ifdef DEBUG
- 568   4                                      uart_printf("caller is delete success \r\n");
- 569   4      #endif          
- 570   4                              }
- 571   3                              else if (at24c64_buff[offset_address] == 0)//Èç¹û²»ÊÇ0000 ÔòÎÞÐèÈ«²¿É¾³ý
- 572   3                              {
- 573   4                                      IRcvStr(I2C_ADDRESS, ( CALL_DATA_START + (base_address*PAGE_LENGTH + offset_address) * 8), eeprom_buff
+              #endif
+ 533   4                                      if (return_sound_table() == 1)
+ 534   4                                      {
+ 535   5                                              GD5800_select_chapter(CHENGGONG);
+ 536   5      
+ 537   5                                              set_sound_table(0);
+ 538   5                                      }
+ 539   4                                      return 1;
+ 540   4                                      //ÌáÊ¾³É¹¦                              
+ 541   4                              }
+ 542   3                      }
+ 543   2              }
+ 544   1              return 0;
+ 545   1      }
+ 546          
+ 547          bit delete_call_function(unsigned char *buf)//bufÎª×éÂëÊý×éµÄÖ¸Õë
+ 548          {
+ 549   1              unsigned char base_address = 0;
+ 550   1              unsigned char offset_address = 0;
+ 551   1      
+ 552   1              for (base_address = 0; base_address<CALL_TABLE_NUMBER; base_address++)
+ 553   1              {
+ 554   2                      IRcvStr(I2C_ADDRESS, base_address*PAGE_LENGTH, at24c64_buff, PAGE_LENGTH); //È¡³ö32¸ö±êÖ¾Î»
+ 555   2                      delay10ms();
+ 556   2                      for (offset_address = 0; offset_address<PAGE_LENGTH; offset_address++)//Ö÷Òª32¸ö×Ö½ÚÀïÃæÃ»ÓÐ0µÄ¾ÍOK
+ 557   2                      {
+ 558   3                              if (*(buf) == 0 && *(buf + 1) == 0 && *(buf + 2) == 0 && *(buf + 3) == 0) //È«²¿É¾³ý
+ 559   3                              {
+ 560   4                                      at24c64_buff[offset_address] = 0xff;//±êÖ¾Î»ÉèÖÃÎª·Ç0
+ 561   4      #ifdef DEBUG
+                                              uart_printf("caller is delete success \r\n");
+              #endif          
+ 564   4                              }
+ 565   3                              else if (at24c64_buff[offset_address] == 0)//Èç¹û²»ÊÇ0000 ÔòÎÞÐèÈ«²¿É¾³ý
+ 566   3                              {
+ 567   4                                      IRcvStr(I2C_ADDRESS, ( CALL_DATA_START + (base_address*PAGE_LENGTH + offset_address) * 8), eeprom_buff
              -, 8);//È¡³ö¶ÔÓ¦±êÖ¾Î»Ëù¶ÔÓ¦µÄÊý¾ÝÇøµÄÊý¾Ý
- 574   4                                      delay10ms();
- 575   4                                      if ((*(eeprom_buff + 1) == *(buf + 0)) && (*(eeprom_buff + 2) == *(buf + 1)) && (*(eeprom_buff + 3) ==
+ 568   4                                      delay10ms();
+ 569   4                                      if ((*(eeprom_buff + 1) == *(buf + 0)) && (*(eeprom_buff + 2) == *(buf + 1)) && (*(eeprom_buff + 3) ==
              - *(buf + 2)) && (*(eeprom_buff + 4) == *(buf + 3)))
- 576   4                                      {
- 577   5                                              at24c64_buff[offset_address] = 0xff;
- 578   5                                              ISendStr(I2C_ADDRESS, base_address*PAGE_LENGTH, at24c64_buff, PAGE_LENGTH);
-C51 COMPILER V9.00   AT24C256                                                              10/06/2015 11:29:53 PAGE 11  
-
- 579   5                                              delay10ms();
- 580   5                                              //Çå³ý¶ÔÓ¦µÄ±êÖ¾Î» È»ºóÔÙ½«±êÖ¾Î»Ð´Èë±êÖ¾Çø
- 581   5      #ifdef DEBUG
- 582   5                                              uart_printf("call is %02x %02x %02x .\r\n", (unsigned int)(*(eeprom_buff + 5)), (unsigned int)(*(eepr
+ 570   4                                      {
+ 571   5                                              at24c64_buff[offset_address] = 0xff;
+ 572   5                                              ISendStr(I2C_ADDRESS, base_address*PAGE_LENGTH, at24c64_buff, PAGE_LENGTH);
+ 573   5                                              delay10ms();
+ 574   5                                              //Çå³ý¶ÔÓ¦µÄ±êÖ¾Î» È»ºóÔÙ½«±êÖ¾Î»Ð´Èë±êÖ¾Çø
+ 575   5      #ifdef DEBUG
+                                                      uart_printf("call is %02x %02x %02x .\r\n", (unsigned int)(*(eeprom_buff + 5)), (unsigned int)(*(eepr
              -om_buff + 6)), (unsigned int)(*(eeprom_buff + 7)) ); //
- 583   5                                              uart_printf("call is %02x %02x %02x %02x.\r\n", (unsigned int)(*(eeprom_buff + 1)), (unsigned int)(*(
+                                                      uart_printf("call is %02x %02x %02x %02x.\r\n", (unsigned int)(*(eeprom_buff + 1)), (unsigned int)(*(
+C51 COMPILER V9.00   AT24C256                                                              10/06/2015 11:47:06 PAGE 11  
+
              -eeprom_buff + 2)), (unsigned int)(*(eeprom_buff + 3)), (unsigned int)(*(eeprom_buff + 4)) );
- 584   5                                              uart_printf("caller is delete success \r\n");
- 585   5      #endif          
- 586   5                                      }
- 587   4      
- 588   4                              }
- 589   3                      }
- 590   2                      ISendStr(I2C_ADDRESS, base_address*PAGE_LENGTH, at24c64_buff, PAGE_LENGTH);
- 591   2                      //×îºó½«32¸ö±êÖ¾Î»Ð´Èë±êÖ¾Çø
- 592   2                      delay10ms();
- 593   2              }
- 594   1              return 1;
- 595   1      }
- 596          
- 597          bit delete_host_function(unsigned char *buf)//bufÎª×éÂëÊý×éµÄÖ¸Õë
- 598          {
- 599   1              unsigned char base_address = 0;
- 600   1              unsigned char offset_address = 0;
- 601   1      
- 602   1              for (base_address = 0 ; base_address< HOST_TABLE_NUMBER ; base_address++)
- 603   1              {
- 604   2                      IRcvStr(I2C_ADDRESS, HOST_TABLE_START + base_address*PAGE_LENGTH, at24c64_buff, PAGE_LENGTH); //È¡³ö32¸ö
+                                                      uart_printf("caller is delete success \r\n");
+              #endif          
+ 580   5                                      }
+ 581   4      
+ 582   4                              }
+ 583   3                      }
+ 584   2                      ISendStr(I2C_ADDRESS, base_address*PAGE_LENGTH, at24c64_buff, PAGE_LENGTH);
+ 585   2                      //×îºó½«32¸ö±êÖ¾Î»Ð´Èë±êÖ¾Çø
+ 586   2                      delay10ms();
+ 587   2              }
+ 588   1              return 1;
+ 589   1      }
+ 590          
+ 591          bit delete_host_function(unsigned char *buf)//bufÎª×éÂëÊý×éµÄÖ¸Õë
+ 592          {
+ 593   1              unsigned char base_address = 0;
+ 594   1              unsigned char offset_address = 0;
+ 595   1      
+ 596   1              for (base_address = 0 ; base_address< HOST_TABLE_NUMBER ; base_address++)
+ 597   1              {
+ 598   2                      IRcvStr(I2C_ADDRESS, HOST_TABLE_START + base_address*PAGE_LENGTH, at24c64_buff, PAGE_LENGTH); //È¡³ö32¸ö
              -±êÖ¾Î»
- 605   2                      delay10ms();
- 606   2                      for (offset_address = 0; offset_address<PAGE_LENGTH; offset_address++)//Ö÷Òª32¸ö×Ö½ÚÀïÃæÃ»ÓÐ0µÄ¾ÍOK
- 607   2                      {
- 608   3                              if (*(buf) == 0 && *(buf + 1) == 0 && *(buf + 2) == 0 && *(buf + 3) == 0) //È«²¿É¾³ý
- 609   3                              {
- 610   4                                      at24c64_buff[offset_address] = 0xff;//±êÖ¾Î»ÉèÖÃÎª·Ç0
- 611   4      #ifdef DEBUG
- 612   4                                      uart_printf("hoster is delete success \r\n");
- 613   4      #endif          
- 614   4                              }
- 615   3                              else if (at24c64_buff[offset_address] == 0)//Èç¹û²»ÊÇ0000 ÔòÎÞÐèÈ«²¿É¾³ý
- 616   3                              {
- 617   4                                      IRcvStr(I2C_ADDRESS, (HOST_DATA_START + (base_address*PAGE_LENGTH + offset_address) * 8), eeprom_buff,
+ 599   2                      delay10ms();
+ 600   2                      for (offset_address = 0; offset_address<PAGE_LENGTH; offset_address++)//Ö÷Òª32¸ö×Ö½ÚÀïÃæÃ»ÓÐ0µÄ¾ÍOK
+ 601   2                      {
+ 602   3                              if (*(buf) == 0 && *(buf + 1) == 0 && *(buf + 2) == 0 && *(buf + 3) == 0) //È«²¿É¾³ý
+ 603   3                              {
+ 604   4                                      at24c64_buff[offset_address] = 0xff;//±êÖ¾Î»ÉèÖÃÎª·Ç0
+ 605   4      #ifdef DEBUG
+                                              uart_printf("hoster is delete success \r\n");
+              #endif          
+ 608   4                              }
+ 609   3                              else if (at24c64_buff[offset_address] == 0)//Èç¹û²»ÊÇ0000 ÔòÎÞÐèÈ«²¿É¾³ý
+ 610   3                              {
+ 611   4                                      IRcvStr(I2C_ADDRESS, (HOST_DATA_START + (base_address*PAGE_LENGTH + offset_address) * 8), eeprom_buff,
              - 8);//È¡³ö¶ÔÓ¦±êÖ¾Î»Ëù¶ÔÓ¦µÄÊý¾ÝÇøµÄÊý¾Ý
- 618   4                                      delay10ms();
- 619   4                                      if ((*(eeprom_buff + 1) == *(buf + 0)) && (*(eeprom_buff + 2) == *(buf + 1)) && (*(eeprom_buff + 3) ==
+ 612   4                                      delay10ms();
+ 613   4                                      if ((*(eeprom_buff + 1) == *(buf + 0)) && (*(eeprom_buff + 2) == *(buf + 1)) && (*(eeprom_buff + 3) ==
              - *(buf + 2)) && (*(eeprom_buff + 4) == *(buf + 3)))
- 620   4                                      {
- 621   5                                              at24c64_buff[offset_address] = 0xff;
- 622   5                                              ISendStr(I2C_ADDRESS, HOST_TABLE_START+base_address*PAGE_LENGTH, at24c64_buff, PAGE_LENGTH);
- 623   5                                              delay10ms();
- 624   5                                              //Çå³ý¶ÔÓ¦µÄ±êÖ¾Î» È»ºóÔÙ½«±êÖ¾Î»Ð´Èë±êÖ¾Çø
- 625   5      #ifdef DEBUG
- 626   5                                              uart_printf("host is %02x %02x %02x .\r\n", (unsigned int)(*(eeprom_buff + 5)), (unsigned int)(*(eepr
+ 614   4                                      {
+ 615   5                                              at24c64_buff[offset_address] = 0xff;
+ 616   5                                              ISendStr(I2C_ADDRESS, HOST_TABLE_START+base_address*PAGE_LENGTH, at24c64_buff, PAGE_LENGTH);
+ 617   5                                              delay10ms();
+ 618   5                                              //Çå³ý¶ÔÓ¦µÄ±êÖ¾Î» È»ºóÔÙ½«±êÖ¾Î»Ð´Èë±êÖ¾Çø
+ 619   5      #ifdef DEBUG
+                                                      uart_printf("host is %02x %02x %02x .\r\n", (unsigned int)(*(eeprom_buff + 5)), (unsigned int)(*(eepr
              -om_buff + 6)), (unsigned int)(*(eeprom_buff + 7))); //
- 627   5                                              uart_printf("host is %02x %02x %02x %02x.\r\n", (unsigned int)(*(eeprom_buff + 1)), (unsigned int)(*(
+                                                      uart_printf("host is %02x %02x %02x %02x.\r\n", (unsigned int)(*(eeprom_buff + 1)), (unsigned int)(*(
              -eeprom_buff + 2)), (unsigned int)(*(eeprom_buff + 3)), (unsigned int)(*(eeprom_buff + 4)));
- 628   5                                              uart_printf("host is delete success \r\n");
- 629   5      #endif          
- 630   5                                      }
- 631   4      
- 632   4                              }
- 633   3                      }
-C51 COMPILER V9.00   AT24C256                                                              10/06/2015 11:29:53 PAGE 12  
+                                                      uart_printf("host is delete success \r\n");
+              #endif          
+ 624   5                                      }
+ 625   4      
+ 626   4                              }
+ 627   3                      }
+ 628   2                      ISendStr(I2C_ADDRESS, HOST_TABLE_START + base_address*PAGE_LENGTH, at24c64_buff, PAGE_LENGTH);
+ 629   2                      //×îºó½«32¸ö±êÖ¾Î»Ð´Èë±êÖ¾Çø
+ 630   2                      delay10ms();
+ 631   2              }
+ 632   1              return 1;
+ 633   1      }
+C51 COMPILER V9.00   AT24C256                                                              10/06/2015 11:47:06 PAGE 12  
 
- 634   2                      ISendStr(I2C_ADDRESS, HOST_TABLE_START + base_address*PAGE_LENGTH, at24c64_buff, PAGE_LENGTH);
- 635   2                      //×îºó½«32¸ö±êÖ¾Î»Ð´Èë±êÖ¾Çø
- 636   2                      delay10ms();
- 637   2              }
- 638   1              return 1;
- 639   1      }
- 640          
- 641          bit delete_alarm_function(unsigned char *buf)//bufÎª×éÂëÊý×éµÄÖ¸Õë
- 642          {
- 643   1              unsigned char base_address = 0;
- 644   1              unsigned char offset_address = 0;
- 645   1      
- 646   1              for (base_address = 0; base_address<ALARM_TABLE_NUMBER; base_address++)
- 647   1              {
- 648   2                      IRcvStr(I2C_ADDRESS, ALARM_TABLE_START + base_address*PAGE_LENGTH, at24c64_buff, PAGE_LENGTH); //È¡³ö32¸
+ 634          
+ 635          bit delete_alarm_function(unsigned char *buf)//bufÎª×éÂëÊý×éµÄÖ¸Õë
+ 636          {
+ 637   1              unsigned char base_address = 0;
+ 638   1              unsigned char offset_address = 0;
+ 639   1      
+ 640   1              for (base_address = 0; base_address<ALARM_TABLE_NUMBER; base_address++)
+ 641   1              {
+ 642   2                      IRcvStr(I2C_ADDRESS, ALARM_TABLE_START + base_address*PAGE_LENGTH, at24c64_buff, PAGE_LENGTH); //È¡³ö32¸
              -ö±êÖ¾Î»
- 649   2                      delay10ms();
- 650   2                      for (offset_address = 0; offset_address<PAGE_LENGTH; offset_address++)//Ö÷Òª32¸ö×Ö½ÚÀïÃæÃ»ÓÐ0µÄ¾ÍOK
- 651   2                      {
- 652   3                              if (*(buf) == 0 && *(buf + 1) == 0 && *(buf + 2) == 0 && *(buf + 3) == 0) //È«²¿É¾³ý
- 653   3                              {
- 654   4                                      at24c64_buff[offset_address] = 0xff;//±êÖ¾Î»ÉèÖÃÎª·Ç0
- 655   4      #ifdef DEBUG
- 656   4                                      uart_printf("alarmer is delete success \r\n");
- 657   4      #endif          
- 658   4                              }
- 659   3                              else if (at24c64_buff[offset_address] == 0)//Èç¹û²»ÊÇ0000 ÔòÎÞÐèÈ«²¿É¾³ý
- 660   3                              {
- 661   4                                      IRcvStr(I2C_ADDRESS, (ALARM_DATA_START + (base_address*PAGE_LENGTH + offset_address) * 8), eeprom_buff
+ 643   2                      delay10ms();
+ 644   2                      for (offset_address = 0; offset_address<PAGE_LENGTH; offset_address++)//Ö÷Òª32¸ö×Ö½ÚÀïÃæÃ»ÓÐ0µÄ¾ÍOK
+ 645   2                      {
+ 646   3                              if (*(buf) == 0 && *(buf + 1) == 0 && *(buf + 2) == 0 && *(buf + 3) == 0) //È«²¿É¾³ý
+ 647   3                              {
+ 648   4                                      at24c64_buff[offset_address] = 0xff;//±êÖ¾Î»ÉèÖÃÎª·Ç0
+ 649   4      #ifdef DEBUG
+                                              uart_printf("alarmer is delete success \r\n");
+              #endif          
+ 652   4                              }
+ 653   3                              else if (at24c64_buff[offset_address] == 0)//Èç¹û²»ÊÇ0000 ÔòÎÞÐèÈ«²¿É¾³ý
+ 654   3                              {
+ 655   4                                      IRcvStr(I2C_ADDRESS, (ALARM_DATA_START + (base_address*PAGE_LENGTH + offset_address) * 8), eeprom_buff
              -, 8);//È¡³ö¶ÔÓ¦±êÖ¾Î»Ëù¶ÔÓ¦µÄÊý¾ÝÇøµÄÊý¾Ý
- 662   4                                      delay10ms();
- 663   4                                      if ((*(eeprom_buff + 1) == *(buf + 0)) && (*(eeprom_buff + 2) == *(buf + 1)) && (*(eeprom_buff + 3) ==
+ 656   4                                      delay10ms();
+ 657   4                                      if ((*(eeprom_buff + 1) == *(buf + 0)) && (*(eeprom_buff + 2) == *(buf + 1)) && (*(eeprom_buff + 3) ==
              - *(buf + 2)) && (*(eeprom_buff + 4) == *(buf + 3)))
- 664   4                                      {
- 665   5                                              at24c64_buff[offset_address] = 0xff;
- 666   5                                              ISendStr(I2C_ADDRESS, ALARM_TABLE_START + base_address*PAGE_LENGTH, at24c64_buff, PAGE_LENGTH);
- 667   5                                              delay10ms();
- 668   5                                              //Çå³ý¶ÔÓ¦µÄ±êÖ¾Î» È»ºóÔÙ½«±êÖ¾Î»Ð´Èë±êÖ¾Çø
- 669   5      #ifdef DEBUG
- 670   5                                              uart_printf("alarm is %02x %02x %02x .\r\n", (unsigned int)(*(eeprom_buff + 5)), (unsigned int)(*(eep
+ 658   4                                      {
+ 659   5                                              at24c64_buff[offset_address] = 0xff;
+ 660   5                                              ISendStr(I2C_ADDRESS, ALARM_TABLE_START + base_address*PAGE_LENGTH, at24c64_buff, PAGE_LENGTH);
+ 661   5                                              delay10ms();
+ 662   5                                              //Çå³ý¶ÔÓ¦µÄ±êÖ¾Î» È»ºóÔÙ½«±êÖ¾Î»Ð´Èë±êÖ¾Çø
+ 663   5      #ifdef DEBUG
+                                                      uart_printf("alarm is %02x %02x %02x .\r\n", (unsigned int)(*(eeprom_buff + 5)), (unsigned int)(*(eep
              -rom_buff + 6)), (unsigned int)(*(eeprom_buff + 7))); //
- 671   5                                              uart_printf("alarm is %02x %02x %02x %02x.\r\n", (unsigned int)(*(eeprom_buff + 1)), (unsigned int)(*
+                                                      uart_printf("alarm is %02x %02x %02x %02x.\r\n", (unsigned int)(*(eeprom_buff + 1)), (unsigned int)(*
              -(eeprom_buff + 2)), (unsigned int)(*(eeprom_buff + 3)), (unsigned int)(*(eeprom_buff + 4)));
- 672   5                                              uart_printf("alarm is delete success \r\n");
- 673   5      #endif          
- 674   5                                      }
- 675   4      
- 676   4                              }
- 677   3                      }
- 678   2                      ISendStr(I2C_ADDRESS, ALARM_TABLE_START + base_address*PAGE_LENGTH, at24c64_buff, PAGE_LENGTH);
- 679   2                      //×îºó½«32¸ö±êÖ¾Î»Ð´Èë±êÖ¾Çø
- 680   2                      delay10ms();
- 681   2              }
- 682   1              return 1;
- 683   1      }
- 684          
- 685          bit delete_cancel_function(unsigned char *buf)//bufÎª×éÂëÊý×éµÄÖ¸Õë
- 686          {
- 687   1              unsigned char base_address = 0;
- 688   1              unsigned char offset_address = 0;
- 689   1      
- 690   1              for (base_address = 0; base_address<CANCEL_TABLE_NUMBER; base_address++)
-C51 COMPILER V9.00   AT24C256                                                              10/06/2015 11:29:53 PAGE 13  
-
- 691   1              {
- 692   2                      IRcvStr(I2C_ADDRESS, CANCEL_TABLE_START + base_address*PAGE_LENGTH, at24c64_buff, PAGE_LENGTH); //È¡³ö32
+                                                      uart_printf("alarm is delete success \r\n");
+              #endif          
+ 668   5                                      }
+ 669   4      
+ 670   4                              }
+ 671   3                      }
+ 672   2                      ISendStr(I2C_ADDRESS, ALARM_TABLE_START + base_address*PAGE_LENGTH, at24c64_buff, PAGE_LENGTH);
+ 673   2                      //×îºó½«32¸ö±êÖ¾Î»Ð´Èë±êÖ¾Çø
+ 674   2                      delay10ms();
+ 675   2              }
+ 676   1              return 1;
+ 677   1      }
+ 678          
+ 679          bit delete_cancel_function(unsigned char *buf)//bufÎª×éÂëÊý×éµÄÖ¸Õë
+ 680          {
+ 681   1              unsigned char base_address = 0;
+ 682   1              unsigned char offset_address = 0;
+ 683   1      
+ 684   1              for (base_address = 0; base_address<CANCEL_TABLE_NUMBER; base_address++)
+ 685   1              {
+ 686   2                      IRcvStr(I2C_ADDRESS, CANCEL_TABLE_START + base_address*PAGE_LENGTH, at24c64_buff, PAGE_LENGTH); //È¡³ö32
              -¸ö±êÖ¾Î»
- 693   2                      delay10ms();
- 694   2                      for (offset_address = 0; offset_address<PAGE_LENGTH; offset_address++)//Ö÷Òª32¸ö×Ö½ÚÀïÃæÃ»ÓÐ0µÄ¾ÍOK
- 695   2                      {
- 696   3                              if (*(buf) == 0 && *(buf + 1) == 0 && *(buf + 2) == 0 && *(buf + 3) == 0) //È«²¿É¾³ý
- 697   3                              {
- 698   4                                      at24c64_buff[offset_address] = 0xff;//±êÖ¾Î»ÉèÖÃÎª·Ç0
- 699   4      #ifdef DEBUG
- 700   4                                      uart_printf("canceler is delete success \r\n");
- 701   4      #endif          
- 702   4                              }
- 703   3                              else if (at24c64_buff[offset_address] == 0)//Èç¹û²»ÊÇ0000 ÔòÎÞÐèÈ«²¿É¾³ý
- 704   3                              {
- 705   4                                      IRcvStr(I2C_ADDRESS, (CANCEL_DATA_START + (base_address*PAGE_LENGTH + offset_address) * 8), eeprom_buf
+ 687   2                      delay10ms();
+ 688   2                      for (offset_address = 0; offset_address<PAGE_LENGTH; offset_address++)//Ö÷Òª32¸ö×Ö½ÚÀïÃæÃ»ÓÐ0µÄ¾ÍOK
+ 689   2                      {
+C51 COMPILER V9.00   AT24C256                                                              10/06/2015 11:47:06 PAGE 13  
+
+ 690   3                              if (*(buf) == 0 && *(buf + 1) == 0 && *(buf + 2) == 0 && *(buf + 3) == 0) //È«²¿É¾³ý
+ 691   3                              {
+ 692   4                                      at24c64_buff[offset_address] = 0xff;//±êÖ¾Î»ÉèÖÃÎª·Ç0
+ 693   4      #ifdef DEBUG
+                                              uart_printf("canceler is delete success \r\n");
+              #endif          
+ 696   4                              }
+ 697   3                              else if (at24c64_buff[offset_address] == 0)//Èç¹û²»ÊÇ0000 ÔòÎÞÐèÈ«²¿É¾³ý
+ 698   3                              {
+ 699   4                                      IRcvStr(I2C_ADDRESS, (CANCEL_DATA_START + (base_address*PAGE_LENGTH + offset_address) * 8), eeprom_buf
              -f, 8);//È¡³ö¶ÔÓ¦±êÖ¾Î»Ëù¶ÔÓ¦µÄÊý¾ÝÇøµÄÊý¾Ý
- 706   4                                      delay10ms();
- 707   4                                      if ((*(eeprom_buff + 1) == *(buf + 0)) && (*(eeprom_buff + 2) == *(buf + 1)) && (*(eeprom_buff + 3) ==
+ 700   4                                      delay10ms();
+ 701   4                                      if ((*(eeprom_buff + 1) == *(buf + 0)) && (*(eeprom_buff + 2) == *(buf + 1)) && (*(eeprom_buff + 3) ==
              - *(buf + 2)) && (*(eeprom_buff + 4) == *(buf + 3)))
- 708   4                                      {
- 709   5                                              at24c64_buff[offset_address] = 0xff;
- 710   5                                              ISendStr(I2C_ADDRESS, CANCEL_TABLE_START + base_address*PAGE_LENGTH, at24c64_buff, PAGE_LENGTH);
- 711   5                                              delay10ms();
- 712   5                                              //Çå³ý¶ÔÓ¦µÄ±êÖ¾Î» È»ºóÔÙ½«±êÖ¾Î»Ð´Èë±êÖ¾Çø
- 713   5      #ifdef DEBUG
- 714   5                                              uart_printf("cancel is %02x %02x %02x .\r\n", (unsigned int)(*(eeprom_buff + 5)), (unsigned int)(*(ee
+ 702   4                                      {
+ 703   5                                              at24c64_buff[offset_address] = 0xff;
+ 704   5                                              ISendStr(I2C_ADDRESS, CANCEL_TABLE_START + base_address*PAGE_LENGTH, at24c64_buff, PAGE_LENGTH);
+ 705   5                                              delay10ms();
+ 706   5                                              //Çå³ý¶ÔÓ¦µÄ±êÖ¾Î» È»ºóÔÙ½«±êÖ¾Î»Ð´Èë±êÖ¾Çø
+ 707   5      #ifdef DEBUG
+                                                      uart_printf("cancel is %02x %02x %02x .\r\n", (unsigned int)(*(eeprom_buff + 5)), (unsigned int)(*(ee
              -prom_buff + 6)), (unsigned int)(*(eeprom_buff + 7))); //
- 715   5                                              uart_printf("cancel is %02x %02x %02x %02x.\r\n", (unsigned int)(*(eeprom_buff + 1)), (unsigned int)(
+                                                      uart_printf("cancel is %02x %02x %02x %02x.\r\n", (unsigned int)(*(eeprom_buff + 1)), (unsigned int)(
              -*(eeprom_buff + 2)), (unsigned int)(*(eeprom_buff + 3)), (unsigned int)(*(eeprom_buff + 4)));
- 716   5                                              uart_printf("cancel is delete success \r\n");
- 717   5      #endif          
- 718   5                                      }
- 719   4      
- 720   4                              }
- 721   3                      }
- 722   2                      ISendStr(I2C_ADDRESS, CANCEL_TABLE_START + base_address*PAGE_LENGTH, at24c64_buff, PAGE_LENGTH);
- 723   2                      //×îºó½«32¸ö±êÖ¾Î»Ð´Èë±êÖ¾Çø
- 724   2                      delay10ms();
- 725   2              }
- 726   1              return 1;
- 727   1      }
- 728          
- 729          void Delete_all_data(void)
- 730          {
- 731   1              unsigned char dofly[32] = { 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
+                                                      uart_printf("cancel is delete success \r\n");
+              #endif          
+ 712   5                                      }
+ 713   4      
+ 714   4                              }
+ 715   3                      }
+ 716   2                      ISendStr(I2C_ADDRESS, CANCEL_TABLE_START + base_address*PAGE_LENGTH, at24c64_buff, PAGE_LENGTH);
+ 717   2                      //×îºó½«32¸ö±êÖ¾Î»Ð´Èë±êÖ¾Çø
+ 718   2                      delay10ms();
+ 719   2              }
+ 720   1              return 1;
+ 721   1      }
+ 722          
+ 723          void Delete_all_data(void)
+ 724          {
+ 725   1              unsigned char dofly[32] = { 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
              - 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff };
- 732   1              unsigned int k;
- 733   1              for (k = CALL_TABLE_START ; k<ALL_TABLE_NUMBER; k++)
- 734   1              {
- 735   2                      ISendStr(I2C_ADDRESS, k * 32, dofly, PAGE_LENGTH);                   //Ð´Èë24c02
- 736   2                      delay10ms();
- 737   2              }
- 738   1      }
+ 726   1              unsigned int k;
+ 727   1              for (k = CALL_TABLE_START ; k<ALL_TABLE_NUMBER; k++)
+ 728   1              {
+ 729   2                      ISendStr(I2C_ADDRESS, k * 32, dofly, PAGE_LENGTH);                   //Ð´Èë24c02
+ 730   2                      delay10ms();
+ 731   2              }
+ 732   1      }
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =   4312    ----
-   CONSTANT SIZE    =    722    ----
+   CODE SIZE        =   3600    ----
+   CONSTANT SIZE    =     32    ----
    XDATA SIZE       =     40      88
    PDATA SIZE       =   ----    ----
    DATA SIZE        =   ----    ----
-C51 COMPILER V9.00   AT24C256                                                              10/06/2015 11:29:53 PAGE 14  
-
    IDATA SIZE       =   ----    ----
    BIT SIZE         =      1    ----
 END OF MODULE INFORMATION.

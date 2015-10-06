@@ -1,6 +1,8 @@
 #include "at24c256.h"
 #include "key.h"
 #include "usart.h"
+#include "menu.h"
+#include "gd5800.h"
 
 bit ack;	              //应答标志位
 unsigned char xdata at24c64_buff[PAGE_LENGTH] = { 0 }; //24C256页面存储缓存
@@ -280,13 +282,12 @@ bit register_call_function(unsigned char *buf)
 						uart_printf("caller register is old! \n\r"); 
 #endif
 
-//						if (sound_table == 1)
-//						{
-//#if SOUND
-//							GD5800_select_chapter(SETERROR_POSITION);
-//#endif
-//							sound_table = 0;
-//						}
+						if (return_sound_table() == 1)
+						{
+							GD5800_select_chapter(SHIBAI);
+
+							set_sound_table(0);
+						}
 						return 0;
 					}
 				}
@@ -312,13 +313,12 @@ bit register_call_function(unsigned char *buf)
 					uart_printf("标志地址为 %x ! \n\r", (unsigned int)(CALL_TABLE_START + base_address*PAGE_LENGTH) );
 					uart_printf("存储地址为 %x ! \n\r", CALL_DATA_START + ((base_address*PAGE_LENGTH) + offset_address) * 8);
 #endif
-//					if (sound_table == 1)
-//					{
-//#if SOUND
-//						GD5800_select_chapter(SETSUCCESS_POSITION);
-//#endif
-//						sound_table = 0;
-//					}
+					if (return_sound_table() == 1)
+					{
+						GD5800_select_chapter(CHENGGONG);
+
+						set_sound_table(0);
+					}
 					return 1;
 					//提示成功				
 				}
@@ -355,13 +355,12 @@ bit register_host_function(unsigned char *buf)
 					uart_printf("host register is old! \n\r");
 #endif
 
-					//						if (sound_table == 1)
-					//						{
-					//#if SOUND
-					//							GD5800_select_chapter(SETERROR_POSITION);
-					//#endif
-					//							sound_table = 0;
-					//						}
+					if (return_sound_table() == 1)
+					{
+						GD5800_select_chapter(SHIBAI);
+
+						set_sound_table(0);
+					}
 					return 0;
 				}
 			}
@@ -385,13 +384,12 @@ bit register_host_function(unsigned char *buf)
 #ifdef DEBUG
 				uart_printf("host register is new! \n\r");
 #endif
-				//					if (sound_table == 1)
-				//					{
-				//#if SOUND
-				//						GD5800_select_chapter(SETSUCCESS_POSITION);
-				//#endif
-				//						sound_table = 0;
-				//					}
+				if (return_sound_table() == 1)
+				{
+					GD5800_select_chapter(CHENGGONG);
+
+					set_sound_table(0);
+				}
 				return 1;
 				//提示成功				
 			}
@@ -428,13 +426,12 @@ bit register_alarm_function(unsigned char *buf)
 					uart_printf("alarmer register is old! \n\r");
 #endif
 
-					//						if (sound_table == 1)
-					//						{
-					//#if SOUND
-					//							GD5800_select_chapter(SETERROR_POSITION);
-					//#endif
-					//							sound_table = 0;
-					//						}
+					if (return_sound_table() == 1)
+					{
+						GD5800_select_chapter(SHIBAI);
+
+						set_sound_table(0);
+					}
 					return 0;
 				}
 			}
@@ -460,13 +457,12 @@ bit register_alarm_function(unsigned char *buf)
 				uart_printf("标志地址为 %x ! \n\r", ALARM_TABLE_START + base_address*PAGE_LENGTH);
 				uart_printf("存储地址为 %x ! \n\r", ALARM_DATA_START + ((base_address*PAGE_LENGTH) + offset_address) * 8);
 #endif
-				//					if (sound_table == 1)
-				//					{
-				//#if SOUND
-				//						GD5800_select_chapter(SETSUCCESS_POSITION);
-				//#endif
-				//						sound_table = 0;
-				//					}
+				if (return_sound_table() == 1)
+				{
+					GD5800_select_chapter(CHENGGONG);
+
+					set_sound_table(0);
+				}
 				return 1;
 				//提示成功				
 			}
@@ -503,13 +499,12 @@ bit register_cancel_function(unsigned char *buf)
 					uart_printf("canceler register is old! \n\r");
 #endif
 
-					//						if (sound_table == 1)
-					//						{
-					//#if SOUND
-					//							GD5800_select_chapter(SETERROR_POSITION);
-					//#endif
-					//							sound_table = 0;
-					//						}
+					if (return_sound_table() == 1)
+					{
+						GD5800_select_chapter(SHIBAI);
+
+						set_sound_table(0);
+					}
 					return 0;
 				}
 			}
@@ -535,13 +530,12 @@ bit register_cancel_function(unsigned char *buf)
 				uart_printf("标志地址为 %x ! \n\r", CANCEL_TABLE_START + base_address*PAGE_LENGTH);
 				uart_printf("存储地址为 %x ! \n\r", CANCEL_DATA_START + ((base_address*PAGE_LENGTH) + offset_address) * 8);
 #endif
-				//					if (sound_table == 1)
-				//					{
-				//#if SOUND
-				//						GD5800_select_chapter(SETSUCCESS_POSITION);
-				//#endif
-				//						sound_table = 0;
-				//					}
+				if (return_sound_table() == 1)
+				{
+					GD5800_select_chapter(CHENGGONG);
+
+					set_sound_table(0);
+				}
 				return 1;
 				//提示成功				
 			}

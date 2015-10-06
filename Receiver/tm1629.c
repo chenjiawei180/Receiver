@@ -1555,6 +1555,12 @@ void fun93(void) //F8_E1单键位跟多键位切换
 	{
 		Delete_all_data();
 		Two_Menu_F8_E1_save = temp;
+		if (return_sound_table() == 1)
+		{
+			GD5800_select_chapter(CHENGGONG);
+
+			set_sound_table(0);
+		}
 	}
 }
 
@@ -1570,7 +1576,6 @@ void fun94(void) //F8_E2键位设置
 		delay10ms();
 		GD5800_select_chapter(temp + QUXIAO);
 		delay10ms();
-		//GD5800_play_music();
 		set_sound_table(0);
 	}
 }
