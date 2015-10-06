@@ -26,6 +26,6 @@ linking...
     SEGMENT: ?PR?_DELAYMS?AT24C256
 *** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
     SEGMENT: ?PR?GD5800_PLAY_MUSIC?GD5800
-Program Size: data=15.3 xdata=1696 code=25061
+Program Size: data=15.3 xdata=1696 code=25163
 creating hex file from "Receiver_keil"...
 "Receiver_keil" - 0 Error(s), 3 Warning(s).

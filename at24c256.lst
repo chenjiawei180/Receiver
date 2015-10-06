@@ -1,4 +1,4 @@
-C51 COMPILER V9.00   AT24C256                                                              10/06/2015 10:53:57 PAGE 1   
+C51 COMPILER V9.00   AT24C256                                                              10/06/2015 11:04:14 PAGE 1   
 
 
 C51 COMPILER V9.00, COMPILATION OF MODULE AT24C256
@@ -62,7 +62,7 @@ line level    source
   52          /*------------------------------------------------
   53          ½áÊø×ÜÏß
   54          ------------------------------------------------*/
-C51 COMPILER V9.00   AT24C256                                                              10/06/2015 10:53:57 PAGE 2   
+C51 COMPILER V9.00   AT24C256                                                              10/06/2015 11:04:14 PAGE 2   
 
   55          void Stop_I2c()
   56          {
@@ -126,7 +126,7 @@ line level    source
  114          ×Ö½ÚÊý¾Ý´«ËÍº¯Êý
  115          º¯ÊýÔ­ÐÍ: unsigned char  RcvByte();
  116          ¹¦ÄÜ:  ÓÃÀ´½ÓÊÕ´ÓÆ÷¼þ´«À´µÄÊý¾Ý,²¢ÅÐ¶Ï×ÜÏß´íÎó(²»·¢Ó¦´ðÐÅºÅ)£¬
-C51 COMPILER V9.00   AT24C256                                                              10/06/2015 10:53:57 PAGE 3   
+C51 COMPILER V9.00   AT24C256                                                              10/06/2015 11:04:14 PAGE 3   
 
  117          ·¢ÍêºóÇëÓÃÓ¦´ðº¯Êý¡£
  118          ------------------------------------------------------------------*/
@@ -190,7 +190,7 @@ line level    source
  176          void NoAck_I2c(void)
  177          {
  178   1              SDA = 1;
-C51 COMPILER V9.00   AT24C256                                                              10/06/2015 10:53:57 PAGE 4   
+C51 COMPILER V9.00   AT24C256                                                              10/06/2015 11:04:14 PAGE 4   
 
  179   1              _Nop();
  180   1              _Nop();
@@ -254,7 +254,7 @@ line level    source
  238   1              SendByte(suba);            //·¢ËÍÆ÷¼þ×ÓµØÖ·
  239   1              if (ack == 0)return(0);
  240   1              Start_I2c();
-C51 COMPILER V9.00   AT24C256                                                              10/06/2015 10:53:57 PAGE 5   
+C51 COMPILER V9.00   AT24C256                                                              10/06/2015 11:04:14 PAGE 5   
 
  241   1              SendByte(sla + 1);
  242   1              if (ack == 0)return(0);
@@ -318,7 +318,7 @@ line level    source
  295   1                      //Èç¹û³ÌÐòÖ´ÐÐµ½ÕâÀï£¬Ôò´ú±íIDÂëÃ»ÓÐ×¢²á¹ý
  296   1                      for (base_address = 0; base_address<CALL_TABLE_NUMBER; base_address++)
  297   1                      {
-C51 COMPILER V9.00   AT24C256                                                              10/06/2015 10:53:57 PAGE 6   
+C51 COMPILER V9.00   AT24C256                                                              10/06/2015 11:04:14 PAGE 6   
 
  298   2                              IRcvStr(I2C_ADDRESS, CALL_TABLE_START + base_address*PAGE_LENGTH, at24c64_buff, PAGE_LENGTH);//´ÓAT24C6
              -4ÀïÃæ¶Á³ö32¸ö×Ö½ÚµÄ±êÖ¾Î»
@@ -382,7 +382,7 @@ line level    source
  349   5                                              //IFÌõ¼þ³ÉÁ¢ ÔòÕâ¸öIDÂë×¢²á¹ý
  350   5                                              Two_Menu_F1_E2[0] = *(eeprom_buff + 1);
  351   5                                              Two_Menu_F1_E2[1] = *(eeprom_buff + 2);
-C51 COMPILER V9.00   AT24C256                                                              10/06/2015 10:53:57 PAGE 7   
+C51 COMPILER V9.00   AT24C256                                                              10/06/2015 11:04:14 PAGE 7   
 
  352   5                                              Two_Menu_F1_E2[2] = *(eeprom_buff + 3);
  353   5                                              Two_Menu_F1_E2[3] = *(eeprom_buff + 4);
@@ -446,7 +446,7 @@ line level    source
  409   1              for (base_address = CALL_TABLE_START; base_address<ALL_TABLE_NUMBER; base_address++)    //32*32 =1024¸ö±êÖ¾Î
              -»
  410   1              {
-C51 COMPILER V9.00   AT24C256                                                              10/06/2015 10:53:57 PAGE 8   
+C51 COMPILER V9.00   AT24C256                                                              10/06/2015 11:04:14 PAGE 8   
 
  411   2                      IRcvStr(I2C_ADDRESS, base_address*PAGE_LENGTH, at24c64_buff, PAGE_LENGTH);//´ÓAT24C256ÀïÃæ¶Á³ö32¸ö×Ö½ÚµÄ
              -±êÖ¾Î»
@@ -510,7 +510,7 @@ line level    source
  463   4                                      //                                      if (sound_table == 1)
  464   4                                      //                                      {
  465   4                                      //#if SOUND
-C51 COMPILER V9.00   AT24C256                                                              10/06/2015 10:53:57 PAGE 9   
+C51 COMPILER V9.00   AT24C256                                                              10/06/2015 11:04:14 PAGE 9   
 
  466   4                                      //                                              GD5800_select_chapter(SETSUCCESS_POSITION);
  467   4                                      //#endif
@@ -574,7 +574,7 @@ line level    source
  520   1              {
  521   2                      IRcvStr(I2C_ADDRESS, CANCEL_TABLE_START + base_address*PAGE_LENGTH, at24c64_buff, PAGE_LENGTH);//´ÓAT24C
              -64ÀïÃæ¶Á³ö32¸ö×Ö½ÚµÄ±êÖ¾Î»
-C51 COMPILER V9.00   AT24C256                                                              10/06/2015 10:53:57 PAGE 10  
+C51 COMPILER V9.00   AT24C256                                                              10/06/2015 11:04:14 PAGE 10  
 
  522   2                      delay10ms();
  523   2                      for (offset_address = 0; offset_address<PAGE_LENGTH; offset_address++)//Ö÷Òª32¸ö×Ö½Ú±êÖ¾Î»ÀïÃæÃ»ÓÐ0µÄ¾ÍO
@@ -638,7 +638,7 @@ line level    source
  576   4                                      {
  577   5                                              at24c64_buff[offset_address] = 0xff;
  578   5                                              ISendStr(I2C_ADDRESS, base_address*PAGE_LENGTH, at24c64_buff, PAGE_LENGTH);
-C51 COMPILER V9.00   AT24C256                                                              10/06/2015 10:53:57 PAGE 11  
+C51 COMPILER V9.00   AT24C256                                                              10/06/2015 11:04:14 PAGE 11  
 
  579   5                                              delay10ms();
  580   5                                              //Çå³ý¶ÔÓ¦µÄ±êÖ¾Î» È»ºóÔÙ½«±êÖ¾Î»Ð´Èë±êÖ¾Çø
@@ -702,7 +702,7 @@ line level    source
  631   4      
  632   4                              }
  633   3                      }
-C51 COMPILER V9.00   AT24C256                                                              10/06/2015 10:53:57 PAGE 12  
+C51 COMPILER V9.00   AT24C256                                                              10/06/2015 11:04:14 PAGE 12  
 
  634   2                      ISendStr(I2C_ADDRESS, HOST_TABLE_START + base_address*PAGE_LENGTH, at24c64_buff, PAGE_LENGTH);
  635   2                      //×îºó½«32¸ö±êÖ¾Î»Ð´Èë±êÖ¾Çø
@@ -766,7 +766,7 @@ line level    source
  688   1              unsigned char offset_address = 0;
  689   1      
  690   1              for (base_address = 0; base_address<CANCEL_TABLE_NUMBER; base_address++)
-C51 COMPILER V9.00   AT24C256                                                              10/06/2015 10:53:57 PAGE 13  
+C51 COMPILER V9.00   AT24C256                                                              10/06/2015 11:04:14 PAGE 13  
 
  691   1              {
  692   2                      IRcvStr(I2C_ADDRESS, CANCEL_TABLE_START + base_address*PAGE_LENGTH, at24c64_buff, PAGE_LENGTH); //È¡³ö32
@@ -830,7 +830,7 @@ MODULE INFORMATION:   STATIC OVERLAYABLE
    XDATA SIZE       =     40      88
    PDATA SIZE       =   ----    ----
    DATA SIZE        =   ----    ----
-C51 COMPILER V9.00   AT24C256                                                              10/06/2015 10:53:57 PAGE 14  
+C51 COMPILER V9.00   AT24C256                                                              10/06/2015 11:04:14 PAGE 14  
 
    IDATA SIZE       =   ----    ----
    BIT SIZE         =      1    ----

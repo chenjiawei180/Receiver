@@ -1,4 +1,4 @@
-C51 COMPILER V9.00   DECODER                                                               10/06/2015 10:53:57 PAGE 1   
+C51 COMPILER V9.00   DECODER                                                               10/06/2015 11:04:14 PAGE 1   
 
 
 C51 COMPILER V9.00, COMPILATION OF MODULE DECODER
@@ -62,7 +62,7 @@ line level    source
              -o_Menu_F7_E1_temp == 10)))//键盘规则，程序按默认的来编
   51   4                              {
   52   5                                      if (Two_Menu_F8_E1_temp == 1)  //为按键值
-C51 COMPILER V9.00   DECODER                                                               10/06/2015 10:53:57 PAGE 2   
+C51 COMPILER V9.00   DECODER                                                               10/06/2015 11:04:14 PAGE 2   
 
   53   5                                      {
   54   6                                              temp_buff[0] = single_key[old2_RF_RECE_REG[2] & 0x0f] ;
@@ -126,7 +126,7 @@ line level    source
  109   8      #ifdef DEBUG
  110   8                                                              uart_printf("对码成功 \r\n");
  111   8                                                              uart_printf("遥控器码是 %02x %02x %02x.\r\n", (unsigned int)old2_RF_RECE_REG[0], (unsigned int)old2
-C51 COMPILER V9.00   DECODER                                                               10/06/2015 10:53:57 PAGE 3   
+C51 COMPILER V9.00   DECODER                                                               10/06/2015 11:04:14 PAGE 3   
 
              -_RF_RECE_REG[1], (unsigned int)old2_RF_RECE_REG[2]); //测试按键键值
  112   8                                                              uart_printf("标志地址为 %x ! \n\r", (unsigned int)(j*PAGE_LENGTH+i));
@@ -190,7 +190,7 @@ line level    source
  169   8                                                      }
  170   7                                              }
  171   6                                      }
-C51 COMPILER V9.00   DECODER                                                               10/06/2015 10:53:57 PAGE 4   
+C51 COMPILER V9.00   DECODER                                                               10/06/2015 11:04:14 PAGE 4   
 
  172   5                              }       
  173   4                               break;
@@ -254,7 +254,7 @@ line level    source
  229   6                                              {
  230   7                                                      if (display_ram[k * 6] == 0)//找出位于队列最后的那个点
  231   7                                                      {
-C51 COMPILER V9.00   DECODER                                                               10/06/2015 10:53:57 PAGE 5   
+C51 COMPILER V9.00   DECODER                                                               10/06/2015 11:04:14 PAGE 5   
 
  232   8                                                              decoder_temp_to_mcuram(display_ram + k * 6, temp_buff);//如果符合的话  将临时数组的数据移入单片机暂
              -存数组 8字节转6字节
@@ -318,7 +318,7 @@ line level    source
  288  10      #ifdef DEBUG
  289  10                                                                              uart_printf("cancen funtion success \r\n");
  290  10      #endif
-C51 COMPILER V9.00   DECODER                                                               10/06/2015 10:53:57 PAGE 6   
+C51 COMPILER V9.00   DECODER                                                               10/06/2015 11:04:14 PAGE 6   
 
  291  10                                                                              Cancel_funtion(temp_buff, display_ram);//取消函数
  292  10                                                                              tm1629_load();
@@ -382,7 +382,7 @@ line level    source
  347   4                              buf_eeprom[1] = Two_Menu_F1_E1[0];/*数值存入1 2 3 4字节*/
  348   4                              buf_eeprom[2] = Two_Menu_F1_E1[1];
  349   4                              buf_eeprom[3] = Two_Menu_F1_E1[2];
-C51 COMPILER V9.00   DECODER                                                               10/06/2015 10:53:57 PAGE 7   
+C51 COMPILER V9.00   DECODER                                                               10/06/2015 11:04:14 PAGE 7   
 
  350   4                              buf_eeprom[4] = Two_Menu_F1_E1[3];
  351   4                              buf_eeprom[5] = old2_RF_RECE_REG[0];// ID码存入 5 6 7 字节
@@ -446,7 +446,7 @@ line level    source
  407   3      
  408   3                      case TWO_MENU_F1_E2_D1:
  409   3                      case TWO_MENU_F1_E2_D2:
-C51 COMPILER V9.00   DECODER                                                               10/06/2015 10:53:57 PAGE 8   
+C51 COMPILER V9.00   DECODER                                                               10/06/2015 11:04:14 PAGE 8   
 
  410   3                      case TWO_MENU_F1_E2_D3:
  411   3                      case TWO_MENU_F1_E2_D4:
@@ -510,7 +510,7 @@ line level    source
  467   5                                                                        }
  468   4                                                                        break;
  469   4                      }
-C51 COMPILER V9.00   DECODER                                                               10/06/2015 10:53:57 PAGE 9   
+C51 COMPILER V9.00   DECODER                                                               10/06/2015 11:04:14 PAGE 9   
 
  470   3      
  471   3                      case TWO_MENU_F1_E3_D1:
@@ -574,7 +574,7 @@ line level    source
  527   5                                              Two_Menu_F1_E3[3]++;
  528   5                              }
  529   4                              break;
-C51 COMPILER V9.00   DECODER                                                               10/06/2015 10:53:57 PAGE 10  
+C51 COMPILER V9.00   DECODER                                                               10/06/2015 11:04:14 PAGE 10  
 
  530   4                      }
  531   3                      case TWO_MENU_F1_E4_D1:
@@ -638,7 +638,7 @@ line level    source
  587   5                                              Two_Menu_F1_E4[3]++;
  588   5                              }
  589   4                              break;
-C51 COMPILER V9.00   DECODER                                                               10/06/2015 10:53:57 PAGE 11  
+C51 COMPILER V9.00   DECODER                                                               10/06/2015 11:04:14 PAGE 11  
 
  590   4                      }
  591   3                      case TWO_MENU_F8_E2_SET :
