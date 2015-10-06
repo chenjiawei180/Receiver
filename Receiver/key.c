@@ -225,8 +225,8 @@ unsigned char KeyDecoder(void)
 			
 			if (func_index == MENU_STANDBY)
 			{
-				uart_printf("accumulate_decoder %d .\r\n", (unsigned int)accumulate_decoder);
-				uart_printf("accumulate_decoder %d .\r\n", (unsigned int)old2_RF_RECE_REG[2] & 0x0f);
+//				uart_printf("accumulate_decoder %d .\r\n", (unsigned int)accumulate_decoder);
+//				uart_printf("accumulate_decoder %d .\r\n", (unsigned int)old2_RF_RECE_REG[2] & 0x0f);
 				if ((old2_RF_RECE_REG[2] & 0x0f) == 0x08)
 				{
 					accumulate_decoder++;
