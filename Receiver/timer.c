@@ -56,7 +56,7 @@ void Timer0_isr(void) interrupt 1  //定时器0中断服务程序
 	if (1)
 	{
 		await_number++;
-		if (await_number == 10)
+		if (await_number == 5)
 		{
 			await_number_table++;
 			await_number = 0;
@@ -177,4 +177,9 @@ void set_logout_cycle_table(unsigned char temp) //设置logout_cycle_table变量的值
 void clear_return_standby_time(void)
 {
 	return_standby_time = 0;
+}
+
+void set_main_press_time(unsigned char temp)
+{
+	main_press_time = temp;
 }

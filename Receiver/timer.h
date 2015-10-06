@@ -13,7 +13,8 @@ extern void set_await_number_table(unsigned char temp);
 
 extern void set_main_press_time_table(unsigned char temp);
 extern unsigned char return_main_press_time(void);
-extern void clear_main_press_time(void);
+extern void clear_main_press_time(void);\
+extern void set_main_press_time(unsigned char temp);
 
 void set_logout_cycle_table(unsigned char temp);
 unsigned char return_logout_cycle_table(void);

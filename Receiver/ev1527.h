@@ -19,5 +19,7 @@ extern unsigned char return_again_receive_rf_decoder_finished(void);
 extern void clear_again_receive_rf_decoder_finished(void);
 extern unsigned char return_again_and_again_decoder_table(void);
 extern void clear_again_and_again_decoder_table(void);
-
+extern unsigned char return_register_manager(void);
+extern void clear_register_manager(void);
+extern unsigned int return_RF_trans_count(void);
 #endif

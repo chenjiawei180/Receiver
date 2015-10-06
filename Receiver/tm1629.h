@@ -46,6 +46,7 @@ extern void Show_on(void);
 extern void Show_off(void);
 extern void Show_one_number(unsigned char f_number);
 extern void Show_two_number(unsigned char f_number);
+extern void Show_three_number(unsigned int f_number);
 extern void Show_four_number(unsigned char* temp);
 
 extern void fun0(void);

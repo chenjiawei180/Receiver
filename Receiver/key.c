@@ -6,8 +6,10 @@
 #include "ds1302.h"
 #include "at24c256.h"
 #include "gd5800.h"
+#include "ev1527.h"
 
 unsigned char sound_table = 0;
+unsigned char accumulate_decoder = 0;
 
 unsigned char func_index = 0; //多级菜单索引变量
 void(*current_operation_index)();// 多级菜单函数指针
@@ -212,18 +214,20 @@ unsigned int KeyScan(void)  //Keyboard scan function
 unsigned char KeyDecoder(void)
 {
 	unsigned int key_val = 0;
-
+	unsigned char register_manager_temp = 0;
 	key_val = KeyScan();
-#if 0	  
+	register_manager_temp = return_register_manager();
 	if (key_val == 0x0fff) /*do not key press*/
 	{
 		/*sjz 有注册管理器标志*/
-		if (register_manager == 1)
+		if (register_manager_temp == 1)
 		{
-
-			if (func_index == FUNC_STANDBY)
+			
+			if (func_index == MENU_STANDBY)
 			{
-				if ((old2_RF_RECE_REG[2] & 0x0f) == 0x01)
+				uart_printf("accumulate_decoder %d .\r\n", (unsigned int)accumulate_decoder);
+				uart_printf("accumulate_decoder %d .\r\n", (unsigned int)old2_RF_RECE_REG[2] & 0x0f);
+				if ((old2_RF_RECE_REG[2] & 0x0f) == 0x08)
 				{
 					accumulate_decoder++;
 				}
@@ -233,22 +237,23 @@ unsigned char KeyDecoder(void)
 				}
 				if (accumulate_decoder>10)
 				{
-					accumulate_50ms = 20;
+					set_main_press_time(20);
 					accumulate_decoder = 0;
 				}
 			}
-			register_manager = 0;
+			clear_register_manager();
+
 			switch (old2_RF_RECE_REG[2] & 0x0f)
 			{
-			case 0x01:key_val = 0x1778; break;
-			case 0x02:key_val = 0x1b78; break;
-			case 0x04:key_val = 0x1d78; break;
-			case 0x08:key_val = 0x1e78; break;
+			case 0x01:key_val = 0x5c78; break;
+			case 0x02:key_val = 0x7478; break;
+			case 0x04:key_val = 0x6c78; break;
+			case 0x08:key_val = 0x7878; break;
 			default:break;
 			}
 		}
 	}
-#endif 	 
+ 
 
 #ifdef DEBUG
 	if (key_val != 0x0fff)

@@ -6,6 +6,7 @@
 #include "menu.h"
 #include "gd5800.h"
 #include "at24c256.h"
+#include "ev1527.h"
 
 unsigned char const CODE[] = { 0x3F, 0x06, 0x5B, 0x4F, 0x66, 0x6D, 0x7D, 0x07, 0x7F, 0x6F, 0x77, 0x7C, 0x39, 0x5E, 0x79, 0x71, 0x76, 0x38, 0x5c, 0x73, 0x3e };//0-9 abcdef 显示器码数组
 unsigned char const INIT_CODE[] = { 0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80 };//逐段点亮数码管数组
@@ -265,7 +266,7 @@ void Show_on(void)
 {
 	tm1629_clear();
 	buf_display[0][1] = CODE[0];
-	buf_display[0][0] = 0x54;
+	buf_display[0][0] = 0x37;
 	display();
 }
 
@@ -289,6 +290,16 @@ void Show_two_number(unsigned char f_number) //显示两个数字
 {
 	tm1629_clear();
 	buf_display[0][1] = CODE[f_number / 10];
+	buf_display[0][0] = CODE[f_number % 10];
+	display();
+}
+
+
+void Show_three_number(unsigned int f_number) //显示三个数字
+{
+	tm1629_clear();
+	buf_display[0][2] = CODE[f_number / 100];
+	buf_display[0][1] = CODE[(f_number / 10) %10];
 	buf_display[0][0] = CODE[f_number % 10];
 	display();
 }
@@ -954,7 +965,16 @@ void fun45(void) //二级菜单F9-E2
 
 void fun46(void) //二级菜单FA
 {
-	tm1629_f(0x0f);
+	unsigned int measure_sync_saved_temp = 0;
+	unsigned int show_temp = 0;
+
+		measure_sync_saved_temp = return_RF_trans_count();
+		show_temp = 10000 / measure_sync_saved_temp;
+		Show_three_number(show_temp);
+
+//		uart_printf("measure_sync_saved_temp为 %d ! \n\r", measure_sync_saved_temp);
+//		uart_printf("show_temp为 %d ! \n\r", show_temp);
+
 }
 
 

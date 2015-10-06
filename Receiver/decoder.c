@@ -94,7 +94,7 @@ void DecoderProcess(void)
 			{
 				IRcvStr(I2C_ADDRESS, j*PAGE_LENGTH, temp_buff1, PAGE_LENGTH);//读出32个字节标志位
 				delay10ms();
-				uart_printf("j = %02x \r\n",(unsigned int)j);
+//				uart_printf("j = %02x \r\n",(unsigned int)j);
 				for (i = 0; i<PAGE_LENGTH; i++) //对读出的32字节标志位进行查看，看是否为0
 				{
 					if (temp_buff1[i] == 0)//标志位为0代表该标志位所对应的数据区有数据

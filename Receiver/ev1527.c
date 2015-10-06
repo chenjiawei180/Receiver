@@ -1,6 +1,7 @@
 #include "ev1527.h"
 #include "timer.h"
 #include "key.h"
+#include "at24c256.h"
 
 /********************解码方式专用变量*******************************/
 unsigned char Save_RF_trans1 = 0;
@@ -25,6 +26,10 @@ unsigned char receive_rf_decoder_finished = 0;      //一次解码完成标志位
 unsigned char again_receive_rf_decoder_finished = 0;//二次解码完成标志位
 unsigned char rx_table = 0;							//二次解码switch步骤变量
 unsigned char again_and_again_decoder_table = 0;     //二次编码成功标志位
+
+unsigned char register_manager = 0;
+
+
 
 
 
@@ -169,9 +174,9 @@ void RF_decode_main(void)
 
 void receive_rf_decoder(void)
 {
-	//unsigned char i, j;
-	//unsigned char temp_buff[8];
-	//unsigned char temp_buff1[32];
+	unsigned char i, j;
+	unsigned char temp_buff[8];
+	unsigned char temp_buff1[32];
 
 	if (receive_rf_decoder_finished == 1)
 	{
@@ -209,26 +214,26 @@ void receive_rf_decoder(void)
 				clear_return_standby_time();
 
 
-				//for (j = 0; j<4; j++)
-				//{
-				//	IRcvStr(0xa0, HOST_CODE_TABLE_START + j*PAGE_LENGTH, temp_buff1, PAGE_LENGTH);
-				//	delay10ms();
-				//	for (i = 0; i<PAGE_LENGTH; i++)
-				//	{
-				//		if (temp_buff1[i] == 0)
-				//		{
-				//			IRcvStr(0xa0, HOST_CODE_DATA_START + (j*PAGE_LENGTH + i) * 8, temp_buff, 8);
-				//			delay10ms();
-				//			if (temp_buff[4] == old2_RF_RECE_REG[0] && temp_buff[5] == old2_RF_RECE_REG[1] && ((temp_buff[6] >> 4) == (old2_RF_RECE_REG[2] >> 4)))
-				//			{
-				//				register_manager = 1;
-				//				clear_return_standby_time();
-				//				break;
-				//				break;
-				//			}
-				//		}
-				//	}
-				//}
+				for (j = 0; j<HOST_TABLE_NUMBER; j++)
+				{
+					IRcvStr(0xa0, HOST_TABLE_START + j*PAGE_LENGTH, temp_buff1, PAGE_LENGTH);
+					delay10ms();
+					for (i = 0; i<PAGE_LENGTH; i++)
+					{
+						if (temp_buff1[i] == 0)
+						{
+							IRcvStr(0xa0, HOST_DATA_START + (j*PAGE_LENGTH + i) * 8, temp_buff, 8);
+							delay10ms();
+							if (temp_buff[5] == old2_RF_RECE_REG[0] && temp_buff[6] == old2_RF_RECE_REG[1] && ((temp_buff[7] >> 4) == (old2_RF_RECE_REG[2] >> 4)) )
+							{
+								register_manager = 1;
+								clear_return_standby_time();
+								break;
+								break;
+							}
+						}
+					}
+				}
 
 				RF_RECE_REG[0] = 0;
 				RF_RECE_REG[1] = 0;
@@ -348,13 +353,13 @@ void RF_decode_main_sjz_test(void)
 			   {
 				   RF_RECE_REG[(RF_BIT_COUNTER) / 8] |= 0x01;
 			   }
-			   RF_trans_count = Save_RF_trans1 + Save_RF_trans0;
 			   ++RF_BIT_COUNTER;
 			   if (RF_BIT_COUNTER >23)
 			   {
 				   TR1 = 0;
+				   RF_trans_count = Save_RF_trans1 + Save_RF_trans0;
 				   RF_ini_receive();
-				   receive_rf_decoder_finished = 1;
+					//   receive_rf_decoder_finished = 1;
 				   /*sjz*/
 				   tunning_finish_count++;
 				   measure_sync_count2_saved = measure_sync_count2_saved + measure_sync_count2;
@@ -366,6 +371,7 @@ void RF_decode_main_sjz_test(void)
 					   measure_sync_count1_saved = measure_sync_count1_saved + measure_sync_count1;
 					   measure_sync_count1 = measure_sync_count1_saved >> 1;
 					   measure_sync_count1_saved = measure_sync_count1;
+					 //  decoder_speed_test_finish = 1;
 				   }
 
 				   EX0 = 1;
@@ -411,4 +417,23 @@ unsigned char return_again_and_again_decoder_table(void)
 void clear_again_and_again_decoder_table(void)
 {
 	again_and_again_decoder_table = 0;
+}
+
+unsigned char return_register_manager(void)
+{
+	unsigned char temp;
+	temp = register_manager;
+	return temp;
+}
+
+void clear_register_manager(void)
+{
+	register_manager = 0;
+}
+
+unsigned int return_RF_trans_count(void)
+{
+	unsigned int temp;
+	temp = RF_trans_count;
+	return temp;
 }
