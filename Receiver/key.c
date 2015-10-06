@@ -28,7 +28,7 @@ unsigned char Two_Menu_F4_E1 = 0; //销号时间
 unsigned char Two_Menu_F5_E1 = 0; //循环间隔时间
 
 unsigned char Two_Menu_F6_E1 = 0; //简单报读
-unsigned char Two_Menu_F6_E2 = 1; //语音报读次数
+unsigned char Two_Menu_F6_E2 = 2; //语音报读次数
 unsigned char Two_Menu_F6_E3 = 0; //循环时候是否报读
 unsigned char Two_Menu_F6_E4 = 0; //音量大小调整
 unsigned char Two_Menu_F6_E5 = 0; //显示屏LED亮度调整

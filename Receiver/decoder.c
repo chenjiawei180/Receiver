@@ -65,7 +65,10 @@ void DecoderProcess(void)
 
 				if (temp_buff[0] != QUXIAO_1 && temp_buff[0])
 				{
-					submenuf6_1(Two_Menu_F6_E1_temp, temp_buff, temp_buff[0], old2_RF_RECE_REG[2] & 0x0f);
+					for (l = 0; l < Two_Menu_F6_E2_temp; l++)
+					{
+						submenuf6_1(Two_Menu_F6_E1_temp, temp_buff, temp_buff[0], old2_RF_RECE_REG[2] & 0x0f);
+					}
 				}
 				else
 				{
@@ -132,7 +135,10 @@ void DecoderProcess(void)
 #ifdef DEBUG
 								uart_printf("cancen funtion fault \r\n");
 #endif
-								submenuf6_1(Two_Menu_F6_E1_temp, temp_buff, temp_buff[0], old2_RF_RECE_REG[2] & 0x0f);
+								for (l = 0; l < Two_Menu_F6_E2_temp; l++)
+								{
+									submenuf6_1(Two_Menu_F6_E1_temp, temp_buff, temp_buff[0], old2_RF_RECE_REG[2] & 0x0f);
+								}
 							}
 							else
 							{
@@ -188,7 +194,10 @@ void DecoderProcess(void)
 				{	
 					if (temp_buff[0] != QUXIAO_1 && temp_buff[0])
 					{
-						submenuf6_1(Two_Menu_F6_E1_temp, temp_buff, temp_buff[0], old2_RF_RECE_REG[2] & 0x0f);
+						for (l = 0; l < Two_Menu_F6_E2_temp; l++)
+						{
+							submenuf6_1(Two_Menu_F6_E1_temp, temp_buff, temp_buff[0], old2_RF_RECE_REG[2] & 0x0f);
+						}
 					}
 					else
 					{
@@ -265,7 +274,10 @@ void DecoderProcess(void)
 #ifdef DEBUG
 									uart_printf("cancen funtion fault \r\n");
 #endif
-									submenuf6_1(Two_Menu_F6_E1_temp, temp_buff, temp_buff[0], old2_RF_RECE_REG[2] & 0x0f);
+									for (l = 0; l < Two_Menu_F6_E2_temp; l++)
+									{
+										submenuf6_1(Two_Menu_F6_E1_temp, temp_buff, temp_buff[0], old2_RF_RECE_REG[2] & 0x0f);
+									}
 								}
 								else
 								{
