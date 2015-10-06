@@ -209,9 +209,9 @@ void submenuf6_1(unsigned char report_mode, unsigned char *report_number, unsign
 
 		if (key == 15)
 		{
+			GD5800_select_chapter(DAO);
 			if (Two_Menu_F7_E1_temp == 10)
-			{
-				GD5800_select_chapter(DAO);
+			{	
 				if (*(number + 1) <= 9)
 				{
 					GD5800_select_chapter(*(number + 1) + ZERO);
@@ -232,9 +232,8 @@ void submenuf6_1(unsigned char report_mode, unsigned char *report_number, unsign
 					default:break;
 					}
 				}
-				GD5800_select_chapter(GUITAI);
 			}
-
+			GD5800_select_chapter(GUITAI);
 		}
 		else if (mode != NOT_REPORT)
 		{
