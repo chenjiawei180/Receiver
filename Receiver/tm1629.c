@@ -351,7 +351,7 @@ void decoder_temp_to_mcuram(unsigned char* a, unsigned char* index)//aÎªMCU»º´æÇ
 	*(a + 2) = *(index + 2);
 	*(a + 3) = *(index + 3);
 	*(a + 4) = *(index + 4);
-	*(a + 5) = *(index + 5);
+	*(a + 5) = *(index + 7);//±£´æ°´¼üµÄ¼üÖµ
 }
 
 void mcuram_to_mcuram_down(unsigned char* a) //aÎªMCURAM»º´æÇøÇø   ÏòÏÂÑ¹Ò»×éÊý¾Ý
@@ -380,6 +380,14 @@ void CycleProcess(void)
 	unsigned char i, index;
 	unsigned char f5_xunhuan, f4_xiaohao, logout_cycle_table_temp;
 	unsigned char temp[6] = { 0 };
+//	unsigned char Two_Menu_F6_E2_temp = 0;
+	unsigned char Two_Menu_F6_E3_temp = 0;
+	unsigned char Two_Menu_F6_E1_temp = 0;
+
+	Two_Menu_F6_E3_temp = return_Two_Menu_F6_E3();
+//	Two_Menu_F6_E2_temp = return_Two_Menu_F6_E2();
+	Two_Menu_F6_E1_temp = return_Two_Menu_F6_E1();
+
 	f5_xunhuan = return_Two_Menu_F5_E1();
 	f4_xiaohao = return_Two_Menu_F4_E1();
 	logout_cycle_table_temp = return_logout_cycle_table();
@@ -411,6 +419,10 @@ void CycleProcess(void)
 		tm1629_load();
 		display();
 		set_logout_cycle_table(0);
+		if (Two_Menu_F6_E3_temp == 1)
+		{
+				submenuf6_1(Two_Menu_F6_E1_temp, display_ram, display_ram[0], display_ram[5] & 0x0f);
+		}
 	}
 }
 

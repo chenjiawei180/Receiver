@@ -61,7 +61,9 @@ void DecoderProcess(void)
 				temp_buff[2] = old2_RF_RECE_REG[0] & 0x0f;	//为3位组码第一位
 				temp_buff[3] = old2_RF_RECE_REG[1] >> 4;	//为3位组码第二位
 				temp_buff[4] = old2_RF_RECE_REG[1] & 0x0f;	//为3位组码第三位
-				temp_buff[5] = old2_RF_RECE_REG[0];			//备用项,暂且存第一位ID码
+				temp_buff[5] = old2_RF_RECE_REG[0];			//备用项,暂且存第1位ID码
+				temp_buff[6] = old2_RF_RECE_REG[1];			//备用项,暂且存第2位ID码
+				temp_buff[7] = old2_RF_RECE_REG[2];			//备用项,暂且存第3位ID码
 
 				if (temp_buff[0] != QUXIAO_1 && temp_buff[0])
 				{
@@ -190,6 +192,8 @@ void DecoderProcess(void)
 				temp_buff[3] = old2_RF_RECE_REG[1] >> 4;	//为3位组码第二位
 				temp_buff[4] = old2_RF_RECE_REG[1] & 0x0f;	//为3位组码第三位
 				temp_buff[5] = old2_RF_RECE_REG[0];			//备用项,暂且存第一位ID码
+				temp_buff[6] = old2_RF_RECE_REG[1];			//备用项,暂且存第二位ID码
+				temp_buff[7] = old2_RF_RECE_REG[2];			//备用项,暂且存第三位ID码
 				if (Two_Menu_F3_E1_temp == 1)				//为即时模式
 				{	
 					if (temp_buff[0] != QUXIAO_1 && temp_buff[0])
