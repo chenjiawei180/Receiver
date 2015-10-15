@@ -175,39 +175,31 @@ key_table code table[100] =
 unsigned int KeyScan(void)  //Keyboard scan function
 {
 	unsigned int Val = 0;
-	HKeyPort |= 0x7C;//Row height
-	LKeyPort &= 0x07;
-	if ((HKeyPort & 0x7C) != 0x1f)//Press button
+	HKeyPort |= 0x3C;//Row height
+	if ((HKeyPort & 0x3C) != 0x3C)//Press button
 	{
 		delay10ms();  //Remove jitter
-		if ((HKeyPort & 0x7C) != 0x7C)   //Press button
+		if ((HKeyPort & 0x3C) != 0x3C)   //Press button
 		{
 			clear_return_standby_time();
 
-			HKeyPort |= 0x7C; //检测第一列
-			LKeyPort |= 0xf8;
-			LKeyPort &= 0x7f;
-			if ((HKeyPort & 0x7C) != 0x7C)
-			{
 				//GD5800_select_chapter(DI);
 				sound_table=1;
-				Val = HKeyPort & 0x7C;
-				Val <<= 8;
-				Val += (LKeyPort & 0xf8);
-				if (Val == 0x7878)
+				Val = HKeyPort & 0x3C;
+				if (Val == 0x0038)
 				{
 					clear_main_press_time();	//清除菜单键按下的时间计算变量
 					set_main_press_time_table(1); //设置相应的标志位，开始计算时间
 				}
-				while ((HKeyPort & 0x7C) != 0x7C);
+				while ((HKeyPort & 0x3C) != 0x3C);
 				delay10ms();
-				while ((HKeyPort & 0x7C) != 0x7C);
+				while ((HKeyPort & 0x3C) != 0x3C);
 				set_main_press_time_table(0);//按键释放，清除相应的标志位
 				set_logout_cycle_table(0);//循环跟销号重新计数
 				return Val;
-			}
 		}
 	}
+	
 	return 0x0fff;
 }
 
@@ -261,10 +253,10 @@ unsigned char KeyDecoder(void)
 #endif
 	switch (key_val)
 	{
-	case 0x5c78:return KEY_RETURN; break;//1 按下相应的键显示相对应的码值
-	case 0x6c78:return KEY_DOWN; break;//2  
-	case 0x7478:return KEY_UP; break;//4
-	case 0x7878:return KEY_FUNC; break;//5 按下相应的键显示相对应的码值
+	case 0x001c:return KEY_RETURN; break;//1 按下相应的键显示相对应的码值
+	case 0x002c:return KEY_DOWN; break;//2  
+	case 0x0034:return KEY_UP; break;//4
+	case 0x0038:return KEY_FUNC; break;//5 按下相应的键显示相对应的码值
 	default:return 0xff; break;
 	}
 }

@@ -258,10 +258,10 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>0</ColumnNumber>
+      <ColumnNumber>20</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>212</TopLine>
-      <CurrentLine>219</CurrentLine>
+      <TopLine>98</TopLine>
+      <CurrentLine>98</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>.\Receiver\ev1527.c</PathWithFileName>
       <FilenameWithoutPath>ev1527.c</FilenameWithoutPath>
@@ -1655,9 +1655,9 @@
       <Documents>
         <Doc>
           <Name>.\Receiver\ev1527.c</Name>
-          <ColumnNumber>0</ColumnNumber>
-          <TopLine>212</TopLine>
-          <CurrentLine>219</CurrentLine>
+          <ColumnNumber>20</ColumnNumber>
+          <TopLine>98</TopLine>
+          <CurrentLine>98</CurrentLine>
         </Doc>
       </Documents>
     </MDIGroup>
