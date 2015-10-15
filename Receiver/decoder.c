@@ -7,6 +7,7 @@
 #include "tm1629.h"
 #include "timer.h"
 #include "gd5800.h"
+#include "com.h"
 
 unsigned char buf_eeprom[8] = { 0 };//写入EEPROM_buf
 
@@ -75,12 +76,14 @@ void DecoderProcess(void)
 				else
 				{
 					Cancel_funtion(temp_buff,display_ram);//取消函数
+					mcu_to_computer(0x92, temp_buff, old2_RF_RECE_REG[2] & 0x0f);//上位机
 					tm1629_load();
 					display();
 					break;
 				}		
 
 				tm1629_clear();//清屏
+				mcu_to_computer(0x91, temp_buff, old2_RF_RECE_REG[2] & 0x0f);//上位机
 				decoder_temp_to_mcuram(display_ram, temp_buff);//将临时数组的数据移入单片机暂存数组 8字节转6字节
 				tm1629_load();//单片机把数组内容载入数码管显存数组中
 				display();//显示数码管
@@ -148,6 +151,7 @@ void DecoderProcess(void)
 #ifdef DEBUG
 								uart_printf("cancen funtion success \r\n");
 #endif
+								mcu_to_computer(0x92, temp_buff, old2_RF_RECE_REG[2] & 0x0f);//上位机
 								Cancel_funtion(temp_buff, display_ram);//取消函数
 								tm1629_load();
 								display();
@@ -156,6 +160,7 @@ void DecoderProcess(void)
 							}
 
 								tm1629_clear();//清屏
+								mcu_to_computer(0x91, temp_buff, old2_RF_RECE_REG[2] & 0x0f);//上位机
 								decoder_temp_to_mcuram(display_ram, temp_buff);//如果符合的话  将临时数组的数据移入单片机暂存数组 8字节转6字节
 								tm1629_load();//单片机把数组内容载入数码管显存数组中
 								display();//显示数码管
@@ -206,12 +211,13 @@ void DecoderProcess(void)
 					}
 					else
 					{
+						mcu_to_computer(0x92, temp_buff, old2_RF_RECE_REG[2] & 0x0f);//上位机
 						Cancel_funtion(temp_buff, display_ram);//取消函数
 						tm1629_load();
 						display();
 						break;
 					}
-
+					mcu_to_computer(0x91, temp_buff, old2_RF_RECE_REG[2] & 0x0f);//上位机
 					if (display_ram[1] == temp_buff[1] && display_ram[2] == temp_buff[2] && display_ram[3] == temp_buff[3] && display_ram[4] == temp_buff[4])
 					{
 						decoder_temp_to_mcuram(display_ram, temp_buff);
@@ -226,6 +232,7 @@ void DecoderProcess(void)
 						{
 							display_ram[l] = 0;
 						}
+						
 						decoder_temp_to_mcuram(display_ram, temp_buff); //如果符合的话  将临时数组的数据移入单片机暂存数组 8字节转6字节
 					}			
 					tm1629_load();//单片机把数组内容载入数码管显存数组中
@@ -233,10 +240,19 @@ void DecoderProcess(void)
 				}
 				else if (Two_Menu_F3_E1_temp == 2)//为循环模式
 				{
+					if (temp_buff[0] == QUXIAO_1 || temp_buff[0] == 0)
+					{
+						mcu_to_computer(0x92, temp_buff, old2_RF_RECE_REG[2] & 0x0f);//上位机
+						Cancel_funtion(temp_buff, display_ram);//取消函数
+						tm1629_load();
+						display();
+						break;
+					}
 					for (k = 0; k < Two_Menu_F3_E2_temp; k++)
 					{
 						if (display_ram[k * 6] == 0)//找出位于队列最后的那个点
 						{
+							mcu_to_computer(0x91, temp_buff, old2_RF_RECE_REG[2] & 0x0f);//上位机
 							if (display_ram[(k - 1) * 6 + 1] == temp_buff[1] && display_ram[(k - 1) * 6 + 2] == temp_buff[2] && display_ram[(k - 1) * 6 + 3] == temp_buff[3] && display_ram[(k - 1) * 6 + 4] == temp_buff[4])
 							{
 								decoder_temp_to_mcuram(display_ram + (k-1) * 6, temp_buff);
@@ -304,6 +320,7 @@ void DecoderProcess(void)
 #ifdef DEBUG
 									uart_printf("cancen funtion success \r\n");
 #endif
+									mcu_to_computer(0x92, temp_buff, old2_RF_RECE_REG[2] & 0x0f);//上位机
 									Cancel_funtion(temp_buff, display_ram);//取消函数
 									tm1629_load();
 									display();
@@ -311,6 +328,7 @@ void DecoderProcess(void)
 									break;
 								}
 
+								mcu_to_computer(0x91, temp_buff, old2_RF_RECE_REG[2] & 0x0f);//上位机
 								if (display_ram[1] == temp_buff[1] && display_ram[2] == temp_buff[2] && display_ram[3] == temp_buff[3] && display_ram[4] == temp_buff[4])
 								{
 									decoder_temp_to_mcuram(display_ram, temp_buff);
@@ -332,10 +350,20 @@ void DecoderProcess(void)
 							}
 						else if (Two_Menu_F3_E1_temp == 2)//为循环模式
 						{
+							if (temp_buff[0] == QUXIAO_1 || temp_buff[0] == 0)
+							{
+								mcu_to_computer(0x92, temp_buff, old2_RF_RECE_REG[2] & 0x0f);//上位机
+								Cancel_funtion(temp_buff, display_ram);//取消函数
+								tm1629_load();
+								display();
+								break;
+							}
+
 							for (k = 0; k < Two_Menu_F3_E2_temp; k++)
 							{
 								if (display_ram[k * 6 ] == 0)//找出位于队列最后的那个点
 								{
+									mcu_to_computer(0x91, temp_buff, old2_RF_RECE_REG[2] & 0x0f);//上位机
 									if (display_ram[(k - 1) * 6 + 1] == temp_buff[1] && display_ram[(k - 1) * 6 + 2] == temp_buff[2] && display_ram[(k - 1) * 6 + 3] == temp_buff[3] && display_ram[(k - 1) * 6 + 4] == temp_buff[4])
 									{
 										decoder_temp_to_mcuram(display_ram + (k - 1) * 6, temp_buff);

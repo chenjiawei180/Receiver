@@ -65,6 +65,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="at24c256.c" />
+    <ClCompile Include="com.c" />
     <ClCompile Include="decoder.c" />
     <ClCompile Include="ds1302.c" />
     <ClCompile Include="ev1527.c" />
@@ -77,6 +78,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="at24c256.h" />
+    <ClInclude Include="com.h" />
     <ClInclude Include="decoder.h" />
     <ClInclude Include="ds1302.h" />
     <ClInclude Include="ev1527.h" />

@@ -8,6 +8,7 @@
 "ev1527.obj",
 "decoder.obj",
 "at24c256.obj",
-"gd5800.obj" 
+"gd5800.obj",
+"com.obj" 
 TO "Receiver_keil" 
 RAMSIZE(256) 
