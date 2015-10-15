@@ -148,10 +148,11 @@ void RF_decode_main(void)
 			   ++RF_BIT_COUNTER;
 			   if (RF_BIT_COUNTER >23)
 			   {
-				   TR1 = 0;
-				   RF_ini_receive();
-				   receive_rf_decoder_finished = 1;
-				   EX0 = 1;
+				   P_RF_INT = 4;
+				   //TR1 = 0;
+				   //RF_ini_receive();
+				   //receive_rf_decoder_finished = 1;
+				   //EX0 = 1;
 				   break;
 			   }
 	}
@@ -163,6 +164,43 @@ void RF_decode_main(void)
 			   return;
 		   }
 		   break;
+	case 4:
+		if (RF_trans0 > 0)
+		{
+			Save_RF_trans1 = RF_trans1;
+			RF_trans1 = 0;
+			P_RF_INT++;
+		}
+		if (RF_trans1>((measure_sync_count2 + measure_sync_count1) >> 3)) /*if the high level is bigger than 25*100us,Then should be setted as noise instead of useful signal sjz*/
+		{
+			RF_ini_receive();//KEY_HOLD = 0;
+			EX0 = 1;
+			TR1 = 0;
+			return;
+		}
+		break;
+	case 5:
+		if (RF_trans1 > 0)
+		{
+			if (RF_trans0 > measure_sync_count2)
+			{
+				TR1 = 0;
+				//RF_ini_receive();
+				receive_rf_decoder_finished = 1;
+				EX0 = 1;
+			}
+			RF_ini_receive();
+		}
+		if (RF_trans0>(measure_sync_count2 + measure_sync_count1))
+		{
+			RF_ini_receive();
+			EX0 = 1;
+			TR1 = 0;
+			receive_rf_decoder_finished = 0;
+			return;
+		}
+		break;
+
 	default: //“Ï≥£¥¶¿Ì
 	{
 				 RF_ini_receive();

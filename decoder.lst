@@ -1,4 +1,4 @@
-C51 COMPILER V9.00   DECODER                                                               10/15/2015 11:51:46 PAGE 1   
+C51 COMPILER V9.00   DECODER                                                               10/15/2015 12:13:45 PAGE 1   
 
 
 C51 COMPILER V9.00, COMPILATION OF MODULE DECODER
@@ -49,9 +49,9 @@ line level    source
   39   1              if (return_again_receive_rf_decoder_finished() == 1) //标志位等于1 说明在2次检验下通过,接收到有效码
   40   1              {
   41   2      #ifdef DEBUG
-  42   2                      uart_printf("decoder_val is %02x %02x %02x .\r\n", (unsigned int)old2_RF_RECE_REG[0], (unsigned int)old2
+                              uart_printf("decoder_val is %02x %02x %02x .\r\n", (unsigned int)old2_RF_RECE_REG[0], (unsigned int)old2
              -_RF_RECE_REG[1], (unsigned int)old2_RF_RECE_REG[2]); //测试按键键值
-  43   2      #endif
+              #endif
   44   2                      switch (func_index_temp)
   45   2                      {
   46   3                      case MENU_STANDBY://待机状态下
@@ -62,7 +62,7 @@ line level    source
              -o_Menu_F7_E1_temp == 10)))//键盘规则，程序按默认的来编
   51   4                              {
   52   5                                      if (Two_Menu_F8_E1_temp == 1)  //为按键值
-C51 COMPILER V9.00   DECODER                                                               10/15/2015 11:51:46 PAGE 2   
+C51 COMPILER V9.00   DECODER                                                               10/15/2015 12:13:45 PAGE 2   
 
   53   5                                      {
   54   6                                              temp_buff[0] = single_key[old2_RF_RECE_REG[2] & 0x0f] ;
@@ -114,8 +114,8 @@ line level    source
  100   6                                              if (temp_buff1[i] == 0)//标志位为0代表该标志位所对应的数据区有数据
  101   6                                              {       
  102   7      #ifdef DEBUG
- 103   7                                                      uart_printf("发现一个标志位 \r\n");
- 104   7      #endif
+                                                              uart_printf("发现一个标志位 \r\n");
+              #endif
  105   7                                                      IRcvStr(I2C_ADDRESS, CALL_DATA_START + (j * 32 + i) * 8, temp_buff, 8);//读出对应的8个字节的数据
  106   7                                                      delay10ms();
  107   7                                                      if (((Two_Menu_F8_E1_temp != 1) && temp_buff[5] == old2_RF_RECE_REG[0] && temp_buff[6] == old2_RF_RE
@@ -124,19 +124,19 @@ line level    source
              -符合
  108   7                                                      {
  109   8      #ifdef DEBUG
- 110   8                                                              uart_printf("对码成功 \r\n");
- 111   8                                                              uart_printf("遥控器码是 %02x %02x %02x.\r\n", (unsigned int)old2_RF_RECE_REG[0], (unsigned int)old2
-C51 COMPILER V9.00   DECODER                                                               10/15/2015 11:51:46 PAGE 3   
+                                                                      uart_printf("对码成功 \r\n");
+                                                                      uart_printf("遥控器码是 %02x %02x %02x.\r\n", (unsigned int)old2_RF_RECE_REG[0], (unsigned int)old2
+C51 COMPILER V9.00   DECODER                                                               10/15/2015 12:13:45 PAGE 3   
 
              -_RF_RECE_REG[1], (unsigned int)old2_RF_RECE_REG[2]); //测试按键键值
- 112   8                                                              uart_printf("标志地址为 %x ! \n\r", (unsigned int)(j*PAGE_LENGTH+i));
- 113   8                                                              uart_printf("存储地址为 %x ! \n\r", CALL_DATA_START + (j * 32 + i) * 8);
- 114   8      #endif
+                                                                      uart_printf("标志地址为 %x ! \n\r", (unsigned int)(j*PAGE_LENGTH+i));
+                                                                      uart_printf("存储地址为 %x ! \n\r", CALL_DATA_START + (j * 32 + i) * 8);
+              #endif
  115   8                                                              if (temp_buff[0] < 50)
  116   8                                                              {
  117   9      #ifdef DEBUG
- 118   9                                                                      uart_printf("temp_buff[0] < 50 \r\n");
- 119   9      #endif
+                                                                              uart_printf("temp_buff[0] < 50 \r\n");
+              #endif
  120   9                                                                      if (Two_Menu_F8_E1_temp == 1)  //为按键值
  121   9                                                                      {
  122  10      
@@ -149,14 +149,14 @@ line level    source
  129  10                                                                      }
  130   9                                                              }
  131   8      #ifdef DEBUG
- 132   8                                                              uart_printf("cancen funtion \r\n");
- 133   8      #endif
+                                                                      uart_printf("cancen funtion \r\n");
+              #endif
  134   8                                                              //语音函数
  135   8                                                              if (temp_buff[0] != QUXIAO_1 && temp_buff[0])
  136   8                                                              {
  137   9      #ifdef DEBUG
- 138   9                                                                      uart_printf("cancen funtion fault \r\n");
- 139   9      #endif
+                                                                              uart_printf("cancen funtion fault \r\n");
+              #endif
  140   9                                                                      for (l = 0; l < Two_Menu_F6_E2_temp; l++)
  141   9                                                                      {
  142  10                                                                              submenuf6_1(Two_Menu_F6_E1_temp, temp_buff, temp_buff[0], old2_RF_RECE_REG[2] & 0x0f);
@@ -165,8 +165,8 @@ line level    source
  145   8                                                              else
  146   8                                                              {
  147   9      #ifdef DEBUG
- 148   9                                                                      uart_printf("cancen funtion success \r\n");
- 149   9      #endif
+                                                                              uart_printf("cancen funtion success \r\n");
+              #endif
  150   9                                                                      Cancel_funtion(temp_buff, display_ram);//取消函数
  151   9                                                                      tm1629_load();
  152   9                                                                      display();
@@ -180,8 +180,8 @@ line level    source
  159   8                                                                      tm1629_load();//单片机把数组内容载入数码管显存数组中
  160   8                                                                      display();//显示数码管
  161   8      #ifdef DEBUG
- 162   8                                                                      uart_printf("decoder success!"); 
- 163   8      #endif
+                                                                              uart_printf("decoder success!"); 
+              #endif
  164   8      
  165   8                                                                      set_func_index(DECODER_MENU);;//此时跳入解码菜单，为下一次解码做准备
  166   8                                                                      clear_again_receive_rf_decoder_finished();//清除解码完成标志位
@@ -190,7 +190,7 @@ line level    source
  169   8                                                      }
  170   7                                              }
  171   6                                      }
-C51 COMPILER V9.00   DECODER                                                               10/15/2015 11:51:46 PAGE 4   
+C51 COMPILER V9.00   DECODER                                                               10/15/2015 12:13:45 PAGE 4   
 
  172   5                              }       
  173   4                               break;
@@ -254,7 +254,7 @@ line level    source
              -字节转6字节
  229   7                                              }                       
  230   6                                              tm1629_load();//单片机把数组内容载入数码管显存数组中
-C51 COMPILER V9.00   DECODER                                                               10/15/2015 11:51:46 PAGE 5   
+C51 COMPILER V9.00   DECODER                                                               10/15/2015 12:13:45 PAGE 5   
 
  231   6                                              display();//显示数码管
  232   6                                      }
@@ -300,8 +300,8 @@ line level    source
              -_RF_RECE_REG[0] && temp_buff[6] == old2_RF_RECE_REG[1] && temp_buff[7] == old2_RF_RECE_REG[2]))
  269   7                                                      {
  270   8      #ifdef DEBUG
- 271   8                                                              uart_printf("你好 \r\n");
- 272   8      #endif
+                                                                      uart_printf("你好 \r\n");
+              #endif
  273   8                                                              if (temp_buff[0] < 50)
  274   8                                                              {
  275   9                                                                      if (Two_Menu_F8_E1_temp == 1)  //为按键值
@@ -318,14 +318,14 @@ line level    source
  286   8                              
  287   8                                                              if (Two_Menu_F3_E1_temp == 1)//为即时模式
  288   8                                                              {
-C51 COMPILER V9.00   DECODER                                                               10/15/2015 11:51:46 PAGE 6   
+C51 COMPILER V9.00   DECODER                                                               10/15/2015 12:13:45 PAGE 6   
 
  289   9      
  290   9                                                                      if (temp_buff[0] != QUXIAO_1 && temp_buff[0])
  291   9                                                                      {
  292  10      #ifdef DEBUG
- 293  10                                                                              uart_printf("cancen funtion fault \r\n");
- 294  10      #endif
+                                                                                      uart_printf("cancen funtion fault \r\n");
+              #endif
  295  10                                                                              for (l = 0; l < Two_Menu_F6_E2_temp; l++)
  296  10                                                                              {
  297  11                                                                                      submenuf6_1(Two_Menu_F6_E1_temp, temp_buff, temp_buff[0], old2_RF_RECE_REG[2] & 0x0f);
@@ -334,8 +334,8 @@ line level    source
  300   9                                                                      else
  301   9                                                                      {
  302  10      #ifdef DEBUG
- 303  10                                                                              uart_printf("cancen funtion success \r\n");
- 304  10      #endif
+                                                                                      uart_printf("cancen funtion success \r\n");
+              #endif
  305  10                                                                              Cancel_funtion(temp_buff, display_ram);//取消函数
  306  10                                                                              tm1629_load();
  307  10                                                                              display();
@@ -382,20 +382,20 @@ line level    source
  344  12                                                                              }
  345  11                                                                              tm1629_load();//单片机把数组内容载入数码管显存数组中
  346  11                                                                              display();//显示数码管
-C51 COMPILER V9.00   DECODER                                                               10/15/2015 11:51:46 PAGE 7   
+C51 COMPILER V9.00   DECODER                                                               10/15/2015 12:13:45 PAGE 7   
 
  347  11                                                                              break;
  348  11                                                                      }
  349  10                                                              }
  350   9                                                      }
  351   8      #ifdef DEBUG
- 352   8                                                              uart_printf("decoder success!");
- 353   8      #endif
+                                                                      uart_printf("decoder success!");
+              #endif
  354   8      
  355   8      #ifdef DEBUG
- 356   8                                                              uart_printf("display_ram is %02x %02x %02x %02x.\r\n", (unsigned int)display_ram[0], (unsigned int)
+                                                                      uart_printf("display_ram is %02x %02x %02x %02x.\r\n", (unsigned int)display_ram[0], (unsigned int)
              -display_ram[1], (unsigned int)display_ram[2], (unsigned int)display_ram[3]); //测试按键键值
- 357   8      #endif
+              #endif
  358   8                                                              clear_again_receive_rf_decoder_finished();
  359   8                                                              break;
  360   8                                                              break;
@@ -431,12 +431,12 @@ line level    source
  390   4                              if (register_call_function(buf_eeprom))//数值自动加1
  391   4                              {
  392   5      #ifdef DEBUG
- 393   5                                      uart_printf("call is %02x %02x %02x .\r\n", (unsigned int)buf_eeprom[5], (unsigned int)buf_eeprom[6], 
+                                              uart_printf("call is %02x %02x %02x .\r\n", (unsigned int)buf_eeprom[5], (unsigned int)buf_eeprom[6], 
              -(unsigned int)buf_eeprom[7]); //测试按键键值
- 394   5                                      uart_printf("call is %02x %02x %02x %02x.\r\n", (unsigned int)Two_Menu_F1_E1[0], (unsigned int)Two_Men
+                                              uart_printf("call is %02x %02x %02x %02x.\r\n", (unsigned int)Two_Menu_F1_E1[0], (unsigned int)Two_Men
              -u_F1_E1[1], (unsigned int)Two_Menu_F1_E1[2], (unsigned int)Two_Menu_F1_E1[3]);
- 395   5                                      uart_printf("caller is rigister success \r\n");
- 396   5      #endif                                  
+                                              uart_printf("caller is rigister success \r\n");
+              #endif                                  
  397   5                                      delay10ms();
  398   5                                      if (Two_Menu_F1_E1[3] == 9)
  399   5                                      {
@@ -446,7 +446,7 @@ line level    source
  403   7                                                      {
  404   8                                                              Two_Menu_F1_E1[0]++;
  405   8                                                              Two_Menu_F1_E1[1] = 0;
-C51 COMPILER V9.00   DECODER                                                               10/15/2015 11:51:46 PAGE 8   
+C51 COMPILER V9.00   DECODER                                                               10/15/2015 12:13:45 PAGE 8   
 
  406   8                                                              Two_Menu_F1_E1[2] = 0;
  407   8                                                              if (Two_Menu_F1_E1[0] == 21)
@@ -496,12 +496,12 @@ line level    source
  451   4                                                                        if (register_host_function(buf_eeprom))//数值自动加1
  452   4                                                                        {
  453   5      #ifdef DEBUG
- 454   5                                                                                uart_printf("host is %02x %02x %02x .\r\n", (unsigned int)buf_eeprom[5], (unsigned int)buf_eepr
+                                                                                        uart_printf("host is %02x %02x %02x .\r\n", (unsigned int)buf_eeprom[5], (unsigned int)buf_eepr
              -om[6], (unsigned int)buf_eeprom[7]); //测试按键键值
- 455   5                                                                                uart_printf("host is %02x %02x %02x %02x.\r\n", (unsigned int)Two_Menu_F1_E2[0], (unsigned int)
+                                                                                        uart_printf("host is %02x %02x %02x %02x.\r\n", (unsigned int)Two_Menu_F1_E2[0], (unsigned int)
              -Two_Menu_F1_E2[1], (unsigned int)Two_Menu_F1_E2[2], (unsigned int)Two_Menu_F1_E2[3]);
- 456   5                                                                                uart_printf("host is rigister success \r\n");
- 457   5      #endif                                  
+                                                                                        uart_printf("host is rigister success \r\n");
+              #endif                                  
  458   5                                                                                delay10ms();
  459   5                                                                                if (Two_Menu_F1_E2[3] == 9)
  460   5                                                                                {
@@ -510,7 +510,7 @@ line level    source
  463   7                                                                                                if (Two_Menu_F1_E2[1] == 9)
  464   7                                                                                                {
  465   8                                                                                                        Two_Menu_F1_E2[0]++;
-C51 COMPILER V9.00   DECODER                                                               10/15/2015 11:51:46 PAGE 9   
+C51 COMPILER V9.00   DECODER                                                               10/15/2015 12:13:45 PAGE 9   
 
  466   8                                                                                                        Two_Menu_F1_E2[1] = 0;
  467   8                                                                                                        Two_Menu_F1_E2[2] = 0;
@@ -563,18 +563,18 @@ line level    source
  514   4                              if (register_alarm_function(buf_eeprom))//数值自动加1
  515   4                              {
  516   5      #ifdef DEBUG
- 517   5                                      uart_printf("alarm is %02x %02x %02x .\r\n", (unsigned int)buf_eeprom[5], (unsigned int)buf_eeprom[6],
+                                              uart_printf("alarm is %02x %02x %02x .\r\n", (unsigned int)buf_eeprom[5], (unsigned int)buf_eeprom[6],
              - (unsigned int)buf_eeprom[7]); //测试按键键值
- 518   5                                      uart_printf("alarm is %02x %02x %02x %02x.\r\n", (unsigned int)Two_Menu_F1_E3[0], (unsigned int)Two_Me
+                                              uart_printf("alarm is %02x %02x %02x %02x.\r\n", (unsigned int)Two_Menu_F1_E3[0], (unsigned int)Two_Me
              -nu_F1_E3[1], (unsigned int)Two_Menu_F1_E3[2], (unsigned int)Two_Menu_F1_E3[3]);
- 519   5                                      uart_printf("alarm is rigister success \r\n");
- 520   5      #endif                                  
+                                              uart_printf("alarm is rigister success \r\n");
+              #endif                                  
  521   5                                      delay10ms();
  522   5                                      if (Two_Menu_F1_E3[3] == 9)
  523   5                                      {
  524   6                                              if (Two_Menu_F1_E3[2] == 9)
  525   6                                              {
-C51 COMPILER V9.00   DECODER                                                               10/15/2015 11:51:46 PAGE 10  
+C51 COMPILER V9.00   DECODER                                                               10/15/2015 12:13:45 PAGE 10  
 
  526   7                                                      if (Two_Menu_F1_E3[1] == 9)
  527   7                                                      {
@@ -627,18 +627,18 @@ line level    source
  574   4                              if (register_cancel_function(buf_eeprom))//数值自动加1
  575   4                              {
  576   5      #ifdef DEBUG
- 577   5                                      uart_printf("cancel is %02x %02x %02x .\r\n", (unsigned int)buf_eeprom[5], (unsigned int)buf_eeprom[6]
+                                              uart_printf("cancel is %02x %02x %02x .\r\n", (unsigned int)buf_eeprom[5], (unsigned int)buf_eeprom[6]
              -, (unsigned int)buf_eeprom[7]); //测试按键键值
- 578   5                                      uart_printf("cancel is %02x %02x %02x %02x.\r\n", (unsigned int)Two_Menu_F1_E4[0], (unsigned int)Two_M
+                                              uart_printf("cancel is %02x %02x %02x %02x.\r\n", (unsigned int)Two_Menu_F1_E4[0], (unsigned int)Two_M
              -enu_F1_E4[1], (unsigned int)Two_Menu_F1_E4[2], (unsigned int)Two_Menu_F1_E4[3]);
- 579   5                                      uart_printf("cancel is rigister success \r\n");
- 580   5      #endif                                  
+                                              uart_printf("cancel is rigister success \r\n");
+              #endif                                  
  581   5                                      delay10ms();
  582   5                                      if (Two_Menu_F1_E4[3] == 9)
  583   5                                      {
  584   6                                              if (Two_Menu_F1_E4[2] == 9)
  585   6                                              {
-C51 COMPILER V9.00   DECODER                                                               10/15/2015 11:51:46 PAGE 11  
+C51 COMPILER V9.00   DECODER                                                               10/15/2015 12:13:45 PAGE 11  
 
  586   7                                                      if (Two_Menu_F1_E4[1] == 9)
  587   7                                                      {
@@ -684,25 +684,25 @@ line level    source
  627   4                                      multiple_key[old2_RF_RECE_REG[2] & 0x0f] = Two_Menu_F8_E2_temp;
  628   4                              }
  629   3      #ifdef DEBUG
- 630   3                              uart_printf("single_key：  ");
- 631   3                              for (i = 0; i < 16; i++)
- 632   3                              {
- 633   4                                      
- 634   4                                      uart_printf("%02d ", (unsigned int)single_key[i]);
- 635   4                              }
- 636   3                              uart_printf(" \r\n");
- 637   3      
- 638   3                              uart_printf("multiple_key：");
- 639   3                              for (i = 0; i < 16; i++)
- 640   3                              {
- 641   4      
- 642   4                                      uart_printf("%2d ", (unsigned int)multiple_key[i]);
- 643   4                              }
- 644   3                              uart_printf(" \r\n");
- 645   3      #endif  
+                                      uart_printf("single_key：  ");
+                                      for (i = 0; i < 16; i++)
+                                      {
+                                              
+                                              uart_printf("%02d ", (unsigned int)single_key[i]);
+                                      }
+                                      uart_printf(" \r\n");
+              
+                                      uart_printf("multiple_key：");
+                                      for (i = 0; i < 16; i++)
+                                      {
+              
+                                              uart_printf("%2d ", (unsigned int)multiple_key[i]);
+                                      }
+                                      uart_printf(" \r\n");
+              #endif  
  646   3      
  647   3                              break;
-C51 COMPILER V9.00   DECODER                                                               10/15/2015 11:51:46 PAGE 12  
+C51 COMPILER V9.00   DECODER                                                               10/15/2015 12:13:45 PAGE 12  
 
  648   3      
  649   3      
@@ -717,8 +717,8 @@ line level    source
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =   4013    ----
-   CONSTANT SIZE    =    715    ----
+   CODE SIZE        =   3051    ----
+   CONSTANT SIZE    =     32    ----
    XDATA SIZE       =      8      52
    PDATA SIZE       =   ----    ----
    DATA SIZE        =   ----    ----

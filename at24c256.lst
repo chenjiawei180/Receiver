@@ -1,4 +1,4 @@
-C51 COMPILER V9.00   AT24C256                                                              10/15/2015 11:51:46 PAGE 1   
+C51 COMPILER V9.00   AT24C256                                                              10/15/2015 12:13:45 PAGE 1   
 
 
 C51 COMPILER V9.00, COMPILATION OF MODULE AT24C256
@@ -62,7 +62,7 @@ line level    source
   52   1              _Nop();
   53   1      }
   54          /*------------------------------------------------
-C51 COMPILER V9.00   AT24C256                                                              10/15/2015 11:51:46 PAGE 2   
+C51 COMPILER V9.00   AT24C256                                                              10/15/2015 12:13:45 PAGE 2   
 
   55          结束总线
   56          ------------------------------------------------*/
@@ -126,7 +126,7 @@ line level    source
  114          
  115          /*----------------------------------------------------------------
  116          字节数据传送函数
-C51 COMPILER V9.00   AT24C256                                                              10/15/2015 11:51:46 PAGE 3   
+C51 COMPILER V9.00   AT24C256                                                              10/15/2015 12:13:45 PAGE 3   
 
  117          函数原型: unsigned char  RcvByte();
  118          功能:  用来接收从器件传来的数据,并判断总线错误(不发应答信号)，
@@ -190,7 +190,7 @@ line level    source
  176          
  177          ----------------------------------------------------------------*/
  178          void NoAck_I2c(void)
-C51 COMPILER V9.00   AT24C256                                                              10/15/2015 11:51:46 PAGE 4   
+C51 COMPILER V9.00   AT24C256                                                              10/15/2015 12:13:45 PAGE 4   
 
  179          {
  180   1              SDA = 1;
@@ -254,7 +254,7 @@ line level    source
  238   1              SendByte(suba >> 8);            //发送器件子地址
  239   1              if (ack == 0)return(0);
  240   1              SendByte(suba);            //发送器件子地址
-C51 COMPILER V9.00   AT24C256                                                              10/15/2015 11:51:46 PAGE 5   
+C51 COMPILER V9.00   AT24C256                                                              10/15/2015 12:13:45 PAGE 5   
 
  241   1              if (ack == 0)return(0);
  242   1              Start_I2c();
@@ -302,8 +302,8 @@ line level    source
  279   5                                                      Two_Menu_F1_E1[2] = *(eeprom_buff + 3);
  280   5                                                      Two_Menu_F1_E1[3] = *(eeprom_buff + 4);
  281   5      #ifdef DEBUG
- 282   5                                                      uart_printf("caller register is old! \n\r"); 
- 283   5      #endif
+                                                              uart_printf("caller register is old! \n\r"); 
+              #endif
  284   5      
  285   5                                                      if (return_sound_table() == 1)
  286   5                                                      {
@@ -318,7 +318,7 @@ line level    source
  295   2                      }
  296   1                      //如果程序执行到这里，则代表ID码没有注册过
  297   1                      for (base_address = 0; base_address<CALL_TABLE_NUMBER; base_address++)
-C51 COMPILER V9.00   AT24C256                                                              10/15/2015 11:51:46 PAGE 6   
+C51 COMPILER V9.00   AT24C256                                                              10/15/2015 12:13:45 PAGE 6   
 
  298   1                      {
  299   2                              IRcvStr(I2C_ADDRESS, CALL_TABLE_START + base_address*PAGE_LENGTH, at24c64_buff, PAGE_LENGTH);//从AT24C6
@@ -336,11 +336,11 @@ line level    source
  309   4                                              delay10ms();
  310   4                                              //将标志位以及数据分别写到标志区跟数据区
  311   4      #ifdef DEBUG
- 312   4                                              uart_printf("caller register is new! \n\r");
- 313   4                                              uart_printf("标志地址为 %x ! \n\r", (unsigned int)(CALL_TABLE_START + base_address*PAGE_LENGTH) );
- 314   4                                              uart_printf("存储地址为 %x ! \n\r", CALL_DATA_START + ((base_address*PAGE_LENGTH) + offset_address) *
+                                                      uart_printf("caller register is new! \n\r");
+                                                      uart_printf("标志地址为 %x ! \n\r", (unsigned int)(CALL_TABLE_START + base_address*PAGE_LENGTH) );
+                                                      uart_printf("存储地址为 %x ! \n\r", CALL_DATA_START + ((base_address*PAGE_LENGTH) + offset_address) *
              - 8);
- 315   4      #endif
+              #endif
  316   4                                              if (return_sound_table() == 1)
  317   4                                              {
  318   5                                                      GD5800_select_chapter(CHENGGONG);
@@ -382,13 +382,13 @@ line level    source
  349   5                                              //IF条件成立 则这个ID码注册过
  350   5                                              Two_Menu_F1_E2[0] = *(eeprom_buff + 1);
  351   5                                              Two_Menu_F1_E2[1] = *(eeprom_buff + 2);
-C51 COMPILER V9.00   AT24C256                                                              10/15/2015 11:51:46 PAGE 7   
+C51 COMPILER V9.00   AT24C256                                                              10/15/2015 12:13:45 PAGE 7   
 
  352   5                                              Two_Menu_F1_E2[2] = *(eeprom_buff + 3);
  353   5                                              Two_Menu_F1_E2[3] = *(eeprom_buff + 4);
  354   5      #ifdef DEBUG
- 355   5                                              uart_printf("host register is old! \n\r");
- 356   5      #endif
+                                                      uart_printf("host register is old! \n\r");
+              #endif
  357   5      
  358   5                                              if (return_sound_table() == 1)
  359   5                                              {
@@ -419,8 +419,8 @@ line level    source
  382   4                                      delay10ms();
  383   4                                      //将标志位以及数据分别写到标志区跟数据区
  384   4      #ifdef DEBUG
- 385   4                                      uart_printf("host register is new! \n\r");
- 386   4      #endif
+                                              uart_printf("host register is new! \n\r");
+              #endif
  387   4                                      if (return_sound_table() == 1)
  388   4                                      {
  389   5                                              GD5800_select_chapter(CHENGGONG);
@@ -446,7 +446,7 @@ line level    source
  408   1              {
  409   2                      IRcvStr(I2C_ADDRESS, base_address*PAGE_LENGTH, at24c64_buff, PAGE_LENGTH);//从AT24C256里面读出32个字节的
              -标志位
-C51 COMPILER V9.00   AT24C256                                                              10/15/2015 11:51:46 PAGE 8   
+C51 COMPILER V9.00   AT24C256                                                              10/15/2015 12:13:45 PAGE 8   
 
  410   2                      delay10ms();
  411   2                      for (offset_address = 0; offset_address<PAGE_LENGTH; offset_address++)//主要32个字节标志位里面没有0的就O
@@ -467,8 +467,8 @@ line level    source
  423   5                                              Two_Menu_F1_E3[2] = *(eeprom_buff + 3);
  424   5                                              Two_Menu_F1_E3[3] = *(eeprom_buff + 4);
  425   5      #ifdef DEBUG
- 426   5                                              uart_printf("alarmer register is old! \n\r");
- 427   5      #endif
+                                                      uart_printf("alarmer register is old! \n\r");
+              #endif
  428   5      
  429   5                                              if (return_sound_table() == 1)
  430   5                                              {
@@ -499,18 +499,18 @@ line level    source
  453   4                                      delay10ms();
  454   4                                      //将标志位以及数据分别写到标志区跟数据区
  455   4      #ifdef DEBUG
- 456   4                                      uart_printf("alarmer register is new! \n\r");
- 457   4                                      uart_printf("标志地址为 %x ! \n\r", ALARM_TABLE_START + base_address*PAGE_LENGTH);
- 458   4                                      uart_printf("存储地址为 %x ! \n\r", ALARM_DATA_START + ((base_address*PAGE_LENGTH) + offset_address) *
+                                              uart_printf("alarmer register is new! \n\r");
+                                              uart_printf("标志地址为 %x ! \n\r", ALARM_TABLE_START + base_address*PAGE_LENGTH);
+                                              uart_printf("存储地址为 %x ! \n\r", ALARM_DATA_START + ((base_address*PAGE_LENGTH) + offset_address) *
              - 8);
- 459   4      #endif
+              #endif
  460   4                                      if (return_sound_table() == 1)
  461   4                                      {
  462   5                                              GD5800_select_chapter(CHENGGONG);
  463   5      
  464   5                                              set_sound_table(0);
  465   5                                      }
-C51 COMPILER V9.00   AT24C256                                                              10/15/2015 11:51:46 PAGE 9   
+C51 COMPILER V9.00   AT24C256                                                              10/15/2015 12:13:45 PAGE 9   
 
  466   4                                      return 1;
  467   4                                      //提示成功                              
@@ -550,8 +550,8 @@ line level    source
  496   5                                              Two_Menu_F1_E4[2] = *(eeprom_buff + 3);
  497   5                                              Two_Menu_F1_E4[3] = *(eeprom_buff + 4);
  498   5      #ifdef DEBUG
- 499   5                                              uart_printf("canceler register is old! \n\r");
- 500   5      #endif
+                                                      uart_printf("canceler register is old! \n\r");
+              #endif
  501   5      
  502   5                                              if (return_sound_table() == 1)
  503   5                                              {
@@ -574,7 +574,7 @@ line level    source
              -K
  519   2                      {
  520   3                              if (at24c64_buff[offset_address] != 0)
-C51 COMPILER V9.00   AT24C256                                                              10/15/2015 11:51:46 PAGE 10  
+C51 COMPILER V9.00   AT24C256                                                              10/15/2015 12:13:45 PAGE 10  
 
  521   3                              {
  522   4                                      ISendStr(I2C_ADDRESS, (CANCEL_DATA_START + ((base_address*PAGE_LENGTH) + offset_address) * 8), buf, 8)
@@ -585,11 +585,11 @@ line level    source
  526   4                                      delay10ms();
  527   4                                      //将标志位以及数据分别写到标志区跟数据区
  528   4      #ifdef DEBUG
- 529   4                                      uart_printf("canceler register is new! \n\r");
- 530   4                                      uart_printf("标志地址为 %x ! \n\r", CANCEL_TABLE_START + base_address*PAGE_LENGTH);
- 531   4                                      uart_printf("存储地址为 %x ! \n\r", CANCEL_DATA_START + ((base_address*PAGE_LENGTH) + offset_address) 
+                                              uart_printf("canceler register is new! \n\r");
+                                              uart_printf("标志地址为 %x ! \n\r", CANCEL_TABLE_START + base_address*PAGE_LENGTH);
+                                              uart_printf("存储地址为 %x ! \n\r", CANCEL_DATA_START + ((base_address*PAGE_LENGTH) + offset_address) 
              -* 8);
- 532   4      #endif
+              #endif
  533   4                                      if (return_sound_table() == 1)
  534   4                                      {
  535   5                                              GD5800_select_chapter(CHENGGONG);
@@ -619,8 +619,8 @@ line level    source
  559   3                              {
  560   4                                      at24c64_buff[offset_address] = 0xff;//标志位设置为非0
  561   4      #ifdef DEBUG
- 562   4                                      uart_printf("caller is delete success \r\n");
- 563   4      #endif          
+                                              uart_printf("caller is delete success \r\n");
+              #endif          
  564   4                              }
  565   3                              else if (at24c64_buff[offset_address] == 0)//如果不是0000 则无需全部删除
  566   3                              {
@@ -635,14 +635,14 @@ line level    source
  573   5                                              delay10ms();
  574   5                                              //清除对应的标志位 然后再将标志位写入标志区
  575   5      #ifdef DEBUG
- 576   5                                              uart_printf("call is %02x %02x %02x .\r\n", (unsigned int)(*(eeprom_buff + 5)), (unsigned int)(*(eepr
+                                                      uart_printf("call is %02x %02x %02x .\r\n", (unsigned int)(*(eeprom_buff + 5)), (unsigned int)(*(eepr
              -om_buff + 6)), (unsigned int)(*(eeprom_buff + 7)) ); //
- 577   5                                              uart_printf("call is %02x %02x %02x %02x.\r\n", (unsigned int)(*(eeprom_buff + 1)), (unsigned int)(*(
-C51 COMPILER V9.00   AT24C256                                                              10/15/2015 11:51:46 PAGE 11  
+                                                      uart_printf("call is %02x %02x %02x %02x.\r\n", (unsigned int)(*(eeprom_buff + 1)), (unsigned int)(*(
+C51 COMPILER V9.00   AT24C256                                                              10/15/2015 12:13:45 PAGE 11  
 
              -eeprom_buff + 2)), (unsigned int)(*(eeprom_buff + 3)), (unsigned int)(*(eeprom_buff + 4)) );
- 578   5                                              uart_printf("caller is delete success \r\n");
- 579   5      #endif          
+                                                      uart_printf("caller is delete success \r\n");
+              #endif          
  580   5                                      }
  581   4      
  582   4                              }
@@ -670,8 +670,8 @@ line level    source
  603   3                              {
  604   4                                      at24c64_buff[offset_address] = 0xff;//标志位设置为非0
  605   4      #ifdef DEBUG
- 606   4                                      uart_printf("hoster is delete success \r\n");
- 607   4      #endif          
+                                              uart_printf("hoster is delete success \r\n");
+              #endif          
  608   4                              }
  609   3                              else if (at24c64_buff[offset_address] == 0)//如果不是0000 则无需全部删除
  610   3                              {
@@ -686,12 +686,12 @@ line level    source
  617   5                                              delay10ms();
  618   5                                              //清除对应的标志位 然后再将标志位写入标志区
  619   5      #ifdef DEBUG
- 620   5                                              uart_printf("host is %02x %02x %02x .\r\n", (unsigned int)(*(eeprom_buff + 5)), (unsigned int)(*(eepr
+                                                      uart_printf("host is %02x %02x %02x .\r\n", (unsigned int)(*(eeprom_buff + 5)), (unsigned int)(*(eepr
              -om_buff + 6)), (unsigned int)(*(eeprom_buff + 7))); //
- 621   5                                              uart_printf("host is %02x %02x %02x %02x.\r\n", (unsigned int)(*(eeprom_buff + 1)), (unsigned int)(*(
+                                                      uart_printf("host is %02x %02x %02x %02x.\r\n", (unsigned int)(*(eeprom_buff + 1)), (unsigned int)(*(
              -eeprom_buff + 2)), (unsigned int)(*(eeprom_buff + 3)), (unsigned int)(*(eeprom_buff + 4)));
- 622   5                                              uart_printf("host is delete success \r\n");
- 623   5      #endif          
+                                                      uart_printf("host is delete success \r\n");
+              #endif          
  624   5                                      }
  625   4      
  626   4                              }
@@ -702,7 +702,7 @@ line level    source
  631   2              }
  632   1              return 1;
  633   1      }
-C51 COMPILER V9.00   AT24C256                                                              10/15/2015 11:51:46 PAGE 12  
+C51 COMPILER V9.00   AT24C256                                                              10/15/2015 12:13:45 PAGE 12  
 
  634          
  635          bit delete_alarm_function(unsigned char *buf)//buf为组码数组的指针
@@ -721,8 +721,8 @@ line level    source
  647   3                              {
  648   4                                      at24c64_buff[offset_address] = 0xff;//标志位设置为非0
  649   4      #ifdef DEBUG
- 650   4                                      uart_printf("alarmer is delete success \r\n");
- 651   4      #endif          
+                                              uart_printf("alarmer is delete success \r\n");
+              #endif          
  652   4                              }
  653   3                              else if (at24c64_buff[offset_address] == 0)//如果不是0000 则无需全部删除
  654   3                              {
@@ -737,12 +737,12 @@ line level    source
  661   5                                              delay10ms();
  662   5                                              //清除对应的标志位 然后再将标志位写入标志区
  663   5      #ifdef DEBUG
- 664   5                                              uart_printf("alarm is %02x %02x %02x .\r\n", (unsigned int)(*(eeprom_buff + 5)), (unsigned int)(*(eep
+                                                      uart_printf("alarm is %02x %02x %02x .\r\n", (unsigned int)(*(eeprom_buff + 5)), (unsigned int)(*(eep
              -rom_buff + 6)), (unsigned int)(*(eeprom_buff + 7))); //
- 665   5                                              uart_printf("alarm is %02x %02x %02x %02x.\r\n", (unsigned int)(*(eeprom_buff + 1)), (unsigned int)(*
+                                                      uart_printf("alarm is %02x %02x %02x %02x.\r\n", (unsigned int)(*(eeprom_buff + 1)), (unsigned int)(*
              -(eeprom_buff + 2)), (unsigned int)(*(eeprom_buff + 3)), (unsigned int)(*(eeprom_buff + 4)));
- 666   5                                              uart_printf("alarm is delete success \r\n");
- 667   5      #endif          
+                                                      uart_printf("alarm is delete success \r\n");
+              #endif          
  668   5                                      }
  669   4      
  670   4                              }
@@ -766,14 +766,14 @@ line level    source
  687   2                      delay10ms();
  688   2                      for (offset_address = 0; offset_address<PAGE_LENGTH; offset_address++)//主要32个字节里面没有0的就OK
  689   2                      {
-C51 COMPILER V9.00   AT24C256                                                              10/15/2015 11:51:46 PAGE 13  
+C51 COMPILER V9.00   AT24C256                                                              10/15/2015 12:13:45 PAGE 13  
 
  690   3                              if (*(buf) == 0 && *(buf + 1) == 0 && *(buf + 2) == 0 && *(buf + 3) == 0) //全部删除
  691   3                              {
  692   4                                      at24c64_buff[offset_address] = 0xff;//标志位设置为非0
  693   4      #ifdef DEBUG
- 694   4                                      uart_printf("canceler is delete success \r\n");
- 695   4      #endif          
+                                              uart_printf("canceler is delete success \r\n");
+              #endif          
  696   4                              }
  697   3                              else if (at24c64_buff[offset_address] == 0)//如果不是0000 则无需全部删除
  698   3                              {
@@ -788,12 +788,12 @@ line level    source
  705   5                                              delay10ms();
  706   5                                              //清除对应的标志位 然后再将标志位写入标志区
  707   5      #ifdef DEBUG
- 708   5                                              uart_printf("cancel is %02x %02x %02x .\r\n", (unsigned int)(*(eeprom_buff + 5)), (unsigned int)(*(ee
+                                                      uart_printf("cancel is %02x %02x %02x .\r\n", (unsigned int)(*(eeprom_buff + 5)), (unsigned int)(*(ee
              -prom_buff + 6)), (unsigned int)(*(eeprom_buff + 7))); //
- 709   5                                              uart_printf("cancel is %02x %02x %02x %02x.\r\n", (unsigned int)(*(eeprom_buff + 1)), (unsigned int)(
+                                                      uart_printf("cancel is %02x %02x %02x %02x.\r\n", (unsigned int)(*(eeprom_buff + 1)), (unsigned int)(
              -*(eeprom_buff + 2)), (unsigned int)(*(eeprom_buff + 3)), (unsigned int)(*(eeprom_buff + 4)));
- 710   5                                              uart_printf("cancel is delete success \r\n");
- 711   5      #endif          
+                                                      uart_printf("cancel is delete success \r\n");
+              #endif          
  712   5                                      }
  713   4      
  714   4                              }
@@ -819,8 +819,8 @@ line level    source
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =   4459    ----
-   CONSTANT SIZE    =    722    ----
+   CODE SIZE        =   3600    ----
+   CONSTANT SIZE    =     32    ----
    XDATA SIZE       =     40      88
    PDATA SIZE       =   ----    ----
    DATA SIZE        =   ----    ----
