@@ -1608,7 +1608,7 @@ void fun95(void) //解码菜单
 	case 2:
 			buf_display[0][0] |= 0x80;
 			buf_display[0][1] |= 0x80;
-			buf_display[0][2] |= 0x80;
+			
 			break;//7键
 	case 3:
 			buf_display[0][0] |= 0x80;
@@ -1619,6 +1619,7 @@ void fun95(void) //解码菜单
 	case 4:
 			buf_display[0][0] |= 0x80;
 			buf_display[0][1] |= 0x80;
+			buf_display[0][2] |= 0x80;
 			break;//6键
 	case 7:
 			buf_display[0][1] |= 0x80;
@@ -1629,5 +1630,7 @@ void fun95(void) //解码菜单
 	default:break;
 	}
 	display();
+
+	
 
 }
