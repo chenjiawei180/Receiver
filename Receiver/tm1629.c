@@ -1603,5 +1603,31 @@ void fun94(void) //F8_E2键位设置
 void fun95(void) //解码菜单
 {
 	tm1629_load();
-	display();;
+	switch ( display_ram[5] & 0x0f)//显示呼叫类型
+	{
+	case 2:
+			buf_display[0][0] |= 0x80;
+			buf_display[0][1] |= 0x80;
+			buf_display[0][2] |= 0x80;
+			break;//7键
+	case 3:
+			buf_display[0][0] |= 0x80;
+			buf_display[0][1] |= 0x80;
+			buf_display[0][2] |= 0x80;
+			buf_display[0][3] |= 0x80;
+			break;//78键
+	case 4:
+			buf_display[0][0] |= 0x80;
+			buf_display[0][1] |= 0x80;
+			break;//6键
+	case 7:
+			buf_display[0][1] |= 0x80;
+			break;//678键
+	case 8: 
+			buf_display[0][0] |= 0x80; 
+			break;//5键
+	default:break;
+	}
+	display();
+
 }

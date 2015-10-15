@@ -112,6 +112,7 @@ void DecoderProcess(void)
 							uart_printf("标志地址为 %x ! \n\r", (unsigned int)(j*PAGE_LENGTH+i));
 							uart_printf("存储地址为 %x ! \n\r", CALL_DATA_START + (j * 32 + i) * 8);
 #endif
+							temp_buff[7] = old2_RF_RECE_REG[2];
 							if (temp_buff[0] < 50)
 							{
 #ifdef DEBUG
@@ -270,6 +271,7 @@ void DecoderProcess(void)
 #ifdef DEBUG
 							uart_printf("你好 \r\n");
 #endif
+							temp_buff[7] = old2_RF_RECE_REG[2];
 							if (temp_buff[0] < 50)
 							{
 								if (Two_Menu_F8_E1_temp == 1)  //为按键值
