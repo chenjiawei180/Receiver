@@ -387,6 +387,35 @@ void mcuram_to_displayram(unsigned char a[48], unsigned char* b)  //´ÓRAMÇøÓòÒÆµ
 	*(a - 1) = CODE[*(b + 2)];
 	*(a - 2) = CODE[*(b + 3)];
 	*(a - 3) = CODE[*(b + 4)];
+
+	switch (*(b + 5) & 0x0f)//ÏÔÊ¾ºô½ĞÀàĞÍ
+	{
+	case 2:
+		*(a - 3) |= 0x80;
+		*(a - 2) |= 0x80;
+
+		break;//7¼ü
+	case 3:
+		*(a - 3) |= 0x80;
+		*(a - 2) |= 0x80;
+		*(a - 1) |= 0x80;
+		*(a) |= 0x80;
+		break;//78¼ü
+	case 4:
+		*(a - 3) |= 0x80;
+		*(a - 2) |= 0x80;
+		*(a - 1) |= 0x80;
+		break;//6¼ü
+	case 7:
+		*(a - 2) |= 0x80;
+		break;//678¼ü
+	case 8:
+		*(a - 3) |= 0x80;
+		break;//5¼ü
+	default:break;
+	}
+
+
 }
 
 void decoder_temp_to_mcuram(unsigned char* a, unsigned char* index)//aÎªMCU»º´æÇø   indexÎª½âÂëºóÈ¡³öµÄ8×Ö½ÚÁÙÊ±Êı×é
@@ -640,6 +669,7 @@ void Cancel_funtion(unsigned char* id_number, unsigned char* buff)//id_numberÎª½
 		set_func_index(MENU_STANDBY);
 	}
 }
+
 
 
 void fun0(void) //´ı»úÏÔÊ¾º¯Êı
@@ -1675,32 +1705,6 @@ void fun95(void) //½âÂë²Ëµ¥
 	unsigned char Two_Menu_F6_E1_temp = 0;
 	Two_Menu_F6_E1_temp = return_Two_Menu_F6_E1();
 	tm1629_load();
-	switch ( display_ram[5] & 0x0f)//ÏÔÊ¾ºô½ĞÀàĞÍ
-	{
-	case 2:
-			buf_display[0][0] |= 0x80;
-			buf_display[0][1] |= 0x80;
-			
-			break;//7¼ü
-	case 3:
-			buf_display[0][0] |= 0x80;
-			buf_display[0][1] |= 0x80;
-			buf_display[0][2] |= 0x80;
-			buf_display[0][3] |= 0x80;
-			break;//78¼ü
-	case 4:
-			buf_display[0][0] |= 0x80;
-			buf_display[0][1] |= 0x80;
-			buf_display[0][2] |= 0x80;
-			break;//6¼ü
-	case 7:
-			buf_display[0][1] |= 0x80;
-			break;//678¼ü
-	case 8: 
-			buf_display[0][0] |= 0x80; 
-			break;//5¼ü
-	default:break;
-	}
 	display();
 
 	if (display_ram[0] == BAOJING - QUXIAO || display_ram[0] == BAOJING_1 || Two_Menu_F6_E1_temp == 5)
