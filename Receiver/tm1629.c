@@ -145,6 +145,39 @@ void display(void) //3个TM1629显示函数
 	TM1629_STB3 = 1;
 }
 
+void display_light(void) //3个TM1629显示函数
+{
+	unsigned char i;
+	send_command(0x40);	//设置数据命令:普通模式、地址自增1，写数据到显存
+	send_command(0xc0);	//设置显示地址命令：从00H开始
+	for (i = 0; i<8; i++)	//发送16字节的显存数据
+	{
+		writeDataTo1629(0xff);
+		writeDataTo1629(0xff);
+	}
+	send_command(0x8f);	//设置显示控制命令：打开显示，并设置为11/16.
+	TM1629_STB = 1;
+
+	send_command_2(0x40);	//设置数据命令:普通模式、地址自增1，写数据到显存
+	send_command_2(0xc0);	//设置显示地址命令：从00H开始
+	for (i = 0; i<8; i++)	//发送16字节的显存数据
+	{
+		writeDataTo1629_2(0xff);
+		writeDataTo1629_2(0xff);
+	}
+	send_command_2(0x8f);	//设置显示控制命令：打开显示，并设置为11/16.
+	TM1629_STB2 = 1;
+
+	send_command_3(0x40);	//设置数据命令:普通模式、地址自增1，写数据到显存
+	send_command_3(0xc0);	//设置显示地址命令：从00H开始
+	for (i = 0; i<8; i++)	//发送16字节的显存数据
+	{
+		writeDataTo1629_3(0xff);
+		writeDataTo1629_3(0xff);
+	}
+	send_command_3(0x8f);	//设置显示控制命令：打开显示，并设置为11/16.
+	TM1629_STB3 = 1;
+}
 
 void tm1629_init(void) //TM1629开机初始化函数
 {
@@ -999,7 +1032,21 @@ void fun48(void) //二级菜单FC
 
 void fun49(void) //二级菜单Fd
 {
-	tm1629_f(0x0f);
+	
+
+	if (return_fd_table() <=20)
+	{
+		display_light();
+		if (P24 == 1)
+		{
+			GD5800_select_chapter(BAOJING);
+		}
+	}
+	if (return_fd_table() >20)
+	{
+		tm1629_clear();
+		display();
+	}
 }
 
 void fun50(void) //F1_E1 千位闪烁

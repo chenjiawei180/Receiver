@@ -1,4 +1,4 @@
-C51 COMPILER V9.00   DECODER                                                               10/16/2015 14:12:16 PAGE 1   
+C51 COMPILER V9.00   DECODER                                                               10/16/2015 14:36:04 PAGE 1   
 
 
 C51 COMPILER V9.00, COMPILATION OF MODULE DECODER
@@ -62,7 +62,7 @@ line level    source
   51   4                              //¼üÅÌ¹æÔò
   52   4                              if ((old2_RF_RECE_REG[2] & 0xf0) == 0x00 && (((old2_RF_RECE_REG[0] >> 4) == Two_Menu_F7_E1_temp) || (Tw
              -o_Menu_F7_E1_temp == 10)))//¼üÅÌ¹æÔò£¬³ÌÐò°´Ä¬ÈÏµÄÀ´±à
-C51 COMPILER V9.00   DECODER                                                               10/16/2015 14:12:16 PAGE 2   
+C51 COMPILER V9.00   DECODER                                                               10/16/2015 14:36:04 PAGE 2   
 
   53   4                              {
   54   5                                      if (Two_Menu_F8_E1_temp == 1)  //Îª°´¼üÖµ
@@ -126,7 +126,7 @@ line level    source
              -CE_REG[1] && ((temp_buff[7] >> 4) == (old2_RF_RECE_REG[2] >> 4))) || ((Two_Menu_F8_E1_temp == 1) && temp_buff[5] == old2
              -_RF_RECE_REG[0] && temp_buff[6] == old2_RF_RECE_REG[1] && temp_buff[7] == old2_RF_RECE_REG[2]))// ½øÐÐ¶Ô±È£¬¿´¿´Êý¾ÝÊÇ·ñ
              -·ûºÏ
-C51 COMPILER V9.00   DECODER                                                               10/16/2015 14:12:16 PAGE 3   
+C51 COMPILER V9.00   DECODER                                                               10/16/2015 14:36:04 PAGE 3   
 
  112   7                                                      {
  113   8      #ifdef DEBUG
@@ -190,7 +190,7 @@ line level    source
                                                                               uart_printf("decoder success!"); 
               #endif
  171   8      
-C51 COMPILER V9.00   DECODER                                                               10/16/2015 14:12:16 PAGE 4   
+C51 COMPILER V9.00   DECODER                                                               10/16/2015 14:36:04 PAGE 4   
 
  172   8                                                                      set_func_index(DECODER_MENU);;//´ËÊ±ÌøÈë½âÂë²Ëµ¥£¬ÎªÏÂÒ»´Î½âÂë×ö×¼±¸
  173   8                                                                      clear_again_receive_rf_decoder_finished();//Çå³ý½âÂëÍê³É±êÖ¾Î»
@@ -254,7 +254,7 @@ line level    source
  229   7                                                      {
  230   8                                                              mcuram_to_mcuram_down(display_ram + (l - 2) * 6);
  231   8                                                      }
-C51 COMPILER V9.00   DECODER                                                               10/16/2015 14:12:16 PAGE 5   
+C51 COMPILER V9.00   DECODER                                                               10/16/2015 14:36:04 PAGE 5   
 
  232   7                                                      for (l = 0; l<6; l++) //½²µÚÒ»×éÊý¾ÝÇå0
  233   7                                                      {
@@ -318,7 +318,7 @@ line level    source
              -_RF_RECE_REG[0] && temp_buff[6] == old2_RF_RECE_REG[1] && temp_buff[7] == old2_RF_RECE_REG[2]))
  287   7                                                      {
  288   8      #ifdef DEBUG
-C51 COMPILER V9.00   DECODER                                                               10/16/2015 14:12:16 PAGE 6   
+C51 COMPILER V9.00   DECODER                                                               10/16/2015 14:36:04 PAGE 6   
 
                                                                       uart_printf("ÄãºÃ \r\n");
               #endif
@@ -382,7 +382,7 @@ line level    source
  347  10                                                                              decoder_temp_to_mcuram(display_ram, temp_buff); //Èç¹û·ûºÏµÄ»°  ½«ÁÙÊ±Êý×éµÄÊý¾ÝÒÆÈëµ¥Æ¬»úÔÝ´æÊý×
              -é 8×Ö½Ú×ª6×Ö½Ú
  348  10                                                                      }
-C51 COMPILER V9.00   DECODER                                                               10/16/2015 14:12:16 PAGE 7   
+C51 COMPILER V9.00   DECODER                                                               10/16/2015 14:36:04 PAGE 7   
 
  349   9                                                                      tm1629_load();//µ¥Æ¬»ú°ÑÊý×éÄÚÈÝÔØÈëÊýÂë¹ÜÏÔ´æÊý×éÖÐ
  350   9                                                                      display();//ÏÔÊ¾ÊýÂë¹Ü
@@ -446,7 +446,7 @@ line level    source
  405   4                              buf_eeprom[0] = old2_RF_RECE_REG[2] & 0x0f;//°´¼üÖµ±£´æµ½0×Ö½Ú
  406   4                              buf_eeprom[1] = Two_Menu_F1_E1[0];/*ÊýÖµ´æÈë1 2 3 4×Ö½Ú*/
  407   4                              buf_eeprom[2] = Two_Menu_F1_E1[1];
-C51 COMPILER V9.00   DECODER                                                               10/16/2015 14:12:16 PAGE 8   
+C51 COMPILER V9.00   DECODER                                                               10/16/2015 14:36:04 PAGE 8   
 
  408   4                              buf_eeprom[3] = Two_Menu_F1_E1[2];
  409   4                              buf_eeprom[4] = Two_Menu_F1_E1[3];
@@ -510,7 +510,7 @@ line level    source
  465   4                      }
  466   3      
  467   3                      case TWO_MENU_F1_E2_D1:
-C51 COMPILER V9.00   DECODER                                                               10/16/2015 14:12:16 PAGE 9   
+C51 COMPILER V9.00   DECODER                                                               10/16/2015 14:36:04 PAGE 9   
 
  468   3                      case TWO_MENU_F1_E2_D2:
  469   3                      case TWO_MENU_F1_E2_D3:
@@ -574,7 +574,7 @@ line level    source
  525   5                                                                                        Two_Menu_F1_E2[3]++;
  526   5                                                                        }
  527   4                                                                        break;
-C51 COMPILER V9.00   DECODER                                                               10/16/2015 14:12:16 PAGE 10  
+C51 COMPILER V9.00   DECODER                                                               10/16/2015 14:36:04 PAGE 10  
 
  528   4                      }
  529   3      
@@ -638,7 +638,7 @@ line level    source
  585   5                                      else
  586   5                                              Two_Menu_F1_E3[3]++;
  587   5                              }
-C51 COMPILER V9.00   DECODER                                                               10/16/2015 14:12:16 PAGE 11  
+C51 COMPILER V9.00   DECODER                                                               10/16/2015 14:36:04 PAGE 11  
 
  588   4                              break;
  589   4                      }
@@ -702,7 +702,7 @@ line level    source
  645   5                                      else
  646   5                                              Two_Menu_F1_E4[3]++;
  647   5                              }
-C51 COMPILER V9.00   DECODER                                                               10/16/2015 14:12:16 PAGE 12  
+C51 COMPILER V9.00   DECODER                                                               10/16/2015 14:36:04 PAGE 12  
 
  648   4                              break;
  649   4                      }
@@ -766,7 +766,7 @@ MODULE INFORMATION:   STATIC OVERLAYABLE
    XDATA SIZE       =      9      52
    PDATA SIZE       =   ----    ----
    DATA SIZE        =   ----    ----
-C51 COMPILER V9.00   DECODER                                                               10/16/2015 14:12:16 PAGE 13  
+C51 COMPILER V9.00   DECODER                                                               10/16/2015 14:36:04 PAGE 13  
 
    IDATA SIZE       =   ----    ----
    BIT SIZE         =   ----    ----

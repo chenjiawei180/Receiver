@@ -1,4 +1,4 @@
-C51 COMPILER V9.00   TIMER                                                                 10/16/2015 14:12:16 PAGE 1   
+C51 COMPILER V9.00   TIMER                                                                 10/16/2015 14:36:03 PAGE 1   
 
 
 C51 COMPILER V9.00, COMPILATION OF MODULE TIMER
@@ -28,188 +28,202 @@ line level    source
   18          
   19          unsigned char second_times = 0;
   20          
-  21          void Init_Timer0(void)
-  22          {
-  23   1              TMOD |= 0x01;     //使用模式1，16位定时器，使用"|"符号可以在使用多个定时器时不受影响    
-  24   1              TH0 = (65536 - TIMER50MS) >> 8; //重新赋值 5ms
-  25   1              TL0 = (65536 - TIMER50MS) & 0xff;
-  26   1              EA = 1;            //总中断打开
-  27   1              ET0 = 1;           //定时器中断打开
-  28   1              TR0 = 1;           //定时器开关打开
-  29   1      }
-  30          
-  31          void Init_Timer1(void) 
-  32          {
-  33   1              TMOD |= 0x10;     //使用模式1，16位定时器，使用"|"符号可以在使用多个定时器时不受影响    
-  34   1              TH1 = (65536 - 100) >> 8; //重新赋值 100us
-  35   1              TL1 = (65536 - 100) & 0xff;
-  36   1              EA = 1;            //总中断打开
-  37   1              ET1 = 1;           //定时器中断打开
-  38   1              //TR1=1;           //定时器开关打开
-  39   1      }
-  40          
-  41          void Timer0_isr(void) interrupt 1  //定时器0中断服务程序
-  42          {
-  43   1              unsigned char func_index_temp = 0;
-  44   1              unsigned char Two_Menu_FC_E1_temp = 0;
-  45   1              TF0 = 0;
-  46   1              TH0 = (65536 - TIMER50MS) >> 8;           //重新赋值 50ms
-  47   1              TL0 = (65536 - TIMER50MS) & 0xff;
-  48   1              func_index_temp = return_func_index();
-  49   1              Two_Menu_FC_E1_temp = return_Two_Menu_FC_E1();
-  50   1              //if (func_index_temp == MENU_STANDBY || func_index_temp == TWO_MENU_F0_YEAR || func_index_temp == TWO_ME
+  21          unsigned char fd_table = 0;
+  22          
+  23          void Init_Timer0(void)
+  24          {
+  25   1              TMOD |= 0x01;     //使用模式1，16位定时器，使用"|"符号可以在使用多个定时器时不受影响    
+  26   1              TH0 = (65536 - TIMER50MS) >> 8; //重新赋值 5ms
+  27   1              TL0 = (65536 - TIMER50MS) & 0xff;
+  28   1              EA = 1;            //总中断打开
+  29   1              ET0 = 1;           //定时器中断打开
+  30   1              TR0 = 1;           //定时器开关打开
+  31   1      }
+  32          
+  33          void Init_Timer1(void) 
+  34          {
+  35   1              TMOD |= 0x10;     //使用模式1，16位定时器，使用"|"符号可以在使用多个定时器时不受影响    
+  36   1              TH1 = (65536 - 100) >> 8; //重新赋值 100us
+  37   1              TL1 = (65536 - 100) & 0xff;
+  38   1              EA = 1;            //总中断打开
+  39   1              ET1 = 1;           //定时器中断打开
+  40   1              //TR1=1;           //定时器开关打开
+  41   1      }
+  42          
+  43          void Timer0_isr(void) interrupt 1  //定时器0中断服务程序
+  44          {
+  45   1              unsigned char func_index_temp = 0;
+  46   1              unsigned char Two_Menu_FC_E1_temp = 0;
+  47   1              TF0 = 0;
+  48   1              TH0 = (65536 - TIMER50MS) >> 8;           //重新赋值 50ms
+  49   1              TL0 = (65536 - TIMER50MS) & 0xff;
+  50   1              func_index_temp = return_func_index();
+  51   1              Two_Menu_FC_E1_temp = return_Two_Menu_FC_E1();
+  52   1              //if (func_index_temp == MENU_STANDBY || func_index_temp == TWO_MENU_F0_YEAR || func_index_temp == TWO_ME
              -NU_F0_MOUTH 
-  51   1              //      || func_index_temp == TWO_MENU_F0_DAY || func_index_temp == TWO_MENU_F0_WEEK || func_index_temp == TWO
+  53   1              //      || func_index_temp == TWO_MENU_F0_DAY || func_index_temp == TWO_MENU_F0_WEEK || func_index_temp == TWO
+C51 COMPILER V9.00   TIMER                                                                 10/16/2015 14:36:03 PAGE 2   
+
              -_MENU_F0_HOUR
-  52   1              //      || func_index_temp == TWO_MENU_F0_MINUTE || func_index_temp == TWO_MENU_F1_E1_D1 || func_index_temp ==
-C51 COMPILER V9.00   TIMER                                                                 10/16/2015 14:12:16 PAGE 2   
-
+  54   1              //      || func_index_temp == TWO_MENU_F0_MINUTE || func_index_temp == TWO_MENU_F1_E1_D1 || func_index_temp ==
              - TWO_MENU_F1_E1_D2
-  53   1              //      || func_index_temp == TWO_MENU_F1_E1_D3 || func_index_temp == TWO_MENU_F1_E1_D4 || func_index_temp == 
+  55   1              //      || func_index_temp == TWO_MENU_F1_E1_D3 || func_index_temp == TWO_MENU_F1_E1_D4 || func_index_temp == 
              -TWO_MENU_F1_E2_D1
-  54   1              //      || func_index_temp == TWO_MENU_F1_E2_D2 || func_index_temp == TWO_MENU_F1_E2_D3 || func_index_temp == 
+  56   1              //      || func_index_temp == TWO_MENU_F1_E2_D2 || func_index_temp == TWO_MENU_F1_E2_D3 || func_index_temp == 
              -TWO_MENU_F1_E2_D4     
-  55   1              //      )
-  56   1              if (1)
-  57   1              {
-  58   2                      await_number++;
-  59   2                      if (await_number == 10)
-  60   2                      {
-  61   3                              await_number_table++;
-  62   3                              await_number = 0;
-  63   3                      }
-  64   2                      if (await_number_table >= 4)//确保程序正确延时
-  65   2                      {
-  66   3                              await_number_table = 0;
-  67   3                      }               
-  68   2              }
-  69   1      
-  70   1              if (main_press_time_table == 1) //菜单键按下时间标志
-  71   1              {
-  72   2                      main_press_time++;                      //计算菜单键按下时间长度变量
-  73   2              }
-  74   1      
-  75   1              if (return_again_and_again_decoder_table() == 1)
-  76   1              {
-  77   2                      again_and_again_time++;
-  78   2                      if (again_and_again_time >120)
-  79   2                      {
-  80   3                              clear_again_and_again_decoder_table();
-  81   3                              again_and_again_time = 0;
-  82   3                      }
-  83   2              }
-  84   1      
-  85   1              if (func_index_temp == DECODER_MENU)
-  86   1              {
-  87   2                      logout_cycle_number++;
-  88   2                      if (logout_cycle_number == 20)
-  89   2                      {
-  90   3                              logout_cycle_table++;
-  91   3                              logout_cycle_number = 0;
-  92   3                      }
-  93   2      
-  94   2              }
-  95   1      
-  96   1              if (func_index_temp != DECODER_MENU)
-  97   1              {
-  98   2                      return_standby_time++;
-  99   2                      if (return_standby_time >200)
- 100   2                      {
- 101   3                              return_standby_time = 0;
- 102   3                              set_func_index(MENU_STANDBY);
- 103   3                      }
- 104   2              }
- 105   1      
- 106   1              if (func_index_temp == MENU_STANDBY && Two_Menu_FC_E1_temp == 2)
- 107   1              {
- 108   2                      second_times++;
- 109   2                      if (second_times >= 10)
- 110   2                      {
- 111   3                              P55 = ~P55;
-C51 COMPILER V9.00   TIMER                                                                 10/16/2015 14:12:16 PAGE 3   
+  57   1              //      )
+  58   1              if (1)
+  59   1              {
+  60   2                      await_number++;
+  61   2                      if (await_number == 10)
+  62   2                      {
+  63   3                              await_number_table++;
+  64   3                              fd_table++;
+  65   3                              await_number = 0;
+  66   3                      }
+  67   2                      if (await_number_table >= 4)//确保程序正确延时
+  68   2                      {
+  69   3                              await_number_table = 0;
+  70   3                      }               
+  71   2                      if (fd_table >= 40)
+  72   2                      {
+  73   3                              fd_table = 0;
+  74   3                      }
+  75   2              }
+  76   1      
+  77   1              if (main_press_time_table == 1) //菜单键按下时间标志
+  78   1              {
+  79   2                      main_press_time++;                      //计算菜单键按下时间长度变量
+  80   2              }
+  81   1      
+  82   1              if (return_again_and_again_decoder_table() == 1)
+  83   1              {
+  84   2                      again_and_again_time++;
+  85   2                      if (again_and_again_time >120)
+  86   2                      {
+  87   3                              clear_again_and_again_decoder_table();
+  88   3                              again_and_again_time = 0;
+  89   3                      }
+  90   2              }
+  91   1      
+  92   1              if (func_index_temp == DECODER_MENU)
+  93   1              {
+  94   2                      logout_cycle_number++;
+  95   2                      if (logout_cycle_number == 20)
+  96   2                      {
+  97   3                              logout_cycle_table++;
+  98   3                              logout_cycle_number = 0;
+  99   3                      }
+ 100   2      
+ 101   2              }
+ 102   1      
+ 103   1              if (func_index_temp != DECODER_MENU && func_index_temp != TWO_MENU_Fd_SET)
+ 104   1              {
+ 105   2                      return_standby_time++;
+ 106   2                      if (return_standby_time >200)
+ 107   2                      {
+ 108   3                              return_standby_time = 0;
+ 109   3                              set_func_index(MENU_STANDBY);
+ 110   3                      }
+ 111   2              }
+C51 COMPILER V9.00   TIMER                                                                 10/16/2015 14:36:03 PAGE 3   
 
- 112   3                              second_times = 0;
- 113   3                      }
- 114   2              }
- 115   1      
- 116   1      }
- 117          
- 118          void Timer1_isr(void) interrupt 3  //定时器1中断服务程序
- 119          {
- 120   1              unsigned char func_index_temp = 0;
- 121   1              func_index_temp = return_func_index();
- 122   1              TF1 = 0;
- 123   1              TH1 = (65536 - 100) >> 8;                 //重新赋值 100us
- 124   1              TL1 = (65536 - 100) & 0xff;
- 125   1              if (func_index_temp == TWO_MENU_FA_SET)
- 126   1              {
- 127   2                      RF_decode_main_sjz_test();
- 128   2              }
- 129   1              else
- 130   1              {
- 131   2                      RF_decode_main();
- 132   2              }
- 133   1              
- 134   1      }
- 135          
- 136          unsigned char return_await_number_table(void)   //返回await_number_table变量的值
- 137          {
- 138   1              unsigned char await_number_table_temp=0;
- 139   1              await_number_table_temp = await_number_table;
- 140   1              return await_number_table_temp;
+ 112   1      
+ 113   1              if (func_index_temp == MENU_STANDBY && Two_Menu_FC_E1_temp == 2)
+ 114   1              {
+ 115   2                      second_times++;
+ 116   2                      if (second_times >= 10)
+ 117   2                      {
+ 118   3                              P55 = ~P55;
+ 119   3                              second_times = 0;
+ 120   3                      }
+ 121   2              }
+ 122   1      
+ 123   1      }
+ 124          
+ 125          void Timer1_isr(void) interrupt 3  //定时器1中断服务程序
+ 126          {
+ 127   1              unsigned char func_index_temp = 0;
+ 128   1              func_index_temp = return_func_index();
+ 129   1              TF1 = 0;
+ 130   1              TH1 = (65536 - 100) >> 8;                 //重新赋值 100us
+ 131   1              TL1 = (65536 - 100) & 0xff;
+ 132   1              if (func_index_temp == TWO_MENU_FA_SET)
+ 133   1              {
+ 134   2                      RF_decode_main_sjz_test();
+ 135   2              }
+ 136   1              else
+ 137   1              {
+ 138   2                      RF_decode_main();
+ 139   2              }
+ 140   1              
  141   1      }
  142          
- 143          void set_await_number_table(unsigned char temp) //设置await_number_table变量的值
+ 143          unsigned char return_await_number_table(void)   //返回await_number_table变量的值
  144          {
- 145   1              await_number_table = temp;
- 146   1      }
- 147          
- 148          void set_main_press_time_table(unsigned char temp) //设置main_press_time_table变量的值
- 149          {
- 150   1              main_press_time_table = temp;
- 151   1      }
- 152          
- 153          unsigned char return_main_press_time(void)
- 154          {
- 155   1              unsigned char temp = 0;
- 156   1              temp = main_press_time;
- 157   1              return temp;
+ 145   1              unsigned char await_number_table_temp=0;
+ 146   1              await_number_table_temp = await_number_table;
+ 147   1              return await_number_table_temp;
+ 148   1      }
+ 149          
+ 150          void set_await_number_table(unsigned char temp) //设置await_number_table变量的值
+ 151          {
+ 152   1              await_number_table = temp;
+ 153   1      }
+ 154          
+ 155          void set_main_press_time_table(unsigned char temp) //设置main_press_time_table变量的值
+ 156          {
+ 157   1              main_press_time_table = temp;
  158   1      }
  159          
- 160          void clear_main_press_time(void)
+ 160          unsigned char return_main_press_time(void)
  161          {
- 162   1              main_press_time = 0;
- 163   1      }
- 164          
- 165          unsigned char return_logout_cycle_table(void)
- 166          {
- 167   1              unsigned char temp = 0;
- 168   1              temp = logout_cycle_table;
- 169   1              return temp;
+ 162   1              unsigned char temp = 0;
+ 163   1              temp = main_press_time;
+ 164   1              return temp;
+ 165   1      }
+ 166          
+ 167          void clear_main_press_time(void)
+ 168          {
+ 169   1              main_press_time = 0;
  170   1      }
  171          
- 172          void set_logout_cycle_table(unsigned char temp) //设置logout_cycle_table变量的值
+ 172          unsigned char return_logout_cycle_table(void)
  173          {
-C51 COMPILER V9.00   TIMER                                                                 10/16/2015 14:12:16 PAGE 4   
+C51 COMPILER V9.00   TIMER                                                                 10/16/2015 14:36:03 PAGE 4   
 
- 174   1              logout_cycle_table = temp;
- 175   1      }
- 176          
- 177          void clear_return_standby_time(void)
- 178          {
- 179   1              return_standby_time = 0;
- 180   1      }
- 181          
- 182          void set_main_press_time(unsigned char temp)
- 183          {
- 184   1              main_press_time = temp;
- 185   1      }
+ 174   1              unsigned char temp = 0;
+ 175   1              temp = logout_cycle_table;
+ 176   1              return temp;
+ 177   1      }
+ 178          
+ 179          void set_logout_cycle_table(unsigned char temp) //设置logout_cycle_table变量的值
+ 180          {
+ 181   1              logout_cycle_table = temp;
+ 182   1      }
+ 183          
+ 184          void clear_return_standby_time(void)
+ 185          {
+ 186   1              return_standby_time = 0;
+ 187   1      }
+ 188          
+ 189          void set_main_press_time(unsigned char temp)
+ 190          {
+ 191   1              main_press_time = temp;
+ 192   1      }
+ 193          
+ 194          unsigned char return_fd_table(void)     //返回fd_table变量的值
+ 195          {
+ 196   1              unsigned char fd_table_temp = 0;
+ 197   1              fd_table_temp = fd_table;
+ 198   1              return fd_table_temp;
+ 199   1      }
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =    400    ----
+   CODE SIZE        =    431    ----
    CONSTANT SIZE    =   ----    ----
-   XDATA SIZE       =      9       2
+   XDATA SIZE       =     10       2
    PDATA SIZE       =   ----    ----
    DATA SIZE        =   ----    ----
    IDATA SIZE       =   ----    ----

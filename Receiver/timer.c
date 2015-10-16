@@ -18,6 +18,8 @@ unsigned char return_standby_time = 0;//一段时间未操作  返回待机界面
 
 unsigned char second_times = 0;
 
+unsigned char fd_table = 0;
+
 void Init_Timer0(void)
 {
 	TMOD |= 0x01;	  //使用模式1，16位定时器，使用"|"符号可以在使用多个定时器时不受影响	
@@ -59,12 +61,17 @@ void Timer0_isr(void) interrupt 1  //定时器0中断服务程序
 		if (await_number == 10)
 		{
 			await_number_table++;
+			fd_table++;
 			await_number = 0;
 		}
 		if (await_number_table >= 4)//确保程序正确延时
 		{
 			await_number_table = 0;
 		}		
+		if (fd_table >= 40)
+		{
+			fd_table = 0;
+		}
 	}
 
 	if (main_press_time_table == 1) //菜单键按下时间标志
@@ -93,7 +100,7 @@ void Timer0_isr(void) interrupt 1  //定时器0中断服务程序
 
 	}
 
-	if (func_index_temp != DECODER_MENU)
+	if (func_index_temp != DECODER_MENU && func_index_temp != TWO_MENU_Fd_SET)
 	{
 		return_standby_time++;
 		if (return_standby_time >200)
@@ -182,4 +189,11 @@ void clear_return_standby_time(void)
 void set_main_press_time(unsigned char temp)
 {
 	main_press_time = temp;
+}
+
+unsigned char return_fd_table(void)	//返回fd_table变量的值
+{
+	unsigned char fd_table_temp = 0;
+	fd_table_temp = fd_table;
+	return fd_table_temp;
 }
