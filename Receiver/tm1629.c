@@ -1614,6 +1614,8 @@ void fun94(void) //F8_E2键位设置
 
 void fun95(void) //解码菜单
 {
+	unsigned char Two_Menu_F6_E1_temp = 0;
+	Two_Menu_F6_E1_temp = return_Two_Menu_F6_E1();
 	tm1629_load();
 	switch ( display_ram[5] & 0x0f)//显示呼叫类型
 	{
@@ -1643,6 +1645,13 @@ void fun95(void) //解码菜单
 	}
 	display();
 
+	if (display_ram[0] == BAOJING - QUXIAO || display_ram[0] == BAOJING_1 || Two_Menu_F6_E1_temp == 5)
+	{
+		if (P24 == 1)
+		{
+			GD5800_select_chapter(BAOJING);
+		}	
+	}
 	
 
 }
