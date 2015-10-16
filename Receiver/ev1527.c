@@ -2,6 +2,7 @@
 #include "timer.h"
 #include "key.h"
 #include "at24c256.h"
+#include "menu.h"
 
 /********************解码方式专用变量*******************************/
 unsigned char Save_RF_trans1 = 0;
@@ -215,6 +216,8 @@ void receive_rf_decoder(void)
 	unsigned char i, j;
 	unsigned char temp_buff[8];
 	unsigned char temp_buff1[32];
+	unsigned char func_index_temp = 0;
+	func_index_temp = return_func_index();
 
 	if (receive_rf_decoder_finished == 1)
 	{
@@ -279,7 +282,10 @@ void receive_rf_decoder(void)
 				old1_RF_RECE_REG[0] = 0;
 				old1_RF_RECE_REG[1] = 0;
 				old1_RF_RECE_REG[2] = 0;
-				set_sound_table(1);
+				if (func_index_temp != TWO_MENU_F8_E2_SET)
+				{
+					set_sound_table(1);
+				}
 				//func_f1_1_4_table = 1;
 				rx_table = 0;
 			}

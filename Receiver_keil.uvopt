@@ -202,7 +202,7 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>111</ColumnNumber>
+      <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
       <TopLine>253</TopLine>
       <CurrentLine>253</CurrentLine>
@@ -310,14 +310,14 @@
     </File>
     <File>
       <GroupNumber>1</GroupNumber>
-      <FileNumber>0</FileNumber>
+      <FileNumber>12</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>0</ColumnNumber>
+      <ColumnNumber>62</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>1</TopLine>
-      <CurrentLine>1</CurrentLine>
+      <TopLine>7</TopLine>
+      <CurrentLine>35</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>.\Receiver\com.c</PathWithFileName>
       <FilenameWithoutPath>com.c</FilenameWithoutPath>
@@ -1675,7 +1675,7 @@
         </Doc>
         <Doc>
           <Name>.\Receiver\key.c</Name>
-          <ColumnNumber>111</ColumnNumber>
+          <ColumnNumber>0</ColumnNumber>
           <TopLine>253</TopLine>
           <CurrentLine>253</CurrentLine>
         </Doc>
@@ -1687,9 +1687,9 @@
         </Doc>
         <Doc>
           <Name>.\Receiver\com.c</Name>
-          <ColumnNumber>0</ColumnNumber>
-          <TopLine>1</TopLine>
-          <CurrentLine>1</CurrentLine>
+          <ColumnNumber>62</ColumnNumber>
+          <TopLine>7</TopLine>
+          <CurrentLine>35</CurrentLine>
         </Doc>
       </Documents>
     </MDIGroup>

@@ -208,7 +208,7 @@
 #define ZIMU_Y   57
 #define ZIMU_Z   58
 
-#define BAOJING   59
+//#define BAOJING   59
 #define YINGYUEYI 60
 #define YINGYUEER 61
 #define DINGDONG  62
@@ -253,12 +253,13 @@
 #define SHOUQUAN  101
 #define ANQUAN    102
 #define BAOAN     103
-#define HAO       104
-#define FANG      105
-#define CHUANG    106
-#define ZHUO      107
-#define LOU       108
-#define DENGHOU   109
+#define BAOJING   104
+#define HAO       105
+#define FANG      106
+#define CHUANG    107
+#define ZHUO      108
+#define LOU       109
+#define DENGHOU   110
 
 #define DI        127
 #define CHENGGONG 128

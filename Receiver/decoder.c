@@ -10,6 +10,7 @@
 #include "com.h"
 
 unsigned char buf_eeprom[8] = { 0 };//–¥»ÎEEPROM_buf
+unsigned char Two_menu_set_success = 0;
 
 void DecoderProcess(void)
 {	
@@ -647,7 +648,8 @@ void DecoderProcess(void)
 			break;
 		}
 		case TWO_MENU_F8_E2_SET :
-
+			set_sound_table(0);
+			Two_menu_set_success = 1;
 			if (Two_Menu_F8_E1_temp == 1)
 			{
 				single_key[old2_RF_RECE_REG[2] & 0x0f] = Two_Menu_F8_E2_temp;
@@ -684,4 +686,16 @@ void DecoderProcess(void)
 	
 	LogoutProcess();
 	CycleProcess();
+}
+
+unsigned char return_Two_menu_set_success(void)
+{
+	unsigned char temp = 0;
+	temp = Two_menu_set_success;
+	return temp;
+}
+
+void set_Two_menu_set_success(unsigned char temp)
+{
+	Two_menu_set_success = temp;
 }

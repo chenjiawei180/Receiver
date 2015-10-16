@@ -56,7 +56,7 @@ void Timer0_isr(void) interrupt 1  //定时器0中断服务程序
 	if (1)
 	{
 		await_number++;
-		if (await_number == 5)
+		if (await_number == 10)
 		{
 			await_number_table++;
 			await_number = 0;

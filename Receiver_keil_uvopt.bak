@@ -308,6 +308,20 @@
       <PathWithFileName>.\Receiver\gd5800.c</PathWithFileName>
       <FilenameWithoutPath>gd5800.c</FilenameWithoutPath>
     </File>
+    <File>
+      <GroupNumber>1</GroupNumber>
+      <FileNumber>0</FileNumber>
+      <FileType>1</FileType>
+      <tvExp>0</tvExp>
+      <Focus>0</Focus>
+      <ColumnNumber>0</ColumnNumber>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <TopLine>1</TopLine>
+      <CurrentLine>1</CurrentLine>
+      <bDave2>0</bDave2>
+      <PathWithFileName>.\Receiver\com.c</PathWithFileName>
+      <FilenameWithoutPath>com.c</FilenameWithoutPath>
+    </File>
   </Group>
 
   <WinLayout>
@@ -1651,7 +1665,7 @@
     <ActiveMDIGroup>0</ActiveMDIGroup>
     <MDIGroup>
       <Size>100</Size>
-      <ActiveTab>2</ActiveTab>
+      <ActiveTab>3</ActiveTab>
       <Documents>
         <Doc>
           <Name>.\Receiver\ev1527.c</Name>
@@ -1670,6 +1684,12 @@
           <ColumnNumber>0</ColumnNumber>
           <TopLine>115</TopLine>
           <CurrentLine>115</CurrentLine>
+        </Doc>
+        <Doc>
+          <Name>.\Receiver\com.c</Name>
+          <ColumnNumber>0</ColumnNumber>
+          <TopLine>1</TopLine>
+          <CurrentLine>1</CurrentLine>
         </Doc>
       </Documents>
     </MDIGroup>

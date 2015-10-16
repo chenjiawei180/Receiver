@@ -7,6 +7,7 @@
 #include "gd5800.h"
 #include "at24c256.h"
 #include "ev1527.h"
+#include "decoder.h"
 
 unsigned char const CODE[] = { 0x3F, 0x06, 0x5B, 0x4F, 0x66, 0x6D, 0x7D, 0x07, 0x7F, 0x6F, 0x77, 0x7C, 0x39, 0x5E, 0x79, 0x71, 0x76, 0x38, 0x5c, 0x73, 0x3e };//0-9 abcdef ÏÔÊ¾Æ÷ÂëÊı×é
 unsigned char const INIT_CODE[] = { 0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80 };//Öğ¶ÎµãÁÁÊıÂë¹ÜÊı×é
@@ -585,6 +586,10 @@ void Cancel_funtion(unsigned char* id_number, unsigned char* buff)//id_numberÎª½
 			index = i;
 			break;
 		}
+	}
+	if (index == 0)
+	{
+		GD5800_stop_music();
 	}
 	for (i = index; i<Two_Menu_F3_E2_temp; i++)
 	{
@@ -1597,6 +1602,13 @@ void fun94(void) //F8_E2¼üÎ»ÉèÖÃ
 		GD5800_select_chapter(temp + QUXIAO);
 		delay10ms();
 		set_sound_table(0);
+	}
+	if (return_Two_menu_set_success() == 1)
+	{
+		GD5800_stop_music();
+		delay10ms();
+		GD5800_select_chapter(CHENGGONG);
+		set_Two_menu_set_success(0);
 	}
 }
 

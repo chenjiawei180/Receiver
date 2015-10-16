@@ -1,4 +1,4 @@
-C51 COMPILER V9.00   TIMER                                                                 10/15/2015 16:25:38 PAGE 1   
+C51 COMPILER V9.00   TIMER                                                                 10/16/2015 13:59:23 PAGE 1   
 
 
 C51 COMPILER V9.00, COMPILATION OF MODULE TIMER
@@ -62,7 +62,7 @@ line level    source
   51   1              //      || func_index_temp == TWO_MENU_F0_DAY || func_index_temp == TWO_MENU_F0_WEEK || func_index_temp == TWO
              -_MENU_F0_HOUR
   52   1              //      || func_index_temp == TWO_MENU_F0_MINUTE || func_index_temp == TWO_MENU_F1_E1_D1 || func_index_temp ==
-C51 COMPILER V9.00   TIMER                                                                 10/15/2015 16:25:38 PAGE 2   
+C51 COMPILER V9.00   TIMER                                                                 10/16/2015 13:59:23 PAGE 2   
 
              - TWO_MENU_F1_E1_D2
   53   1              //      || func_index_temp == TWO_MENU_F1_E1_D3 || func_index_temp == TWO_MENU_F1_E1_D4 || func_index_temp == 
@@ -73,7 +73,7 @@ line level    source
   56   1              if (1)
   57   1              {
   58   2                      await_number++;
-  59   2                      if (await_number == 5)
+  59   2                      if (await_number == 10)
   60   2                      {
   61   3                              await_number_table++;
   62   3                              await_number = 0;
@@ -126,7 +126,7 @@ line level    source
  109   2                      if (second_times >= 10)
  110   2                      {
  111   3                              P55 = ~P55;
-C51 COMPILER V9.00   TIMER                                                                 10/15/2015 16:25:38 PAGE 3   
+C51 COMPILER V9.00   TIMER                                                                 10/16/2015 13:59:23 PAGE 3   
 
  112   3                              second_times = 0;
  113   3                      }
@@ -190,7 +190,7 @@ line level    source
  171          
  172          void set_logout_cycle_table(unsigned char temp) //设置logout_cycle_table变量的值
  173          {
-C51 COMPILER V9.00   TIMER                                                                 10/15/2015 16:25:38 PAGE 4   
+C51 COMPILER V9.00   TIMER                                                                 10/16/2015 13:59:23 PAGE 4   
 
  174   1              logout_cycle_table = temp;
  175   1      }

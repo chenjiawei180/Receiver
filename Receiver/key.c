@@ -182,8 +182,12 @@ unsigned int KeyScan(void)  //Keyboard scan function
 		if ((HKeyPort & 0x3C) != 0x3C)   //Press button
 		{
 			clear_return_standby_time();
-
-				//GD5800_select_chapter(DI);
+			if (func_index != TWO_MENU_F8_E2_SET)
+			{
+				GD5800_stop_music();
+				delay10ms();
+				GD5800_select_chapter(DI);
+			}
 				sound_table=1;
 				Val = HKeyPort & 0x3C;
 				if (Val == 0x0038)
@@ -582,7 +586,7 @@ void KeyProcess(void)
 				else Two_Menu_F8_E1 = 1 ;
 				break;
 			case TWO_MENU_F8_E2_SET:
-				if (Two_Menu_F8_E2 == 43) Two_Menu_F8_E2 = 0;	//F8_E2键位设置
+				if (Two_Menu_F8_E2 == 38) Two_Menu_F8_E2 = 0;	//F8_E2键位设置
 				else Two_Menu_F8_E2++;
 				break;
 			case DECODER_MENU:
@@ -810,7 +814,7 @@ void KeyProcess(void)
 				else Two_Menu_F8_E1 = 1;
 				break;
 			case TWO_MENU_F8_E2_SET:
-				if (Two_Menu_F8_E2 == 0) Two_Menu_F8_E2 = 43;	//F8_E2键位设置
+				if (Two_Menu_F8_E2 == 0) Two_Menu_F8_E2 = 38;	//F8_E2键位设置
 				else Two_Menu_F8_E2--;
 				break;
 			case DECODER_MENU:
