@@ -197,3 +197,8 @@ unsigned char return_fd_table(void)	//返回fd_table变量的值
 	fd_table_temp = fd_table;
 	return fd_table_temp;
 }
+
+void set_fd_table(unsigned char temp) //设置fd_table变量的值
+{
+	fd_table = temp;
+}

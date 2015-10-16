@@ -4,7 +4,7 @@
 
 void mcu_to_computer(unsigned char call_type, unsigned char* number,unsigned char key_type)
 {
-	unsigned char temp1=0,temp2=0;
+	unsigned char temp1=0,temp2=0,key=0;
 
 	unsigned char sec = 0, hour = 0, min = 0;
 	Ds1302_Read_Time();
@@ -22,7 +22,32 @@ void mcu_to_computer(unsigned char call_type, unsigned char* number,unsigned cha
 	Usart1_SendData(temp1);//号码
 	Usart1_SendData(temp2);//号码
 
-	Usart1_SendData(key_type);//键值
+	switch (key_type)
+	{
+	case 1:
+		key = 0x01;
+		Usart1_SendData(0x01);
+		break;
+	case 2:
+		key = 0x0d; 
+		Usart1_SendData(0x0d);
+		break;
+	case 4:
+		key = 0x0b; 
+		Usart1_SendData(0x0b); 
+		break;
+	case 8:
+		key = 0x0c;
+		Usart1_SendData(0x0c); 
+		break;
+	default:
+		key = 0x00;
+		Usart1_SendData(0x00);
+		break;
+	}
+	//Usart1_SendData(key_type);
+	//键值
+	
 
 	Usart1_SendData(0);
 	Usart1_SendData(0);
@@ -35,7 +60,7 @@ void mcu_to_computer(unsigned char call_type, unsigned char* number,unsigned cha
 	Usart1_SendData(min);
 	Usart1_SendData(sec);
 
-	Usart1_SendData(0x1EE + call_type + temp1 + temp2 + key_type + hour + min + sec);//校验
+	Usart1_SendData(0x1EE + call_type + temp1 + temp2 + key + hour + min + sec);//校验
 
 
 	Usart1_SendData(0x55);

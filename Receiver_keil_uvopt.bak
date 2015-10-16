@@ -314,10 +314,10 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>62</ColumnNumber>
+      <ColumnNumber>146</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
       <TopLine>7</TopLine>
-      <CurrentLine>35</CurrentLine>
+      <CurrentLine>23</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>.\Receiver\com.c</PathWithFileName>
       <FilenameWithoutPath>com.c</FilenameWithoutPath>
@@ -1687,9 +1687,9 @@
         </Doc>
         <Doc>
           <Name>.\Receiver\com.c</Name>
-          <ColumnNumber>62</ColumnNumber>
+          <ColumnNumber>146</ColumnNumber>
           <TopLine>7</TopLine>
-          <CurrentLine>35</CurrentLine>
+          <CurrentLine>23</CurrentLine>
         </Doc>
       </Documents>
     </MDIGroup>

@@ -241,10 +241,10 @@ unsigned char KeyDecoder(void)
 
 			switch (old2_RF_RECE_REG[2] & 0x0f)
 			{
-			case 0x01:key_val = 0x5c78; break;
-			case 0x02:key_val = 0x7478; break;
-			case 0x04:key_val = 0x6c78; break;
-			case 0x08:key_val = 0x7878; break;
+			case 0x01:key_val = 0x001c; break;
+			case 0x02:key_val = 0x002c; break;
+			case 0x04:key_val = 0x0034; break;
+			case 0x08:key_val = 0x0038; break;
 			default:break;
 			}
 		}
@@ -272,7 +272,7 @@ void KeyProcess(void)
 	switch (key_value)
 	{
 		case KEY_FUNC:
-			if (func_index == MENU_STANDBY || func_index == DECODER_MENU)  //如果索引==0  则要1秒以上进入菜单
+			if ((return_Two_Menu_Fb_E1() == 0 && func_index == MENU_STANDBY) || (return_Two_Menu_Fb_E1() == 1&&( func_index == MENU_STANDBY || func_index == DECODER_MENU) ) )  //如果索引==0  则要1秒以上进入菜单
 			{
 				main_press_time_temp = return_main_press_time();
 				if (main_press_time_temp >= 20)
