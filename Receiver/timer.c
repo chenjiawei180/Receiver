@@ -68,7 +68,7 @@ void Timer0_isr(void) interrupt 1  //定时器0中断服务程序
 		{
 			await_number_table = 0;
 		}		
-		if (fd_table >= 40)
+		if (fd_table >= 24)
 		{
 			fd_table = 0;
 		}
