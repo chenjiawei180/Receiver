@@ -53,6 +53,7 @@
 #define TWO_MENU_F6_E3      35  //循环时是否报读
 #define TWO_MENU_F6_E4		36  //音量大小调整
 #define TWO_MENU_F6_E5      37  //亮度调整
+#define TWO_MENU_F6_E6      96  //语音导航调整
 
 //F7二级子菜单
 #define TWO_MENU_F7_E1      38  //E1 原始规则
@@ -132,7 +133,7 @@
 #define TWO_MENU_F6_E3_SET  86 //F6_E3循环是否报读
 #define TWO_MENU_F6_E4_SET  87 //F6_E4音量大小调整
 #define TWO_MENU_F6_E5_SET  88 //F6_E5显示屏亮度调整
-
+#define TWO_MENU_F6_E6_SET  97 //F6_E6语音导航调整
 //F7子菜单设置
 #define TWO_MENU_F7_E1_SET  89 //F7_E1 默认规则999*9
 #define TWO_MENU_F7_E2_SET  90 //F7_E2 附加规则9999*9
@@ -145,6 +146,7 @@
 
 //解码菜单
 #define DECODER_MENU        95 //解码显示菜单
+
 
 
 
@@ -266,7 +268,7 @@
 #define XIAOHAOSHEZHI  114
 #define XUNHUANSHEZHI  115
 #define YUYINSHEZHI    116
-#define CJIANPANSHEZHI 117
+#define JIANPANSHEZHI 117
 #define ANJIANSHEZHI   118
 #define HUIFUSHEZHI    119
 #define DI			   120

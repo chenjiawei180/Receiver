@@ -118,8 +118,11 @@ void submenuf6_1_voiceselect(unsigned char report_mode, unsigned char *report_nu
 		case DINGDONG_type:
 			GD5800_select_chapter(DINGDONG);
 			break;
-		case LINGDANG_type:
+		case YINYUEYI_type:
 			GD5800_select_chapter(YINGYUEYI);
+			break;
+		case YINYUEER_type:
+			GD5800_select_chapter(YINGYUEER);
 			break;
 		case EMERGENCY_type:
 			GD5800_select_chapter(BAOJING);

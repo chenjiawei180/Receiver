@@ -8,8 +8,9 @@
 #define	COMPLICATED_REPORT		2
 #define	NOT_REPORT_C			3
 #define	DINGDONG_type			4
-#define	LINGDANG_type			5
-#define	EMERGENCY_type			6
+#define	YINYUEYI_type			5
+#define	YINYUEER_type			6
+#define	EMERGENCY_type			7
 
 
 extern void GD5800_initialization(void);

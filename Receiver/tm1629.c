@@ -728,7 +728,6 @@ void fun0(void) //待机显示函数
 
 void fun1(void) //一级菜单F0
 {
-
 	tm1629_f(0x00);
 }
 
@@ -736,46 +735,109 @@ void fun2(void) //一级菜单F1
 {
 	P55 = 1;
 	tm1629_f(0x01);
+	if (return_sound_table() == 1)
+	{
+		GD5800_stop_music();
+		delay10ms();
+		GD5800_select_chapter(CUNCHUSHEZHI);
+		set_sound_table(0);
+	}
 }
 
 void fun3(void) //一级菜单F2
 {
 	tm1629_f(0x02);
+	if (return_sound_table() == 1)
+	{
+		GD5800_stop_music();
+		delay10ms();
+		GD5800_select_chapter(SHANGCHUSHEZHI);
+		set_sound_table(0);
+	}
 }
 
 void fun4(void) //一级菜单F3
 {
 	tm1629_f(0x03);
+	if (return_sound_table() == 1)
+	{
+		GD5800_stop_music();
+		delay10ms();
+		GD5800_select_chapter(XIANSHISHEZHI);
+		set_sound_table(0);
+	}
 }
 
 void fun5(void) //一级菜单F4
 {
 	tm1629_f(0x04);
+	if (return_sound_table() == 1)
+	{
+		GD5800_stop_music();
+		delay10ms();
+		GD5800_select_chapter(XIAOHAOSHEZHI);
+		set_sound_table(0);
+	}
 }
 
 void fun6(void) //一级菜单F5
 {
 	tm1629_f(0x05);
+	if (return_sound_table() == 1)
+	{
+		GD5800_stop_music();
+		delay10ms();
+		GD5800_select_chapter(XUNHUANSHEZHI);
+		set_sound_table(0);
+	}
 }
 
 void fun7(void) //一级菜单F6
 {
 	tm1629_f(0x06);
+	if (return_sound_table() == 1)
+	{
+		GD5800_stop_music();
+		delay10ms();
+		GD5800_select_chapter(YUYINSHEZHI);
+		set_sound_table(0);
+	}
 }
 
 void fun8(void) //一级菜单F7
 {
 	tm1629_f(0x07);
+	if (return_sound_table() == 1)
+	{
+		GD5800_stop_music();
+		delay10ms();
+		GD5800_select_chapter(JIANPANSHEZHI);
+		set_sound_table(0);
+	}
 }
 
 void fun9(void) //一级菜单F8
 {
 	tm1629_f(0x08);
+	if (return_sound_table() == 1)
+	{
+		GD5800_stop_music();
+		delay10ms();
+		GD5800_select_chapter(ANJIANSHEZHI);
+		set_sound_table(0);
+	}
 }
 
 void fun10(void) //一级菜单F9
 {
 	tm1629_f(0x09);
+	if (return_sound_table() == 1)
+	{
+		GD5800_stop_music();
+		delay10ms();
+		GD5800_select_chapter(HUIFUSHEZHI);
+		set_sound_table(0);
+	}
 }
 
 void fun11(void) //一级菜单FA
@@ -797,7 +859,7 @@ void fun14(void) //一级菜单Fd
 {
 	tm1629_f(0x0d);
 	set_fd_table(0);
-	P55 = 0;
+	P55 = 1;
 }
 
 void fun15(void) //设置年份
@@ -1761,3 +1823,16 @@ void fun95(void) //解码菜单
 	P55 = 1;//秒针灭
 	
 }
+
+void fun96(void) //二级菜单F6-E6
+{
+	tm1629_E(0x06);
+}
+
+void fun97(void) //二级菜单F6-E6
+{
+	unsigned char temp = 0;
+	temp = return_Two_Menu_F6_E6();
+	Show_one_number(temp);
+}
+
