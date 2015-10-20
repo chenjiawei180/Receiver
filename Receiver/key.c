@@ -546,7 +546,7 @@ void KeyProcess(void)
 				else Two_Menu_F5_E1++;
 				break;
 			case TWO_MENU_F6_E1_SET:
-				if (Two_Menu_F6_E1 == 5) Two_Menu_F6_E1 = 0;	//F6_E1”Ô“Ù—°‘Ò
+				if (Two_Menu_F6_E1 == 6) Two_Menu_F6_E1 = 0;	//F6_E1”Ô“Ù—°‘Ò
 				else Two_Menu_F6_E1++;
 				break;
 			case TWO_MENU_F6_E2_SET:
@@ -775,7 +775,7 @@ void KeyProcess(void)
 				else Two_Menu_F5_E1--;
 				break;
 			case TWO_MENU_F6_E1_SET:
-				if (Two_Menu_F6_E1 == 0) Two_Menu_F6_E1 = 5;	//F6_E1∂Ó”Ô“Ù—°‘Ò
+				if (Two_Menu_F6_E1 == 0) Two_Menu_F6_E1 = 6;	//F6_E1∂Ó”Ô“Ù—°‘Ò
 				else Two_Menu_F6_E1--;
 				break;
 			case TWO_MENU_F6_E2_SET:

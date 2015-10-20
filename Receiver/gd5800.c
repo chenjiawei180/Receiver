@@ -55,9 +55,9 @@ void submenuf6_1_voiceselect(unsigned char report_mode, unsigned char *report_nu
 {
 	unsigned char *number;
 	number = report_number;
-	if (report_mode <= NOT_REPORT)
+	if (report_mode <= NOT_REPORT_C)
 	{
-		if (report_mode != COMPLICATED_REPORT)
+		if (report_mode <= NOT_REPORT)
 		{
 			GD5800_select_chapter(*(number + 2) + ZERO);/*呼叫号数百位*/
 		}
@@ -71,7 +71,7 @@ void submenuf6_1_voiceselect(unsigned char report_mode, unsigned char *report_nu
 			}
 		}
 
-		if (report_mode != COMPLICATED_REPORT)
+		if (report_mode <= NOT_REPORT)
 		{
 			GD5800_select_chapter(*(number + 3) + ZERO);
 		}
@@ -97,7 +97,7 @@ void submenuf6_1_voiceselect(unsigned char report_mode, unsigned char *report_nu
 			}
 		}
 
-		if (report_mode != COMPLICATED_REPORT)
+		if (report_mode <= NOT_REPORT)
 		{
 			GD5800_select_chapter(*(number + 4) + ZERO);
 		}
@@ -159,7 +159,7 @@ void submenuf6_1(unsigned char report_mode, unsigned char *report_number, unsign
 	number = report_number;
 	type = call_type;
 	key = key_value;
-	if (mode <= NOT_REPORT )
+	if (mode <= NOT_REPORT_C )
 	{
 		GD5800_select_chapter(DINGDONG);
 		if (key != 15)//防区号是否当前缀
@@ -169,7 +169,7 @@ void submenuf6_1(unsigned char report_mode, unsigned char *report_number, unsign
 			{
 				if (*(number + 1) <= 9)
 				{
-					if (mode != COMPLICATED_REPORT)
+					if (report_mode <= NOT_REPORT)
 					{
 						GD5800_select_chapter(*(number + 1) + ZERO);
 					}
@@ -235,7 +235,7 @@ void submenuf6_1(unsigned char report_mode, unsigned char *report_number, unsign
 			}
 			GD5800_select_chapter(GUITAI);
 		}
-		else if (mode != NOT_REPORT)
+		else if (mode != NOT_REPORT && mode != NOT_REPORT_C)
 		{
 			if (type < 50)
 			{

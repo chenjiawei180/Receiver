@@ -260,11 +260,19 @@
 #define ZHUO      108
 #define LOU       109
 #define DENGHOU   110
-
-#define DI        127
-#define CHENGGONG 128
-#define SHIBAI    129
-#define CHUSHIHUA 130
+#define CUNCHUSHEZHI   111
+#define SHANGCHUSHEZHI 112
+#define XIANSHISHEZHI  113
+#define XIAOHAOSHEZHI  114
+#define XUNHUANSHEZHI  115
+#define YUYINSHEZHI    116
+#define CJIANPANSHEZHI 117
+#define ANJIANSHEZHI   118
+#define HUIFUSHEZHI    119
+#define DI			   120
+#define CHENGGONG      121
+#define SHIBAI         122
+#define CHUSHIHUA      123
 
 #define QUXIAO_1  51
 #define	BAOJING_1 52

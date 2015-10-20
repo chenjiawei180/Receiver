@@ -1738,7 +1738,7 @@ void fun95(void) //½âÂë²Ëµ¥
 	tm1629_load();
 	display();
 
-	if (display_ram[0] == BAOJING - QUXIAO || display_ram[0] == BAOJING_1 || Two_Menu_F6_E1_temp == 5)
+	if (display_ram[0] == BAOJING - QUXIAO || display_ram[0] == BAOJING_1 || Two_Menu_F6_E1_temp == EMERGENCY_type)
 	{
 		if (P24 == 1)
 		{

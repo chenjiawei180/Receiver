@@ -4,11 +4,12 @@
 #include "STC15F2K60S2.H"
 
 #define	SIMPLE_REPORT			0
-#define	COMPLICATED_REPORT		1
-#define	NOT_REPORT				2
-#define	DINGDONG_type				3
-#define	LINGDANG_type				4
-#define	EMERGENCY_type				5
+#define	NOT_REPORT				1
+#define	COMPLICATED_REPORT		2
+#define	NOT_REPORT_C			3
+#define	DINGDONG_type			4
+#define	LINGDANG_type			5
+#define	EMERGENCY_type			6
 
 
 extern void GD5800_initialization(void);

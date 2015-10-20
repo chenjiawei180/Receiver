@@ -1,4 +1,4 @@
-C51 COMPILER V9.00   DECODER                                                               10/20/2015 14:17:31 PAGE 1   
+C51 COMPILER V9.00   DECODER                                                               10/20/2015 15:26:06 PAGE 1   
 
 
 C51 COMPILER V9.00, COMPILATION OF MODULE DECODER
@@ -62,7 +62,7 @@ line level    source
   51   4                              set_logout_cycle_table(0);//Ñ­»·¸úÏúºÅÖØÐÂ¼ÆÊý
   52   4                              //¼üÅÌ¹æÔò
   53   4                              if ((old2_RF_RECE_REG[2] & 0xf0) == 0x00 && (((old2_RF_RECE_REG[0] >> 4) == Two_Menu_F7_E1_temp) || (Tw
-C51 COMPILER V9.00   DECODER                                                               10/20/2015 14:17:31 PAGE 2   
+C51 COMPILER V9.00   DECODER                                                               10/20/2015 15:26:06 PAGE 2   
 
              -o_Menu_F7_E1_temp == 10)))//¼üÅÌ¹æÔò£¬³ÌÐò°´Ä¬ÈÏµÄÀ´±à
   54   4                              {
@@ -126,7 +126,7 @@ line level    source
  112   7                                                      if (((Two_Menu_F8_E1_temp != 1) && temp_buff[5] == old2_RF_RECE_REG[0] && temp_buff[6] == old2_RF_RE
              -CE_REG[1] && ((temp_buff[7] >> 4) == (old2_RF_RECE_REG[2] >> 4))) || ((Two_Menu_F8_E1_temp == 1) && temp_buff[5] == old2
              -_RF_RECE_REG[0] && temp_buff[6] == old2_RF_RECE_REG[1] && temp_buff[7] == old2_RF_RECE_REG[2]))// ½øÐÐ¶Ô±È£¬¿´¿´Êý¾ÝÊÇ·ñ
-C51 COMPILER V9.00   DECODER                                                               10/20/2015 14:17:31 PAGE 3   
+C51 COMPILER V9.00   DECODER                                                               10/20/2015 15:26:06 PAGE 3   
 
              -·ûºÏ
  113   7                                                      {
@@ -190,7 +190,7 @@ line level    source
  169   8      #ifdef DEBUG
                                                                               uart_printf("decoder success!"); 
               #endif
-C51 COMPILER V9.00   DECODER                                                               10/20/2015 14:17:31 PAGE 4   
+C51 COMPILER V9.00   DECODER                                                               10/20/2015 15:26:06 PAGE 4   
 
  172   8      
  173   8                                                                      set_func_index(DECODER_MENU);;//´ËÊ±ÌøÈë½âÂë²Ëµ¥£¬ÎªÏÂÒ»´Î½âÂë×ö×¼±¸
@@ -254,7 +254,7 @@ line level    source
  230   6                                              {
  231   7                                                      display_ram[l] = 0;
  232   7                                              }
-C51 COMPILER V9.00   DECODER                                                               10/20/2015 14:17:31 PAGE 5   
+C51 COMPILER V9.00   DECODER                                                               10/20/2015 15:26:06 PAGE 5   
 
  233   6                                                      
  234   6                                              decoder_temp_to_mcuram(display_ram, temp_buff); //Èç¹û·ûºÏµÄ»°  ½«ÁÙÊ±Êý×éµÄÊý¾ÝÒÆÈëµ¥Æ¬»úÔÝ´æÊý×é 8×
@@ -318,7 +318,7 @@ line level    source
  290   7                                                      if (((Two_Menu_F8_E1_temp != 1) && temp_buff[5] == old2_RF_RECE_REG[0] && temp_buff[6] == old2_RF_RE
              -CE_REG[1] && ((temp_buff[7] >> 4) == (old2_RF_RECE_REG[2] >> 4))) || ((Two_Menu_F8_E1_temp == 1) && temp_buff[5] == old2
              -_RF_RECE_REG[0] && temp_buff[6] == old2_RF_RECE_REG[1] && temp_buff[7] == old2_RF_RECE_REG[2]))
-C51 COMPILER V9.00   DECODER                                                               10/20/2015 14:17:31 PAGE 6   
+C51 COMPILER V9.00   DECODER                                                               10/20/2015 15:26:06 PAGE 6   
 
  291   7                                                      {
  292   8      #ifdef DEBUG
@@ -382,7 +382,7 @@ line level    source
  349   9                                                                      tm1629_load();//µ¥Æ¬»ú°ÑÊý×éÄÚÈÝÔØÈëÊýÂë¹ÜÏÔ´æÊý×éÖÐ
  350   9                                                                      display();//ÏÔÊ¾ÊýÂë¹Ü
  351   9                                                              }
-C51 COMPILER V9.00   DECODER                                                               10/20/2015 14:17:31 PAGE 7   
+C51 COMPILER V9.00   DECODER                                                               10/20/2015 15:26:06 PAGE 7   
 
  352   8                                                      else if (Two_Menu_F3_E1_temp == 2)//ÎªÑ­»·Ä£Ê½
  353   8                                                      {
@@ -446,7 +446,7 @@ line level    source
  409   3                      case TWO_MENU_F1_E1_D2:
  410   3                      case TWO_MENU_F1_E1_D3:
  411   3                      case TWO_MENU_F1_E1_D4:
-C51 COMPILER V9.00   DECODER                                                               10/20/2015 14:17:31 PAGE 8   
+C51 COMPILER V9.00   DECODER                                                               10/20/2015 15:26:06 PAGE 8   
 
  412   3                      {
  413   4                              set_func_index(TWO_MENU_F1_E1_D4);
@@ -510,7 +510,7 @@ line level    source
  469   6                                      }
  470   5                                      else
  471   5                                              Two_Menu_F1_E1[3]++;
-C51 COMPILER V9.00   DECODER                                                               10/20/2015 14:17:31 PAGE 9   
+C51 COMPILER V9.00   DECODER                                                               10/20/2015 15:26:06 PAGE 9   
 
  472   5                              }
  473   4                              break;
@@ -574,7 +574,7 @@ line level    source
  529   7                                                                                                Two_Menu_F1_E2[2]++;
  530   7                                                                                                Two_Menu_F1_E2[3] = 0;
  531   7                                                                                        }
-C51 COMPILER V9.00   DECODER                                                               10/20/2015 14:17:31 PAGE 10  
+C51 COMPILER V9.00   DECODER                                                               10/20/2015 15:26:06 PAGE 10  
 
  532   6                                                                                }
  533   5                                                                                else
@@ -638,7 +638,7 @@ line level    source
  589   6                                              {
  590   7                                                      Two_Menu_F1_E3[2]++;
  591   7                                                      Two_Menu_F1_E3[3] = 0;
-C51 COMPILER V9.00   DECODER                                                               10/20/2015 14:17:31 PAGE 11  
+C51 COMPILER V9.00   DECODER                                                               10/20/2015 15:26:06 PAGE 11  
 
  592   7                                              }
  593   6                                      }
@@ -702,7 +702,7 @@ line level    source
  649   6                                              {
  650   7                                                      Two_Menu_F1_E4[2]++;
  651   7                                                      Two_Menu_F1_E4[3] = 0;
-C51 COMPILER V9.00   DECODER                                                               10/20/2015 14:17:31 PAGE 12  
+C51 COMPILER V9.00   DECODER                                                               10/20/2015 15:26:06 PAGE 12  
 
  652   7                                              }
  653   6                                      }
@@ -766,7 +766,7 @@ line level    source
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-C51 COMPILER V9.00   DECODER                                                               10/20/2015 14:17:31 PAGE 13  
+C51 COMPILER V9.00   DECODER                                                               10/20/2015 15:26:06 PAGE 13  
 
    CODE SIZE        =   3511    ----
    CONSTANT SIZE    =     32    ----
