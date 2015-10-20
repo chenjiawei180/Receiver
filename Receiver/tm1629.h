@@ -28,7 +28,7 @@ extern void send_command(unsigned char word);
 extern void send_command_2(unsigned char word);
 extern void send_command_3(unsigned char word);
 extern void display(void);
-extern void display_light(void);
+extern void display_light(unsigned char temp); //3¸öTM1629ÏÔÊ¾º¯Êı
 
 
 extern void tm1629_init(void);
