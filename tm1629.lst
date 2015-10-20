@@ -1,4 +1,4 @@
-C51 COMPILER V9.00   TM1629                                                                10/16/2015 18:13:52 PAGE 1   
+C51 COMPILER V9.00   TM1629                                                                10/20/2015 10:32:09 PAGE 1   
 
 
 C51 COMPILER V9.00, COMPILATION OF MODULE TM1629
@@ -62,7 +62,7 @@ line level    source
   49   1              for (i = 0; i<8; i++)
   50   1              {
   51   2                      TM1629_CLK = 0;
-C51 COMPILER V9.00   TM1629                                                                10/16/2015 18:13:52 PAGE 2   
+C51 COMPILER V9.00   TM1629                                                                10/20/2015 10:32:09 PAGE 2   
 
   52   2                      if (p & 0x01)
   53   2                              TM1629_DIO = 1;
@@ -126,7 +126,7 @@ line level    source
  111   1      }
  112          
  113          void display(void) //3个TM1629显示函数
-C51 COMPILER V9.00   TM1629                                                                10/16/2015 18:13:52 PAGE 3   
+C51 COMPILER V9.00   TM1629                                                                10/20/2015 10:32:09 PAGE 3   
 
  114          {
  115   1              unsigned char i,temp;
@@ -190,7 +190,7 @@ line level    source
  173   1              for (i = 0; i<8; i++)   //发送16字节的显存数据
  174   1              {
  175   2                      writeDataTo1629_3(0xff);
-C51 COMPILER V9.00   TM1629                                                                10/16/2015 18:13:52 PAGE 4   
+C51 COMPILER V9.00   TM1629                                                                10/20/2015 10:32:09 PAGE 4   
 
  176   2                      writeDataTo1629_3(0xff);
  177   2              }
@@ -254,7 +254,7 @@ line level    source
  235          void tm1629_await(void)
  236          {
  237   1              unsigned char i;        //k控制显示的具体数字，i和j控制buf_display的刷新
-C51 COMPILER V9.00   TM1629                                                                10/16/2015 18:13:52 PAGE 5   
+C51 COMPILER V9.00   TM1629                                                                10/20/2015 10:32:09 PAGE 5   
 
  238   1              unsigned char await_number_table_temp = 0;
  239   1              await_number_table_temp = return_await_number_table();
@@ -318,7 +318,7 @@ line level    source
  297   1              display();
  298   1      }
  299          void Show_on(void)
-C51 COMPILER V9.00   TM1629                                                                10/16/2015 18:13:52 PAGE 6   
+C51 COMPILER V9.00   TM1629                                                                10/20/2015 10:32:09 PAGE 6   
 
  300          {
  301   1              tm1629_clear();
@@ -382,7 +382,7 @@ line level    source
  359   1                      mcuram_to_displayram(buf_display[4] + 7, display_ram + 54);
  360   1              if (*(display_ram + 48) != 0)
  361   1                      mcuram_to_displayram(buf_display[4] + 3, display_ram + 48);
-C51 COMPILER V9.00   TM1629                                                                10/16/2015 18:13:52 PAGE 7   
+C51 COMPILER V9.00   TM1629                                                                10/20/2015 10:32:09 PAGE 7   
 
  362   1              if (*(display_ram + 42) != 0)
  363   1                      mcuram_to_displayram(buf_display[3] + 7, display_ram + 42);
@@ -446,7 +446,7 @@ line level    source
  420          
  421          void decoder_temp_to_mcuram(unsigned char* a, unsigned char* index)//a为MCU缓存区   index为解码后取出的8字
              -节临时数组
-C51 COMPILER V9.00   TM1629                                                                10/16/2015 18:13:52 PAGE 8   
+C51 COMPILER V9.00   TM1629                                                                10/20/2015 10:32:09 PAGE 8   
 
  422          {
  423   1              *(a + 0) = *(index);
@@ -510,7 +510,7 @@ line level    source
  480   3                              temp[i] = display_ram[(index - 1) * 6 + i];
  481   3                      }
  482   2      
-C51 COMPILER V9.00   TM1629                                                                10/16/2015 18:13:52 PAGE 9   
+C51 COMPILER V9.00   TM1629                                                                10/20/2015 10:32:09 PAGE 9   
 
  483   2                      for (i = index; i>1; i--)
  484   2                      {
@@ -574,7 +574,7 @@ line level    source
  541          
  542          
  543          
-C51 COMPILER V9.00   TM1629                                                                10/16/2015 18:13:52 PAGE 10  
+C51 COMPILER V9.00   TM1629                                                                10/20/2015 10:32:09 PAGE 10  
 
  544          
  545          
@@ -638,7 +638,7 @@ line level    source
  603   1              index = return_Two_Menu_F3_E2();
  604   1              Two_Menu_F3_E2_temp = return_Two_Menu_F3_E2();
  605   1              /*循环处理函数*/
-C51 COMPILER V9.00   TM1629                                                                10/16/2015 18:13:52 PAGE 11  
+C51 COMPILER V9.00   TM1629                                                                10/20/2015 10:32:09 PAGE 11  
 
  606   1              for (i = 0; i<Two_Menu_F3_E2_temp; i++)
  607   1              {
@@ -702,7 +702,7 @@ line level    source
  663   2                      {
  664   3                              *(buff + (Two_Menu_F3_E2_temp - 1) * 6 + i) = 0;
  665   3                      }
-C51 COMPILER V9.00   TM1629                                                                10/16/2015 18:13:52 PAGE 12  
+C51 COMPILER V9.00   TM1629                                                                10/20/2015 10:32:09 PAGE 12  
 
  666   2              }
  667   1              if (*(buff) == 0)
@@ -741,1061 +741,1058 @@ line level    source
  700          
  701          void fun2(void) //一级菜单F1
  702          {
- 703   1              if (return_Two_Menu_FC_E1() == 1)
- 704   1              {
- 705   2                      P55 = 1;
- 706   2              }
- 707   1              tm1629_f(0x01);
- 708   1      }
- 709          
- 710          void fun3(void) //一级菜单F2
- 711          {
- 712   1              tm1629_f(0x02);
- 713   1      }
- 714          
- 715          void fun4(void) //一级菜单F3
- 716          {
- 717   1              tm1629_f(0x03);
- 718   1      }
- 719          
- 720          void fun5(void) //一级菜单F4
- 721          {
- 722   1              tm1629_f(0x04);
- 723   1      }
- 724          
- 725          void fun6(void) //一级菜单F5
- 726          {
- 727   1              tm1629_f(0x05);
-C51 COMPILER V9.00   TM1629                                                                10/16/2015 18:13:52 PAGE 13  
+ 703   1              P55 = 1;
+ 704   1              tm1629_f(0x01);
+ 705   1      }
+ 706          
+ 707          void fun3(void) //一级菜单F2
+ 708          {
+ 709   1              tm1629_f(0x02);
+ 710   1      }
+ 711          
+ 712          void fun4(void) //一级菜单F3
+ 713          {
+ 714   1              tm1629_f(0x03);
+ 715   1      }
+ 716          
+ 717          void fun5(void) //一级菜单F4
+ 718          {
+ 719   1              tm1629_f(0x04);
+ 720   1      }
+ 721          
+ 722          void fun6(void) //一级菜单F5
+ 723          {
+ 724   1              tm1629_f(0x05);
+ 725   1      }
+ 726          
+ 727          void fun7(void) //一级菜单F6
+C51 COMPILER V9.00   TM1629                                                                10/20/2015 10:32:09 PAGE 13  
 
- 728   1      }
- 729          
- 730          void fun7(void) //一级菜单F6
- 731          {
- 732   1              tm1629_f(0x06);
- 733   1      }
- 734          
- 735          void fun8(void) //一级菜单F7
- 736          {
- 737   1              tm1629_f(0x07);
- 738   1      }
- 739          
- 740          void fun9(void) //一级菜单F8
- 741          {
- 742   1              tm1629_f(0x08);
- 743   1      }
- 744          
- 745          void fun10(void) //一级菜单F9
- 746          {
- 747   1              tm1629_f(0x09);
- 748   1      }
- 749          
- 750          void fun11(void) //一级菜单FA
- 751          {
- 752   1              tm1629_f(0x0a);
- 753   1      }
- 754          
- 755          void fun12(void) //一级菜单Fb
- 756          {
- 757   1              tm1629_f(0x0b);
- 758   1      }
- 759          
- 760          void fun13(void) //一级菜单FC
- 761          {
- 762   1              tm1629_f(0x0c);
- 763   1      }
- 764          
- 765          void fun14(void) //一级菜单Fd
- 766          {
- 767   1              tm1629_f(0x0d);
- 768   1              set_fd_table(0);
- 769   1      }
- 770          
- 771          void fun15(void) //设置年份
- 772          {
- 773   1              unsigned char temp;
- 774   1              temp = return_Two_Menu_FC_E1();
- 775   1              if (temp == 1)//如果为----  则不让进入F0
- 776   1              {
- 777   2                      set_func_index(ONE_MENU_F0);
- 778   2              }
- 779   1              else
- 780   1              {
- 781   2                      if (return_await_number_table() == 1)
- 782   2                      {
- 783   3                              Display_time();
- 784   3                              set_await_number_table(2);
- 785   3                      }
- 786   2                      if (return_await_number_table() == 3)
- 787   2                      {
- 788   3                              buf_display[1][7] = 0;
- 789   3                              buf_display[1][6] = 0;
-C51 COMPILER V9.00   TM1629                                                                10/16/2015 18:13:52 PAGE 14  
+ 728          {
+ 729   1              tm1629_f(0x06);
+ 730   1      }
+ 731          
+ 732          void fun8(void) //一级菜单F7
+ 733          {
+ 734   1              tm1629_f(0x07);
+ 735   1      }
+ 736          
+ 737          void fun9(void) //一级菜单F8
+ 738          {
+ 739   1              tm1629_f(0x08);
+ 740   1      }
+ 741          
+ 742          void fun10(void) //一级菜单F9
+ 743          {
+ 744   1              tm1629_f(0x09);
+ 745   1      }
+ 746          
+ 747          void fun11(void) //一级菜单FA
+ 748          {
+ 749   1              tm1629_f(0x0a);
+ 750   1      }
+ 751          
+ 752          void fun12(void) //一级菜单Fb
+ 753          {
+ 754   1              tm1629_f(0x0b);
+ 755   1      }
+ 756          
+ 757          void fun13(void) //一级菜单FC
+ 758          {
+ 759   1              tm1629_f(0x0c);
+ 760   1      }
+ 761          
+ 762          void fun14(void) //一级菜单Fd
+ 763          {
+ 764   1              tm1629_f(0x0d);
+ 765   1              set_fd_table(0);
+ 766   1      }
+ 767          
+ 768          void fun15(void) //设置年份
+ 769          {
+ 770   1              unsigned char temp;
+ 771   1              temp = return_Two_Menu_FC_E1();
+ 772   1              if (temp == 1)//如果为----  则不让进入F0
+ 773   1              {
+ 774   2                      set_func_index(ONE_MENU_F0);
+ 775   2              }
+ 776   1              else
+ 777   1              {
+ 778   2                      if (return_await_number_table() == 1)
+ 779   2                      {
+ 780   3                              Display_time();
+ 781   3                              set_await_number_table(2);
+ 782   3                      }
+ 783   2                      if (return_await_number_table() == 3)
+ 784   2                      {
+ 785   3                              buf_display[1][7] = 0;
+ 786   3                              buf_display[1][6] = 0;
+ 787   3                              buf_display[1][5] = 0;
+ 788   3                              buf_display[1][4] = 0;
+ 789   3                              display();
+C51 COMPILER V9.00   TM1629                                                                10/20/2015 10:32:09 PAGE 14  
 
- 790   3                              buf_display[1][5] = 0;
- 791   3                              buf_display[1][4] = 0;
- 792   3                              display();
- 793   3                              set_await_number_table(0);
- 794   3                      }
- 795   2                      Ds1302_Write_Time();
- 796   2              }
- 797   1      }
- 798          
- 799          void fun16(void) //设置月份
- 800          {
- 801   1              if (return_await_number_table() == 1)
- 802   1              {
- 803   2                      Display_time();
- 804   2                      set_await_number_table(2);
- 805   2              }
- 806   1              if (return_await_number_table() == 3)
- 807   1              {
- 808   2                      buf_display[1][2] = 0;
- 809   2                      buf_display[1][1] = 0;
- 810   2                      display();
- 811   2                      set_await_number_table(0);
- 812   2              }
- 813   1              Ds1302_Write_Time();
- 814   1      }
- 815          
- 816          void fun17(void) //设置日期
- 817          {
- 818   1              if (return_await_number_table() == 1)
- 819   1              {
- 820   2                      Display_time();
- 821   2                      set_await_number_table(2);
- 822   2              }
- 823   1              if (return_await_number_table() == 3)
- 824   1              {
- 825   2                      buf_display[0][7] = 0;
- 826   2                      buf_display[0][6] = 0;
- 827   2                      display();
- 828   2                      set_await_number_table(0);
- 829   2              }
- 830   1              Ds1302_Write_Time();
- 831   1      }
- 832          
- 833          void fun18(void) //设置星期
- 834          {
- 835   1              if (return_await_number_table() == 1)
- 836   1              {
- 837   2                      Display_time();
- 838   2                      set_await_number_table(2);
- 839   2              }
- 840   1              if (return_await_number_table() == 3)
- 841   1              {
- 842   2                      buf_display[0][5] = 0;
- 843   2                      display();
- 844   2                      set_await_number_table(0);
- 845   2              }
- 846   1              Ds1302_Write_Time();
- 847   1      }
- 848          
- 849          void fun19(void) //设置小时
- 850          {
- 851   1              if (return_await_number_table() == 1)
-C51 COMPILER V9.00   TM1629                                                                10/16/2015 18:13:52 PAGE 15  
+ 790   3                              set_await_number_table(0);
+ 791   3                      }
+ 792   2                      Ds1302_Write_Time();
+ 793   2              }
+ 794   1      }
+ 795          
+ 796          void fun16(void) //设置月份
+ 797          {
+ 798   1              if (return_await_number_table() == 1)
+ 799   1              {
+ 800   2                      Display_time();
+ 801   2                      set_await_number_table(2);
+ 802   2              }
+ 803   1              if (return_await_number_table() == 3)
+ 804   1              {
+ 805   2                      buf_display[1][2] = 0;
+ 806   2                      buf_display[1][1] = 0;
+ 807   2                      display();
+ 808   2                      set_await_number_table(0);
+ 809   2              }
+ 810   1              Ds1302_Write_Time();
+ 811   1      }
+ 812          
+ 813          void fun17(void) //设置日期
+ 814          {
+ 815   1              if (return_await_number_table() == 1)
+ 816   1              {
+ 817   2                      Display_time();
+ 818   2                      set_await_number_table(2);
+ 819   2              }
+ 820   1              if (return_await_number_table() == 3)
+ 821   1              {
+ 822   2                      buf_display[0][7] = 0;
+ 823   2                      buf_display[0][6] = 0;
+ 824   2                      display();
+ 825   2                      set_await_number_table(0);
+ 826   2              }
+ 827   1              Ds1302_Write_Time();
+ 828   1      }
+ 829          
+ 830          void fun18(void) //设置星期
+ 831          {
+ 832   1              if (return_await_number_table() == 1)
+ 833   1              {
+ 834   2                      Display_time();
+ 835   2                      set_await_number_table(2);
+ 836   2              }
+ 837   1              if (return_await_number_table() == 3)
+ 838   1              {
+ 839   2                      buf_display[0][5] = 0;
+ 840   2                      display();
+ 841   2                      set_await_number_table(0);
+ 842   2              }
+ 843   1              Ds1302_Write_Time();
+ 844   1      }
+ 845          
+ 846          void fun19(void) //设置小时
+ 847          {
+ 848   1              if (return_await_number_table() == 1)
+ 849   1              {
+ 850   2                      Display_time();
+ 851   2                      set_await_number_table(2);
+C51 COMPILER V9.00   TM1629                                                                10/20/2015 10:32:09 PAGE 15  
 
- 852   1              {
- 853   2                      Display_time();
- 854   2                      set_await_number_table(2);
- 855   2              }
- 856   1              if (return_await_number_table() == 3)
- 857   1              {
- 858   2                      buf_display[0][3] = 0;
- 859   2                      buf_display[0][2] = 0;
- 860   2                      display();
- 861   2                      set_await_number_table(0);
- 862   2              }
- 863   1              Ds1302_Write_Time();
- 864   1      }
- 865          
- 866          void fun20(void) //设置分钟
- 867          {
- 868   1              if (return_await_number_table() == 1)
- 869   1              {
- 870   2                      Display_time();
- 871   2                      set_await_number_table(2);
- 872   2              }
- 873   1              if (return_await_number_table() == 3)
- 874   1              {
- 875   2                      buf_display[0][1] = 0;
- 876   2                      buf_display[0][0] = 0;
- 877   2                      display();
- 878   2                      set_await_number_table(0);
- 879   2              }
- 880   1              Ds1302_Write_Time();
- 881   1      }
- 882          
- 883          void fun21(void) //二级菜单F1-E1
- 884          {
- 885   1              tm1629_E(0x01);
- 886   1              Two_Menu_F1_E1[0] = 0;
- 887   1              Two_Menu_F1_E1[1] = 0;
- 888   1              Two_Menu_F1_E1[2] = 0;
- 889   1              Two_Menu_F1_E1[3] = 1;
- 890   1      }
- 891          
- 892          void fun22(void) //二级菜单F1-E2
- 893          {
- 894   1              tm1629_E(0x02);
- 895   1              Two_Menu_F1_E2[0] = 0;
- 896   1              Two_Menu_F1_E2[1] = 0;
- 897   1              Two_Menu_F1_E2[2] = 0;
- 898   1              Two_Menu_F1_E2[3] = 1;
- 899   1      }
- 900          
- 901          void fun23(void) //二级菜单F1-E3
- 902          {
- 903   1              tm1629_E(0x03);
- 904   1              Two_Menu_F1_E3[0] = 0;
- 905   1              Two_Menu_F1_E3[1] = 0;
- 906   1              Two_Menu_F1_E3[2] = 0;
- 907   1              Two_Menu_F1_E3[3] = 1;
- 908   1      }
- 909          
- 910          void fun24(void) //二级菜单F1-E4
- 911          {
- 912   1              tm1629_E(0x04);
- 913   1              Two_Menu_F1_E4[0] = 0;
-C51 COMPILER V9.00   TM1629                                                                10/16/2015 18:13:52 PAGE 16  
+ 852   2              }
+ 853   1              if (return_await_number_table() == 3)
+ 854   1              {
+ 855   2                      buf_display[0][3] = 0;
+ 856   2                      buf_display[0][2] = 0;
+ 857   2                      display();
+ 858   2                      set_await_number_table(0);
+ 859   2              }
+ 860   1              Ds1302_Write_Time();
+ 861   1      }
+ 862          
+ 863          void fun20(void) //设置分钟
+ 864          {
+ 865   1              if (return_await_number_table() == 1)
+ 866   1              {
+ 867   2                      Display_time();
+ 868   2                      set_await_number_table(2);
+ 869   2              }
+ 870   1              if (return_await_number_table() == 3)
+ 871   1              {
+ 872   2                      buf_display[0][1] = 0;
+ 873   2                      buf_display[0][0] = 0;
+ 874   2                      display();
+ 875   2                      set_await_number_table(0);
+ 876   2              }
+ 877   1              Ds1302_Write_Time();
+ 878   1      }
+ 879          
+ 880          void fun21(void) //二级菜单F1-E1
+ 881          {
+ 882   1              tm1629_E(0x01);
+ 883   1              Two_Menu_F1_E1[0] = 0;
+ 884   1              Two_Menu_F1_E1[1] = 0;
+ 885   1              Two_Menu_F1_E1[2] = 0;
+ 886   1              Two_Menu_F1_E1[3] = 1;
+ 887   1      }
+ 888          
+ 889          void fun22(void) //二级菜单F1-E2
+ 890          {
+ 891   1              tm1629_E(0x02);
+ 892   1              Two_Menu_F1_E2[0] = 0;
+ 893   1              Two_Menu_F1_E2[1] = 0;
+ 894   1              Two_Menu_F1_E2[2] = 0;
+ 895   1              Two_Menu_F1_E2[3] = 1;
+ 896   1      }
+ 897          
+ 898          void fun23(void) //二级菜单F1-E3
+ 899          {
+ 900   1              tm1629_E(0x03);
+ 901   1              Two_Menu_F1_E3[0] = 0;
+ 902   1              Two_Menu_F1_E3[1] = 0;
+ 903   1              Two_Menu_F1_E3[2] = 0;
+ 904   1              Two_Menu_F1_E3[3] = 1;
+ 905   1      }
+ 906          
+ 907          void fun24(void) //二级菜单F1-E4
+ 908          {
+ 909   1              tm1629_E(0x04);
+ 910   1              Two_Menu_F1_E4[0] = 0;
+ 911   1              Two_Menu_F1_E4[1] = 0;
+ 912   1              Two_Menu_F1_E4[2] = 0;
+ 913   1              Two_Menu_F1_E4[3] = 1;
+C51 COMPILER V9.00   TM1629                                                                10/20/2015 10:32:09 PAGE 16  
 
- 914   1              Two_Menu_F1_E4[1] = 0;
- 915   1              Two_Menu_F1_E4[2] = 0;
- 916   1              Two_Menu_F1_E4[3] = 1;
- 917   1      }
- 918          
- 919          void fun25(void) //二级菜单F2-E1
- 920          {
- 921   1              tm1629_E(0x01);
- 922   1              Two_Menu_F2_E1[0] = 0;
- 923   1              Two_Menu_F2_E1[1] = 0;
- 924   1              Two_Menu_F2_E1[2] = 0;
- 925   1              Two_Menu_F2_E1[3] = 1;
- 926   1      }
- 927          
- 928          void fun26(void) //二级菜单F2-E2
- 929          {
- 930   1              tm1629_E(0x02);
- 931   1              Two_Menu_F2_E2[0] = 0;
- 932   1              Two_Menu_F2_E2[1] = 0;
- 933   1              Two_Menu_F2_E2[2] = 0;
- 934   1              Two_Menu_F2_E2[3] = 1;
- 935   1      }
- 936          
- 937          void fun27(void) //二级菜单F2-E3
- 938          {
- 939   1              tm1629_E(0x03);
- 940   1              Two_Menu_F2_E3[0] = 0;
- 941   1              Two_Menu_F2_E3[1] = 0;
- 942   1              Two_Menu_F2_E3[2] = 0;
- 943   1              Two_Menu_F2_E3[3] = 1;
- 944   1      }
- 945          
- 946          void fun28(void) //二级菜单F2-E4
- 947          {
- 948   1              tm1629_E(0x04);
- 949   1              Two_Menu_F2_E4[0] = 0;
- 950   1              Two_Menu_F2_E4[1] = 0;
- 951   1              Two_Menu_F2_E4[2] = 0;
- 952   1              Two_Menu_F2_E4[3] = 1;
- 953   1      }
- 954          
- 955          void fun29(void) //二级菜单F3-E1
- 956          {
- 957   1              tm1629_E(0x01);
- 958   1      }
- 959          
- 960          void fun30(void) //二级菜单F3-E2
- 961          {
- 962   1              tm1629_E(0x02);
- 963   1      }
- 964          
- 965          void fun31(void) //二级菜单F4
- 966          {
- 967   1              unsigned char temp = 0;
- 968   1              temp = return_Two_Menu_F4_E1();
- 969   1              Show_two_number(temp);
- 970   1      }
- 971          
- 972          void fun32(void) //二级菜单F5
- 973          {
- 974   1              unsigned char temp = 0;
- 975   1              temp = return_Two_Menu_F5_E1();
-C51 COMPILER V9.00   TM1629                                                                10/16/2015 18:13:52 PAGE 17  
+ 914   1      }
+ 915          
+ 916          void fun25(void) //二级菜单F2-E1
+ 917          {
+ 918   1              tm1629_E(0x01);
+ 919   1              Two_Menu_F2_E1[0] = 0;
+ 920   1              Two_Menu_F2_E1[1] = 0;
+ 921   1              Two_Menu_F2_E1[2] = 0;
+ 922   1              Two_Menu_F2_E1[3] = 1;
+ 923   1      }
+ 924          
+ 925          void fun26(void) //二级菜单F2-E2
+ 926          {
+ 927   1              tm1629_E(0x02);
+ 928   1              Two_Menu_F2_E2[0] = 0;
+ 929   1              Two_Menu_F2_E2[1] = 0;
+ 930   1              Two_Menu_F2_E2[2] = 0;
+ 931   1              Two_Menu_F2_E2[3] = 1;
+ 932   1      }
+ 933          
+ 934          void fun27(void) //二级菜单F2-E3
+ 935          {
+ 936   1              tm1629_E(0x03);
+ 937   1              Two_Menu_F2_E3[0] = 0;
+ 938   1              Two_Menu_F2_E3[1] = 0;
+ 939   1              Two_Menu_F2_E3[2] = 0;
+ 940   1              Two_Menu_F2_E3[3] = 1;
+ 941   1      }
+ 942          
+ 943          void fun28(void) //二级菜单F2-E4
+ 944          {
+ 945   1              tm1629_E(0x04);
+ 946   1              Two_Menu_F2_E4[0] = 0;
+ 947   1              Two_Menu_F2_E4[1] = 0;
+ 948   1              Two_Menu_F2_E4[2] = 0;
+ 949   1              Two_Menu_F2_E4[3] = 1;
+ 950   1      }
+ 951          
+ 952          void fun29(void) //二级菜单F3-E1
+ 953          {
+ 954   1              tm1629_E(0x01);
+ 955   1      }
+ 956          
+ 957          void fun30(void) //二级菜单F3-E2
+ 958          {
+ 959   1              tm1629_E(0x02);
+ 960   1      }
+ 961          
+ 962          void fun31(void) //二级菜单F4
+ 963          {
+ 964   1              unsigned char temp = 0;
+ 965   1              temp = return_Two_Menu_F4_E1();
+ 966   1              Show_two_number(temp);
+ 967   1      }
+ 968          
+ 969          void fun32(void) //二级菜单F5
+ 970          {
+ 971   1              unsigned char temp = 0;
+ 972   1              temp = return_Two_Menu_F5_E1();
+ 973   1              Show_two_number(temp);
+ 974   1      }
+ 975          
+C51 COMPILER V9.00   TM1629                                                                10/20/2015 10:32:09 PAGE 17  
 
- 976   1              Show_two_number(temp);
- 977   1      }
- 978          
- 979          void fun33(void) //二级菜单F6-E1
- 980          {
- 981   1              tm1629_E(0x01);
- 982   1      }
- 983          
- 984          void fun34(void) //二级菜单F6-E2
- 985          {
- 986   1              tm1629_E(0x02);
- 987   1      }
- 988          
- 989          void fun35(void) //二级菜单F6-E3
- 990          {
- 991   1              tm1629_E(0x03);
- 992   1      }
- 993          
- 994          void fun36(void) //二级菜单F6-E4
- 995          {
- 996   1              tm1629_E(0x04);
- 997   1      }
- 998          
- 999          void fun37(void) //二级菜单F6-E5
-1000          {
-1001   1              tm1629_E(0x05);
-1002   1      }
-1003          
-1004          void fun38(void) //二级菜单F7-E1
-1005          {
-1006   1              tm1629_E(0x01);
-1007   1      }
-1008          
-1009          void fun39(void) //二级菜单F7-E2
-1010          {
-1011   1              tm1629_E(0x02);
-1012   1      }
-1013          
-1014          void fun40(void) //二级菜单F7-E3
-1015          {
-1016   1              tm1629_E(0x03);
-1017   1      }
-1018          
-1019          void fun41(void) //二级菜单F7-E4
-1020          {
-1021   1              tm1629_E(0x04);
-1022   1      }
-1023          
-1024          void fun42(void) //二级菜单F8-E1
-1025          {
-1026   1              tm1629_E(0x01);
-1027   1              Two_Menu_F8_E1_save = return_Two_Menu_F8_E1();
-1028   1      }
-1029          
-1030          void fun43(void) //二级菜单F8-E2
-1031          {
-1032   1              tm1629_E(0x02);
-1033   1      }
-1034          
-1035          void fun44(void) //二级菜单F9-E1
-1036          {
-1037   1              tm1629_E(0x01);
-C51 COMPILER V9.00   TM1629                                                                10/16/2015 18:13:52 PAGE 18  
+ 976          void fun33(void) //二级菜单F6-E1
+ 977          {
+ 978   1              tm1629_E(0x01);
+ 979   1      }
+ 980          
+ 981          void fun34(void) //二级菜单F6-E2
+ 982          {
+ 983   1              tm1629_E(0x02);
+ 984   1      }
+ 985          
+ 986          void fun35(void) //二级菜单F6-E3
+ 987          {
+ 988   1              tm1629_E(0x03);
+ 989   1      }
+ 990          
+ 991          void fun36(void) //二级菜单F6-E4
+ 992          {
+ 993   1              tm1629_E(0x04);
+ 994   1      }
+ 995          
+ 996          void fun37(void) //二级菜单F6-E5
+ 997          {
+ 998   1              tm1629_E(0x05);
+ 999   1      }
+1000          
+1001          void fun38(void) //二级菜单F7-E1
+1002          {
+1003   1              tm1629_E(0x01);
+1004   1      }
+1005          
+1006          void fun39(void) //二级菜单F7-E2
+1007          {
+1008   1              tm1629_E(0x02);
+1009   1      }
+1010          
+1011          void fun40(void) //二级菜单F7-E3
+1012          {
+1013   1              tm1629_E(0x03);
+1014   1      }
+1015          
+1016          void fun41(void) //二级菜单F7-E4
+1017          {
+1018   1              tm1629_E(0x04);
+1019   1      }
+1020          
+1021          void fun42(void) //二级菜单F8-E1
+1022          {
+1023   1              tm1629_E(0x01);
+1024   1              Two_Menu_F8_E1_save = return_Two_Menu_F8_E1();
+1025   1      }
+1026          
+1027          void fun43(void) //二级菜单F8-E2
+1028          {
+1029   1              tm1629_E(0x02);
+1030   1      }
+1031          
+1032          void fun44(void) //二级菜单F9-E1
+1033          {
+1034   1              tm1629_E(0x01);
+1035   1      }
+1036          
+1037          void fun45(void) //二级菜单F9-E2
+C51 COMPILER V9.00   TM1629                                                                10/20/2015 10:32:09 PAGE 18  
 
-1038   1      }
-1039          
-1040          void fun45(void) //二级菜单F9-E2
-1041          {
-1042   1              tm1629_E(0x02);
-1043   1      }
-1044          
-1045          void fun46(void) //二级菜单FA
-1046          {
-1047   1              unsigned int measure_sync_saved_temp = 0;
-1048   1              unsigned int show_temp = 0;
-1049   1      
-1050   1                      measure_sync_saved_temp = return_RF_trans_count();
-1051   1                      show_temp = 10000 / measure_sync_saved_temp;
-1052   1                      Show_three_number(show_temp);
+1038          {
+1039   1              tm1629_E(0x02);
+1040   1      }
+1041          
+1042          void fun46(void) //二级菜单FA
+1043          {
+1044   1              unsigned int measure_sync_saved_temp = 0;
+1045   1              unsigned int show_temp = 0;
+1046   1      
+1047   1                      measure_sync_saved_temp = return_RF_trans_count();
+1048   1                      show_temp = 10000 / measure_sync_saved_temp;
+1049   1                      Show_three_number(show_temp);
+1050   1      
+1051   1      //              uart_printf("measure_sync_saved_temp为 %d ! \n\r", measure_sync_saved_temp);
+1052   1      //              uart_printf("show_temp为 %d ! \n\r", show_temp);
 1053   1      
-1054   1      //              uart_printf("measure_sync_saved_temp为 %d ! \n\r", measure_sync_saved_temp);
-1055   1      //              uart_printf("show_temp为 %d ! \n\r", show_temp);
-1056   1      
-1057   1      }
-1058          
-1059          
-1060          void fun47(void) //二级菜单Fb
-1061          {
-1062   1              unsigned char temp = 0;
-1063   1              temp = return_Two_Menu_Fb_E1();
-1064   1              Show_one_number(temp);
-1065   1      }
-1066          
-1067          void fun48(void) //二级菜单FC
-1068          {
-1069   1              unsigned char temp = 0;
-1070   1              temp = return_Two_Menu_FC_E1();
-1071   1              Show_one_number(temp);
-1072   1      }
-1073          
-1074          void fun49(void) //二级菜单Fd
-1075          {
-1076   1              
-1077   1      
-1078   1              if (return_fd_table() <=20)
-1079   1              {
-1080   2                      display_light();
-1081   2                      if (P24 == 1)
-1082   2                      {
-1083   3                              GD5800_select_chapter(BAOJING);
-1084   3                      }
-1085   2              }
-1086   1              if (return_fd_table() >20)
-1087   1              {
-1088   2                      tm1629_clear();
-1089   2                      display();
-1090   2              }
-1091   1      }
-1092          
-1093          void fun50(void) //F1_E1 千位闪烁
-1094          {
-1095   1              if (return_await_number_table() == 1)
-1096   1              {
-1097   2                      Show_four_number(Two_Menu_F1_E1);
-1098   2                      set_await_number_table(2);
-1099   2              }
-C51 COMPILER V9.00   TM1629                                                                10/16/2015 18:13:52 PAGE 19  
+1054   1      }
+1055          
+1056          
+1057          void fun47(void) //二级菜单Fb
+1058          {
+1059   1              unsigned char temp = 0;
+1060   1              temp = return_Two_Menu_Fb_E1();
+1061   1              Show_one_number(temp);
+1062   1      }
+1063          
+1064          void fun48(void) //二级菜单FC
+1065          {
+1066   1              unsigned char temp = 0;
+1067   1              temp = return_Two_Menu_FC_E1();
+1068   1              Show_one_number(temp);
+1069   1      }
+1070          
+1071          void fun49(void) //二级菜单Fd
+1072          {
+1073   1              
+1074   1      
+1075   1              if (return_fd_table() <=20)
+1076   1              {
+1077   2                      display_light();
+1078   2                      if (P24 == 1)
+1079   2                      {
+1080   3                              GD5800_select_chapter(BAOJING);
+1081   3                      }
+1082   2              }
+1083   1              if (return_fd_table() >20)
+1084   1              {
+1085   2                      tm1629_clear();
+1086   2                      display();
+1087   2              }
+1088   1      }
+1089          
+1090          void fun50(void) //F1_E1 千位闪烁
+1091          {
+1092   1              if (return_await_number_table() == 1)
+1093   1              {
+1094   2                      Show_four_number(Two_Menu_F1_E1);
+1095   2                      set_await_number_table(2);
+1096   2              }
+1097   1              if (return_await_number_table() == 3)
+1098   1              {
+1099   2                      buf_display[0][3] = 0;
+C51 COMPILER V9.00   TM1629                                                                10/20/2015 10:32:09 PAGE 19  
 
-1100   1              if (return_await_number_table() == 3)
-1101   1              {
-1102   2                      buf_display[0][3] = 0;
-1103   2                      display();
-1104   2                      set_await_number_table(0);
-1105   2              }
-1106   1      }
-1107          
-1108          void fun51(void) //F1_E1 百位闪烁
-1109          {
-1110   1              if (return_await_number_table() == 1)
-1111   1              {
-1112   2                      Show_four_number(Two_Menu_F1_E1);
-1113   2                      set_await_number_table(2);
-1114   2              }
-1115   1              if (return_await_number_table() == 3)
-1116   1              {
-1117   2                      buf_display[0][2] = 0;
-1118   2                      display();
-1119   2                      set_await_number_table(0);
-1120   2              }
-1121   1      }
-1122          
-1123          void fun52(void)  //F1_E1 十位闪烁
-1124          {
-1125   1              if (return_await_number_table() == 1)
-1126   1              {
-1127   2                      Show_four_number(Two_Menu_F1_E1);
-1128   2                      set_await_number_table(2);
-1129   2              }
-1130   1              if (return_await_number_table() == 3)
-1131   1              {
-1132   2                      buf_display[0][1] = 0;
-1133   2                      display();
-1134   2                      set_await_number_table(0);
-1135   2              }
-1136   1      }
-1137          
-1138          void fun53(void) //F1_E1 个位闪烁
-1139          {
-1140   1              if (return_await_number_table() == 1)
-1141   1              {
-1142   2                      Show_four_number(Two_Menu_F1_E1);
-1143   2                      set_await_number_table(2);
-1144   2              }
-1145   1              if (return_await_number_table() == 3)
-1146   1              {
-1147   2                      buf_display[0][0] = 0;
-1148   2                      display();
-1149   2                      set_await_number_table(0);
-1150   2              }
-1151   1      }
-1152          
-1153          void fun54(void) //F1_E2 千位闪烁
-1154          {
-1155   1              if (return_await_number_table() == 1)
-1156   1              {
-1157   2                      Show_four_number(Two_Menu_F1_E2);
-1158   2                      set_await_number_table(2);
-1159   2              }
-1160   1              if (return_await_number_table() == 3)
-1161   1              {
-C51 COMPILER V9.00   TM1629                                                                10/16/2015 18:13:52 PAGE 20  
+1100   2                      display();
+1101   2                      set_await_number_table(0);
+1102   2              }
+1103   1      }
+1104          
+1105          void fun51(void) //F1_E1 百位闪烁
+1106          {
+1107   1              if (return_await_number_table() == 1)
+1108   1              {
+1109   2                      Show_four_number(Two_Menu_F1_E1);
+1110   2                      set_await_number_table(2);
+1111   2              }
+1112   1              if (return_await_number_table() == 3)
+1113   1              {
+1114   2                      buf_display[0][2] = 0;
+1115   2                      display();
+1116   2                      set_await_number_table(0);
+1117   2              }
+1118   1      }
+1119          
+1120          void fun52(void)  //F1_E1 十位闪烁
+1121          {
+1122   1              if (return_await_number_table() == 1)
+1123   1              {
+1124   2                      Show_four_number(Two_Menu_F1_E1);
+1125   2                      set_await_number_table(2);
+1126   2              }
+1127   1              if (return_await_number_table() == 3)
+1128   1              {
+1129   2                      buf_display[0][1] = 0;
+1130   2                      display();
+1131   2                      set_await_number_table(0);
+1132   2              }
+1133   1      }
+1134          
+1135          void fun53(void) //F1_E1 个位闪烁
+1136          {
+1137   1              if (return_await_number_table() == 1)
+1138   1              {
+1139   2                      Show_four_number(Two_Menu_F1_E1);
+1140   2                      set_await_number_table(2);
+1141   2              }
+1142   1              if (return_await_number_table() == 3)
+1143   1              {
+1144   2                      buf_display[0][0] = 0;
+1145   2                      display();
+1146   2                      set_await_number_table(0);
+1147   2              }
+1148   1      }
+1149          
+1150          void fun54(void) //F1_E2 千位闪烁
+1151          {
+1152   1              if (return_await_number_table() == 1)
+1153   1              {
+1154   2                      Show_four_number(Two_Menu_F1_E2);
+1155   2                      set_await_number_table(2);
+1156   2              }
+1157   1              if (return_await_number_table() == 3)
+1158   1              {
+1159   2                      buf_display[0][3] = 0;
+1160   2                      display();
+1161   2                      set_await_number_table(0);
+C51 COMPILER V9.00   TM1629                                                                10/20/2015 10:32:09 PAGE 20  
 
-1162   2                      buf_display[0][3] = 0;
-1163   2                      display();
-1164   2                      set_await_number_table(0);
-1165   2              }
-1166   1      }
-1167          
-1168          void fun55(void) //F1_E2 百位闪烁
-1169          {
-1170   1              if (return_await_number_table() == 1)
-1171   1              {
-1172   2                      Show_four_number(Two_Menu_F1_E2);
-1173   2                      set_await_number_table(2);
-1174   2              }
-1175   1              if (return_await_number_table() == 3)
-1176   1              {
-1177   2                      buf_display[0][2] = 0;
-1178   2                      display();
-1179   2                      set_await_number_table(0);
-1180   2              }
-1181   1      }
-1182          
-1183          void fun56(void) //F1_E2 十位闪烁
-1184          {
-1185   1              if (return_await_number_table() == 1)
-1186   1              {
-1187   2                      Show_four_number(Two_Menu_F1_E2);
-1188   2                      set_await_number_table(2);
-1189   2              }
-1190   1              if (return_await_number_table() == 3)
-1191   1              {
-1192   2                      buf_display[0][1] = 0;
-1193   2                      display();
-1194   2                      set_await_number_table(0);
-1195   2              }
-1196   1      }
-1197          
-1198          void fun57(void) //F1_E2 个位闪烁
-1199          {
-1200   1              if (return_await_number_table() == 1)
-1201   1              {
-1202   2                      Show_four_number(Two_Menu_F1_E2);
-1203   2                      set_await_number_table(2);
-1204   2              }
-1205   1              if (return_await_number_table() == 3)
-1206   1              {
-1207   2                      buf_display[0][0] = 0;
-1208   2                      display();
-1209   2                      set_await_number_table(0);
-1210   2              }
-1211   1      }
-1212          
-1213          void fun58(void) //F1_E3 千位闪烁
-1214          {
-1215   1              if (return_await_number_table() == 1)
-1216   1              {
-1217   2                      Show_four_number(Two_Menu_F1_E3);
-1218   2                      set_await_number_table(2);
-1219   2              }
-1220   1              if (return_await_number_table() == 3)
-1221   1              {
-1222   2                      buf_display[0][3] = 0;
-1223   2                      display();
-C51 COMPILER V9.00   TM1629                                                                10/16/2015 18:13:52 PAGE 21  
+1162   2              }
+1163   1      }
+1164          
+1165          void fun55(void) //F1_E2 百位闪烁
+1166          {
+1167   1              if (return_await_number_table() == 1)
+1168   1              {
+1169   2                      Show_four_number(Two_Menu_F1_E2);
+1170   2                      set_await_number_table(2);
+1171   2              }
+1172   1              if (return_await_number_table() == 3)
+1173   1              {
+1174   2                      buf_display[0][2] = 0;
+1175   2                      display();
+1176   2                      set_await_number_table(0);
+1177   2              }
+1178   1      }
+1179          
+1180          void fun56(void) //F1_E2 十位闪烁
+1181          {
+1182   1              if (return_await_number_table() == 1)
+1183   1              {
+1184   2                      Show_four_number(Two_Menu_F1_E2);
+1185   2                      set_await_number_table(2);
+1186   2              }
+1187   1              if (return_await_number_table() == 3)
+1188   1              {
+1189   2                      buf_display[0][1] = 0;
+1190   2                      display();
+1191   2                      set_await_number_table(0);
+1192   2              }
+1193   1      }
+1194          
+1195          void fun57(void) //F1_E2 个位闪烁
+1196          {
+1197   1              if (return_await_number_table() == 1)
+1198   1              {
+1199   2                      Show_four_number(Two_Menu_F1_E2);
+1200   2                      set_await_number_table(2);
+1201   2              }
+1202   1              if (return_await_number_table() == 3)
+1203   1              {
+1204   2                      buf_display[0][0] = 0;
+1205   2                      display();
+1206   2                      set_await_number_table(0);
+1207   2              }
+1208   1      }
+1209          
+1210          void fun58(void) //F1_E3 千位闪烁
+1211          {
+1212   1              if (return_await_number_table() == 1)
+1213   1              {
+1214   2                      Show_four_number(Two_Menu_F1_E3);
+1215   2                      set_await_number_table(2);
+1216   2              }
+1217   1              if (return_await_number_table() == 3)
+1218   1              {
+1219   2                      buf_display[0][3] = 0;
+1220   2                      display();
+1221   2                      set_await_number_table(0);
+1222   2              }
+1223   1      }
+C51 COMPILER V9.00   TM1629                                                                10/20/2015 10:32:09 PAGE 21  
 
-1224   2                      set_await_number_table(0);
-1225   2              }
-1226   1      }
-1227          
-1228          void fun59(void) //F1_E3 百位闪烁
-1229          {
-1230   1              if (return_await_number_table() == 1)
-1231   1              {
-1232   2                      Show_four_number(Two_Menu_F1_E3);
-1233   2                      set_await_number_table(2);
-1234   2              }
-1235   1              if (return_await_number_table() == 3)
-1236   1              {
-1237   2                      buf_display[0][2] = 0;
-1238   2                      display();
-1239   2                      set_await_number_table(0);
-1240   2              }
-1241   1      }
-1242          
-1243          void fun60(void) //F1_E3 十位闪烁
-1244          {
-1245   1              if (return_await_number_table() == 1)
-1246   1              {
-1247   2                      Show_four_number(Two_Menu_F1_E3);
-1248   2                      set_await_number_table(2);
-1249   2              }
-1250   1              if (return_await_number_table() == 3)
-1251   1              {
-1252   2                      buf_display[0][1] = 0;
-1253   2                      display();
-1254   2                      set_await_number_table(0);
-1255   2              }
-1256   1      }
-1257          
-1258          void fun61(void) //F1_E3 个位闪烁
-1259          {
-1260   1              if (return_await_number_table() == 1)
-1261   1              {
-1262   2                      Show_four_number(Two_Menu_F1_E3);
-1263   2                      set_await_number_table(2);
-1264   2              }
-1265   1              if (return_await_number_table() == 3)
-1266   1              {
-1267   2                      buf_display[0][0] = 0;
-1268   2                      display();
-1269   2                      set_await_number_table(0);
-1270   2              }
-1271   1      }
-1272          
-1273          void fun62(void) //F1_E4 千位闪烁
-1274          {
-1275   1              if (return_await_number_table() == 1)
-1276   1              {
-1277   2                      Show_four_number(Two_Menu_F1_E4);
-1278   2                      set_await_number_table(2);
-1279   2              }
-1280   1              if (return_await_number_table() == 3)
-1281   1              {
-1282   2                      buf_display[0][3] = 0;
-1283   2                      display();
-1284   2                      set_await_number_table(0);
-1285   2              }
-C51 COMPILER V9.00   TM1629                                                                10/16/2015 18:13:52 PAGE 22  
+1224          
+1225          void fun59(void) //F1_E3 百位闪烁
+1226          {
+1227   1              if (return_await_number_table() == 1)
+1228   1              {
+1229   2                      Show_four_number(Two_Menu_F1_E3);
+1230   2                      set_await_number_table(2);
+1231   2              }
+1232   1              if (return_await_number_table() == 3)
+1233   1              {
+1234   2                      buf_display[0][2] = 0;
+1235   2                      display();
+1236   2                      set_await_number_table(0);
+1237   2              }
+1238   1      }
+1239          
+1240          void fun60(void) //F1_E3 十位闪烁
+1241          {
+1242   1              if (return_await_number_table() == 1)
+1243   1              {
+1244   2                      Show_four_number(Two_Menu_F1_E3);
+1245   2                      set_await_number_table(2);
+1246   2              }
+1247   1              if (return_await_number_table() == 3)
+1248   1              {
+1249   2                      buf_display[0][1] = 0;
+1250   2                      display();
+1251   2                      set_await_number_table(0);
+1252   2              }
+1253   1      }
+1254          
+1255          void fun61(void) //F1_E3 个位闪烁
+1256          {
+1257   1              if (return_await_number_table() == 1)
+1258   1              {
+1259   2                      Show_four_number(Two_Menu_F1_E3);
+1260   2                      set_await_number_table(2);
+1261   2              }
+1262   1              if (return_await_number_table() == 3)
+1263   1              {
+1264   2                      buf_display[0][0] = 0;
+1265   2                      display();
+1266   2                      set_await_number_table(0);
+1267   2              }
+1268   1      }
+1269          
+1270          void fun62(void) //F1_E4 千位闪烁
+1271          {
+1272   1              if (return_await_number_table() == 1)
+1273   1              {
+1274   2                      Show_four_number(Two_Menu_F1_E4);
+1275   2                      set_await_number_table(2);
+1276   2              }
+1277   1              if (return_await_number_table() == 3)
+1278   1              {
+1279   2                      buf_display[0][3] = 0;
+1280   2                      display();
+1281   2                      set_await_number_table(0);
+1282   2              }
+1283   1      }
+1284          
+1285          void fun63(void) //F1_E4 百位闪烁
+C51 COMPILER V9.00   TM1629                                                                10/20/2015 10:32:09 PAGE 22  
 
-1286   1      }
-1287          
-1288          void fun63(void) //F1_E4 百位闪烁
-1289          {
-1290   1              if (return_await_number_table() == 1)
-1291   1              {
-1292   2                      Show_four_number(Two_Menu_F1_E4);
-1293   2                      set_await_number_table(2);
-1294   2              }
-1295   1              if (return_await_number_table() == 3)
-1296   1              {
-1297   2                      buf_display[0][2] = 0;
-1298   2                      display();
-1299   2                      set_await_number_table(0);
-1300   2              }
-1301   1      }
-1302          
-1303          void fun64(void) //F1_E4 十位闪烁
-1304          {
-1305   1              if (return_await_number_table() == 1)
-1306   1              {
-1307   2                      Show_four_number(Two_Menu_F1_E4);
-1308   2                      set_await_number_table(2);
-1309   2              }
-1310   1              if (return_await_number_table() == 3)
-1311   1              {
-1312   2                      buf_display[0][1] = 0;
-1313   2                      display();
-1314   2                      set_await_number_table(0);
-1315   2              }
-1316   1      }
-1317          
-1318          void fun65(void) //F1_E4 个位闪烁
-1319          {
-1320   1              if (return_await_number_table() == 1)
-1321   1              {
-1322   2                      Show_four_number(Two_Menu_F1_E4);
-1323   2                      set_await_number_table(2);
-1324   2              }
-1325   1              if (return_await_number_table() == 3)
-1326   1              {
-1327   2                      buf_display[0][0] = 0;
-1328   2                      display();
-1329   2                      set_await_number_table(0);
-1330   2              }
-1331   1      }
-1332          
-1333          void fun66(void) //F2_E1 千位闪烁
-1334          {
-1335   1              if (return_await_number_table() == 1)
-1336   1              {
-1337   2                      Show_four_number(Two_Menu_F2_E1);
-1338   2                      set_await_number_table(2);
-1339   2              }
-1340   1              if (return_await_number_table() == 3)
-1341   1              {
-1342   2                      buf_display[0][3] = 0;
-1343   2                      display();
-1344   2                      set_await_number_table(0);
-1345   2              }
-1346   1      }
-1347          
-C51 COMPILER V9.00   TM1629                                                                10/16/2015 18:13:52 PAGE 23  
+1286          {
+1287   1              if (return_await_number_table() == 1)
+1288   1              {
+1289   2                      Show_four_number(Two_Menu_F1_E4);
+1290   2                      set_await_number_table(2);
+1291   2              }
+1292   1              if (return_await_number_table() == 3)
+1293   1              {
+1294   2                      buf_display[0][2] = 0;
+1295   2                      display();
+1296   2                      set_await_number_table(0);
+1297   2              }
+1298   1      }
+1299          
+1300          void fun64(void) //F1_E4 十位闪烁
+1301          {
+1302   1              if (return_await_number_table() == 1)
+1303   1              {
+1304   2                      Show_four_number(Two_Menu_F1_E4);
+1305   2                      set_await_number_table(2);
+1306   2              }
+1307   1              if (return_await_number_table() == 3)
+1308   1              {
+1309   2                      buf_display[0][1] = 0;
+1310   2                      display();
+1311   2                      set_await_number_table(0);
+1312   2              }
+1313   1      }
+1314          
+1315          void fun65(void) //F1_E4 个位闪烁
+1316          {
+1317   1              if (return_await_number_table() == 1)
+1318   1              {
+1319   2                      Show_four_number(Two_Menu_F1_E4);
+1320   2                      set_await_number_table(2);
+1321   2              }
+1322   1              if (return_await_number_table() == 3)
+1323   1              {
+1324   2                      buf_display[0][0] = 0;
+1325   2                      display();
+1326   2                      set_await_number_table(0);
+1327   2              }
+1328   1      }
+1329          
+1330          void fun66(void) //F2_E1 千位闪烁
+1331          {
+1332   1              if (return_await_number_table() == 1)
+1333   1              {
+1334   2                      Show_four_number(Two_Menu_F2_E1);
+1335   2                      set_await_number_table(2);
+1336   2              }
+1337   1              if (return_await_number_table() == 3)
+1338   1              {
+1339   2                      buf_display[0][3] = 0;
+1340   2                      display();
+1341   2                      set_await_number_table(0);
+1342   2              }
+1343   1      }
+1344          
+1345          void fun67(void) //F2_E1 百位闪烁
+1346          {
+1347   1              if (return_await_number_table() == 1)
+C51 COMPILER V9.00   TM1629                                                                10/20/2015 10:32:09 PAGE 23  
 
-1348          void fun67(void) //F2_E1 百位闪烁
-1349          {
-1350   1              if (return_await_number_table() == 1)
-1351   1              {
-1352   2                      Show_four_number(Two_Menu_F2_E1);
-1353   2                      set_await_number_table(2);
-1354   2              }
-1355   1              if (return_await_number_table() == 3)
-1356   1              {
-1357   2                      buf_display[0][2] = 0;
-1358   2                      display();
-1359   2                      set_await_number_table(0);
-1360   2              }
-1361   1      }
-1362          
-1363          void fun68(void) //F2_E1 十位闪烁
-1364          {
-1365   1              if (return_await_number_table() == 1)
-1366   1              {
-1367   2                      Show_four_number(Two_Menu_F2_E1);
-1368   2                      set_await_number_table(2);
-1369   2              }
-1370   1              if (return_await_number_table() == 3)
-1371   1              {
-1372   2                      buf_display[0][1] = 0;
-1373   2                      display();
-1374   2                      set_await_number_table(0);
-1375   2              }
-1376   1      }
-1377          
-1378          void fun69(void) //F2_E1 个位闪烁
-1379          {
-1380   1              if (return_await_number_table() == 1)
-1381   1              {
-1382   2                      Show_four_number(Two_Menu_F2_E1);
-1383   2                      set_await_number_table(2);
-1384   2              }
-1385   1              if (return_await_number_table() == 3)
-1386   1              {
-1387   2                      buf_display[0][0] = 0;
-1388   2                      display();
-1389   2                      set_await_number_table(0);
-1390   2              }
-1391   1      }
-1392          
-1393          void fun70(void) //F2_E2 千位闪烁
-1394          {
-1395   1              if (return_await_number_table() == 1)
-1396   1              {
-1397   2                      Show_four_number(Two_Menu_F2_E2);
-1398   2                      set_await_number_table(2);
-1399   2              }
-1400   1              if (return_await_number_table() == 3)
-1401   1              {
-1402   2                      buf_display[0][3] = 0;
-1403   2                      display();
-1404   2                      set_await_number_table(0);
-1405   2              }
-1406   1      }
-1407          
-1408          void fun71(void) //F2_E2 百位闪烁
-1409          {
-C51 COMPILER V9.00   TM1629                                                                10/16/2015 18:13:52 PAGE 24  
+1348   1              {
+1349   2                      Show_four_number(Two_Menu_F2_E1);
+1350   2                      set_await_number_table(2);
+1351   2              }
+1352   1              if (return_await_number_table() == 3)
+1353   1              {
+1354   2                      buf_display[0][2] = 0;
+1355   2                      display();
+1356   2                      set_await_number_table(0);
+1357   2              }
+1358   1      }
+1359          
+1360          void fun68(void) //F2_E1 十位闪烁
+1361          {
+1362   1              if (return_await_number_table() == 1)
+1363   1              {
+1364   2                      Show_four_number(Two_Menu_F2_E1);
+1365   2                      set_await_number_table(2);
+1366   2              }
+1367   1              if (return_await_number_table() == 3)
+1368   1              {
+1369   2                      buf_display[0][1] = 0;
+1370   2                      display();
+1371   2                      set_await_number_table(0);
+1372   2              }
+1373   1      }
+1374          
+1375          void fun69(void) //F2_E1 个位闪烁
+1376          {
+1377   1              if (return_await_number_table() == 1)
+1378   1              {
+1379   2                      Show_four_number(Two_Menu_F2_E1);
+1380   2                      set_await_number_table(2);
+1381   2              }
+1382   1              if (return_await_number_table() == 3)
+1383   1              {
+1384   2                      buf_display[0][0] = 0;
+1385   2                      display();
+1386   2                      set_await_number_table(0);
+1387   2              }
+1388   1      }
+1389          
+1390          void fun70(void) //F2_E2 千位闪烁
+1391          {
+1392   1              if (return_await_number_table() == 1)
+1393   1              {
+1394   2                      Show_four_number(Two_Menu_F2_E2);
+1395   2                      set_await_number_table(2);
+1396   2              }
+1397   1              if (return_await_number_table() == 3)
+1398   1              {
+1399   2                      buf_display[0][3] = 0;
+1400   2                      display();
+1401   2                      set_await_number_table(0);
+1402   2              }
+1403   1      }
+1404          
+1405          void fun71(void) //F2_E2 百位闪烁
+1406          {
+1407   1              if (return_await_number_table() == 1)
+1408   1              {
+1409   2                      Show_four_number(Two_Menu_F2_E2);
+C51 COMPILER V9.00   TM1629                                                                10/20/2015 10:32:09 PAGE 24  
 
-1410   1              if (return_await_number_table() == 1)
-1411   1              {
-1412   2                      Show_four_number(Two_Menu_F2_E2);
-1413   2                      set_await_number_table(2);
-1414   2              }
-1415   1              if (return_await_number_table() == 3)
-1416   1              {
-1417   2                      buf_display[0][2] = 0;
-1418   2                      display();
-1419   2                      set_await_number_table(0);
-1420   2              }
-1421   1      }
-1422          
-1423          void fun72(void) //F2_E2 十位闪烁
-1424          {
-1425   1              if (return_await_number_table() == 1)
-1426   1              {
-1427   2                      Show_four_number(Two_Menu_F2_E2);
-1428   2                      set_await_number_table(2);
-1429   2              }
-1430   1              if (return_await_number_table() == 3)
-1431   1              {
-1432   2                      buf_display[0][1] = 0;
-1433   2                      display();
-1434   2                      set_await_number_table(0);
-1435   2              }
-1436   1      }
-1437          
-1438          void fun73(void) //F2_E2 个位闪烁
-1439          {
-1440   1              if (return_await_number_table() == 1)
-1441   1              {
-1442   2                      Show_four_number(Two_Menu_F2_E2);
-1443   2                      set_await_number_table(2);
-1444   2              }
-1445   1              if (return_await_number_table() == 3)
-1446   1              {
-1447   2                      buf_display[0][0] = 0;
-1448   2                      display();
-1449   2                      set_await_number_table(0);
-1450   2              }
-1451   1      }
-1452          
-1453          void fun74(void) //F2_E3 千位闪烁
-1454          {
-1455   1              if (return_await_number_table() == 1)
-1456   1              {
-1457   2                      Show_four_number(Two_Menu_F2_E3);
-1458   2                      set_await_number_table(2);
-1459   2              }
-1460   1              if (return_await_number_table() == 3)
-1461   1              {
-1462   2                      buf_display[0][3] = 0;
-1463   2                      display();
-1464   2                      set_await_number_table(0);
-1465   2              }
-1466   1      }
-1467          
-1468          void fun75(void) //F2_E3 百位闪烁
-1469          {
-1470   1              if (return_await_number_table() == 1)
-1471   1              {
-C51 COMPILER V9.00   TM1629                                                                10/16/2015 18:13:52 PAGE 25  
+1410   2                      set_await_number_table(2);
+1411   2              }
+1412   1              if (return_await_number_table() == 3)
+1413   1              {
+1414   2                      buf_display[0][2] = 0;
+1415   2                      display();
+1416   2                      set_await_number_table(0);
+1417   2              }
+1418   1      }
+1419          
+1420          void fun72(void) //F2_E2 十位闪烁
+1421          {
+1422   1              if (return_await_number_table() == 1)
+1423   1              {
+1424   2                      Show_four_number(Two_Menu_F2_E2);
+1425   2                      set_await_number_table(2);
+1426   2              }
+1427   1              if (return_await_number_table() == 3)
+1428   1              {
+1429   2                      buf_display[0][1] = 0;
+1430   2                      display();
+1431   2                      set_await_number_table(0);
+1432   2              }
+1433   1      }
+1434          
+1435          void fun73(void) //F2_E2 个位闪烁
+1436          {
+1437   1              if (return_await_number_table() == 1)
+1438   1              {
+1439   2                      Show_four_number(Two_Menu_F2_E2);
+1440   2                      set_await_number_table(2);
+1441   2              }
+1442   1              if (return_await_number_table() == 3)
+1443   1              {
+1444   2                      buf_display[0][0] = 0;
+1445   2                      display();
+1446   2                      set_await_number_table(0);
+1447   2              }
+1448   1      }
+1449          
+1450          void fun74(void) //F2_E3 千位闪烁
+1451          {
+1452   1              if (return_await_number_table() == 1)
+1453   1              {
+1454   2                      Show_four_number(Two_Menu_F2_E3);
+1455   2                      set_await_number_table(2);
+1456   2              }
+1457   1              if (return_await_number_table() == 3)
+1458   1              {
+1459   2                      buf_display[0][3] = 0;
+1460   2                      display();
+1461   2                      set_await_number_table(0);
+1462   2              }
+1463   1      }
+1464          
+1465          void fun75(void) //F2_E3 百位闪烁
+1466          {
+1467   1              if (return_await_number_table() == 1)
+1468   1              {
+1469   2                      Show_four_number(Two_Menu_F2_E3);
+1470   2                      set_await_number_table(2);
+1471   2              }
+C51 COMPILER V9.00   TM1629                                                                10/20/2015 10:32:09 PAGE 25  
 
-1472   2                      Show_four_number(Two_Menu_F2_E3);
-1473   2                      set_await_number_table(2);
-1474   2              }
-1475   1              if (return_await_number_table() == 3)
-1476   1              {
-1477   2                      buf_display[0][2] = 0;
-1478   2                      display();
-1479   2                      set_await_number_table(0);
-1480   2              }
-1481   1      }
-1482          
-1483          void fun76(void) //F2_E3 十位闪烁
-1484          {
-1485   1              if (return_await_number_table() == 1)
-1486   1              {
-1487   2                      Show_four_number(Two_Menu_F2_E3);
-1488   2                      set_await_number_table(2);
-1489   2              }
-1490   1              if (return_await_number_table() == 3)
-1491   1              {
-1492   2                      buf_display[0][1] = 0;
-1493   2                      display();
-1494   2                      set_await_number_table(0);
-1495   2              }
-1496   1      }
-1497          
-1498          void fun77(void) //F2_E3 个位闪烁
-1499          {
-1500   1              if (return_await_number_table() == 1)
-1501   1              {
-1502   2                      Show_four_number(Two_Menu_F2_E3);
-1503   2                      set_await_number_table(2);
-1504   2              }
-1505   1              if (return_await_number_table() == 3)
-1506   1              {
-1507   2                      buf_display[0][0] = 0;
-1508   2                      display();
-1509   2                      set_await_number_table(0);
-1510   2              }
-1511   1      }
-1512          
-1513          void fun78(void) //F2_E4 千位闪烁
-1514          {
-1515   1              if (return_await_number_table() == 1)
-1516   1              {
-1517   2                      Show_four_number(Two_Menu_F2_E4);
-1518   2                      set_await_number_table(2);
-1519   2              }
-1520   1              if (return_await_number_table() == 3)
-1521   1              {
-1522   2                      buf_display[0][3] = 0;
-1523   2                      display();
-1524   2                      set_await_number_table(0);
-1525   2              }
-1526   1      }
-1527          
-1528          void fun79(void) //F2_E4 百位闪烁
-1529          {
-1530   1              if (return_await_number_table() == 1)
-1531   1              {
-1532   2                      Show_four_number(Two_Menu_F2_E4);
-1533   2                      set_await_number_table(2);
-C51 COMPILER V9.00   TM1629                                                                10/16/2015 18:13:52 PAGE 26  
+1472   1              if (return_await_number_table() == 3)
+1473   1              {
+1474   2                      buf_display[0][2] = 0;
+1475   2                      display();
+1476   2                      set_await_number_table(0);
+1477   2              }
+1478   1      }
+1479          
+1480          void fun76(void) //F2_E3 十位闪烁
+1481          {
+1482   1              if (return_await_number_table() == 1)
+1483   1              {
+1484   2                      Show_four_number(Two_Menu_F2_E3);
+1485   2                      set_await_number_table(2);
+1486   2              }
+1487   1              if (return_await_number_table() == 3)
+1488   1              {
+1489   2                      buf_display[0][1] = 0;
+1490   2                      display();
+1491   2                      set_await_number_table(0);
+1492   2              }
+1493   1      }
+1494          
+1495          void fun77(void) //F2_E3 个位闪烁
+1496          {
+1497   1              if (return_await_number_table() == 1)
+1498   1              {
+1499   2                      Show_four_number(Two_Menu_F2_E3);
+1500   2                      set_await_number_table(2);
+1501   2              }
+1502   1              if (return_await_number_table() == 3)
+1503   1              {
+1504   2                      buf_display[0][0] = 0;
+1505   2                      display();
+1506   2                      set_await_number_table(0);
+1507   2              }
+1508   1      }
+1509          
+1510          void fun78(void) //F2_E4 千位闪烁
+1511          {
+1512   1              if (return_await_number_table() == 1)
+1513   1              {
+1514   2                      Show_four_number(Two_Menu_F2_E4);
+1515   2                      set_await_number_table(2);
+1516   2              }
+1517   1              if (return_await_number_table() == 3)
+1518   1              {
+1519   2                      buf_display[0][3] = 0;
+1520   2                      display();
+1521   2                      set_await_number_table(0);
+1522   2              }
+1523   1      }
+1524          
+1525          void fun79(void) //F2_E4 百位闪烁
+1526          {
+1527   1              if (return_await_number_table() == 1)
+1528   1              {
+1529   2                      Show_four_number(Two_Menu_F2_E4);
+1530   2                      set_await_number_table(2);
+1531   2              }
+1532   1              if (return_await_number_table() == 3)
+1533   1              {
+C51 COMPILER V9.00   TM1629                                                                10/20/2015 10:32:09 PAGE 26  
 
-1534   2              }
-1535   1              if (return_await_number_table() == 3)
-1536   1              {
-1537   2                      buf_display[0][2] = 0;
-1538   2                      display();
-1539   2                      set_await_number_table(0);
-1540   2              }
-1541   1      }
-1542          
-1543          void fun80(void) //F2_E4 十位闪烁
-1544          {
-1545   1              if (return_await_number_table() == 1)
-1546   1              {
-1547   2                      Show_four_number(Two_Menu_F2_E4);
-1548   2                      set_await_number_table(2);
-1549   2              }
-1550   1              if (return_await_number_table() == 3)
-1551   1              {
-1552   2                      buf_display[0][1] = 0;
-1553   2                      display();
-1554   2                      set_await_number_table(0);
-1555   2              }
-1556   1      }
-1557          
-1558          void fun81(void) //F2_E4 个位闪烁
-1559          {
-1560   1              if (return_await_number_table() == 1)
-1561   1              {
-1562   2                      Show_four_number(Two_Menu_F2_E4);
-1563   2                      set_await_number_table(2);
-1564   2              }
-1565   1              if (return_await_number_table() == 3)
-1566   1              {
-1567   2                      buf_display[0][0] = 0;
-1568   2                      display();
-1569   2                      set_await_number_table(0);
-1570   2              }
-1571   1      }
-1572          
-1573          void fun82(void) //显示即时显示 还是循环显示
-1574          {
-1575   1              unsigned char temp=0;
-1576   1              temp = return_Two_Menu_F3_E1();
-1577   1              Show_one_number(temp);
-1578   1      }
-1579          
-1580          void fun83(void) //队列存储个数
-1581          {
-1582   1              unsigned char temp = 0;
-1583   1              temp = return_Two_Menu_F3_E2();
-1584   1              Show_two_number(temp);
-1585   1      }
-1586          
-1587          void fun84(void) //F6_E1语音选择
-1588          {
-1589   1              unsigned char temp = 0;
-1590   1              temp = return_Two_Menu_F6_E1();
-1591   1              Show_one_number(temp);
-1592   1      }
-1593          
-1594          void fun85(void) //F6_E2语音报读次数
-1595          {
-C51 COMPILER V9.00   TM1629                                                                10/16/2015 18:13:52 PAGE 27  
+1534   2                      buf_display[0][2] = 0;
+1535   2                      display();
+1536   2                      set_await_number_table(0);
+1537   2              }
+1538   1      }
+1539          
+1540          void fun80(void) //F2_E4 十位闪烁
+1541          {
+1542   1              if (return_await_number_table() == 1)
+1543   1              {
+1544   2                      Show_four_number(Two_Menu_F2_E4);
+1545   2                      set_await_number_table(2);
+1546   2              }
+1547   1              if (return_await_number_table() == 3)
+1548   1              {
+1549   2                      buf_display[0][1] = 0;
+1550   2                      display();
+1551   2                      set_await_number_table(0);
+1552   2              }
+1553   1      }
+1554          
+1555          void fun81(void) //F2_E4 个位闪烁
+1556          {
+1557   1              if (return_await_number_table() == 1)
+1558   1              {
+1559   2                      Show_four_number(Two_Menu_F2_E4);
+1560   2                      set_await_number_table(2);
+1561   2              }
+1562   1              if (return_await_number_table() == 3)
+1563   1              {
+1564   2                      buf_display[0][0] = 0;
+1565   2                      display();
+1566   2                      set_await_number_table(0);
+1567   2              }
+1568   1      }
+1569          
+1570          void fun82(void) //显示即时显示 还是循环显示
+1571          {
+1572   1              unsigned char temp=0;
+1573   1              temp = return_Two_Menu_F3_E1();
+1574   1              Show_one_number(temp);
+1575   1      }
+1576          
+1577          void fun83(void) //队列存储个数
+1578          {
+1579   1              unsigned char temp = 0;
+1580   1              temp = return_Two_Menu_F3_E2();
+1581   1              Show_two_number(temp);
+1582   1      }
+1583          
+1584          void fun84(void) //F6_E1语音选择
+1585          {
+1586   1              unsigned char temp = 0;
+1587   1              temp = return_Two_Menu_F6_E1();
+1588   1              Show_one_number(temp);
+1589   1      }
+1590          
+1591          void fun85(void) //F6_E2语音报读次数
+1592          {
+1593   1              unsigned char temp = 0;
+1594   1              temp = return_Two_Menu_F6_E2();
+1595   1              Show_one_number(temp);
+C51 COMPILER V9.00   TM1629                                                                10/20/2015 10:32:09 PAGE 27  
 
-1596   1              unsigned char temp = 0;
-1597   1              temp = return_Two_Menu_F6_E2();
-1598   1              Show_one_number(temp);
-1599   1      }
-1600          
-1601          void fun86(void) //F6_E3循环时候是否报读
-1602          {
-1603   1              unsigned char temp = 0;
-1604   1              temp = return_Two_Menu_F6_E3();
-1605   1              Show_one_number(temp);
-1606   1      }
-1607          
-1608          void fun87(void) //F6_E4音量大小调整
-1609          {
-1610   1              unsigned char temp = 0;
-1611   1              temp = return_Two_Menu_F6_E4();
-1612   1              GD5800_sound_volume(temp * 3);
-1613   1              Show_one_number(temp);
-1614   1      }
-1615          
-1616          void fun88(void) //F6_E5屏幕亮度调整
-1617          {
-1618   1              unsigned char temp = 0;
-1619   1              temp = return_Two_Menu_F6_E5();
-1620   1              Show_one_number(temp);
-1621   1      }
-1622          
-1623          void fun89(void) //F7_E1 999*9
-1624          {
-1625   1              unsigned char temp = 0;
-1626   1              temp = return_Two_Menu_F7_E1();
-1627   1              if (temp < 10)
-1628   1              {
-1629   2                      Show_one_number(temp);
-1630   2              }
-1631   1              else if (temp<11)
-1632   1              {
-1633   2                      Show_on();
-1634   2              }
-1635   1              else
-1636   1              {
-1637   2                      Show_off();
-1638   2              }
-1639   1      }
-1640          
-1641          void fun90(void) //F7_E2 9999*9
-1642          {
-1643   1              unsigned char temp = 0;
-1644   1              temp = return_Two_Menu_F7_E2();
-1645   1              Show_one_number(temp);
-1646   1      }
-1647          
-1648          void fun91(void) //F7_E3 999*99
-1649          {
-1650   1              unsigned char temp = 0;
-1651   1              temp = return_Two_Menu_F7_E3();
-1652   1              Show_one_number(temp);
-1653   1      }
-1654          
-1655          void fun92(void) //F7_E4 9999*99
-1656          {
-1657   1              unsigned char temp = 0;
-C51 COMPILER V9.00   TM1629                                                                10/16/2015 18:13:52 PAGE 28  
+1596   1      }
+1597          
+1598          void fun86(void) //F6_E3循环时候是否报读
+1599          {
+1600   1              unsigned char temp = 0;
+1601   1              temp = return_Two_Menu_F6_E3();
+1602   1              Show_one_number(temp);
+1603   1      }
+1604          
+1605          void fun87(void) //F6_E4音量大小调整
+1606          {
+1607   1              unsigned char temp = 0;
+1608   1              temp = return_Two_Menu_F6_E4();
+1609   1              GD5800_sound_volume(temp * 3);
+1610   1              Show_one_number(temp);
+1611   1      }
+1612          
+1613          void fun88(void) //F6_E5屏幕亮度调整
+1614          {
+1615   1              unsigned char temp = 0;
+1616   1              temp = return_Two_Menu_F6_E5();
+1617   1              Show_one_number(temp);
+1618   1      }
+1619          
+1620          void fun89(void) //F7_E1 999*9
+1621          {
+1622   1              unsigned char temp = 0;
+1623   1              temp = return_Two_Menu_F7_E1();
+1624   1              if (temp < 10)
+1625   1              {
+1626   2                      Show_one_number(temp);
+1627   2              }
+1628   1              else if (temp<11)
+1629   1              {
+1630   2                      Show_on();
+1631   2              }
+1632   1              else
+1633   1              {
+1634   2                      Show_off();
+1635   2              }
+1636   1      }
+1637          
+1638          void fun90(void) //F7_E2 9999*9
+1639          {
+1640   1              unsigned char temp = 0;
+1641   1              temp = return_Two_Menu_F7_E2();
+1642   1              Show_one_number(temp);
+1643   1      }
+1644          
+1645          void fun91(void) //F7_E3 999*99
+1646          {
+1647   1              unsigned char temp = 0;
+1648   1              temp = return_Two_Menu_F7_E3();
+1649   1              Show_one_number(temp);
+1650   1      }
+1651          
+1652          void fun92(void) //F7_E4 9999*99
+1653          {
+1654   1              unsigned char temp = 0;
+1655   1              temp = return_Two_Menu_F7_E4();
+1656   1              Show_one_number(temp);
+1657   1      }
+C51 COMPILER V9.00   TM1629                                                                10/20/2015 10:32:09 PAGE 28  
 
-1658   1              temp = return_Two_Menu_F7_E4();
-1659   1              Show_one_number(temp);
-1660   1      }
-1661          
-1662          void fun93(void) //F8_E1单键位跟多键位切换
-1663          {
-1664   1              unsigned char temp = 0;
-1665   1              temp = return_Two_Menu_F8_E1();
-1666   1              Show_one_number(temp);
-1667   1              if (temp != Two_Menu_F8_E1_save)
-1668   1              {
-1669   2                      Delete_all_data();
-1670   2                      Two_Menu_F8_E1_save = temp;
-1671   2                      if (return_sound_table() == 1)
-1672   2                      {
-1673   3                              GD5800_select_chapter(CHENGGONG);
-1674   3      
-1675   3                              set_sound_table(0);
-1676   3                      }
-1677   2              }
-1678   1      }
-1679          
-1680          void fun94(void) //F8_E2键位设置
-1681          {
-1682   1              unsigned char temp = 0;
-1683   1              temp = return_Two_Menu_F8_E2();
-1684   1              Show_two_number(temp);
-1685   1              if (return_sound_table() == 1)
-1686   1              {
-1687   2                      delay10ms();
-1688   2                      GD5800_stop_music();
-1689   2                      delay10ms();
-1690   2                      GD5800_select_chapter(temp + QUXIAO);
-1691   2                      delay10ms();
-1692   2                      set_sound_table(0);
-1693   2              }
-1694   1              if (return_Two_menu_set_success() == 1)
-1695   1              {
-1696   2                      GD5800_stop_music();
-1697   2                      delay10ms();
-1698   2                      GD5800_select_chapter(CHENGGONG);
-1699   2                      set_Two_menu_set_success(0);
-1700   2              }
-1701   1      }
-1702          
-1703          void fun95(void) //解码菜单
-1704          {
-1705   1              unsigned char Two_Menu_F6_E1_temp = 0;
-1706   1              Two_Menu_F6_E1_temp = return_Two_Menu_F6_E1();
-1707   1              tm1629_load();
-1708   1              display();
-1709   1      
-1710   1              if (display_ram[0] == BAOJING - QUXIAO || display_ram[0] == BAOJING_1 || Two_Menu_F6_E1_temp == 5)
-1711   1              {
-1712   2                      if (P24 == 1)
-1713   2                      {
-1714   3                              GD5800_select_chapter(BAOJING);
-1715   3                      }       
-1716   2              }
-1717   1              
-1718   1      
-1719   1      }
-C51 COMPILER V9.00   TM1629                                                                10/16/2015 18:13:52 PAGE 29  
-
+1658          
+1659          void fun93(void) //F8_E1单键位跟多键位切换
+1660          {
+1661   1              unsigned char temp = 0;
+1662   1              temp = return_Two_Menu_F8_E1();
+1663   1              Show_one_number(temp);
+1664   1              if (temp != Two_Menu_F8_E1_save)
+1665   1              {
+1666   2                      Delete_all_data();
+1667   2                      Two_Menu_F8_E1_save = temp;
+1668   2                      if (return_sound_table() == 1)
+1669   2                      {
+1670   3                              GD5800_select_chapter(CHENGGONG);
+1671   3      
+1672   3                              set_sound_table(0);
+1673   3                      }
+1674   2              }
+1675   1      }
+1676          
+1677          void fun94(void) //F8_E2键位设置
+1678          {
+1679   1              unsigned char temp = 0;
+1680   1              temp = return_Two_Menu_F8_E2();
+1681   1              Show_two_number(temp);
+1682   1              if (return_sound_table() == 1)
+1683   1              {
+1684   2                      delay10ms();
+1685   2                      GD5800_stop_music();
+1686   2                      delay10ms();
+1687   2                      GD5800_select_chapter(temp + QUXIAO);
+1688   2                      delay10ms();
+1689   2                      set_sound_table(0);
+1690   2              }
+1691   1              if (return_Two_menu_set_success() == 1)
+1692   1              {
+1693   2                      GD5800_stop_music();
+1694   2                      delay10ms();
+1695   2                      GD5800_select_chapter(CHENGGONG);
+1696   2                      set_Two_menu_set_success(0);
+1697   2              }
+1698   1      }
+1699          
+1700          void fun95(void) //解码菜单
+1701          {
+1702   1              unsigned char Two_Menu_F6_E1_temp = 0;
+1703   1              Two_Menu_F6_E1_temp = return_Two_Menu_F6_E1();
+1704   1              tm1629_load();
+1705   1              display();
+1706   1      
+1707   1              if (display_ram[0] == BAOJING - QUXIAO || display_ram[0] == BAOJING_1 || Two_Menu_F6_E1_temp == 5)
+1708   1              {
+1709   2                      if (P24 == 1)
+1710   2                      {
+1711   3                              GD5800_select_chapter(BAOJING);
+1712   3                      }       
+1713   2              }
+1714   1              P55 = 1;//秒针灭
+1715   1              
+1716   1      }
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =   6316    ----
+C51 COMPILER V9.00   TM1629                                                                10/20/2015 10:32:09 PAGE 29  
+
+   CODE SIZE        =   6312    ----
    CONSTANT SIZE    =     24    ----
    XDATA SIZE       =    353      71
    PDATA SIZE       =   ----    ----

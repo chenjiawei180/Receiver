@@ -595,10 +595,11 @@ void KeyProcess(void)
 			case TWO_MENU_FC_SET:
 				if (Two_Menu_FC_E1 == 1) Two_Menu_FC_E1 = 2;
 				else Two_Menu_FC_E1 = 1;
+				break;
 			case TWO_MENU_Fb_SET:
 				if (Two_Menu_Fb_E1 == 1) Two_Menu_Fb_E1 = 0;
 				else Two_Menu_Fb_E1 = 1;
-
+				break;
 				default:break;
 			}	
 			func_index = table[func_index].up; break;
@@ -823,9 +824,11 @@ void KeyProcess(void)
 			case TWO_MENU_FC_SET:
 				if (Two_Menu_FC_E1 == 1) Two_Menu_FC_E1 = 2;
 				else Two_Menu_FC_E1 = 1;
+				break;
 			case TWO_MENU_Fb_SET:
 				if (Two_Menu_Fb_E1 == 1) Two_Menu_Fb_E1 = 0;
 				else Two_Menu_Fb_E1 = 1;
+				break;
 
 				default:break;
 			}

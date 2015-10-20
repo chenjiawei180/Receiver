@@ -1,4 +1,4 @@
-C51 COMPILER V9.00   GD5800                                                                10/16/2015 18:13:52 PAGE 1   
+C51 COMPILER V9.00   GD5800                                                                10/20/2015 10:32:10 PAGE 1   
 
 
 C51 COMPILER V9.00, COMPILATION OF MODULE GD5800
@@ -62,7 +62,7 @@ line level    source
   52   1      }
   53          
   54          void submenuf6_1_voiceselect(unsigned char report_mode, unsigned char *report_number)
-C51 COMPILER V9.00   GD5800                                                                10/16/2015 18:13:52 PAGE 2   
+C51 COMPILER V9.00   GD5800                                                                10/20/2015 10:32:10 PAGE 2   
 
   55          {
   56   1              unsigned char *number;
@@ -126,7 +126,7 @@ line level    source
  114   1              else
  115   1              {
  116   2                      switch (report_mode)
-C51 COMPILER V9.00   GD5800                                                                10/16/2015 18:13:52 PAGE 3   
+C51 COMPILER V9.00   GD5800                                                                10/20/2015 10:32:10 PAGE 3   
 
  117   2                      {
  118   3                      case DINGDONG_type:
@@ -190,7 +190,7 @@ line level    source
  175   6                                              }
  176   5                                              else
  177   5                                              {
-C51 COMPILER V9.00   GD5800                                                                10/16/2015 18:13:52 PAGE 4   
+C51 COMPILER V9.00   GD5800                                                                10/20/2015 10:32:10 PAGE 4   
 
  178   6                                                      if (*(number + 1) != 0)
  179   6                                                      {
@@ -254,7 +254,7 @@ line level    source
  237   3                      }
  238   2                      else if (mode != NOT_REPORT)
  239   2                      {
-C51 COMPILER V9.00   GD5800                                                                10/16/2015 18:13:52 PAGE 5   
+C51 COMPILER V9.00   GD5800                                                                10/20/2015 10:32:10 PAGE 5   
 
  240   3                              if (type < 50)
  241   3                              {

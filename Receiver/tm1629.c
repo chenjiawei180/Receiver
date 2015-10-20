@@ -700,10 +700,7 @@ void fun1(void) //一级菜单F0
 
 void fun2(void) //一级菜单F1
 {
-	if (return_Two_Menu_FC_E1() == 1)
-	{
-		P55 = 1;
-	}
+	P55 = 1;
 	tm1629_f(0x01);
 }
 
@@ -1714,6 +1711,6 @@ void fun95(void) //解码菜单
 			GD5800_select_chapter(BAOJING);
 		}	
 	}
+	P55 = 1;//秒针灭
 	
-
 }
