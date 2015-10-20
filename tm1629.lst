@@ -1,4 +1,4 @@
-C51 COMPILER V9.00   TM1629                                                                10/20/2015 10:32:09 PAGE 1   
+C51 COMPILER V9.00   TM1629                                                                10/20/2015 12:10:25 PAGE 1   
 
 
 C51 COMPILER V9.00, COMPILATION OF MODULE TM1629
@@ -62,7 +62,7 @@ line level    source
   49   1              for (i = 0; i<8; i++)
   50   1              {
   51   2                      TM1629_CLK = 0;
-C51 COMPILER V9.00   TM1629                                                                10/20/2015 10:32:09 PAGE 2   
+C51 COMPILER V9.00   TM1629                                                                10/20/2015 12:10:25 PAGE 2   
 
   52   2                      if (p & 0x01)
   53   2                              TM1629_DIO = 1;
@@ -126,7 +126,7 @@ line level    source
  111   1      }
  112          
  113          void display(void) //3个TM1629显示函数
-C51 COMPILER V9.00   TM1629                                                                10/20/2015 10:32:09 PAGE 3   
+C51 COMPILER V9.00   TM1629                                                                10/20/2015 12:10:25 PAGE 3   
 
  114          {
  115   1              unsigned char i,temp;
@@ -190,7 +190,7 @@ line level    source
  173   1              for (i = 0; i<8; i++)   //发送16字节的显存数据
  174   1              {
  175   2                      writeDataTo1629_3(0xff);
-C51 COMPILER V9.00   TM1629                                                                10/20/2015 10:32:09 PAGE 4   
+C51 COMPILER V9.00   TM1629                                                                10/20/2015 12:10:25 PAGE 4   
 
  176   2                      writeDataTo1629_3(0xff);
  177   2              }
@@ -254,7 +254,7 @@ line level    source
  235          void tm1629_await(void)
  236          {
  237   1              unsigned char i;        //k控制显示的具体数字，i和j控制buf_display的刷新
-C51 COMPILER V9.00   TM1629                                                                10/20/2015 10:32:09 PAGE 5   
+C51 COMPILER V9.00   TM1629                                                                10/20/2015 12:10:25 PAGE 5   
 
  238   1              unsigned char await_number_table_temp = 0;
  239   1              await_number_table_temp = return_await_number_table();
@@ -318,7 +318,7 @@ line level    source
  297   1              display();
  298   1      }
  299          void Show_on(void)
-C51 COMPILER V9.00   TM1629                                                                10/20/2015 10:32:09 PAGE 6   
+C51 COMPILER V9.00   TM1629                                                                10/20/2015 12:10:25 PAGE 6   
 
  300          {
  301   1              tm1629_clear();
@@ -382,7 +382,7 @@ line level    source
  359   1                      mcuram_to_displayram(buf_display[4] + 7, display_ram + 54);
  360   1              if (*(display_ram + 48) != 0)
  361   1                      mcuram_to_displayram(buf_display[4] + 3, display_ram + 48);
-C51 COMPILER V9.00   TM1629                                                                10/20/2015 10:32:09 PAGE 7   
+C51 COMPILER V9.00   TM1629                                                                10/20/2015 12:10:25 PAGE 7   
 
  362   1              if (*(display_ram + 42) != 0)
  363   1                      mcuram_to_displayram(buf_display[3] + 7, display_ram + 42);
@@ -446,7 +446,7 @@ line level    source
  420          
  421          void decoder_temp_to_mcuram(unsigned char* a, unsigned char* index)//a为MCU缓存区   index为解码后取出的8字
              -节临时数组
-C51 COMPILER V9.00   TM1629                                                                10/20/2015 10:32:09 PAGE 8   
+C51 COMPILER V9.00   TM1629                                                                10/20/2015 12:10:25 PAGE 8   
 
  422          {
  423   1              *(a + 0) = *(index);
@@ -510,7 +510,7 @@ line level    source
  480   3                              temp[i] = display_ram[(index - 1) * 6 + i];
  481   3                      }
  482   2      
-C51 COMPILER V9.00   TM1629                                                                10/20/2015 10:32:09 PAGE 9   
+C51 COMPILER V9.00   TM1629                                                                10/20/2015 12:10:25 PAGE 9   
 
  483   2                      for (i = index; i>1; i--)
  484   2                      {
@@ -574,7 +574,7 @@ line level    source
  541          
  542          
  543          
-C51 COMPILER V9.00   TM1629                                                                10/20/2015 10:32:09 PAGE 10  
+C51 COMPILER V9.00   TM1629                                                                10/20/2015 12:10:25 PAGE 10  
 
  544          
  545          
@@ -638,7 +638,7 @@ line level    source
  603   1              index = return_Two_Menu_F3_E2();
  604   1              Two_Menu_F3_E2_temp = return_Two_Menu_F3_E2();
  605   1              /*循环处理函数*/
-C51 COMPILER V9.00   TM1629                                                                10/20/2015 10:32:09 PAGE 11  
+C51 COMPILER V9.00   TM1629                                                                10/20/2015 12:10:25 PAGE 11  
 
  606   1              for (i = 0; i<Two_Menu_F3_E2_temp; i++)
  607   1              {
@@ -702,7 +702,7 @@ line level    source
  663   2                      {
  664   3                              *(buff + (Two_Menu_F3_E2_temp - 1) * 6 + i) = 0;
  665   3                      }
-C51 COMPILER V9.00   TM1629                                                                10/20/2015 10:32:09 PAGE 12  
+C51 COMPILER V9.00   TM1629                                                                10/20/2015 12:10:25 PAGE 12  
 
  666   2              }
  667   1              if (*(buff) == 0)
@@ -766,7 +766,7 @@ line level    source
  725   1      }
  726          
  727          void fun7(void) //一级菜单F6
-C51 COMPILER V9.00   TM1629                                                                10/20/2015 10:32:09 PAGE 13  
+C51 COMPILER V9.00   TM1629                                                                10/20/2015 12:10:25 PAGE 13  
 
  728          {
  729   1              tm1629_f(0x06);
@@ -830,7 +830,7 @@ line level    source
  787   3                              buf_display[1][5] = 0;
  788   3                              buf_display[1][4] = 0;
  789   3                              display();
-C51 COMPILER V9.00   TM1629                                                                10/20/2015 10:32:09 PAGE 14  
+C51 COMPILER V9.00   TM1629                                                                10/20/2015 12:10:25 PAGE 14  
 
  790   3                              set_await_number_table(0);
  791   3                      }
@@ -894,7 +894,7 @@ line level    source
  849   1              {
  850   2                      Display_time();
  851   2                      set_await_number_table(2);
-C51 COMPILER V9.00   TM1629                                                                10/20/2015 10:32:09 PAGE 15  
+C51 COMPILER V9.00   TM1629                                                                10/20/2015 12:10:25 PAGE 15  
 
  852   2              }
  853   1              if (return_await_number_table() == 3)
@@ -958,7 +958,7 @@ line level    source
  911   1              Two_Menu_F1_E4[1] = 0;
  912   1              Two_Menu_F1_E4[2] = 0;
  913   1              Two_Menu_F1_E4[3] = 1;
-C51 COMPILER V9.00   TM1629                                                                10/20/2015 10:32:09 PAGE 16  
+C51 COMPILER V9.00   TM1629                                                                10/20/2015 12:10:25 PAGE 16  
 
  914   1      }
  915          
@@ -1022,7 +1022,7 @@ line level    source
  973   1              Show_two_number(temp);
  974   1      }
  975          
-C51 COMPILER V9.00   TM1629                                                                10/20/2015 10:32:09 PAGE 17  
+C51 COMPILER V9.00   TM1629                                                                10/20/2015 12:10:25 PAGE 17  
 
  976          void fun33(void) //二级菜单F6-E1
  977          {
@@ -1086,7 +1086,7 @@ line level    source
 1035   1      }
 1036          
 1037          void fun45(void) //二级菜单F9-E2
-C51 COMPILER V9.00   TM1629                                                                10/20/2015 10:32:09 PAGE 18  
+C51 COMPILER V9.00   TM1629                                                                10/20/2015 12:10:25 PAGE 18  
 
 1038          {
 1039   1              tm1629_E(0x02);
@@ -1150,7 +1150,7 @@ line level    source
 1097   1              if (return_await_number_table() == 3)
 1098   1              {
 1099   2                      buf_display[0][3] = 0;
-C51 COMPILER V9.00   TM1629                                                                10/20/2015 10:32:09 PAGE 19  
+C51 COMPILER V9.00   TM1629                                                                10/20/2015 12:10:25 PAGE 19  
 
 1100   2                      display();
 1101   2                      set_await_number_table(0);
@@ -1214,7 +1214,7 @@ line level    source
 1159   2                      buf_display[0][3] = 0;
 1160   2                      display();
 1161   2                      set_await_number_table(0);
-C51 COMPILER V9.00   TM1629                                                                10/20/2015 10:32:09 PAGE 20  
+C51 COMPILER V9.00   TM1629                                                                10/20/2015 12:10:25 PAGE 20  
 
 1162   2              }
 1163   1      }
@@ -1278,7 +1278,7 @@ line level    source
 1221   2                      set_await_number_table(0);
 1222   2              }
 1223   1      }
-C51 COMPILER V9.00   TM1629                                                                10/20/2015 10:32:09 PAGE 21  
+C51 COMPILER V9.00   TM1629                                                                10/20/2015 12:10:25 PAGE 21  
 
 1224          
 1225          void fun59(void) //F1_E3 百位闪烁
@@ -1342,7 +1342,7 @@ line level    source
 1283   1      }
 1284          
 1285          void fun63(void) //F1_E4 百位闪烁
-C51 COMPILER V9.00   TM1629                                                                10/20/2015 10:32:09 PAGE 22  
+C51 COMPILER V9.00   TM1629                                                                10/20/2015 12:10:25 PAGE 22  
 
 1286          {
 1287   1              if (return_await_number_table() == 1)
@@ -1406,7 +1406,7 @@ line level    source
 1345          void fun67(void) //F2_E1 百位闪烁
 1346          {
 1347   1              if (return_await_number_table() == 1)
-C51 COMPILER V9.00   TM1629                                                                10/20/2015 10:32:09 PAGE 23  
+C51 COMPILER V9.00   TM1629                                                                10/20/2015 12:10:25 PAGE 23  
 
 1348   1              {
 1349   2                      Show_four_number(Two_Menu_F2_E1);
@@ -1470,7 +1470,7 @@ line level    source
 1407   1              if (return_await_number_table() == 1)
 1408   1              {
 1409   2                      Show_four_number(Two_Menu_F2_E2);
-C51 COMPILER V9.00   TM1629                                                                10/20/2015 10:32:09 PAGE 24  
+C51 COMPILER V9.00   TM1629                                                                10/20/2015 12:10:25 PAGE 24  
 
 1410   2                      set_await_number_table(2);
 1411   2              }
@@ -1534,7 +1534,7 @@ line level    source
 1469   2                      Show_four_number(Two_Menu_F2_E3);
 1470   2                      set_await_number_table(2);
 1471   2              }
-C51 COMPILER V9.00   TM1629                                                                10/20/2015 10:32:09 PAGE 25  
+C51 COMPILER V9.00   TM1629                                                                10/20/2015 12:10:25 PAGE 25  
 
 1472   1              if (return_await_number_table() == 3)
 1473   1              {
@@ -1598,7 +1598,7 @@ line level    source
 1531   2              }
 1532   1              if (return_await_number_table() == 3)
 1533   1              {
-C51 COMPILER V9.00   TM1629                                                                10/20/2015 10:32:09 PAGE 26  
+C51 COMPILER V9.00   TM1629                                                                10/20/2015 12:10:25 PAGE 26  
 
 1534   2                      buf_display[0][2] = 0;
 1535   2                      display();
@@ -1662,7 +1662,7 @@ line level    source
 1593   1              unsigned char temp = 0;
 1594   1              temp = return_Two_Menu_F6_E2();
 1595   1              Show_one_number(temp);
-C51 COMPILER V9.00   TM1629                                                                10/20/2015 10:32:09 PAGE 27  
+C51 COMPILER V9.00   TM1629                                                                10/20/2015 12:10:25 PAGE 27  
 
 1596   1      }
 1597          
@@ -1726,7 +1726,7 @@ line level    source
 1655   1              temp = return_Two_Menu_F7_E4();
 1656   1              Show_one_number(temp);
 1657   1      }
-C51 COMPILER V9.00   TM1629                                                                10/20/2015 10:32:09 PAGE 28  
+C51 COMPILER V9.00   TM1629                                                                10/20/2015 12:10:25 PAGE 28  
 
 1658          
 1659          void fun93(void) //F8_E1单键位跟多键位切换
@@ -1790,7 +1790,7 @@ line level    source
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-C51 COMPILER V9.00   TM1629                                                                10/20/2015 10:32:09 PAGE 29  
+C51 COMPILER V9.00   TM1629                                                                10/20/2015 12:10:25 PAGE 29  
 
    CODE SIZE        =   6312    ----
    CONSTANT SIZE    =     24    ----

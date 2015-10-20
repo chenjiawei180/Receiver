@@ -93,7 +93,7 @@ void RF_decode_main(void)
 			TR1 = 0;
 			return;
 		}
-		if (RF_trans0 > measure_sync_count1)
+		if (RF_trans0 >70)//measure_sync_count1)
 		{
 			//长低同步完成
 			P_RF_INT++;
@@ -101,7 +101,7 @@ void RF_decode_main(void)
 		}
 		break;
 	case 1: //等待真正的同步头
-		if ((RF_trans0 + RF_trans1) >measure_sync_count2)/*sjz change from 150 to 120,to shorten the detection when  the header of synchronization coming*/
+		if ((RF_trans0 + RF_trans1) >140 )//measure_sync_count2)/*sjz change from 150 to 120,to shorten the detection when  the header of synchronization coming*/
 		{
 			//10mS没有同步高脉冲
 			RF_ini_receive();
@@ -122,13 +122,13 @@ void RF_decode_main(void)
 		}
 		break;
 	case 2:
-		if (RF_trans0 > 0)
+		if (RF_trans0 > 1)
 		{
 			Save_RF_trans1 = RF_trans1;
 			RF_trans1 = 0;
 			P_RF_INT++;
 		}
-		if (RF_trans1>((measure_sync_count2 + measure_sync_count1) >> 3)) /*if the high level is bigger than 25*100us,Then should be setted as noise instead of useful signal sjz*/
+		if (RF_trans1>25)//((measure_sync_count2 + measure_sync_count1) >> 3)) /*if the high level is bigger than 25*100us,Then should be setted as noise instead of useful signal sjz*/
 		{
 			RF_ini_receive();//KEY_HOLD = 0;
 			EX0 = 1;
@@ -136,7 +136,7 @@ void RF_decode_main(void)
 			return;
 		}
 		break;
-	case 3:if (RF_trans1 > 0)
+	case 3:if (RF_trans1 > 1)
 	{
 			   Save_RF_trans0 = RF_trans0;
 			   RF_trans0 = 0;
@@ -149,15 +149,15 @@ void RF_decode_main(void)
 			   ++RF_BIT_COUNTER;
 			   if (RF_BIT_COUNTER >23)
 			   {
-				   P_RF_INT = 4;
-				   //TR1 = 0;
-				   //RF_ini_receive();
-				   //receive_rf_decoder_finished = 1;
-				   //EX0 = 1;
+				   //P_RF_INT = 4;
+				   TR1 = 0;
+				   RF_ini_receive();
+				   receive_rf_decoder_finished = 1;
+				   EX0 = 1;
 				   break;
 			   }
 	}
-		   if (RF_trans0>((measure_sync_count2 + measure_sync_count1) >> 3))
+		   if (RF_trans0> 25)//((measure_sync_count2 + measure_sync_count1) >> 3))
 		   {
 			   RF_ini_receive();
 			   EX0 = 1;
@@ -165,42 +165,42 @@ void RF_decode_main(void)
 			   return;
 		   }
 		   break;
-	case 4:
-		if (RF_trans0 > 0)
-		{
-			Save_RF_trans1 = RF_trans1;
-			RF_trans1 = 0;
-			P_RF_INT++;
-		}
-		if (RF_trans1>((measure_sync_count2 + measure_sync_count1) >> 3)) /*if the high level is bigger than 25*100us,Then should be setted as noise instead of useful signal sjz*/
-		{
-			RF_ini_receive();//KEY_HOLD = 0;
-			EX0 = 1;
-			TR1 = 0;
-			return;
-		}
-		break;
-	case 5:
-		if (RF_trans1 > 0)
-		{
-			if (RF_trans0 > measure_sync_count2)
-			{
-				TR1 = 0;
-				//RF_ini_receive();
-				receive_rf_decoder_finished = 1;
-				EX0 = 1;
-			}
-			RF_ini_receive();
-		}
-		if (RF_trans0>(measure_sync_count2 + measure_sync_count1))
-		{
-			RF_ini_receive();
-			EX0 = 1;
-			TR1 = 0;
-			receive_rf_decoder_finished = 0;
-			return;
-		}
-		break;
+	//case 4:
+	//	if (RF_trans0 > 0)
+	//	{
+	//		Save_RF_trans1 = RF_trans1;
+	//		RF_trans1 = 0;
+	//		P_RF_INT++;
+	//	}
+	//	if (RF_trans1>((measure_sync_count2 + measure_sync_count1) >> 3)) /*if the high level is bigger than 25*100us,Then should be setted as noise instead of useful signal sjz*/
+	//	{
+	//		RF_ini_receive();//KEY_HOLD = 0;
+	//		EX0 = 1;
+	//		TR1 = 0;
+	//		return;
+	//	}
+	//	break;
+	//case 5:
+	//	if (RF_trans1 > 0)
+	//	{
+	//		if (RF_trans0 > measure_sync_count2)
+	//		{
+	//			TR1 = 0;
+	//			//RF_ini_receive();
+	//			receive_rf_decoder_finished = 1;
+	//			EX0 = 1;
+	//		}
+	//		RF_ini_receive();
+	//	}
+	//	if (RF_trans0>(measure_sync_count2 + measure_sync_count1))
+	//	{
+	//		RF_ini_receive();
+	//		EX0 = 1;
+	//		TR1 = 0;
+	//		receive_rf_decoder_finished = 0;
+	//		return;
+	//	}
+	//	break;
 
 	default: //异常处理
 	{
@@ -221,6 +221,7 @@ void receive_rf_decoder(void)
 
 	if (receive_rf_decoder_finished == 1)
 	{
+		receive_rf_decoder_finished = 0;
 		EX0 = 0;
 		switch (rx_table)
 		{
@@ -297,8 +298,7 @@ void receive_rf_decoder(void)
 			}
 			break;
 		}
-		EX0 = 1;
-		receive_rf_decoder_finished = 0;
+		EX0 = 1;	
 	}
 }
 

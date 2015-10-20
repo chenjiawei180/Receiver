@@ -401,6 +401,11 @@
               <FileType>1</FileType>
               <FilePath>.\Receiver\gd5800.c</FilePath>
             </File>
+            <File>
+              <FileName>com.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Receiver\com.c</FilePath>
+            </File>
           </Files>
         </Group>
       </Groups>
