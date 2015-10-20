@@ -14,7 +14,7 @@ unsigned char Two_menu_set_success = 0;
 
 void DecoderProcess(void)
 {	
-	unsigned char i, j ,l ,k;
+	unsigned char i, j ,l ,k ,index=0;
 	unsigned char temp_buff[8];//解码用临时数组
 	unsigned char temp_buff1[PAGE_LENGTH] = { 0 };//查询AT24C256临时数组
 
@@ -32,6 +32,7 @@ void DecoderProcess(void)
 	Two_Menu_F8_E2_temp = return_Two_Menu_F8_E2();	//返回所需要的外部变量
 	Two_Menu_F3_E1_temp = return_Two_Menu_F3_E1();	//返回所需要的外部变量
 	Two_Menu_F3_E2_temp = return_Two_Menu_F3_E2();	//返回所需要的外部变量
+	index			    = return_Two_Menu_F3_E2();
 	Two_Menu_F7_E1_temp = return_Two_Menu_F7_E1();	//返回所需要的外部变量
 	Two_Menu_F6_E1_temp = return_Two_Menu_F6_E1();	//返回所需要的外部变量
 	Two_Menu_F6_E2_temp = return_Two_Menu_F6_E2();	//返回所需要的外部变量
@@ -219,23 +220,18 @@ void DecoderProcess(void)
 						break;
 					}
 					mcu_to_computer(0x91, temp_buff, old2_RF_RECE_REG[2] & 0x0f);//上位机
-					if (display_ram[1] == temp_buff[1] && display_ram[2] == temp_buff[2] && display_ram[3] == temp_buff[3] && display_ram[4] == temp_buff[4])
+					Search_funtion(temp_buff, display_ram);
+
+					for (l = Two_Menu_F3_E2_temp; l>1; l--) //整体往下移一组数据
 					{
-						decoder_temp_to_mcuram(display_ram, temp_buff);
+						mcuram_to_mcuram_down(display_ram + (l - 2) * 6);
 					}
-					else
+					for (l = 0; l<6; l++) //讲第一组数据清0
 					{
-						for (l = Two_Menu_F3_E2_temp; l>1; l--) //整体往下移一组数据
-						{
-							mcuram_to_mcuram_down(display_ram + (l - 2) * 6);
-						}
-						for (l = 0; l<6; l++) //讲第一组数据清0
-						{
-							display_ram[l] = 0;
-						}
+						display_ram[l] = 0;
+					}
 						
-						decoder_temp_to_mcuram(display_ram, temp_buff); //如果符合的话  将临时数组的数据移入单片机暂存数组 8字节转6字节
-					}			
+					decoder_temp_to_mcuram(display_ram, temp_buff); //如果符合的话  将临时数组的数据移入单片机暂存数组 8字节转6字节			
 					tm1629_load();//单片机把数组内容载入数码管显存数组中
 					display();//显示数码管
 				}
@@ -251,23 +247,31 @@ void DecoderProcess(void)
 					}
 					for (k = 0; k < Two_Menu_F3_E2_temp; k++)
 					{
-						if (display_ram[k * 6] == 0)//找出位于队列最后的那个点
+						if (display_ram[k * 6 + 1] == temp_buff[1] && display_ram[k * 6 + 2] == temp_buff[2] && display_ram[k * 6 + 3] == temp_buff[3] && display_ram[k * 6 + 4] == temp_buff[4])
 						{
-							mcu_to_computer(0x91, temp_buff, old2_RF_RECE_REG[2] & 0x0f);//上位机
-							if (display_ram[(k - 1) * 6 + 1] == temp_buff[1] && display_ram[(k - 1) * 6 + 2] == temp_buff[2] && display_ram[(k - 1) * 6 + 3] == temp_buff[3] && display_ram[(k - 1) * 6 + 4] == temp_buff[4])
-							{
-								decoder_temp_to_mcuram(display_ram + (k-1) * 6, temp_buff);
-							}
-							else
-							{
-								decoder_temp_to_mcuram(display_ram + k * 6, temp_buff);//如果符合的话  将临时数组的数据移入单片机暂存数组 8字节转6字节
-							}	
+							index = k;
+							decoder_temp_to_mcuram(display_ram + k * 6, temp_buff);
 							tm1629_load();//单片机把数组内容载入数码管显存数组中
 							display();//显示数码管
 							break;
 						}
 					}
 
+					if (index == Two_Menu_F3_E2_temp)
+					{
+						for (k = 0; k < Two_Menu_F3_E2_temp; k++)
+						{
+							if (display_ram[k * 6] == 0)//找出位于队列最后的那个点
+							{
+								mcu_to_computer(0x91, temp_buff, old2_RF_RECE_REG[2] & 0x0f);//上位机
+								decoder_temp_to_mcuram(display_ram + k * 6, temp_buff);
+								tm1629_load();//单片机把数组内容载入数码管显存数组中
+								display();//显示数码管
+								break;
+
+							}
+						}
+					}
 				}
 				//clear_again_receive_rf_decoder_finished();//清除解码完成标志位
 				break;
@@ -330,22 +334,18 @@ void DecoderProcess(void)
 								}
 
 								mcu_to_computer(0x91, temp_buff, old2_RF_RECE_REG[2] & 0x0f);//上位机
-								if (display_ram[1] == temp_buff[1] && display_ram[2] == temp_buff[2] && display_ram[3] == temp_buff[3] && display_ram[4] == temp_buff[4])
+								Search_funtion(temp_buff, display_ram);
+
+								for (l = Two_Menu_F3_E2_temp; l>1; l--) //整体往下移一组数据
 								{
-									decoder_temp_to_mcuram(display_ram, temp_buff);
+									mcuram_to_mcuram_down(display_ram + (l - 2) * 6);
 								}
-								else
+								for (l = 0; l<6; l++) //讲第一组数据清0
 								{
-									for (l = Two_Menu_F3_E2_temp; l>1; l--) //整体往下移一组数据
-									{
-										mcuram_to_mcuram_down(display_ram + (l - 2) * 6);
-									}
-									for (l = 0; l<6; l++) //讲第一组数据清0
-									{
-										display_ram[l] = 0;
-									}
-									decoder_temp_to_mcuram(display_ram, temp_buff); //如果符合的话  将临时数组的数据移入单片机暂存数组 8字节转6字节
+									display_ram[l] = 0;
 								}
+
+								decoder_temp_to_mcuram(display_ram, temp_buff); //如果符合的话  将临时数组的数据移入单片机暂存数组 8字节转6字节
 								tm1629_load();//单片机把数组内容载入数码管显存数组中
 								display();//显示数码管
 							}
@@ -362,20 +362,29 @@ void DecoderProcess(void)
 
 							for (k = 0; k < Two_Menu_F3_E2_temp; k++)
 							{
-								if (display_ram[k * 6 ] == 0)//找出位于队列最后的那个点
+								if (display_ram[k * 6 + 1] == temp_buff[1] && display_ram[k * 6 + 2] == temp_buff[2] && display_ram[k * 6 + 3] == temp_buff[3] && display_ram[k * 6 + 4] == temp_buff[4])
 								{
-									mcu_to_computer(0x91, temp_buff, old2_RF_RECE_REG[2] & 0x0f);//上位机
-									if (display_ram[(k - 1) * 6 + 1] == temp_buff[1] && display_ram[(k - 1) * 6 + 2] == temp_buff[2] && display_ram[(k - 1) * 6 + 3] == temp_buff[3] && display_ram[(k - 1) * 6 + 4] == temp_buff[4])
-									{
-										decoder_temp_to_mcuram(display_ram + (k - 1) * 6, temp_buff);
-									}
-									else
-									{
-										decoder_temp_to_mcuram(display_ram + k * 6, temp_buff);//如果符合的话  将临时数组的数据移入单片机暂存数组 8字节转6字节
-									}
+									index = k;
+									decoder_temp_to_mcuram(display_ram + k * 6, temp_buff);
 									tm1629_load();//单片机把数组内容载入数码管显存数组中
 									display();//显示数码管
 									break;
+								}
+							}
+
+							if (index == Two_Menu_F3_E2_temp)
+							{
+								for (k = 0; k < Two_Menu_F3_E2_temp; k++)
+								{
+									if (display_ram[k * 6] == 0)//找出位于队列最后的那个点
+									{
+										mcu_to_computer(0x91, temp_buff, old2_RF_RECE_REG[2] & 0x0f);//上位机
+										decoder_temp_to_mcuram(display_ram + k * 6, temp_buff);
+										tm1629_load();//单片机把数组内容载入数码管显存数组中
+										display();//显示数码管
+										break;
+
+									}
 								}
 							}
 						}

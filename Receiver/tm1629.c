@@ -670,6 +670,40 @@ void Cancel_funtion(unsigned char* id_number, unsigned char* buff)//id_numberÎª½
 	}
 }
 
+void Search_funtion(unsigned char* id_number, unsigned char* buff)//id_numberÎª½âÂëµÄtempÊı×é£¬buffÎªÏÔÊ¾»º´æ
+{
+	/*
+	id_number  //  ĞòºÅ¡¢½ÓÊÕºÅ*3¡¢ID*3¡¢ÇøºÅ
+	buff	//		  ĞòºÅ¡¢Àà±ğ¡¢ÇøºÅ¡¢½ÓÊÕºÅ
+	*/
+
+	unsigned char i, index, Two_Menu_F3_E2_temp;
+	unsigned char temp[6] = { 0 };
+	index = return_Two_Menu_F3_E2();
+	Two_Menu_F3_E2_temp = return_Two_Menu_F3_E2();
+
+	for (i = 0; i<Two_Menu_F3_E2_temp; i++)
+	{
+		if (*(id_number + 1) == *(buff + i * 6 + 1) && *(id_number + 2) == *(buff + i * 6 + 2) && *(id_number + 3) == *(buff + i * 6 + 3) && *(id_number + 4) == *(buff + i * 6 + 4))
+		{
+			index = i;
+			break;
+		}
+	}
+
+	for (i = index; i<Two_Menu_F3_E2_temp; i++)
+	{
+		mcuram_to_mcuram_up(buff + i * 6);
+	}
+	if (index != Two_Menu_F3_E2_temp)
+	{
+		for (i = 0; i<6; i++)
+		{
+			*(buff + (Two_Menu_F3_E2_temp - 1) * 6 + i) = 0;
+		}
+	}
+}
+
 
 
 void fun0(void) //´ı»úÏÔÊ¾º¯Êı

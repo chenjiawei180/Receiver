@@ -157,6 +157,7 @@ extern void Logout(void);
 extern void CycleUp(void);
 extern void CycleDown(void);
 extern void Cancel_funtion(unsigned char* id_number, unsigned char* buff);
+void Search_funtion(unsigned char* id_number, unsigned char* buff);//id_number为解码的temp数组，buff为显示缓存
 
 
 void Tm1629_delay(unsigned char k); //延时函数
