@@ -735,7 +735,7 @@ void fun2(void) //一级菜单F1
 {
 	P55 = 1;
 	tm1629_f(0x01);
-	if (return_sound_table() == 1)
+	if (return_sound_table() == 1 && return_Two_Menu_F6_E6()== 1)
 	{
 		GD5800_stop_music();
 		delay10ms();
@@ -747,7 +747,7 @@ void fun2(void) //一级菜单F1
 void fun3(void) //一级菜单F2
 {
 	tm1629_f(0x02);
-	if (return_sound_table() == 1)
+	if (return_sound_table() == 1 && return_Two_Menu_F6_E6() == 1)
 	{
 		GD5800_stop_music();
 		delay10ms();
@@ -759,7 +759,7 @@ void fun3(void) //一级菜单F2
 void fun4(void) //一级菜单F3
 {
 	tm1629_f(0x03);
-	if (return_sound_table() == 1)
+	if (return_sound_table() == 1 && return_Two_Menu_F6_E6() == 1)
 	{
 		GD5800_stop_music();
 		delay10ms();
@@ -771,7 +771,7 @@ void fun4(void) //一级菜单F3
 void fun5(void) //一级菜单F4
 {
 	tm1629_f(0x04);
-	if (return_sound_table() == 1)
+	if (return_sound_table() == 1 && return_Two_Menu_F6_E6() == 1)
 	{
 		GD5800_stop_music();
 		delay10ms();
@@ -783,7 +783,7 @@ void fun5(void) //一级菜单F4
 void fun6(void) //一级菜单F5
 {
 	tm1629_f(0x05);
-	if (return_sound_table() == 1)
+	if (return_sound_table() == 1 && return_Two_Menu_F6_E6() == 1)
 	{
 		GD5800_stop_music();
 		delay10ms();
@@ -795,7 +795,7 @@ void fun6(void) //一级菜单F5
 void fun7(void) //一级菜单F6
 {
 	tm1629_f(0x06);
-	if (return_sound_table() == 1)
+	if (return_sound_table() == 1 && return_Two_Menu_F6_E6() == 1)
 	{
 		GD5800_stop_music();
 		delay10ms();
@@ -807,7 +807,7 @@ void fun7(void) //一级菜单F6
 void fun8(void) //一级菜单F7
 {
 	tm1629_f(0x07);
-	if (return_sound_table() == 1)
+	if (return_sound_table() == 1 && return_Two_Menu_F6_E6() == 1)
 	{
 		GD5800_stop_music();
 		delay10ms();
@@ -819,7 +819,7 @@ void fun8(void) //一级菜单F7
 void fun9(void) //一级菜单F8
 {
 	tm1629_f(0x08);
-	if (return_sound_table() == 1)
+	if (return_sound_table() == 1 && return_Two_Menu_F6_E6() == 1)
 	{
 		GD5800_stop_music();
 		delay10ms();
@@ -831,7 +831,7 @@ void fun9(void) //一级菜单F8
 void fun10(void) //一级菜单F9
 {
 	tm1629_f(0x09);
-	if (return_sound_table() == 1)
+	if(return_sound_table() == 1 && return_Two_Menu_F6_E6() == 1)
 	{
 		GD5800_stop_music();
 		delay10ms();
