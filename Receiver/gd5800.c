@@ -263,7 +263,7 @@ void submenuf6_1(unsigned char report_mode, unsigned char *report_number, unsign
 	}
 	else
 	{
-		if (type == BAOJING_1)
+		if (type == BAOJING_1 || type == BAOJING-QUXIAO)
 		{
 			GD5800_select_chapter(BAOJING);
 		}

@@ -24,16 +24,16 @@ unsigned char Two_Menu_F2_E3[4] = { 0, 0, 0, 1 }; //F2_E3
 unsigned char Two_Menu_F2_E4[4] = { 0, 0, 0, 1 }; //F2_E4
 
 unsigned char Two_Menu_F3_E1 = 1; //即时模式或者排队显示
-unsigned char Two_Menu_F3_E2 = 12; //呼叫时候存储数量
+unsigned char Two_Menu_F3_E2 = 1; //呼叫时候存储数量
 
 unsigned char Two_Menu_F4_E1 = 0; //销号时间
 unsigned char Two_Menu_F5_E1 = 0; //循环间隔时间
 
 unsigned char Two_Menu_F6_E1 = 0; //简单报读
-unsigned char Two_Menu_F6_E2 = 1; //语音报读次数
+unsigned char Two_Menu_F6_E2 = 2; //语音报读次数
 unsigned char Two_Menu_F6_E3 = 0; //循环时候是否报读
-unsigned char Two_Menu_F6_E4 = 0; //音量大小调整
-unsigned char Two_Menu_F6_E5 = 0; //显示屏LED亮度调整
+unsigned char Two_Menu_F6_E4 = 6; //音量大小调整
+unsigned char Two_Menu_F6_E5 = 3; //显示屏LED亮度调整
 unsigned char Two_Menu_F6_E6 = 1; //语音导航调整
 unsigned char Two_Menu_F6_E7 = 0; //语音导航调整
 
@@ -64,10 +64,10 @@ key_table code table[100] =
 	{ ONE_MENU_F7, ONE_MENU_F8, ONE_MENU_F6, TWO_MENU_F7_E1   , MENU_STANDBY, (*fun8) },
 	{ ONE_MENU_F8, ONE_MENU_F9, ONE_MENU_F7, TWO_MENU_F8_E1   , MENU_STANDBY, (*fun9) },
 	{ ONE_MENU_F9, ONE_MENU_FA, ONE_MENU_F8, TWO_MENU_F9_E1   , MENU_STANDBY, (*fun10) },
-	{ ONE_MENU_FA, ONE_MENU_Fb, ONE_MENU_F9, TWO_MENU_FA_SET  , MENU_STANDBY, (*fun11) }, //FA
-	{ ONE_MENU_Fb, ONE_MENU_FC, ONE_MENU_FA, TWO_MENU_Fb_SET  , MENU_STANDBY, (*fun12) }, //Fb
-	{ ONE_MENU_FC, ONE_MENU_Fd, ONE_MENU_Fb, TWO_MENU_FC_SET  , MENU_STANDBY, (*fun13) }, //FC
-	{ ONE_MENU_Fd, ONE_MENU_F0, ONE_MENU_FC, TWO_MENU_Fd_SET  , MENU_STANDBY, (*fun14) }, //Fd
+	{ ONE_MENU_FA, ONE_MENU_Fb, ONE_MENU_F9, ONE_MENU_FA, MENU_STANDBY, (*fun11) }, //FA
+	{ ONE_MENU_Fb, ONE_MENU_FC, ONE_MENU_FA, ONE_MENU_Fb, MENU_STANDBY, (*fun12) }, //Fb
+	{ ONE_MENU_FC, ONE_MENU_Fd, ONE_MENU_Fb, ONE_MENU_FC, MENU_STANDBY, (*fun13) }, //FC
+	{ ONE_MENU_Fd, ONE_MENU_F0, ONE_MENU_FC, ONE_MENU_Fd, MENU_STANDBY, (*fun14) }, //Fd
 
 	{ TWO_MENU_F0_YEAR  , TWO_MENU_F0_YEAR  , TWO_MENU_F0_YEAR  , TWO_MENU_F0_MOUTH , ONE_MENU_F0, (*fun15) }, //万年历 年
 	{ TWO_MENU_F0_MOUTH , TWO_MENU_F0_MOUTH , TWO_MENU_F0_MOUTH , TWO_MENU_F0_DAY   , ONE_MENU_F0, (*fun16) }, //万年历 月
@@ -367,6 +367,42 @@ void KeyProcess(void)
 				}
 				else
 					func_index = table[func_index].enter;
+			}
+			else if (func_index == ONE_MENU_FA)  //如果索引==FA  则要1秒以上进入菜单
+			{
+				main_press_time_temp = return_main_press_time();
+				if (main_press_time_temp >= 20)
+				{
+					func_index = TWO_MENU_FA_SET;
+					clear_main_press_time();
+				}
+			}
+			else if (func_index == ONE_MENU_Fb)  //如果索引==FA  则要1秒以上进入菜单
+			{
+				main_press_time_temp = return_main_press_time();
+				if (main_press_time_temp >= 20)
+				{
+					func_index = TWO_MENU_Fb_SET;
+					clear_main_press_time();
+				}
+			}
+			else if (func_index == ONE_MENU_FC)  //如果索引==FA  则要1秒以上进入菜单
+			{
+				main_press_time_temp = return_main_press_time();
+				if (main_press_time_temp >= 20)
+				{
+					func_index = TWO_MENU_FC_SET;
+					clear_main_press_time();
+				}
+			}
+			else if (func_index == ONE_MENU_Fd)  //如果索引==FA  则要1秒以上进入菜单
+			{
+				main_press_time_temp = return_main_press_time();
+				if (main_press_time_temp >= 20)
+				{
+					func_index = TWO_MENU_Fd_SET;
+					clear_main_press_time();
+				}
 			}
 			else
 			{
