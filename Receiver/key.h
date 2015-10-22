@@ -60,5 +60,9 @@ extern unsigned char return_Two_Menu_Fb_E1(void);
 
 extern unsigned char return_sound_table(void);
 extern void set_sound_table(unsigned char temp);
+extern void env_load(void);
+extern void env_init(void);
+extern void var_init(void);
+extern void key_init(void);
 #endif
 

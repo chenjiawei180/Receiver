@@ -46,7 +46,10 @@ void main()
 	P3M1 = 0X0C; //IO口设置为输入 必须添加 否则无法解码
 	P3M0 = 0X00;
 
+
+
 	GD5800_select_chapter(CHUSHIHUA);
+	env_init();
 
 	while (1)
 	{

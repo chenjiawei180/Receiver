@@ -1,4 +1,4 @@
-C51 COMPILER V9.00   DECODER                                                               10/22/2015 12:15:33 PAGE 1   
+C51 COMPILER V9.00   DECODER                                                               10/22/2015 18:28:53 PAGE 1   
 
 
 C51 COMPILER V9.00, COMPILATION OF MODULE DECODER
@@ -61,10 +61,11 @@ line level    source
   50   3                      {
   51   4                              set_logout_cycle_table(0);//Ñ­»·¸úÏúºÅÖØÐÂ¼ÆÊý
   52   4                              //¼üÅÌ¹æÔò
-  53   4                              if ((old2_RF_RECE_REG[2] & 0xf0) == 0x00 && (((old2_RF_RECE_REG[0] >> 4) == Two_Menu_F7_E1_temp) || (Tw
-C51 COMPILER V9.00   DECODER                                                               10/22/2015 12:15:33 PAGE 2   
+  53   4                              if ((old2_RF_RECE_REG[2] & 0xf0) == 0x00 && ((((old2_RF_RECE_REG[0] >> 4) == Two_Menu_F7_E1_temp) && (o
+C51 COMPILER V9.00   DECODER                                                               10/22/2015 18:28:53 PAGE 2   
 
-             -o_Menu_F7_E1_temp == 10)))//¼üÅÌ¹æÔò£¬³ÌÐò°´Ä¬ÈÏµÄÀ´±à
+             -ld2_RF_RECE_REG[0] >> 4) < 10) ||  ((Two_Menu_F7_E1_temp == 10) && (old2_RF_RECE_REG[0] >> 4) < 10)) )//¼üÅÌ¹æÔò£¬³ÌÐò°´
+             -Ä¬ÈÏµÄÀ´±à
   54   4                              {
   55   5                                      if (Two_Menu_F8_E1_temp == 1)  //Îª°´¼üÖµ
   56   5                                      {
@@ -125,9 +126,9 @@ line level    source
  111   7                                                      delay10ms();
  112   7                                                      if (((Two_Menu_F8_E1_temp != 1) && temp_buff[5] == old2_RF_RECE_REG[0] && temp_buff[6] == old2_RF_RE
              -CE_REG[1] && ((temp_buff[7] >> 4) == (old2_RF_RECE_REG[2] >> 4))) || ((Two_Menu_F8_E1_temp == 1) && temp_buff[5] == old2
-             -_RF_RECE_REG[0] && temp_buff[6] == old2_RF_RECE_REG[1] && temp_buff[7] == old2_RF_RECE_REG[2]))// ½øÐÐ¶Ô±È£¬¿´¿´Êý¾ÝÊÇ·ñ
-C51 COMPILER V9.00   DECODER                                                               10/22/2015 12:15:33 PAGE 3   
+C51 COMPILER V9.00   DECODER                                                               10/22/2015 18:28:53 PAGE 3   
 
+             -_RF_RECE_REG[0] && temp_buff[6] == old2_RF_RECE_REG[1] && temp_buff[7] == old2_RF_RECE_REG[2]))// ½øÐÐ¶Ô±È£¬¿´¿´Êý¾ÝÊÇ·ñ
              -·ûºÏ
  113   7                                                      {
  114   8      #ifdef DEBUG
@@ -189,9 +190,9 @@ line level    source
  168   8                                                                      display();//ÏÔÊ¾ÊýÂë¹Ü
  169   8      #ifdef DEBUG
                                                                               uart_printf("decoder success!"); 
-              #endif
-C51 COMPILER V9.00   DECODER                                                               10/22/2015 12:15:33 PAGE 4   
+C51 COMPILER V9.00   DECODER                                                               10/22/2015 18:28:53 PAGE 4   
 
+              #endif
  172   8      
  173   8                                                                      set_func_index(DECODER_MENU);;//´ËÊ±ÌøÈë½âÂë²Ëµ¥£¬ÎªÏÂÒ»´Î½âÂë×ö×¼±¸
  174   8                                                                      clear_again_receive_rf_decoder_finished();//Çå³ý½âÂëÍê³É±êÖ¾Î»
@@ -208,8 +209,9 @@ line level    source
  185   3                      {
  186   4                              set_logout_cycle_table(0);//Ñ­»·¸úÏúºÅÖØÐÂ¼ÆÊý
  187   4                               //¼üÅÌ¹æÔò
- 188   4                              if ((old2_RF_RECE_REG[2] & 0xf0) == 0x00 && (((old2_RF_RECE_REG[0] >> 4) == Two_Menu_F7_E1_temp) || (Tw
-             -o_Menu_F7_E1_temp == 10)))//¼üÅÌ¹æÔò£¬³ÌÐò°´Ä¬ÈÏµÄÀ´±à
+ 188   4                              if ((old2_RF_RECE_REG[2] & 0xf0) == 0x00 && ((((old2_RF_RECE_REG[0] >> 4) == Two_Menu_F7_E1_temp) && (o
+             -ld2_RF_RECE_REG[0] >> 4) < 10) || ((Two_Menu_F7_E1_temp == 10) && (old2_RF_RECE_REG[0] >> 4) < 10)))//¼üÅÌ¹æÔò£¬³ÌÐò°´Ä¬
+             -ÈÏµÄÀ´±à
  189   4                              {
  190   5                                      if (Two_Menu_F8_E1_temp == 1)  //Îª°´¼üÖµ
  191   5                                      {
@@ -252,10 +254,10 @@ line level    source
  228   7                                              }
  229   6                                              for (l = 0; l<6; l++) //½²µÚÒ»×éÊý¾ÝÇå0
  230   6                                              {
+C51 COMPILER V9.00   DECODER                                                               10/22/2015 18:28:53 PAGE 5   
+
  231   7                                                      display_ram[l] = 0;
  232   7                                              }
-C51 COMPILER V9.00   DECODER                                                               10/22/2015 12:15:33 PAGE 5   
-
  233   6                                                      
  234   6                                              decoder_temp_to_mcuram(display_ram, temp_buff); //Èç¹û·ûºÏµÄ»°  ½«ÁÙÊ±Êý×éµÄÊý¾ÝÒÆÈëµ¥Æ¬»úÔÝ´æÊý×é 8×
              -Ö½Ú×ª6×Ö½Ú                        
@@ -316,10 +318,10 @@ line level    source
  288   7                                                      IRcvStr(I2C_ADDRESS, CALL_DATA_START + (j * 32 + i) * 8, temp_buff, 8);//¶Á³ö¶ÔÓ¦µÄ8¸ö×Ö½ÚµÄÊý¾Ý
  289   7                                                      delay10ms();
  290   7                                                      if (((Two_Menu_F8_E1_temp != 1) && temp_buff[5] == old2_RF_RECE_REG[0] && temp_buff[6] == old2_RF_RE
+C51 COMPILER V9.00   DECODER                                                               10/22/2015 18:28:53 PAGE 6   
+
              -CE_REG[1] && ((temp_buff[7] >> 4) == (old2_RF_RECE_REG[2] >> 4))) || ((Two_Menu_F8_E1_temp == 1) && temp_buff[5] == old2
              -_RF_RECE_REG[0] && temp_buff[6] == old2_RF_RECE_REG[1] && temp_buff[7] == old2_RF_RECE_REG[2]))
-C51 COMPILER V9.00   DECODER                                                               10/22/2015 12:15:33 PAGE 6   
-
  291   7                                                      {
  292   8      #ifdef DEBUG
                                                                       uart_printf("ÄãºÃ \r\n");
@@ -380,10 +382,10 @@ line level    source
  348   9                                                                      decoder_temp_to_mcuram(display_ram, temp_buff); //Èç¹û·ûºÏµÄ»°  ½«ÁÙÊ±Êý×éµÄÊý¾ÝÒÆÈëµ¥Æ¬»úÔÝ´æÊý×é
              - 8×Ö½Ú×ª6×Ö½Ú
  349   9                                                                      tm1629_load();//µ¥Æ¬»ú°ÑÊý×éÄÚÈÝÔØÈëÊýÂë¹ÜÏÔ´æÊý×éÖÐ
+C51 COMPILER V9.00   DECODER                                                               10/22/2015 18:28:53 PAGE 7   
+
  350   9                                                                      display();//ÏÔÊ¾ÊýÂë¹Ü
  351   9                                                              }
-C51 COMPILER V9.00   DECODER                                                               10/22/2015 12:15:33 PAGE 7   
-
  352   8                                                      else if (Two_Menu_F3_E1_temp == 2)//ÎªÑ­»·Ä£Ê½
  353   8                                                      {
  354   9                                                              if (temp_buff[0] == QUXIAO_1 || temp_buff[0] == 0)
@@ -444,10 +446,10 @@ line level    source
  407   3      
  408   3                      case TWO_MENU_F1_E1_D1:
  409   3                      case TWO_MENU_F1_E1_D2:
+C51 COMPILER V9.00   DECODER                                                               10/22/2015 18:28:53 PAGE 8   
+
  410   3                      case TWO_MENU_F1_E1_D3:
  411   3                      case TWO_MENU_F1_E1_D4:
-C51 COMPILER V9.00   DECODER                                                               10/22/2015 12:15:33 PAGE 8   
-
  412   3                      {
  413   4                              set_func_index(TWO_MENU_F1_E1_D4);
  414   4                              buf_eeprom[0] = old2_RF_RECE_REG[2] & 0x0f;//°´¼üÖµ±£´æµ½0×Ö½Ú
@@ -508,10 +510,10 @@ line level    source
  467   7                                                      Two_Menu_F1_E1[3] = 0;
  468   7                                              }
  469   6                                      }
+C51 COMPILER V9.00   DECODER                                                               10/22/2015 18:28:53 PAGE 9   
+
  470   5                                      else
  471   5                                              Two_Menu_F1_E1[3]++;
-C51 COMPILER V9.00   DECODER                                                               10/22/2015 12:15:33 PAGE 9   
-
  472   5                              }
  473   4                              break;
  474   4                      }
@@ -572,10 +574,10 @@ line level    source
  527   6                                                                                        else
  528   6                                                                                        {
  529   7                                                                                                Two_Menu_F1_E2[2]++;
+C51 COMPILER V9.00   DECODER                                                               10/22/2015 18:28:53 PAGE 10  
+
  530   7                                                                                                Two_Menu_F1_E2[3] = 0;
  531   7                                                                                        }
-C51 COMPILER V9.00   DECODER                                                               10/22/2015 12:15:33 PAGE 10  
-
  532   6                                                                                }
  533   5                                                                                else
  534   5                                                                                        Two_Menu_F1_E2[3]++;
@@ -636,10 +638,10 @@ line level    source
  587   7                                              }
  588   6                                              else
  589   6                                              {
+C51 COMPILER V9.00   DECODER                                                               10/22/2015 18:28:53 PAGE 11  
+
  590   7                                                      Two_Menu_F1_E3[2]++;
  591   7                                                      Two_Menu_F1_E3[3] = 0;
-C51 COMPILER V9.00   DECODER                                                               10/22/2015 12:15:33 PAGE 11  
-
  592   7                                              }
  593   6                                      }
  594   5                                      else
@@ -700,10 +702,10 @@ line level    source
  647   7                                              }
  648   6                                              else
  649   6                                              {
+C51 COMPILER V9.00   DECODER                                                               10/22/2015 18:28:53 PAGE 12  
+
  650   7                                                      Two_Menu_F1_E4[2]++;
  651   7                                                      Two_Menu_F1_E4[3] = 0;
-C51 COMPILER V9.00   DECODER                                                               10/22/2015 12:15:33 PAGE 12  
-
  652   7                                              }
  653   6                                      }
  654   5                                      else
@@ -717,12 +719,14 @@ line level    source
  662   3                              if (Two_Menu_F8_E1_temp == 1)
  663   3                              {
  664   4                                      single_key[old2_RF_RECE_REG[2] & 0x0f] = Two_Menu_F8_E2_temp;
- 665   4                              }
- 666   3                              else
- 667   3                              {
- 668   4                                      multiple_key[old2_RF_RECE_REG[2] & 0x0f] = Two_Menu_F8_E2_temp;
- 669   4                              }
- 670   3      #ifdef DEBUG
+ 665   4                                      ISendStr(I2C_ADDRESS, SIN_KEY, single_key, 16);
+ 666   4                              }
+ 667   3                              else
+ 668   3                              {
+ 669   4                                      multiple_key[old2_RF_RECE_REG[2] & 0x0f] = Two_Menu_F8_E2_temp;
+ 670   4                                      ISendStr(I2C_ADDRESS, MUL_KEY, multiple_key, 16);
+ 671   4                              }
+ 672   3      #ifdef DEBUG
                                       uart_printf("single_key£º  ");
                                       for (i = 0; i < 16; i++)
                                       {
@@ -739,36 +743,36 @@ line level    source
                                       }
                                       uart_printf(" \r\n");
               #endif  
- 687   3      
- 688   3                              break;
  689   3      
- 690   3      
- 691   3                      default:break;//Ä¬ÈÏµÄbreak
- 692   3                      }
- 693   2                      clear_again_receive_rf_decoder_finished();//Çå³ý±êÖ¾Î»
- 694   2              }
- 695   1              
- 696   1              LogoutProcess();
- 697   1              CycleProcess();
- 698   1      }
- 699          
- 700          unsigned char return_Two_menu_set_success(void)
- 701          {
- 702   1              unsigned char temp = 0;
- 703   1              temp = Two_menu_set_success;
- 704   1              return temp;
- 705   1      }
- 706          
- 707          void set_Two_menu_set_success(unsigned char temp)
- 708          {
- 709   1              Two_menu_set_success = temp;
- 710   1      }
+ 690   3                              break;
+ 691   3      
+ 692   3      
+ 693   3                      default:break;//Ä¬ÈÏµÄbreak
+ 694   3                      }
+ 695   2                      clear_again_receive_rf_decoder_finished();//Çå³ý±êÖ¾Î»
+ 696   2              }
+ 697   1              
+ 698   1              LogoutProcess();
+ 699   1              CycleProcess();
+ 700   1      }
+ 701          
+ 702          unsigned char return_Two_menu_set_success(void)
+ 703          {
+ 704   1              unsigned char temp = 0;
+ 705   1              temp = Two_menu_set_success;
+ 706   1              return temp;
+ 707   1      }
+ 708          
+ 709          void set_Two_menu_set_success(unsigned char temp)
+ 710          {
+ 711   1              Two_menu_set_success = temp;
+C51 COMPILER V9.00   DECODER                                                               10/22/2015 18:28:53 PAGE 13  
+
+ 712   1      }
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-C51 COMPILER V9.00   DECODER                                                               10/22/2015 12:15:33 PAGE 13  
-
-   CODE SIZE        =   3511    ----
+   CODE SIZE        =   3601    ----
    CONSTANT SIZE    =     32    ----
    XDATA SIZE       =      9      53
    PDATA SIZE       =   ----    ----

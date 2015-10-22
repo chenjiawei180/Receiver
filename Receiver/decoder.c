@@ -50,7 +50,7 @@ void DecoderProcess(void)
 		{
 			set_logout_cycle_table(0);//循环跟销号重新计数
 			//键盘规则
-			if ((old2_RF_RECE_REG[2] & 0xf0) == 0x00 && (((old2_RF_RECE_REG[0] >> 4) == Two_Menu_F7_E1_temp) || (Two_Menu_F7_E1_temp == 10)))//键盘规则，程序按默认的来编
+			if ((old2_RF_RECE_REG[2] & 0xf0) == 0x00 && ((((old2_RF_RECE_REG[0] >> 4) == Two_Menu_F7_E1_temp) && (old2_RF_RECE_REG[0] >> 4) < 10) ||  ((Two_Menu_F7_E1_temp == 10) && (old2_RF_RECE_REG[0] >> 4) < 10)) )//键盘规则，程序按默认的来编
 			{
 				if (Two_Menu_F8_E1_temp == 1)  //为按键值
 				{
@@ -185,7 +185,7 @@ void DecoderProcess(void)
 		{
 			set_logout_cycle_table(0);//循环跟销号重新计数
 			 //键盘规则
-			if ((old2_RF_RECE_REG[2] & 0xf0) == 0x00 && (((old2_RF_RECE_REG[0] >> 4) == Two_Menu_F7_E1_temp) || (Two_Menu_F7_E1_temp == 10)))//键盘规则，程序按默认的来编
+			if ((old2_RF_RECE_REG[2] & 0xf0) == 0x00 && ((((old2_RF_RECE_REG[0] >> 4) == Two_Menu_F7_E1_temp) && (old2_RF_RECE_REG[0] >> 4) < 10) || ((Two_Menu_F7_E1_temp == 10) && (old2_RF_RECE_REG[0] >> 4) < 10)))//键盘规则，程序按默认的来编
 			{
 				if (Two_Menu_F8_E1_temp == 1)  //为按键值
 				{
@@ -662,10 +662,12 @@ void DecoderProcess(void)
 			if (Two_Menu_F8_E1_temp == 1)
 			{
 				single_key[old2_RF_RECE_REG[2] & 0x0f] = Two_Menu_F8_E2_temp;
+				ISendStr(I2C_ADDRESS, SIN_KEY, single_key, 16);
 			}
 			else
 			{
 				multiple_key[old2_RF_RECE_REG[2] & 0x0f] = Two_Menu_F8_E2_temp;
+				ISendStr(I2C_ADDRESS, MUL_KEY, multiple_key, 16);
 			}
 #ifdef DEBUG
 			uart_printf("single_key：  ");

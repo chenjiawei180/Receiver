@@ -24,5 +24,8 @@ extern void clear_return_standby_time(void);
 extern unsigned char return_fd_table(void);
 extern void set_fd_table(unsigned char temp);
 
+extern unsigned char return_filter_main(void);
+extern void set_filter_main(unsigned char temp);
+
 
 #endif

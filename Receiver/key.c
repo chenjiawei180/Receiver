@@ -226,7 +226,7 @@ unsigned char KeyDecoder(void)
 		if (register_manager_temp == 1)
 		{
 			
-			if (func_index == MENU_STANDBY)
+			if (func_index == MENU_STANDBY )
 			{
 //				uart_printf("accumulate_decoder %d .\r\n", (unsigned int)accumulate_decoder);
 //				uart_printf("accumulate_decoder %d .\r\n", (unsigned int)old2_RF_RECE_REG[2] & 0x0f);
@@ -238,7 +238,7 @@ unsigned char KeyDecoder(void)
 				{
 					accumulate_decoder = 0;
 				}
-				if (accumulate_decoder>10)
+				if (accumulate_decoder>3)
 				{
 					set_main_press_time(20);
 					accumulate_decoder = 0;
@@ -249,9 +249,14 @@ unsigned char KeyDecoder(void)
 			switch (old2_RF_RECE_REG[2] & 0x0f)
 			{
 			case 0x01:key_val = 0x001c; break;
-			case 0x02:key_val = 0x002c; break;
-			case 0x04:key_val = 0x0034; break;
-			case 0x08:key_val = 0x0038; break;
+			case 0x02:key_val = 0x0034; break;
+			case 0x04:key_val = 0x002c; break;
+			case 0x08:
+				if (return_filter_main() == 0)
+				{
+					key_val = 0x0038;
+				}
+				break;
 			default:break;
 			}
 		}
@@ -265,8 +270,8 @@ unsigned char KeyDecoder(void)
 	switch (key_val)
 	{
 	case 0x001c:return KEY_RETURN; break;//1 按下相应的键显示相对应的码值
-	case 0x002c:return KEY_DOWN; break;//2  
-	case 0x0034:return KEY_UP; break;//4
+	case 0x0034:return KEY_DOWN; break;//2  
+	case 0x002c:return KEY_UP; break;//4
 	case 0x0038:return KEY_FUNC; break;//5 按下相应的键显示相对应的码值
 	default:return 0xff; break;
 	}
@@ -285,6 +290,7 @@ void KeyProcess(void)
 				if (main_press_time_temp >= 20)
 				{
 					func_index = ONE_MENU_F1;
+					set_filter_main(6);//进入菜单后 3S内 呼叫器的菜单键无效
 					clear_main_press_time();
 				}
 			}
@@ -401,6 +407,37 @@ void KeyProcess(void)
 				if (main_press_time_temp >= 20)
 				{
 					func_index = TWO_MENU_Fd_SET;
+					clear_main_press_time();
+				}
+			}
+			else if (func_index == TWO_MENU_F9_E2)  //如果索引==FA  则要1秒以上进入菜单
+			{
+				main_press_time_temp = return_main_press_time();
+				if (main_press_time_temp >= 20)
+				{
+					GD5800_select_chapter(CHENGGONG);
+					var_init();
+					env_load();
+					IAP_CONTR = 0X20;
+					clear_main_press_time();
+				}
+			}
+			else if (func_index == TWO_MENU_F9_E1)  //如果索引==FA  则要1秒以上进入菜单
+			{
+				main_press_time_temp = return_main_press_time();
+				if (main_press_time_temp >= 20)
+				{
+					GD5800_select_chapter(CHENGGONG);
+					var_init();
+					key_init();
+					env_load();
+					ISendStr(I2C_ADDRESS, SIN_KEY, single_key, 16);
+					delay10ms();
+					ISendStr(I2C_ADDRESS, MUL_KEY, multiple_key, 16);
+					delay10ms();
+					Delete_all_data();
+					delay10ms();
+					IAP_CONTR = 0X20;
 					clear_main_press_time();
 				}
 			}
@@ -577,7 +614,7 @@ void KeyProcess(void)
 				else Two_Menu_F3_E1 = 1;
 				break;
 			case TWO_MENU_F3_E2_SET:
-				if (Two_Menu_F3_E2 == 20) Two_Menu_F3_E2 = 1;	//存储队列个数
+				if (Two_Menu_F3_E2 == 99) Two_Menu_F3_E2 = 1;	//存储队列个数
 				else Two_Menu_F3_E2 ++;
 				break;
 			case TWO_MENU_F4_SET:
@@ -815,7 +852,7 @@ void KeyProcess(void)
 				else Two_Menu_F3_E1 = 1;
 				break;
 			case TWO_MENU_F3_E2_SET:
-				if (Two_Menu_F3_E2 == 1) Two_Menu_F3_E2 = 20;	//存储队列个数
+				if (Two_Menu_F3_E2 == 1) Two_Menu_F3_E2 = 99;	//存储队列个数
 				else Two_Menu_F3_E2--;
 				break;
 			case TWO_MENU_F4_SET:
@@ -895,6 +932,7 @@ void KeyProcess(void)
 			func_index = table[func_index].down; break;
 		default:break;
 	}
+	env_load();
 	current_operation_index = table[func_index].index_operation;
 	(*current_operation_index)();//执行当前操作函数
 }
@@ -1063,4 +1101,171 @@ unsigned char return_Two_Menu_Fb_E1(void)
 	unsigned char temp = 0;
 	temp = Two_Menu_Fb_E1;
 	return temp;
+}
+
+void env_load(void)
+{
+	
+	EEPROM.Two_Menu_F3_E1 = Two_Menu_F3_E1;
+	EEPROM.Two_Menu_F3_E2 = Two_Menu_F3_E2;
+	EEPROM.Two_Menu_F4_E1 = Two_Menu_F4_E1;
+	EEPROM.Two_Menu_F5_E1 = Two_Menu_F5_E1;
+	EEPROM.Two_Menu_F6_E1 = Two_Menu_F6_E1;
+	EEPROM.Two_Menu_F6_E2 = Two_Menu_F6_E2;
+	EEPROM.Two_Menu_F6_E3 = Two_Menu_F6_E3;
+	EEPROM.Two_Menu_F6_E4 = Two_Menu_F6_E4;
+	EEPROM.Two_Menu_F6_E5 = Two_Menu_F6_E5;
+	EEPROM.Two_Menu_F6_E6 = Two_Menu_F6_E6;
+	EEPROM.Two_Menu_F6_E7 = Two_Menu_F6_E7;
+	EEPROM.Two_Menu_F7_E1 = Two_Menu_F7_E1;
+	EEPROM.Two_Menu_F8_E1 = Two_Menu_F8_E1;
+	EEPROM.Two_Menu_Fb_E1 = Two_Menu_Fb_E1;
+	EEPROM.Two_Menu_FC_E1 = Two_Menu_FC_E1;
+
+	ISendStr(I2C_ADDRESS, BACK, &EEPROM, 15);
+	delay10ms();
+}
+
+void env_init(void)
+{
+	IRcvStr(I2C_ADDRESS, SIN_KEY, single_key, 16);
+	delay10ms();
+	IRcvStr(I2C_ADDRESS, MUL_KEY, multiple_key, 16);
+	delay10ms();
+	IRcvStr(I2C_ADDRESS, BACK, &EEPROM, 15);
+	delay10ms();
+
+	Two_Menu_F3_E1 =  EEPROM.Two_Menu_F3_E1 ;
+	Two_Menu_F3_E2 =  EEPROM.Two_Menu_F3_E2 ;
+	Two_Menu_F4_E1 =  EEPROM.Two_Menu_F4_E1 ;
+	Two_Menu_F5_E1 =  EEPROM.Two_Menu_F5_E1 ;
+	Two_Menu_F6_E1 =  EEPROM.Two_Menu_F6_E1 ;
+	Two_Menu_F6_E2 =  EEPROM.Two_Menu_F6_E2 ;
+	Two_Menu_F6_E3 =  EEPROM.Two_Menu_F6_E3 ;
+	Two_Menu_F6_E4 =  EEPROM.Two_Menu_F6_E4 ;
+	Two_Menu_F6_E5 =  EEPROM.Two_Menu_F6_E5 ;
+	Two_Menu_F6_E6 =  EEPROM.Two_Menu_F6_E6 ;
+	Two_Menu_F6_E7 =  EEPROM.Two_Menu_F6_E7 ;
+	Two_Menu_F7_E1 =  EEPROM.Two_Menu_F7_E1 ;
+	Two_Menu_F8_E1 =  EEPROM.Two_Menu_F8_E1;
+	Two_Menu_Fb_E1 =  EEPROM.Two_Menu_Fb_E1;
+	Two_Menu_FC_E1 =  EEPROM.Two_Menu_FC_E1;
+
+	if (EEPROM.Two_Menu_F3_E1 > 2)
+	{
+		Two_Menu_F3_E1 = 1;
+	}
+	if (EEPROM.Two_Menu_F3_E2 > 99)
+	{
+		Two_Menu_F3_E2 = 1;
+	}
+	if (EEPROM.Two_Menu_F4_E1 > 99)
+	{
+		Two_Menu_F4_E1 = 1;
+	}
+	if (EEPROM.Two_Menu_F5_E1 > 99)
+	{
+		Two_Menu_F5_E1 = 1;
+	}
+	if (EEPROM.Two_Menu_F6_E1 > 7)
+	{
+		Two_Menu_F6_E1 = 0;
+	}
+	if (EEPROM.Two_Menu_F6_E2 > 9)
+	{
+		Two_Menu_F6_E2 = 2;
+	}
+	if (EEPROM.Two_Menu_F6_E3 > 1)
+	{
+		Two_Menu_F6_E3 = 0;
+	}
+	if (EEPROM.Two_Menu_F6_E4 > 9)
+	{
+		Two_Menu_F6_E4 = 6;
+	}
+	if (EEPROM.Two_Menu_F6_E5 > 7)
+	{
+		Two_Menu_F6_E5 = 3;
+	}
+	if (EEPROM.Two_Menu_F6_E6 > 1)
+	{
+		Two_Menu_F6_E6 = 0;
+	}
+	if (EEPROM.Two_Menu_F6_E7 > 1)
+	{
+		Two_Menu_F6_E7 = 0;
+	}
+	if (EEPROM.Two_Menu_F7_E1 > 11)
+	{
+		Two_Menu_F7_E1 = 11;
+	}
+	if (EEPROM.Two_Menu_F8_E1 > 2)
+	{
+		Two_Menu_F8_E1 = 2;
+	}
+	if (EEPROM.Two_Menu_Fb_E1 > 1)
+	{
+		Two_Menu_Fb_E1 = 1;
+	}
+	if (EEPROM.Two_Menu_FC_E1 > 2)
+	{
+		Two_Menu_FC_E1 = 1;
+	}
+}
+
+void var_init(void)
+{
+	Two_Menu_F3_E1 = 1; //即时模式或者排队显示
+	Two_Menu_F3_E2 = 1; //呼叫时候存储数量
+
+	Two_Menu_F4_E1 = 0; //销号时间
+	Two_Menu_F5_E1 = 0; //循环间隔时间
+
+	Two_Menu_F6_E1 = 0; //简单报读
+	Two_Menu_F6_E2 = 2; //语音报读次数
+	Two_Menu_F6_E3 = 0; //循环时候是否报读
+	Two_Menu_F6_E4 = 6; //音量大小调整
+	Two_Menu_F6_E5 = 3; //显示屏LED亮度调整
+	Two_Menu_F6_E6 = 1; //语音导航调整
+	Two_Menu_F6_E7 = 0; //语音导航调整
+
+	Two_Menu_F7_E1 = 11; // E1默认键盘规则 999*9
+	Two_Menu_F7_E2 = 0; // E2其他键盘规则 9999*9
+	Two_Menu_F7_E3 = 0; // E3其他键盘规则 999*99
+	Two_Menu_F7_E4 = 0; // E4其他键盘规则 9999*99
+
+	Two_Menu_F8_E1 = 2; // 单按键与 多按键切换
+
+	Two_Menu_F8_E2 = 0; // 键位设置
+
+	Two_Menu_Fb_E1 = 1; // 设置主机有没有销号功能
+	Two_Menu_FC_E1 = 1; // 设置万年历待机与----待机的切换
+	Two_Menu_Fd_E1 = 1; // E1 E2 E3 E4 E5 E6
+
+}
+
+void key_init(void)
+{
+	unsigned char i;
+	for (i = 0; i < 16; i++)
+	{
+		single_key[i] = 0x01;
+	}
+
+	multiple_key[0] = 0X01;
+	multiple_key[1] = QUXIAO - QUXIAO;
+	multiple_key[2] = JIEZHANG - QUXIAO;
+	multiple_key[3] = DIANDANG - QUXIAO;
+	multiple_key[4] = JIUSHUI - QUXIAO;
+	multiple_key[5] = 0X01;
+	multiple_key[6] = 0x01;
+	multiple_key[7] = JIASHUI - QUXIAO;
+	multiple_key[8] = HUJIAO - QUXIAO;
+	multiple_key[9] =  0x01;
+	multiple_key[10] = 0x01;
+	multiple_key[11] = 0x01;
+	multiple_key[12] = 0x01;
+	multiple_key[13] = 0x01;
+	multiple_key[14] = 0x01;
+	multiple_key[15] = 0x01;
 }

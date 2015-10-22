@@ -204,8 +204,8 @@
       <Focus>0</Focus>
       <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>180</TopLine>
-      <CurrentLine>191</CurrentLine>
+      <TopLine>886</TopLine>
+      <CurrentLine>899</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>.\Receiver\key.c</PathWithFileName>
       <FilenameWithoutPath>key.c</FilenameWithoutPath>
@@ -218,8 +218,8 @@
       <Focus>0</Focus>
       <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>815</TopLine>
-      <CurrentLine>834</CurrentLine>
+      <TopLine>31</TopLine>
+      <CurrentLine>31</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>.\Receiver\tm1629.c</PathWithFileName>
       <FilenameWithoutPath>tm1629.c</FilenameWithoutPath>
@@ -1676,8 +1676,8 @@
         <Doc>
           <Name>.\Receiver\key.c</Name>
           <ColumnNumber>0</ColumnNumber>
-          <TopLine>180</TopLine>
-          <CurrentLine>191</CurrentLine>
+          <TopLine>886</TopLine>
+          <CurrentLine>899</CurrentLine>
         </Doc>
         <Doc>
           <Name>.\Receiver\decoder.c</Name>
@@ -1694,8 +1694,8 @@
         <Doc>
           <Name>.\Receiver\tm1629.c</Name>
           <ColumnNumber>0</ColumnNumber>
-          <TopLine>815</TopLine>
-          <CurrentLine>834</CurrentLine>
+          <TopLine>31</TopLine>
+          <CurrentLine>31</CurrentLine>
         </Doc>
       </Documents>
     </MDIGroup>

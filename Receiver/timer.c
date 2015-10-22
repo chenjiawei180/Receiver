@@ -20,6 +20,8 @@ unsigned char second_times = 0;
 
 unsigned char fd_table = 0;
 
+unsigned char filter_main = 0;
+
 void Init_Timer0(void)
 {
 	TMOD |= 0x01;	  //使用模式1，16位定时器，使用"|"符号可以在使用多个定时器时不受影响	
@@ -63,6 +65,10 @@ void Timer0_isr(void) interrupt 1  //定时器0中断服务程序
 			await_number_table++;
 			fd_table++;
 			await_number = 0;
+			if (filter_main != 0)
+			{
+				filter_main--;
+			}
 		}
 		if (await_number_table >= 4)//确保程序正确延时
 		{
@@ -201,4 +207,16 @@ unsigned char return_fd_table(void)	//返回fd_table变量的值
 void set_fd_table(unsigned char temp) //设置fd_table变量的值
 {
 	fd_table = temp;
+}
+
+unsigned char return_filter_main(void)	//返回filter_main变量的值
+{
+	unsigned char filter_main_temp = 0;
+	filter_main_temp = filter_main;
+	return filter_main_temp;
+}
+
+void set_filter_main(unsigned char temp) //设置filter_main变量的值
+{
+	filter_main = temp;
 }

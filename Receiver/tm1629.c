@@ -13,12 +13,12 @@ unsigned char const CODE[] = { 0x3F, 0x06, 0x5B, 0x4F, 0x66, 0x6D, 0x7D, 0x07, 0
 unsigned char const INIT_CODE[] = { 0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80 };//逐段点亮数码管数组
 unsigned char const SHANGSHUO[] = { 0x40, 0x00 }; // 点亮数码管中间段以及灭
 unsigned char buf_display[6][8] = { 0 }; //3个TM1629显存数组
-unsigned char display_ram[240] = { 0 }; //程序运行时记录显示数据的内存 
+unsigned char display_ram[600] = { 0 }; //程序运行时记录显示数据的内存 
 unsigned char await_time_table= 0 ;//用于记录待机显示横杠数码管次数 
 unsigned char Two_Menu_F8_E1_save =0;
 
 unsigned char single_key[16]   = { 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01 };//单键位设置存储数组
-unsigned char multiple_key[16] = { 0x01, QUXIAO-QUXIAO, JIEZHANG-QUXIAO, 0x01, JIUSHUI-QUXIAO, 0X01, 0x01, 0x01, HUJIAO - QUXIAO, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01 };//多键位设置存储数组
+unsigned char multiple_key[16] = { 0x01, QUXIAO-QUXIAO, JIEZHANG-QUXIAO, DIANDANG-QUXIAO, JIUSHUI-QUXIAO, 0X01, 0x01, JIASHUI-QUXIAO, HUJIAO - QUXIAO, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01 };//多键位设置存储数组
 
 void writeDataTo1629(unsigned char p) //写数据给第一个TM1629
 {

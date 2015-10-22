@@ -7,7 +7,7 @@
 bit ack;	              //应答标志位
 unsigned char xdata at24c64_buff[PAGE_LENGTH] = { 0 }; //24C256页面存储缓存
 unsigned char xdata eeprom_buff[8] = { 0 };			   //注册数组缓存
-
+Env_t	EEPROM;
 void DelayUs2x(unsigned char t)
 {
 	while (--t);
