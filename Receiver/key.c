@@ -34,7 +34,8 @@ unsigned char Two_Menu_F6_E2 = 1; //语音报读次数
 unsigned char Two_Menu_F6_E3 = 0; //循环时候是否报读
 unsigned char Two_Menu_F6_E4 = 0; //音量大小调整
 unsigned char Two_Menu_F6_E5 = 0; //显示屏LED亮度调整
-unsigned char Two_Menu_F6_E6 = 1; //显示屏LED亮度调整
+unsigned char Two_Menu_F6_E6 = 1; //语音导航调整
+unsigned char Two_Menu_F6_E7 = 0; //语音导航调整
 
 unsigned char Two_Menu_F7_E1 = 11; // E1默认键盘规则 999*9
 unsigned char Two_Menu_F7_E2 = 0; // E2其他键盘规则 9999*9
@@ -91,7 +92,7 @@ key_table code table[100] =
 	{ TWO_MENU_F4_SET, TWO_MENU_F4_SET, TWO_MENU_F4_SET, TWO_MENU_F4_SET, ONE_MENU_F4, (*fun31) }, //F4子菜单
 	{ TWO_MENU_F5_SET, TWO_MENU_F5_SET, TWO_MENU_F5_SET, TWO_MENU_F5_SET, ONE_MENU_F5, (*fun32) }, //F5子菜单
 
-	{ TWO_MENU_F6_E1, TWO_MENU_F6_E2, TWO_MENU_F6_E6, TWO_MENU_F6_E1_SET, ONE_MENU_F6, (*fun33) }, //F6子菜单E1
+	{ TWO_MENU_F6_E1, TWO_MENU_F6_E2, TWO_MENU_F6_E7, TWO_MENU_F6_E1_SET, ONE_MENU_F6, (*fun33) }, //F6子菜单E1
 	{ TWO_MENU_F6_E2, TWO_MENU_F6_E3, TWO_MENU_F6_E1, TWO_MENU_F6_E2_SET, ONE_MENU_F6, (*fun34) }, //F6子菜单E2
 	{ TWO_MENU_F6_E3, TWO_MENU_F6_E4, TWO_MENU_F6_E2, TWO_MENU_F6_E3_SET, ONE_MENU_F6, (*fun35) }, //F6子菜单E3
 	{ TWO_MENU_F6_E4, TWO_MENU_F6_E5, TWO_MENU_F6_E3, TWO_MENU_F6_E4_SET, ONE_MENU_F6, (*fun36) }, //F6子菜单E4
@@ -172,9 +173,10 @@ key_table code table[100] =
 
 	{ DECODER_MENU, DECODER_MENU, DECODER_MENU, DECODER_MENU, DECODER_MENU, (*fun95)},
 
-	{ TWO_MENU_F6_E6, TWO_MENU_F6_E1, TWO_MENU_F6_E5, TWO_MENU_F6_E6_SET, ONE_MENU_F6, (*fun96) },
+	{ TWO_MENU_F6_E6, TWO_MENU_F6_E7, TWO_MENU_F6_E5, TWO_MENU_F6_E6_SET, ONE_MENU_F6, (*fun96) },
 	{ TWO_MENU_F6_E6_SET, TWO_MENU_F6_E6_SET, TWO_MENU_F6_E6_SET, TWO_MENU_F6_E6_SET, TWO_MENU_F6_E6, (*fun97) },
-
+	{ TWO_MENU_F6_E7, TWO_MENU_F6_E1, TWO_MENU_F6_E6, TWO_MENU_F6_E7_SET, ONE_MENU_F6, (*fun98) },
+	{ TWO_MENU_F6_E7_SET, TWO_MENU_F6_E7_SET, TWO_MENU_F6_E7_SET, TWO_MENU_F6_E7_SET, TWO_MENU_F6_E7, (*fun99) },
 };
 
 unsigned int KeyScan(void)  //Keyboard scan function
@@ -609,6 +611,10 @@ void KeyProcess(void)
 				if (Two_Menu_F6_E6 == 1) Two_Menu_F6_E6 = 0;	
 				else Two_Menu_F6_E6 = 1;
 				break;
+			case TWO_MENU_F6_E7_SET:
+				if (Two_Menu_F6_E7 == 1) Two_Menu_F6_E7 = 0;
+				else Two_Menu_F6_E7 = 1;
+				break;
 
 				default:break;
 			}	
@@ -843,6 +849,10 @@ void KeyProcess(void)
 				if (Two_Menu_F6_E6 == 1) Two_Menu_F6_E6 = 0;
 				else Two_Menu_F6_E6 = 1;
 				break;
+			case TWO_MENU_F6_E7_SET:
+				if (Two_Menu_F6_E7 == 1) Two_Menu_F6_E7 = 0;
+				else Two_Menu_F6_E7 = 1;
+				break;
 
 				default:break;
 			}
@@ -940,6 +950,13 @@ unsigned char return_Two_Menu_F6_E6(void)
 {
 	unsigned char temp = 0;
 	temp = Two_Menu_F6_E6;
+	return temp;
+}
+
+unsigned char return_Two_Menu_F6_E7(void)
+{
+	unsigned char temp = 0;
+	temp = Two_Menu_F6_E7;
 	return temp;
 }
 

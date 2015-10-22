@@ -157,7 +157,9 @@ void submenuf6_1(unsigned char report_mode, unsigned char *report_number, unsign
 	unsigned int  type;
 	unsigned char key;
 	unsigned char Two_Menu_F7_E1_temp = 0;
+	unsigned char Two_Menu_F6_E7_temp = 0;
 	Two_Menu_F7_E1_temp = return_Two_Menu_F7_E1();
+	Two_Menu_F6_E7_temp = return_Two_Menu_F6_E7();
 	mode = report_mode;
 	number = report_number;
 	type = call_type;
@@ -167,7 +169,11 @@ void submenuf6_1(unsigned char report_mode, unsigned char *report_number, unsign
 		GD5800_select_chapter(DINGDONG);
 		if (key != 15)//防区号是否当前缀
 		{
-			GD5800_select_chapter(HAO);
+			if (Two_Menu_F6_E7_temp == 0 || (Two_Menu_F6_E7_temp == 1 && mode >= COMPLICATED_REPORT))
+			{
+				GD5800_select_chapter(HAO);
+			}
+
 			if (Two_Menu_F7_E1_temp == 10)
 			{
 				if (*(number + 1) <= 9)
@@ -209,6 +215,11 @@ void submenuf6_1(unsigned char report_mode, unsigned char *report_number, unsign
 			GD5800_select_chapter(QING);
 		}
 		submenuf6_1_voiceselect(mode, number);
+
+		if (Two_Menu_F6_E7_temp == 1 && report_mode <= NOT_REPORT)
+		{
+			GD5800_select_chapter(HAO);
+		}
 
 		if (key == 15)
 		{

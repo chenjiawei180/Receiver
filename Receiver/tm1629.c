@@ -1836,3 +1836,15 @@ void fun97(void) //二级菜单F6-E6
 	Show_one_number(temp);
 }
 
+void fun98(void) //二级菜单F6-E7
+{
+	tm1629_E(0x07);
+}
+
+void fun99(void) //二级菜单F6-E7
+{
+	unsigned char temp = 0;
+	temp = return_Two_Menu_F6_E7();
+	Show_one_number(temp);
+}
+
