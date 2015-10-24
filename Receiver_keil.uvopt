@@ -258,7 +258,7 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>154</ColumnNumber>
+      <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
       <TopLine>337</TopLine>
       <CurrentLine>356</CurrentLine>
@@ -1669,7 +1669,7 @@
       <Documents>
         <Doc>
           <Name>.\Receiver\ev1527.c</Name>
-          <ColumnNumber>154</ColumnNumber>
+          <ColumnNumber>0</ColumnNumber>
           <TopLine>337</TopLine>
           <CurrentLine>356</CurrentLine>
         </Doc>

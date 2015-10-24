@@ -1,4 +1,4 @@
-C51 COMPILER V9.00   EV1527                                                                10/22/2015 18:28:53 PAGE 1   
+C51 COMPILER V9.00   EV1527                                                                10/24/2015 12:40:35 PAGE 1   
 
 
 C51 COMPILER V9.00, COMPILATION OF MODULE EV1527
@@ -62,7 +62,7 @@ line level    source
   52   2                      //Init_Timer1();//sjz add for initialization timer0 before enable it
   53   2                      TR1 = 1;
   54   2              }
-C51 COMPILER V9.00   EV1527                                                                10/22/2015 18:28:53 PAGE 2   
+C51 COMPILER V9.00   EV1527                                                                10/24/2015 12:40:35 PAGE 2   
 
   55   1      }
   56          
@@ -126,7 +126,7 @@ line level    source
  113   2                      {
  114   3                              //高电平同步到了(最少检测到 2 次)
  115   3                              if (EX0 == 1)
-C51 COMPILER V9.00   EV1527                                                                10/22/2015 18:28:53 PAGE 3   
+C51 COMPILER V9.00   EV1527                                                                10/24/2015 12:40:35 PAGE 3   
 
  116   3                              {
  117   4                                      EX0 = 0;/*double check,since we have already detect the synchronization,if EXTINT0 is enable,need to d
@@ -190,7 +190,7 @@ line level    source
  173   2              //              P_RF_INT++;
  174   2              //      }
  175   2              //      if (RF_trans1>((measure_sync_count2 + measure_sync_count1) >> 3)) /*if the high level is bigger than 2
-C51 COMPILER V9.00   EV1527                                                                10/22/2015 18:28:53 PAGE 4   
+C51 COMPILER V9.00   EV1527                                                                10/24/2015 12:40:35 PAGE 4   
 
              -5*100us,Then should be setted as noise instead of useful signal sjz*/
  176   2              //      {
@@ -254,7 +254,7 @@ line level    source
  234   3                      case 1:
  235   3                              if (old1_RF_RECE_REG[0] == RF_RECE_REG[0] && old1_RF_RECE_REG[1] == RF_RECE_REG[1] && old1_RF_RECE_REG[
              -2] == RF_RECE_REG[2])
-C51 COMPILER V9.00   EV1527                                                                10/22/2015 18:28:53 PAGE 5   
+C51 COMPILER V9.00   EV1527                                                                10/24/2015 12:40:35 PAGE 5   
 
  236   3                              {
  237   4                                      if (old2_RF_RECE_REG[0] == RF_RECE_REG[0] && old2_RF_RECE_REG[1] == RF_RECE_REG[1] && old2_RF_RECE_REG
@@ -280,27 +280,27 @@ line level    source
  256   4                                      clear_return_standby_time();
  257   4      
  258   4      
- 259   4                                      for (j = 0; j<HOST_TABLE_NUMBER; j++)
- 260   4                                      {
- 261   5                                              IRcvStr(0xa0, HOST_TABLE_START + j*PAGE_LENGTH, temp_buff1, PAGE_LENGTH);
- 262   5                                              delay10ms();
- 263   5                                              for (i = 0; i<PAGE_LENGTH; i++)
- 264   5                                              {
- 265   6                                                      if (temp_buff1[i] == 0)
- 266   6                                                      {
- 267   7                                                              IRcvStr(0xa0, HOST_DATA_START + (j*PAGE_LENGTH + i) * 8, temp_buff, 8);
- 268   7                                                              delay10ms();
- 269   7                                                              if (temp_buff[5] == old2_RF_RECE_REG[0] && temp_buff[6] == old2_RF_RECE_REG[1] && ((temp_buff[7] >>
-             - 4) == (old2_RF_RECE_REG[2] >> 4)) )
- 270   7                                                              {
- 271   8                                                                      register_manager = 1;
- 272   8                                                                      clear_return_standby_time();
- 273   8                                                                      break;
- 274   8                                                                      break;
- 275   8                                                              }
- 276   7                                                      }
- 277   6                                              }
- 278   5                                      }
+ 259   4                                      //for (j = 0; j<HOST_TABLE_NUMBER; j++)
+ 260   4                                      //{
+ 261   4                                      //      IRcvStr(0xa0, HOST_TABLE_START + j*PAGE_LENGTH, temp_buff1, PAGE_LENGTH);
+ 262   4                                      //      delay10ms();
+ 263   4                                      //      for (i = 0; i<PAGE_LENGTH; i++)
+ 264   4                                      //      {
+ 265   4                                      //              if (temp_buff1[i] == 0)
+ 266   4                                      //              {
+ 267   4                                      //                      IRcvStr(0xa0, HOST_DATA_START + (j*PAGE_LENGTH + i) * 8, temp_buff, 8);
+ 268   4                                      //                      delay10ms();
+ 269   4                                      //                      if (temp_buff[5] == old2_RF_RECE_REG[0] && temp_buff[6] == old2_RF_RECE_REG[1] && ((temp_buff[7] 
+             ->> 4) == (old2_RF_RECE_REG[2] >> 4)) )
+ 270   4                                      //                      {
+ 271   4                                      //                              register_manager = 1;
+ 272   4                                      //                              clear_return_standby_time();
+ 273   4                                      //                              break;
+ 274   4                                      //                              break;
+ 275   4                                      //                      }
+ 276   4                                      //              }
+ 277   4                                      //      }
+ 278   4                                      //}
  279   4      
  280   4                                      RF_RECE_REG[0] = 0;
  281   4                                      RF_RECE_REG[1] = 0;
@@ -318,7 +318,7 @@ line level    source
  293   3                              else
  294   3                              {
  295   4                                      old1_RF_RECE_REG[0] = RF_RECE_REG[0];
-C51 COMPILER V9.00   EV1527                                                                10/22/2015 18:28:53 PAGE 6   
+C51 COMPILER V9.00   EV1527                                                                10/24/2015 12:40:35 PAGE 6   
 
  296   4                                      old1_RF_RECE_REG[1] = RF_RECE_REG[1];
  297   4                                      old1_RF_RECE_REG[2] = RF_RECE_REG[2];
@@ -328,6 +328,10 @@ line level    source
  301   2                      EX0 = 1;        
  302   2              }
  303   1      }
+*** WARNING C280 IN LINE 216 OF RECEIVER\EV1527.C: 'i': unreferenced local variable
+*** WARNING C280 IN LINE 216 OF RECEIVER\EV1527.C: 'j': unreferenced local variable
+*** WARNING C280 IN LINE 217 OF RECEIVER\EV1527.C: 'temp_buff': unreferenced local variable
+*** WARNING C280 IN LINE 218 OF RECEIVER\EV1527.C: 'temp_buff1': unreferenced local variable
  304          
  305          void RF_decode_main_sjz_test(void)
  306          {
@@ -378,12 +382,12 @@ line level    source
  350   3                              {
  351   4                                      RF_trans0_test_count++;
  352   4                                      RF_trans1_test_count++;
+C51 COMPILER V9.00   EV1527                                                                10/24/2015 12:40:35 PAGE 7   
+
  353   4                              }
  354   3                              RF_ini_receive();
  355   3                              EX0 = 1;
  356   3                              TR1 = 0;
-C51 COMPILER V9.00   EV1527                                                                10/22/2015 18:28:53 PAGE 7   
-
  357   3                              return;
  358   3                      }
  359   2      
@@ -442,12 +446,12 @@ line level    source
  410   4                                         measure_sync_count2 = measure_sync_count2_saved >> 1;
  411   4                                         measure_sync_count2_saved = measure_sync_count2;
  412   4      
+C51 COMPILER V9.00   EV1527                                                                10/24/2015 12:40:35 PAGE 8   
+
  413   4                                         if ((tunning_finish_count>1) && ((measure_sync_count1 - measure_sync_count1_saved <= 30) || (measur
              -e_sync_count1_saved - measure_sync_count1 <= 30)))
  414   4                                         {
  415   5                                                 measure_sync_count1_saved = measure_sync_count1_saved + measure_sync_count1;
-C51 COMPILER V9.00   EV1527                                                                10/22/2015 18:28:53 PAGE 8   
-
  416   5                                                 measure_sync_count1 = measure_sync_count1_saved >> 1;
  417   5                                                 measure_sync_count1_saved = measure_sync_count1;
  418   5                                               //  decoder_speed_test_finish = 1;
@@ -506,12 +510,12 @@ line level    source
  471   1      }
  472          
  473          void clear_register_manager(void)
+C51 COMPILER V9.00   EV1527                                                                10/24/2015 12:40:35 PAGE 9   
+
  474          {
  475   1              register_manager = 0;
  476   1      }
  477          
-C51 COMPILER V9.00   EV1527                                                                10/22/2015 18:28:53 PAGE 9   
-
  478          unsigned int return_RF_trans_count(void)
  479          {
  480   1              unsigned int temp;
@@ -521,7 +525,7 @@ line level    source
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =   1543    ----
+   CODE SIZE        =   1325    ----
    CONSTANT SIZE    =   ----    ----
    XDATA SIZE       =     37      43
    PDATA SIZE       =   ----    ----
@@ -531,4 +535,4 @@ MODULE INFORMATION:   STATIC OVERLAYABLE
 END OF MODULE INFORMATION.
 
 
-C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
+C51 COMPILATION COMPLETE.  4 WARNING(S),  0 ERROR(S)

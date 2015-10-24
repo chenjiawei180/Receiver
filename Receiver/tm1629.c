@@ -1810,8 +1810,8 @@ void fun95(void) //½âÂë²Ëµ¥
 {
 	unsigned char Two_Menu_F6_E1_temp = 0;
 	Two_Menu_F6_E1_temp = return_Two_Menu_F6_E1();
-	tm1629_load();
-	display();
+	//tm1629_load();
+	//display();
 
 	if (  display_ram[0] == BAOJING_1)
 	{

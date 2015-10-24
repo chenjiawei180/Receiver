@@ -218,8 +218,8 @@
       <Focus>0</Focus>
       <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>16</TopLine>
-      <CurrentLine>16</CurrentLine>
+      <TopLine>31</TopLine>
+      <CurrentLine>31</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>.\Receiver\tm1629.c</PathWithFileName>
       <FilenameWithoutPath>tm1629.c</FilenameWithoutPath>
@@ -1694,8 +1694,8 @@
         <Doc>
           <Name>.\Receiver\tm1629.c</Name>
           <ColumnNumber>0</ColumnNumber>
-          <TopLine>16</TopLine>
-          <CurrentLine>16</CurrentLine>
+          <TopLine>31</TopLine>
+          <CurrentLine>31</CurrentLine>
         </Doc>
       </Documents>
     </MDIGroup>

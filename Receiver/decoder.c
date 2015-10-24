@@ -157,8 +157,7 @@ void DecoderProcess(void)
 								Cancel_funtion(temp_buff, display_ram);//取消函数
 								tm1629_load();
 								display();
-								break;
-								break;
+								goto standby;
 							}
 
 								tm1629_clear();//清屏
@@ -172,12 +171,12 @@ void DecoderProcess(void)
 
 								set_func_index(DECODER_MENU);;//此时跳入解码菜单，为下一次解码做准备
 								clear_again_receive_rf_decoder_finished();//清除解码完成标志位
-								break;
-								break;
+								goto standby;
 						}
 					}
 				}
 			}	
+standby:
 			 break;
 		}
 
@@ -329,8 +328,7 @@ void DecoderProcess(void)
 									Cancel_funtion(temp_buff, display_ram);//取消函数
 									tm1629_load();
 									display();
-									break;
-									break;
+									goto decoder;
 								}
 
 								mcu_to_computer(0x91, temp_buff, old2_RF_RECE_REG[2] & 0x0f);//上位机
@@ -396,12 +394,12 @@ void DecoderProcess(void)
 							uart_printf("display_ram is %02x %02x %02x %02x.\r\n", (unsigned int)display_ram[0], (unsigned int)display_ram[1], (unsigned int)display_ram[2], (unsigned int)display_ram[3]); //测试按键键值
 #endif
 							clear_again_receive_rf_decoder_finished();
-							break;
-							break;
+							goto decoder;
 						}
 					}
 				}
 			}
+decoder:
 			break;
 		}
 

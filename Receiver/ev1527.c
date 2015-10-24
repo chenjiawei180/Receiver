@@ -256,26 +256,26 @@ void receive_rf_decoder(void)
 				clear_return_standby_time();
 
 
-				for (j = 0; j<HOST_TABLE_NUMBER; j++)
-				{
-					IRcvStr(0xa0, HOST_TABLE_START + j*PAGE_LENGTH, temp_buff1, PAGE_LENGTH);
-					delay10ms();
-					for (i = 0; i<PAGE_LENGTH; i++)
-					{
-						if (temp_buff1[i] == 0)
-						{
-							IRcvStr(0xa0, HOST_DATA_START + (j*PAGE_LENGTH + i) * 8, temp_buff, 8);
-							delay10ms();
-							if (temp_buff[5] == old2_RF_RECE_REG[0] && temp_buff[6] == old2_RF_RECE_REG[1] && ((temp_buff[7] >> 4) == (old2_RF_RECE_REG[2] >> 4)) )
-							{
-								register_manager = 1;
-								clear_return_standby_time();
-								break;
-								break;
-							}
-						}
-					}
-				}
+				//for (j = 0; j<HOST_TABLE_NUMBER; j++)
+				//{
+				//	IRcvStr(0xa0, HOST_TABLE_START + j*PAGE_LENGTH, temp_buff1, PAGE_LENGTH);
+				//	delay10ms();
+				//	for (i = 0; i<PAGE_LENGTH; i++)
+				//	{
+				//		if (temp_buff1[i] == 0)
+				//		{
+				//			IRcvStr(0xa0, HOST_DATA_START + (j*PAGE_LENGTH + i) * 8, temp_buff, 8);
+				//			delay10ms();
+				//			if (temp_buff[5] == old2_RF_RECE_REG[0] && temp_buff[6] == old2_RF_RECE_REG[1] && ((temp_buff[7] >> 4) == (old2_RF_RECE_REG[2] >> 4)) )
+				//			{
+				//				register_manager = 1;
+				//				clear_return_standby_time();
+				//				break;
+				//				break;
+				//			}
+				//		}
+				//	}
+				//}
 
 				RF_RECE_REG[0] = 0;
 				RF_RECE_REG[1] = 0;
