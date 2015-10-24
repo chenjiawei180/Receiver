@@ -12,6 +12,7 @@
 
 void main()
 {	
+
 	UsartInit();	//´®¿Ú³õÊ¼»¯
 #ifdef DEBUG
 	uart_printf("UsartInit Complete! \r\n");

@@ -97,7 +97,7 @@ void DecoderProcess(void)
 			//呼叫器注册,搜索所需要的呼叫器
 			 for (j = 0; j<(CALL_TABLE_NUMBER + CANCEL_TABLE_NUMBER + ALARM_TABLE_NUMBER); j++)//搜索标志位
 			{
-				IRcvStr(I2C_ADDRESS, j*PAGE_LENGTH, temp_buff1, PAGE_LENGTH);//读出32个字节标志位
+				IRcvStr(I2C_ADDRESS, j<<5, temp_buff1, PAGE_LENGTH);//读出32个字节标志位
 				delay10ms();
 //				uart_printf("j = %02x \r\n",(unsigned int)j);
 				for (i = 0; i<PAGE_LENGTH; i++) //对读出的32字节标志位进行查看，看是否为0
@@ -107,16 +107,10 @@ void DecoderProcess(void)
 #ifdef DEBUG
 						uart_printf("发现一个标志位 \r\n");
 #endif
-						IRcvStr(I2C_ADDRESS, CALL_DATA_START + (j * 32 + i) * 8, temp_buff, 8);//读出对应的8个字节的数据
+						IRcvStr(I2C_ADDRESS, CALL_DATA_START + (((j<<5) + i) <<3), temp_buff, 8);//读出对应的8个字节的数据
 						delay10ms();
 						if (((Two_Menu_F8_E1_temp != 1) && temp_buff[5] == old2_RF_RECE_REG[0] && temp_buff[6] == old2_RF_RECE_REG[1] && ((temp_buff[7] >> 4) == (old2_RF_RECE_REG[2] >> 4))) || ((Two_Menu_F8_E1_temp == 1) && temp_buff[5] == old2_RF_RECE_REG[0] && temp_buff[6] == old2_RF_RECE_REG[1] && temp_buff[7] == old2_RF_RECE_REG[2]))// 进行对比，看看数据是否符合
 						{
-#ifdef DEBUG
-							uart_printf("对码成功 \r\n");
-							uart_printf("遥控器码是 %02x %02x %02x.\r\n", (unsigned int)old2_RF_RECE_REG[0], (unsigned int)old2_RF_RECE_REG[1], (unsigned int)old2_RF_RECE_REG[2]); //测试按键键值
-							uart_printf("标志地址为 %x ! \n\r", (unsigned int)(j*PAGE_LENGTH+i));
-							uart_printf("存储地址为 %x ! \n\r", CALL_DATA_START + (j * 32 + i) * 8);
-#endif
 							temp_buff[7] = old2_RF_RECE_REG[2];
 							if (temp_buff[0] < 50)
 							{
@@ -278,13 +272,13 @@ standby:
 			//呼叫器注册,搜索所需要的呼叫器
 			for (j = 0; j<CALL_TABLE_NUMBER + ALARM_TABLE_NUMBER + CANCEL_TABLE_NUMBER; j++)//搜索标志位
 			{
-				IRcvStr(I2C_ADDRESS, j*PAGE_LENGTH, temp_buff1, PAGE_LENGTH);//读出32个字节标志位
+				IRcvStr(I2C_ADDRESS, j<<5, temp_buff1, PAGE_LENGTH);//读出32个字节标志位
 				delay10ms();
 				for (i = 0; i<PAGE_LENGTH; i++)
 				{
 					if (temp_buff1[i] == 0)//对读出的32字节标志位进行查看，看是否为0
 					{
-						IRcvStr(I2C_ADDRESS, CALL_DATA_START + (j * 32 + i) * 8, temp_buff, 8);//读出对应的8个字节的数据
+						IRcvStr(I2C_ADDRESS, CALL_DATA_START +( ( (j<<5) + i) <<3 ), temp_buff, 8);//读出对应的8个字节的数据
 						delay10ms();
 						if (((Two_Menu_F8_E1_temp != 1) && temp_buff[5] == old2_RF_RECE_REG[0] && temp_buff[6] == old2_RF_RECE_REG[1] && ((temp_buff[7] >> 4) == (old2_RF_RECE_REG[2] >> 4))) || ((Two_Menu_F8_E1_temp == 1) && temp_buff[5] == old2_RF_RECE_REG[0] && temp_buff[6] == old2_RF_RECE_REG[1] && temp_buff[7] == old2_RF_RECE_REG[2]))
 						{

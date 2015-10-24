@@ -32,34 +32,34 @@ typedef struct Env_struct{
 #define  I2C_ADDRESS 0xa0
 #define  PAGE_LENGTH 32
 
-#define  CALL_TABLE_NUMBER   32
-#define  HOST_TABLE_NUMBER   8
-#define  ALARM_TABLE_NUMBER  8
-#define  CANCEL_TABLE_NUMBER 8
-#define  ALL_TABLE_NUMBER    56
+#define  CALL_TABLE_NUMBER   16
+#define  HOST_TABLE_NUMBER   1
+#define  ALARM_TABLE_NUMBER  2
+#define  CANCEL_TABLE_NUMBER 2
+#define  ALL_TABLE_NUMBER    21
 #define  VARIA_NUMBER        15
 //标志位地址
 #define CALL_TABLE_START    0x0000
-#define CALL_TABLE_END      0x03FF
-#define ALARM_TABLE_START   0X0400
-#define ALARM_TABLE_END     0x04FF
-#define CANCEL_TABLE_START  0X0500
-#define CANCEL_TABLE_END    0x05FF
-#define HOST_TABLE_START    0X0600
-#define HOST_TABLE_END      0x06FF
+#define CALL_TABLE_END      0x01FF
+#define ALARM_TABLE_START   0X0200
+#define ALARM_TABLE_END     0x023F
+#define CANCEL_TABLE_START  0X0240
+#define CANCEL_TABLE_END    0x027F
+#define HOST_TABLE_START    0X0280
+#define HOST_TABLE_END      0x029F
 
 //数据存储地址
-#define CALL_DATA_START    0x0700
-#define CALL_DATA_END      0x26FF // 1024*8=8192 =2000H
-#define ALARM_DATA_START   0X2700 
-#define ALARM_DATA_END     0x2EFF // 256*8 =2048 =800H
-#define CANCEL_DATA_START  0X2F00
-#define CANCEL_DATA_END    0x36FF // 256*8 =2048 =800H
-#define HOST_DATA_START    0X3700 
-#define HOST_DATA_END      0x3EFF // 256*8 =2048 =800H
-#define SIN_KEY            0X3F00
-#define MUL_KEY            0X3F10
-#define BACK               0X3F20
+#define CALL_DATA_START    0x02A0
+#define CALL_DATA_END      0x129F // 1024*8=8192 =2000H
+#define ALARM_DATA_START   0X12A0
+#define ALARM_DATA_END     0x159F // 256*8 =2048 =800H
+#define CANCEL_DATA_START  0X14A0
+#define CANCEL_DATA_END    0x179F // 256*8 =2048 =800H
+#define HOST_DATA_START    0X16A0
+#define HOST_DATA_END      0x179F // 256*8 =2048 =800H
+#define SIN_KEY            0X17A0
+#define MUL_KEY            0X17B0
+#define BACK               0X17C0
 
 extern Env_t	EEPROM;
 

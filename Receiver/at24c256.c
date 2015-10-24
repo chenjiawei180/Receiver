@@ -262,13 +262,13 @@ bit register_call_function(unsigned char *buf)
 		/*先寻找这个ID码是否存在*/
 		for (base_address = CALL_TABLE_START; base_address<ALL_TABLE_NUMBER; base_address++)	//32*32 =1024个标志位
 		{
-			IRcvStr(I2C_ADDRESS, base_address*PAGE_LENGTH, at24c64_buff, PAGE_LENGTH);//从AT24C256里面读出32个字节的标志位
+			IRcvStr(I2C_ADDRESS, base_address<<5, at24c64_buff, PAGE_LENGTH);//从AT24C256里面读出32个字节的标志位
 			delay10ms();
 			for (offset_address = 0; offset_address<PAGE_LENGTH; offset_address++)//主要32个字节标志位里面没有0的就OK
 			{
 				if (at24c64_buff[offset_address] == 0) //如果标志位等于0  则找找看 这个ID码是否注册过
 				{
-					IRcvStr(I2C_ADDRESS, (CALL_DATA_START + (base_address*PAGE_LENGTH + offset_address) * 8), eeprom_buff, 8);
+					IRcvStr(I2C_ADDRESS, (CALL_DATA_START + ( ( (base_address<<5) + offset_address)<<3 ) ), eeprom_buff, 8);
 					delay10ms();
 
 					if ((*(eeprom_buff + 5) == *(buf + 5)) && (*(eeprom_buff + 6) == *(buf + 6)) && (*(eeprom_buff + 7) == *(buf + 7)))
@@ -296,16 +296,16 @@ bit register_call_function(unsigned char *buf)
 		//如果程序执行到这里，则代表ID码没有注册过
 		for (base_address = 0; base_address<CALL_TABLE_NUMBER; base_address++)
 		{
-			IRcvStr(I2C_ADDRESS, CALL_TABLE_START + base_address*PAGE_LENGTH, at24c64_buff, PAGE_LENGTH);//从AT24C64里面读出32个字节的标志位
+			IRcvStr(I2C_ADDRESS, CALL_TABLE_START + ( base_address<<5 ), at24c64_buff, PAGE_LENGTH);//从AT24C64里面读出32个字节的标志位
 			delay10ms();
 			for (offset_address = 0; offset_address<PAGE_LENGTH; offset_address++)//主要32个字节标志位里面没有0的就OK
 			{
 				if (at24c64_buff[offset_address] != 0)
 				{
-					ISendStr(I2C_ADDRESS, (CALL_DATA_START + ((base_address*PAGE_LENGTH) + offset_address) * 8), buf, 8);
+					ISendStr(I2C_ADDRESS, (CALL_DATA_START +( ((base_address<<5) + offset_address)<<3 )), buf, 8);
 					delay10ms();
 					at24c64_buff[offset_address] = 0;
-					ISendStr(I2C_ADDRESS, CALL_TABLE_START+base_address*PAGE_LENGTH, at24c64_buff, PAGE_LENGTH);
+					ISendStr(I2C_ADDRESS, CALL_TABLE_START+(base_address<<5), at24c64_buff, PAGE_LENGTH);
 					delay10ms();
 					//将标志位以及数据分别写到标志区跟数据区
 #ifdef DEBUG
@@ -335,13 +335,13 @@ bit register_host_function(unsigned char *buf)
 	/*先寻找这个ID码是否存在*/
 	for (base_address = CALL_TABLE_START; base_address<ALL_TABLE_NUMBER; base_address++)	//32*32 =1024个标志位
 	{
-		IRcvStr(I2C_ADDRESS, base_address*PAGE_LENGTH, at24c64_buff, PAGE_LENGTH);//从AT24C256里面读出32个字节的标志位
+		IRcvStr(I2C_ADDRESS, base_address<<5, at24c64_buff, PAGE_LENGTH);//从AT24C256里面读出32个字节的标志位
 		delay10ms();
 		for (offset_address = 0; offset_address<PAGE_LENGTH; offset_address++)//主要32个字节标志位里面没有0的就OK
 		{
 			if (at24c64_buff[offset_address] == 0) //如果标志位等于0  则找找看 这个ID码是否注册过
 			{
-				IRcvStr(I2C_ADDRESS, (CALL_DATA_START + (base_address*PAGE_LENGTH + offset_address) * 8), eeprom_buff, 8);
+				IRcvStr(I2C_ADDRESS, (CALL_DATA_START + (((base_address<<5) + offset_address)<<3)), eeprom_buff, 8);
 				delay10ms();
 
 				if ((*(eeprom_buff + 5) == *(buf + 5)) && (*(eeprom_buff + 6) == *(buf + 6)) && (*(eeprom_buff + 7) == *(buf + 7)))
@@ -369,16 +369,16 @@ bit register_host_function(unsigned char *buf)
 	//如果程序执行到这里，则代表ID码没有注册过
 	for (base_address = 0; base_address<HOST_TABLE_NUMBER; base_address++)
 	{
-		IRcvStr(I2C_ADDRESS, HOST_TABLE_START + base_address*PAGE_LENGTH, at24c64_buff, PAGE_LENGTH);//从AT24C64里面读出32个字节的标志位
+		IRcvStr(I2C_ADDRESS, HOST_TABLE_START + (base_address<<5), at24c64_buff, PAGE_LENGTH);//从AT24C64里面读出32个字节的标志位
 		delay10ms();
 		for (offset_address = 0; offset_address<PAGE_LENGTH; offset_address++)//主要32个字节标志位里面没有0的就OK
 		{
 			if (at24c64_buff[offset_address] != 0)
 			{
-				ISendStr(I2C_ADDRESS, (HOST_DATA_START + ((base_address*PAGE_LENGTH) + offset_address) * 8), buf, 8);
+				ISendStr(I2C_ADDRESS, (HOST_DATA_START + (((base_address<<5) + offset_address)<<3)), buf, 8);
 				delay10ms();
 				at24c64_buff[offset_address] = 0;
-				ISendStr(I2C_ADDRESS,HOST_TABLE_START + base_address*PAGE_LENGTH, at24c64_buff, PAGE_LENGTH);
+				ISendStr(I2C_ADDRESS, HOST_TABLE_START + (base_address << 5), at24c64_buff, PAGE_LENGTH);
 				delay10ms();
 				//将标志位以及数据分别写到标志区跟数据区
 #ifdef DEBUG
@@ -406,13 +406,13 @@ bit register_alarm_function(unsigned char *buf)
 	/*先寻找这个ID码是否存在*/
 	for (base_address = CALL_TABLE_START; base_address<ALL_TABLE_NUMBER; base_address++)	//32*32 =1024个标志位
 	{
-		IRcvStr(I2C_ADDRESS, base_address*PAGE_LENGTH, at24c64_buff, PAGE_LENGTH);//从AT24C256里面读出32个字节的标志位
+		IRcvStr(I2C_ADDRESS, base_address<<5, at24c64_buff, PAGE_LENGTH);//从AT24C256里面读出32个字节的标志位
 		delay10ms();
 		for (offset_address = 0; offset_address<PAGE_LENGTH; offset_address++)//主要32个字节标志位里面没有0的就OK
 		{
 			if (at24c64_buff[offset_address] == 0) //如果标志位等于0  则找找看 这个ID码是否注册过
 			{
-				IRcvStr(I2C_ADDRESS, (CALL_DATA_START + (base_address*PAGE_LENGTH + offset_address) * 8), eeprom_buff, 8);
+				IRcvStr(I2C_ADDRESS, (CALL_DATA_START + (((base_address<<5) + offset_address) <<3 )), eeprom_buff, 8);
 				delay10ms();
 
 				if ((*(eeprom_buff + 5) == *(buf + 5)) && (*(eeprom_buff + 6) == *(buf + 6)) && (*(eeprom_buff + 7) == *(buf + 7)))
@@ -440,16 +440,16 @@ bit register_alarm_function(unsigned char *buf)
 	//如果程序执行到这里，则代表ID码没有注册过
 	for (base_address = 0; base_address<ALARM_TABLE_NUMBER; base_address++)
 	{
-		IRcvStr(I2C_ADDRESS, ALARM_TABLE_START + base_address*PAGE_LENGTH, at24c64_buff, PAGE_LENGTH);//从AT24C64里面读出32个字节的标志位
+		IRcvStr(I2C_ADDRESS, ALARM_TABLE_START + (base_address<<5), at24c64_buff, PAGE_LENGTH);//从AT24C64里面读出32个字节的标志位
 		delay10ms();
 		for (offset_address = 0; offset_address<PAGE_LENGTH; offset_address++)//主要32个字节标志位里面没有0的就OK
 		{
 			if (at24c64_buff[offset_address] != 0)
 			{
-				ISendStr(I2C_ADDRESS, (ALARM_DATA_START + ((base_address*PAGE_LENGTH) + offset_address) * 8), buf, 8);
+				ISendStr(I2C_ADDRESS, (ALARM_DATA_START +( ((base_address<<5) + offset_address) <<3 )), buf, 8);
 				delay10ms();
 				at24c64_buff[offset_address] = 0;
-				ISendStr(I2C_ADDRESS,ALARM_TABLE_START+base_address*PAGE_LENGTH, at24c64_buff, PAGE_LENGTH);
+				ISendStr(I2C_ADDRESS,ALARM_TABLE_START+(base_address <<5), at24c64_buff, PAGE_LENGTH);
 				delay10ms();
 				//将标志位以及数据分别写到标志区跟数据区
 #ifdef DEBUG
@@ -479,13 +479,13 @@ bit register_cancel_function(unsigned char *buf)
 	/*先寻找这个ID码是否存在*/
 	for (base_address = CALL_TABLE_START; base_address<ALL_TABLE_NUMBER; base_address++)	//32*32 =1024个标志位
 	{
-		IRcvStr(I2C_ADDRESS, base_address*PAGE_LENGTH, at24c64_buff, PAGE_LENGTH);//从AT24C256里面读出32个字节的标志位
+		IRcvStr(I2C_ADDRESS, (base_address <<5), at24c64_buff, PAGE_LENGTH);//从AT24C256里面读出32个字节的标志位
 		delay10ms();
 		for (offset_address = 0; offset_address<PAGE_LENGTH; offset_address++)//主要32个字节标志位里面没有0的就OK
 		{
 			if (at24c64_buff[offset_address] == 0) //如果标志位等于0  则找找看 这个ID码是否注册过
 			{
-				IRcvStr(I2C_ADDRESS, (CALL_DATA_START + (base_address*PAGE_LENGTH + offset_address) * 8), eeprom_buff, 8);
+				IRcvStr(I2C_ADDRESS, (CALL_DATA_START + (((base_address <<5) + offset_address)<<3)), eeprom_buff, 8);
 				delay10ms();
 
 				if ((*(eeprom_buff + 5) == *(buf + 5)) && (*(eeprom_buff + 6) == *(buf + 6)) && (*(eeprom_buff + 7) == *(buf + 7)))
@@ -513,16 +513,16 @@ bit register_cancel_function(unsigned char *buf)
 	//如果程序执行到这里，则代表ID码没有注册过
 	for (base_address = 0; base_address<CANCEL_TABLE_NUMBER; base_address++)
 	{
-		IRcvStr(I2C_ADDRESS, CANCEL_TABLE_START + base_address*PAGE_LENGTH, at24c64_buff, PAGE_LENGTH);//从AT24C64里面读出32个字节的标志位
+		IRcvStr(I2C_ADDRESS, CANCEL_TABLE_START + (base_address <<5), at24c64_buff, PAGE_LENGTH);//从AT24C64里面读出32个字节的标志位
 		delay10ms();
 		for (offset_address = 0; offset_address<PAGE_LENGTH; offset_address++)//主要32个字节标志位里面没有0的就OK
 		{
 			if (at24c64_buff[offset_address] != 0)
 			{
-				ISendStr(I2C_ADDRESS, (CANCEL_DATA_START + ((base_address*PAGE_LENGTH) + offset_address) * 8), buf, 8);
+				ISendStr(I2C_ADDRESS, (CANCEL_DATA_START + (((base_address <<5) + offset_address) <<3)), buf, 8);
 				delay10ms();
 				at24c64_buff[offset_address] = 0;
-				ISendStr(I2C_ADDRESS,CANCEL_TABLE_START+base_address*PAGE_LENGTH, at24c64_buff, PAGE_LENGTH);
+				ISendStr(I2C_ADDRESS,CANCEL_TABLE_START+(base_address <<5), at24c64_buff, PAGE_LENGTH);
 				delay10ms();
 				//将标志位以及数据分别写到标志区跟数据区
 #ifdef DEBUG
@@ -551,7 +551,7 @@ bit delete_call_function(unsigned char *buf)//buf为组码数组的指针
 
 	for (base_address = 0; base_address<CALL_TABLE_NUMBER; base_address++)
 	{
-		IRcvStr(I2C_ADDRESS, base_address*PAGE_LENGTH, at24c64_buff, PAGE_LENGTH); //取出32个标志位
+		IRcvStr(I2C_ADDRESS, (base_address <<5), at24c64_buff, PAGE_LENGTH); //取出32个标志位
 		delay10ms();
 		for (offset_address = 0; offset_address<PAGE_LENGTH; offset_address++)//主要32个字节里面没有0的就OK
 		{
@@ -564,12 +564,12 @@ bit delete_call_function(unsigned char *buf)//buf为组码数组的指针
 			}
 			else if (at24c64_buff[offset_address] == 0)//如果不是0000 则无需全部删除
 			{
-				IRcvStr(I2C_ADDRESS, ( CALL_DATA_START + (base_address*PAGE_LENGTH + offset_address) * 8), eeprom_buff, 8);//取出对应标志位所对应的数据区的数据
+				IRcvStr(I2C_ADDRESS, ( CALL_DATA_START + (((base_address <<5) + offset_address)<<3)), eeprom_buff, 8);//取出对应标志位所对应的数据区的数据
 				delay10ms();
 				if ((*(eeprom_buff + 1) == *(buf + 0)) && (*(eeprom_buff + 2) == *(buf + 1)) && (*(eeprom_buff + 3) == *(buf + 2)) && (*(eeprom_buff + 4) == *(buf + 3)))
 				{
 					at24c64_buff[offset_address] = 0xff;
-					ISendStr(I2C_ADDRESS, base_address*PAGE_LENGTH, at24c64_buff, PAGE_LENGTH);
+					ISendStr(I2C_ADDRESS, (base_address <<5), at24c64_buff, PAGE_LENGTH);
 					delay10ms();
 					//清除对应的标志位 然后再将标志位写入标志区
 #ifdef DEBUG
@@ -581,7 +581,7 @@ bit delete_call_function(unsigned char *buf)//buf为组码数组的指针
 
 			}
 		}
-		ISendStr(I2C_ADDRESS, base_address*PAGE_LENGTH, at24c64_buff, PAGE_LENGTH);
+		ISendStr(I2C_ADDRESS, (base_address <<5), at24c64_buff, PAGE_LENGTH);
 		//最后将32个标志位写入标志区
 		delay10ms();
 	}
@@ -595,7 +595,7 @@ bit delete_host_function(unsigned char *buf)//buf为组码数组的指针
 
 	for (base_address = 0 ; base_address< HOST_TABLE_NUMBER ; base_address++)
 	{
-		IRcvStr(I2C_ADDRESS, HOST_TABLE_START + base_address*PAGE_LENGTH, at24c64_buff, PAGE_LENGTH); //取出32个标志位
+		IRcvStr(I2C_ADDRESS, HOST_TABLE_START + (base_address <<5), at24c64_buff, PAGE_LENGTH); //取出32个标志位
 		delay10ms();
 		for (offset_address = 0; offset_address<PAGE_LENGTH; offset_address++)//主要32个字节里面没有0的就OK
 		{
@@ -608,12 +608,12 @@ bit delete_host_function(unsigned char *buf)//buf为组码数组的指针
 			}
 			else if (at24c64_buff[offset_address] == 0)//如果不是0000 则无需全部删除
 			{
-				IRcvStr(I2C_ADDRESS, (HOST_DATA_START + (base_address*PAGE_LENGTH + offset_address) * 8), eeprom_buff, 8);//取出对应标志位所对应的数据区的数据
+				IRcvStr(I2C_ADDRESS, (HOST_DATA_START + (((base_address <<5) + offset_address)<<3)), eeprom_buff, 8);//取出对应标志位所对应的数据区的数据
 				delay10ms();
 				if ((*(eeprom_buff + 1) == *(buf + 0)) && (*(eeprom_buff + 2) == *(buf + 1)) && (*(eeprom_buff + 3) == *(buf + 2)) && (*(eeprom_buff + 4) == *(buf + 3)))
 				{
 					at24c64_buff[offset_address] = 0xff;
-					ISendStr(I2C_ADDRESS, HOST_TABLE_START+base_address*PAGE_LENGTH, at24c64_buff, PAGE_LENGTH);
+					ISendStr(I2C_ADDRESS, HOST_TABLE_START+(base_address <<5), at24c64_buff, PAGE_LENGTH);
 					delay10ms();
 					//清除对应的标志位 然后再将标志位写入标志区
 #ifdef DEBUG
@@ -625,7 +625,7 @@ bit delete_host_function(unsigned char *buf)//buf为组码数组的指针
 
 			}
 		}
-		ISendStr(I2C_ADDRESS, HOST_TABLE_START + base_address*PAGE_LENGTH, at24c64_buff, PAGE_LENGTH);
+		ISendStr(I2C_ADDRESS, HOST_TABLE_START + (base_address <<5), at24c64_buff, PAGE_LENGTH);
 		//最后将32个标志位写入标志区
 		delay10ms();
 	}
@@ -639,7 +639,7 @@ bit delete_alarm_function(unsigned char *buf)//buf为组码数组的指针
 
 	for (base_address = 0; base_address<ALARM_TABLE_NUMBER; base_address++)
 	{
-		IRcvStr(I2C_ADDRESS, ALARM_TABLE_START + base_address*PAGE_LENGTH, at24c64_buff, PAGE_LENGTH); //取出32个标志位
+		IRcvStr(I2C_ADDRESS, ALARM_TABLE_START + (base_address <<5), at24c64_buff, PAGE_LENGTH); //取出32个标志位
 		delay10ms();
 		for (offset_address = 0; offset_address<PAGE_LENGTH; offset_address++)//主要32个字节里面没有0的就OK
 		{
@@ -652,12 +652,12 @@ bit delete_alarm_function(unsigned char *buf)//buf为组码数组的指针
 			}
 			else if (at24c64_buff[offset_address] == 0)//如果不是0000 则无需全部删除
 			{
-				IRcvStr(I2C_ADDRESS, (ALARM_DATA_START + (base_address*PAGE_LENGTH + offset_address) * 8), eeprom_buff, 8);//取出对应标志位所对应的数据区的数据
+				IRcvStr(I2C_ADDRESS, (ALARM_DATA_START + (((base_address <<5) + offset_address)<<3 )), eeprom_buff, 8);//取出对应标志位所对应的数据区的数据
 				delay10ms();
 				if ((*(eeprom_buff + 1) == *(buf + 0)) && (*(eeprom_buff + 2) == *(buf + 1)) && (*(eeprom_buff + 3) == *(buf + 2)) && (*(eeprom_buff + 4) == *(buf + 3)))
 				{
 					at24c64_buff[offset_address] = 0xff;
-					ISendStr(I2C_ADDRESS, ALARM_TABLE_START + base_address*PAGE_LENGTH, at24c64_buff, PAGE_LENGTH);
+					ISendStr(I2C_ADDRESS, ALARM_TABLE_START + (base_address <<5), at24c64_buff, PAGE_LENGTH);
 					delay10ms();
 					//清除对应的标志位 然后再将标志位写入标志区
 #ifdef DEBUG
@@ -669,7 +669,7 @@ bit delete_alarm_function(unsigned char *buf)//buf为组码数组的指针
 
 			}
 		}
-		ISendStr(I2C_ADDRESS, ALARM_TABLE_START + base_address*PAGE_LENGTH, at24c64_buff, PAGE_LENGTH);
+		ISendStr(I2C_ADDRESS, ALARM_TABLE_START + (base_address <<5), at24c64_buff, PAGE_LENGTH);
 		//最后将32个标志位写入标志区
 		delay10ms();
 	}
@@ -683,7 +683,7 @@ bit delete_cancel_function(unsigned char *buf)//buf为组码数组的指针
 
 	for (base_address = 0; base_address<CANCEL_TABLE_NUMBER; base_address++)
 	{
-		IRcvStr(I2C_ADDRESS, CANCEL_TABLE_START + base_address*PAGE_LENGTH, at24c64_buff, PAGE_LENGTH); //取出32个标志位
+		IRcvStr(I2C_ADDRESS, CANCEL_TABLE_START + (base_address <<5), at24c64_buff, PAGE_LENGTH); //取出32个标志位
 		delay10ms();
 		for (offset_address = 0; offset_address<PAGE_LENGTH; offset_address++)//主要32个字节里面没有0的就OK
 		{
@@ -696,12 +696,12 @@ bit delete_cancel_function(unsigned char *buf)//buf为组码数组的指针
 			}
 			else if (at24c64_buff[offset_address] == 0)//如果不是0000 则无需全部删除
 			{
-				IRcvStr(I2C_ADDRESS, (CANCEL_DATA_START + (base_address*PAGE_LENGTH + offset_address) * 8), eeprom_buff, 8);//取出对应标志位所对应的数据区的数据
+				IRcvStr(I2C_ADDRESS, (CANCEL_DATA_START + (((base_address <<5) + offset_address)<<3)), eeprom_buff, 8);//取出对应标志位所对应的数据区的数据
 				delay10ms();
 				if ((*(eeprom_buff + 1) == *(buf + 0)) && (*(eeprom_buff + 2) == *(buf + 1)) && (*(eeprom_buff + 3) == *(buf + 2)) && (*(eeprom_buff + 4) == *(buf + 3)))
 				{
 					at24c64_buff[offset_address] = 0xff;
-					ISendStr(I2C_ADDRESS, CANCEL_TABLE_START + base_address*PAGE_LENGTH, at24c64_buff, PAGE_LENGTH);
+					ISendStr(I2C_ADDRESS, CANCEL_TABLE_START + (base_address <<5), at24c64_buff, PAGE_LENGTH);
 					delay10ms();
 					//清除对应的标志位 然后再将标志位写入标志区
 #ifdef DEBUG
@@ -713,7 +713,7 @@ bit delete_cancel_function(unsigned char *buf)//buf为组码数组的指针
 
 			}
 		}
-		ISendStr(I2C_ADDRESS, CANCEL_TABLE_START + base_address*PAGE_LENGTH, at24c64_buff, PAGE_LENGTH);
+		ISendStr(I2C_ADDRESS, CANCEL_TABLE_START + (base_address <<5), at24c64_buff, PAGE_LENGTH);
 		//最后将32个标志位写入标志区
 		delay10ms();
 	}
@@ -726,7 +726,7 @@ void Delete_all_data(void)
 	unsigned int k;
 	for (k = CALL_TABLE_START ; k<ALL_TABLE_NUMBER; k++)
 	{
-		ISendStr(I2C_ADDRESS, k * 32, dofly, PAGE_LENGTH);                   //写入24c02
+		ISendStr(I2C_ADDRESS, k<<5, dofly, PAGE_LENGTH);                   //写入24c02
 		delay10ms();
 	}
 }

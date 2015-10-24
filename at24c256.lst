@@ -1,4 +1,4 @@
-C51 COMPILER V9.00   AT24C256                                                              10/24/2015 12:40:35 PAGE 1   
+C51 COMPILER V9.00   AT24C256                                                              10/24/2015 16:50:11 PAGE 1   
 
 
 C51 COMPILER V9.00, COMPILATION OF MODULE AT24C256
@@ -62,7 +62,7 @@ line level    source
   52   1              _Nop();
   53   1      }
   54          /*------------------------------------------------
-C51 COMPILER V9.00   AT24C256                                                              10/24/2015 12:40:35 PAGE 2   
+C51 COMPILER V9.00   AT24C256                                                              10/24/2015 16:50:11 PAGE 2   
 
   55          ½áÊø×ÜÏß
   56          ------------------------------------------------*/
@@ -126,7 +126,7 @@ line level    source
  114          
  115          /*----------------------------------------------------------------
  116          ×Ö½ÚÊý¾Ý´«ËÍº¯Êý
-C51 COMPILER V9.00   AT24C256                                                              10/24/2015 12:40:35 PAGE 3   
+C51 COMPILER V9.00   AT24C256                                                              10/24/2015 16:50:11 PAGE 3   
 
  117          º¯ÊýÔ­ÐÍ: unsigned char  RcvByte();
  118          ¹¦ÄÜ:  ÓÃÀ´½ÓÊÕ´ÓÆ÷¼þ´«À´µÄÊý¾Ý,²¢ÅÐ¶Ï×ÜÏß´íÎó(²»·¢Ó¦´ðÐÅºÅ)£¬
@@ -190,7 +190,7 @@ line level    source
  176          
  177          ----------------------------------------------------------------*/
  178          void NoAck_I2c(void)
-C51 COMPILER V9.00   AT24C256                                                              10/24/2015 12:40:35 PAGE 4   
+C51 COMPILER V9.00   AT24C256                                                              10/24/2015 16:50:11 PAGE 4   
 
  179          {
  180   1              SDA = 1;
@@ -254,7 +254,7 @@ line level    source
  238   1              SendByte(suba >> 8);            //·¢ËÍÆ÷¼þ×ÓµØÖ·
  239   1              if (ack == 0)return(0);
  240   1              SendByte(suba);            //·¢ËÍÆ÷¼þ×ÓµØÖ·
-C51 COMPILER V9.00   AT24C256                                                              10/24/2015 12:40:35 PAGE 5   
+C51 COMPILER V9.00   AT24C256                                                              10/24/2015 16:50:11 PAGE 5   
 
  241   1              if (ack == 0)return(0);
  242   1              Start_I2c();
@@ -281,16 +281,15 @@ line level    source
  263   1                      for (base_address = CALL_TABLE_START; base_address<ALL_TABLE_NUMBER; base_address++)    //32*32 =1024¸ö±êÖ¾
              -Î»
  264   1                      {
- 265   2                              IRcvStr(I2C_ADDRESS, base_address*PAGE_LENGTH, at24c64_buff, PAGE_LENGTH);//´ÓAT24C256ÀïÃæ¶Á³ö32¸ö×Ö½Úµ
-             -Ä±êÖ¾Î»
+ 265   2                              IRcvStr(I2C_ADDRESS, base_address<<5, at24c64_buff, PAGE_LENGTH);//´ÓAT24C256ÀïÃæ¶Á³ö32¸ö×Ö½ÚµÄ±êÖ¾Î»
  266   2                              delay10ms();
  267   2                              for (offset_address = 0; offset_address<PAGE_LENGTH; offset_address++)//Ö÷Òª32¸ö×Ö½Ú±êÖ¾Î»ÀïÃæÃ»ÓÐ0µÄ¾Í
              -OK
  268   2                              {
  269   3                                      if (at24c64_buff[offset_address] == 0) //Èç¹û±êÖ¾Î»µÈÓÚ0  ÔòÕÒÕÒ¿´ Õâ¸öIDÂëÊÇ·ñ×¢²á¹ý
  270   3                                      {
- 271   4                                              IRcvStr(I2C_ADDRESS, (CALL_DATA_START + (base_address*PAGE_LENGTH + offset_address) * 8), eeprom_buff
-             -, 8);
+ 271   4                                              IRcvStr(I2C_ADDRESS, (CALL_DATA_START + ( ( (base_address<<5) + offset_address)<<3 ) ), eeprom_buff, 
+             -8);
  272   4                                              delay10ms();
  273   4      
  274   4                                              if ((*(eeprom_buff + 5) == *(buf + 5)) && (*(eeprom_buff + 6) == *(buf + 6)) && (*(eeprom_buff + 7) =
@@ -318,21 +317,21 @@ line level    source
  295   2                      }
  296   1                      //Èç¹û³ÌÐòÖ´ÐÐµ½ÕâÀï£¬Ôò´ú±íIDÂëÃ»ÓÐ×¢²á¹ý
  297   1                      for (base_address = 0; base_address<CALL_TABLE_NUMBER; base_address++)
-C51 COMPILER V9.00   AT24C256                                                              10/24/2015 12:40:35 PAGE 6   
-
  298   1                      {
- 299   2                              IRcvStr(I2C_ADDRESS, CALL_TABLE_START + base_address*PAGE_LENGTH, at24c64_buff, PAGE_LENGTH);//´ÓAT24C6
-             -4ÀïÃæ¶Á³ö32¸ö×Ö½ÚµÄ±êÖ¾Î»
+C51 COMPILER V9.00   AT24C256                                                              10/24/2015 16:50:11 PAGE 6   
+
+ 299   2                              IRcvStr(I2C_ADDRESS, CALL_TABLE_START + ( base_address<<5 ), at24c64_buff, PAGE_LENGTH);//´ÓAT24C64ÀïÃæ
+             -¶Á³ö32¸ö×Ö½ÚµÄ±êÖ¾Î»
  300   2                              delay10ms();
  301   2                              for (offset_address = 0; offset_address<PAGE_LENGTH; offset_address++)//Ö÷Òª32¸ö×Ö½Ú±êÖ¾Î»ÀïÃæÃ»ÓÐ0µÄ¾Í
              -OK
  302   2                              {
  303   3                                      if (at24c64_buff[offset_address] != 0)
  304   3                                      {
- 305   4                                              ISendStr(I2C_ADDRESS, (CALL_DATA_START + ((base_address*PAGE_LENGTH) + offset_address) * 8), buf, 8);
+ 305   4                                              ISendStr(I2C_ADDRESS, (CALL_DATA_START +( ((base_address<<5) + offset_address)<<3 )), buf, 8);
  306   4                                              delay10ms();
  307   4                                              at24c64_buff[offset_address] = 0;
- 308   4                                              ISendStr(I2C_ADDRESS, CALL_TABLE_START+base_address*PAGE_LENGTH, at24c64_buff, PAGE_LENGTH);
+ 308   4                                              ISendStr(I2C_ADDRESS, CALL_TABLE_START+(base_address<<5), at24c64_buff, PAGE_LENGTH);
  309   4                                              delay10ms();
  310   4                                              //½«±êÖ¾Î»ÒÔ¼°Êý¾Ý·Ö±ðÐ´µ½±êÖ¾Çø¸úÊý¾ÝÇø
  311   4      #ifdef DEBUG
@@ -364,16 +363,14 @@ line level    source
  336   1              for (base_address = CALL_TABLE_START; base_address<ALL_TABLE_NUMBER; base_address++)    //32*32 =1024¸ö±êÖ¾Î
              -»
  337   1              {
- 338   2                      IRcvStr(I2C_ADDRESS, base_address*PAGE_LENGTH, at24c64_buff, PAGE_LENGTH);//´ÓAT24C256ÀïÃæ¶Á³ö32¸ö×Ö½ÚµÄ
-             -±êÖ¾Î»
+ 338   2                      IRcvStr(I2C_ADDRESS, base_address<<5, at24c64_buff, PAGE_LENGTH);//´ÓAT24C256ÀïÃæ¶Á³ö32¸ö×Ö½ÚµÄ±êÖ¾Î»
  339   2                      delay10ms();
  340   2                      for (offset_address = 0; offset_address<PAGE_LENGTH; offset_address++)//Ö÷Òª32¸ö×Ö½Ú±êÖ¾Î»ÀïÃæÃ»ÓÐ0µÄ¾ÍO
              -K
  341   2                      {
  342   3                              if (at24c64_buff[offset_address] == 0) //Èç¹û±êÖ¾Î»µÈÓÚ0  ÔòÕÒÕÒ¿´ Õâ¸öIDÂëÊÇ·ñ×¢²á¹ý
  343   3                              {
- 344   4                                      IRcvStr(I2C_ADDRESS, (CALL_DATA_START + (base_address*PAGE_LENGTH + offset_address) * 8), eeprom_buff,
-             - 8);
+ 344   4                                      IRcvStr(I2C_ADDRESS, (CALL_DATA_START + (((base_address<<5) + offset_address)<<3)), eeprom_buff, 8);
  345   4                                      delay10ms();
  346   4      
  347   4                                      if ((*(eeprom_buff + 5) == *(buf + 5)) && (*(eeprom_buff + 6) == *(buf + 6)) && (*(eeprom_buff + 7) ==
@@ -382,11 +379,11 @@ line level    source
  349   5                                              //IFÌõ¼þ³ÉÁ¢ ÔòÕâ¸öIDÂë×¢²á¹ý
  350   5                                              Two_Menu_F1_E2[0] = *(eeprom_buff + 1);
  351   5                                              Two_Menu_F1_E2[1] = *(eeprom_buff + 2);
-C51 COMPILER V9.00   AT24C256                                                              10/24/2015 12:40:35 PAGE 7   
-
  352   5                                              Two_Menu_F1_E2[2] = *(eeprom_buff + 3);
  353   5                                              Two_Menu_F1_E2[3] = *(eeprom_buff + 4);
  354   5      #ifdef DEBUG
+C51 COMPILER V9.00   AT24C256                                                              10/24/2015 16:50:11 PAGE 7   
+
                                                       uart_printf("host register is old! \n\r");
               #endif
  357   5      
@@ -404,18 +401,18 @@ line level    source
  369   1              //Èç¹û³ÌÐòÖ´ÐÐµ½ÕâÀï£¬Ôò´ú±íIDÂëÃ»ÓÐ×¢²á¹ý
  370   1              for (base_address = 0; base_address<HOST_TABLE_NUMBER; base_address++)
  371   1              {
- 372   2                      IRcvStr(I2C_ADDRESS, HOST_TABLE_START + base_address*PAGE_LENGTH, at24c64_buff, PAGE_LENGTH);//´ÓAT24C64
-             -ÀïÃæ¶Á³ö32¸ö×Ö½ÚµÄ±êÖ¾Î»
+ 372   2                      IRcvStr(I2C_ADDRESS, HOST_TABLE_START + (base_address<<5), at24c64_buff, PAGE_LENGTH);//´ÓAT24C64ÀïÃæ¶Á³
+             -ö32¸ö×Ö½ÚµÄ±êÖ¾Î»
  373   2                      delay10ms();
  374   2                      for (offset_address = 0; offset_address<PAGE_LENGTH; offset_address++)//Ö÷Òª32¸ö×Ö½Ú±êÖ¾Î»ÀïÃæÃ»ÓÐ0µÄ¾ÍO
              -K
  375   2                      {
  376   3                              if (at24c64_buff[offset_address] != 0)
  377   3                              {
- 378   4                                      ISendStr(I2C_ADDRESS, (HOST_DATA_START + ((base_address*PAGE_LENGTH) + offset_address) * 8), buf, 8);
+ 378   4                                      ISendStr(I2C_ADDRESS, (HOST_DATA_START + (((base_address<<5) + offset_address)<<3)), buf, 8);
  379   4                                      delay10ms();
  380   4                                      at24c64_buff[offset_address] = 0;
- 381   4                                      ISendStr(I2C_ADDRESS,HOST_TABLE_START + base_address*PAGE_LENGTH, at24c64_buff, PAGE_LENGTH);
+ 381   4                                      ISendStr(I2C_ADDRESS, HOST_TABLE_START + (base_address << 5), at24c64_buff, PAGE_LENGTH);
  382   4                                      delay10ms();
  383   4                                      //½«±êÖ¾Î»ÒÔ¼°Êý¾Ý·Ö±ðÐ´µ½±êÖ¾Çø¸úÊý¾ÝÇø
  384   4      #ifdef DEBUG
@@ -444,18 +441,16 @@ line level    source
  407   1              for (base_address = CALL_TABLE_START; base_address<ALL_TABLE_NUMBER; base_address++)    //32*32 =1024¸ö±êÖ¾Î
              -»
  408   1              {
- 409   2                      IRcvStr(I2C_ADDRESS, base_address*PAGE_LENGTH, at24c64_buff, PAGE_LENGTH);//´ÓAT24C256ÀïÃæ¶Á³ö32¸ö×Ö½ÚµÄ
-             -±êÖ¾Î»
-C51 COMPILER V9.00   AT24C256                                                              10/24/2015 12:40:35 PAGE 8   
-
+ 409   2                      IRcvStr(I2C_ADDRESS, base_address<<5, at24c64_buff, PAGE_LENGTH);//´ÓAT24C256ÀïÃæ¶Á³ö32¸ö×Ö½ÚµÄ±êÖ¾Î»
  410   2                      delay10ms();
  411   2                      for (offset_address = 0; offset_address<PAGE_LENGTH; offset_address++)//Ö÷Òª32¸ö×Ö½Ú±êÖ¾Î»ÀïÃæÃ»ÓÐ0µÄ¾ÍO
              -K
  412   2                      {
+C51 COMPILER V9.00   AT24C256                                                              10/24/2015 16:50:11 PAGE 8   
+
  413   3                              if (at24c64_buff[offset_address] == 0) //Èç¹û±êÖ¾Î»µÈÓÚ0  ÔòÕÒÕÒ¿´ Õâ¸öIDÂëÊÇ·ñ×¢²á¹ý
  414   3                              {
- 415   4                                      IRcvStr(I2C_ADDRESS, (CALL_DATA_START + (base_address*PAGE_LENGTH + offset_address) * 8), eeprom_buff,
-             - 8);
+ 415   4                                      IRcvStr(I2C_ADDRESS, (CALL_DATA_START + (((base_address<<5) + offset_address) <<3 )), eeprom_buff, 8);
  416   4                                      delay10ms();
  417   4      
  418   4                                      if ((*(eeprom_buff + 5) == *(buf + 5)) && (*(eeprom_buff + 6) == *(buf + 6)) && (*(eeprom_buff + 7) ==
@@ -484,18 +479,18 @@ line level    source
  440   1              //Èç¹û³ÌÐòÖ´ÐÐµ½ÕâÀï£¬Ôò´ú±íIDÂëÃ»ÓÐ×¢²á¹ý
  441   1              for (base_address = 0; base_address<ALARM_TABLE_NUMBER; base_address++)
  442   1              {
- 443   2                      IRcvStr(I2C_ADDRESS, ALARM_TABLE_START + base_address*PAGE_LENGTH, at24c64_buff, PAGE_LENGTH);//´ÓAT24C6
-             -4ÀïÃæ¶Á³ö32¸ö×Ö½ÚµÄ±êÖ¾Î»
+ 443   2                      IRcvStr(I2C_ADDRESS, ALARM_TABLE_START + (base_address<<5), at24c64_buff, PAGE_LENGTH);//´ÓAT24C64ÀïÃæ¶Á
+             -³ö32¸ö×Ö½ÚµÄ±êÖ¾Î»
  444   2                      delay10ms();
  445   2                      for (offset_address = 0; offset_address<PAGE_LENGTH; offset_address++)//Ö÷Òª32¸ö×Ö½Ú±êÖ¾Î»ÀïÃæÃ»ÓÐ0µÄ¾ÍO
              -K
  446   2                      {
  447   3                              if (at24c64_buff[offset_address] != 0)
  448   3                              {
- 449   4                                      ISendStr(I2C_ADDRESS, (ALARM_DATA_START + ((base_address*PAGE_LENGTH) + offset_address) * 8), buf, 8);
+ 449   4                                      ISendStr(I2C_ADDRESS, (ALARM_DATA_START +( ((base_address<<5) + offset_address) <<3 )), buf, 8);
  450   4                                      delay10ms();
  451   4                                      at24c64_buff[offset_address] = 0;
- 452   4                                      ISendStr(I2C_ADDRESS,ALARM_TABLE_START+base_address*PAGE_LENGTH, at24c64_buff, PAGE_LENGTH);
+ 452   4                                      ISendStr(I2C_ADDRESS,ALARM_TABLE_START+(base_address <<5), at24c64_buff, PAGE_LENGTH);
  453   4                                      delay10ms();
  454   4                                      //½«±êÖ¾Î»ÒÔ¼°Êý¾Ý·Ö±ðÐ´µ½±êÖ¾Çø¸úÊý¾ÝÇø
  455   4      #ifdef DEBUG
@@ -510,13 +505,13 @@ line level    source
  463   5      
  464   5                                              set_sound_table(0);
  465   5                                      }
-C51 COMPILER V9.00   AT24C256                                                              10/24/2015 12:40:35 PAGE 9   
-
  466   4                                      return 1;
  467   4                                      //ÌáÊ¾³É¹¦                              
  468   4                              }
  469   3                      }
  470   2              }
+C51 COMPILER V9.00   AT24C256                                                              10/24/2015 16:50:11 PAGE 9   
+
  471   1              return 0;
  472   1      }
  473          
@@ -529,16 +524,14 @@ line level    source
  480   1              for (base_address = CALL_TABLE_START; base_address<ALL_TABLE_NUMBER; base_address++)    //32*32 =1024¸ö±êÖ¾Î
              -»
  481   1              {
- 482   2                      IRcvStr(I2C_ADDRESS, base_address*PAGE_LENGTH, at24c64_buff, PAGE_LENGTH);//´ÓAT24C256ÀïÃæ¶Á³ö32¸ö×Ö½ÚµÄ
-             -±êÖ¾Î»
+ 482   2                      IRcvStr(I2C_ADDRESS, (base_address <<5), at24c64_buff, PAGE_LENGTH);//´ÓAT24C256ÀïÃæ¶Á³ö32¸ö×Ö½ÚµÄ±êÖ¾Î»
  483   2                      delay10ms();
  484   2                      for (offset_address = 0; offset_address<PAGE_LENGTH; offset_address++)//Ö÷Òª32¸ö×Ö½Ú±êÖ¾Î»ÀïÃæÃ»ÓÐ0µÄ¾ÍO
              -K
  485   2                      {
  486   3                              if (at24c64_buff[offset_address] == 0) //Èç¹û±êÖ¾Î»µÈÓÚ0  ÔòÕÒÕÒ¿´ Õâ¸öIDÂëÊÇ·ñ×¢²á¹ý
  487   3                              {
- 488   4                                      IRcvStr(I2C_ADDRESS, (CALL_DATA_START + (base_address*PAGE_LENGTH + offset_address) * 8), eeprom_buff,
-             - 8);
+ 488   4                                      IRcvStr(I2C_ADDRESS, (CALL_DATA_START + (((base_address <<5) + offset_address)<<3)), eeprom_buff, 8);
  489   4                                      delay10ms();
  490   4      
  491   4                                      if ((*(eeprom_buff + 5) == *(buf + 5)) && (*(eeprom_buff + 6) == *(buf + 6)) && (*(eeprom_buff + 7) ==
@@ -567,23 +560,22 @@ line level    source
  513   1              //Èç¹û³ÌÐòÖ´ÐÐµ½ÕâÀï£¬Ôò´ú±íIDÂëÃ»ÓÐ×¢²á¹ý
  514   1              for (base_address = 0; base_address<CANCEL_TABLE_NUMBER; base_address++)
  515   1              {
- 516   2                      IRcvStr(I2C_ADDRESS, CANCEL_TABLE_START + base_address*PAGE_LENGTH, at24c64_buff, PAGE_LENGTH);//´ÓAT24C
-             -64ÀïÃæ¶Á³ö32¸ö×Ö½ÚµÄ±êÖ¾Î»
+ 516   2                      IRcvStr(I2C_ADDRESS, CANCEL_TABLE_START + (base_address <<5), at24c64_buff, PAGE_LENGTH);//´ÓAT24C64ÀïÃæ
+             -¶Á³ö32¸ö×Ö½ÚµÄ±êÖ¾Î»
  517   2                      delay10ms();
  518   2                      for (offset_address = 0; offset_address<PAGE_LENGTH; offset_address++)//Ö÷Òª32¸ö×Ö½Ú±êÖ¾Î»ÀïÃæÃ»ÓÐ0µÄ¾ÍO
              -K
  519   2                      {
  520   3                              if (at24c64_buff[offset_address] != 0)
-C51 COMPILER V9.00   AT24C256                                                              10/24/2015 12:40:35 PAGE 10  
-
  521   3                              {
- 522   4                                      ISendStr(I2C_ADDRESS, (CANCEL_DATA_START + ((base_address*PAGE_LENGTH) + offset_address) * 8), buf, 8)
-             -;
+ 522   4                                      ISendStr(I2C_ADDRESS, (CANCEL_DATA_START + (((base_address <<5) + offset_address) <<3)), buf, 8);
  523   4                                      delay10ms();
  524   4                                      at24c64_buff[offset_address] = 0;
- 525   4                                      ISendStr(I2C_ADDRESS,CANCEL_TABLE_START+base_address*PAGE_LENGTH, at24c64_buff, PAGE_LENGTH);
+ 525   4                                      ISendStr(I2C_ADDRESS,CANCEL_TABLE_START+(base_address <<5), at24c64_buff, PAGE_LENGTH);
  526   4                                      delay10ms();
  527   4                                      //½«±êÖ¾Î»ÒÔ¼°Êý¾Ý·Ö±ðÐ´µ½±êÖ¾Çø¸úÊý¾ÝÇø
+C51 COMPILER V9.00   AT24C256                                                              10/24/2015 16:50:11 PAGE 10  
+
  528   4      #ifdef DEBUG
                                               uart_printf("canceler register is new! \n\r");
                                               uart_printf("±êÖ¾µØÖ·Îª %x ! \n\r", CANCEL_TABLE_START + base_address*PAGE_LENGTH);
@@ -611,7 +603,7 @@ line level    source
  551   1      
  552   1              for (base_address = 0; base_address<CALL_TABLE_NUMBER; base_address++)
  553   1              {
- 554   2                      IRcvStr(I2C_ADDRESS, base_address*PAGE_LENGTH, at24c64_buff, PAGE_LENGTH); //È¡³ö32¸ö±êÖ¾Î»
+ 554   2                      IRcvStr(I2C_ADDRESS, (base_address <<5), at24c64_buff, PAGE_LENGTH); //È¡³ö32¸ö±êÖ¾Î»
  555   2                      delay10ms();
  556   2                      for (offset_address = 0; offset_address<PAGE_LENGTH; offset_address++)//Ö÷Òª32¸ö×Ö½ÚÀïÃæÃ»ÓÐ0µÄ¾ÍOK
  557   2                      {
@@ -624,22 +616,20 @@ line level    source
  564   4                              }
  565   3                              else if (at24c64_buff[offset_address] == 0)//Èç¹û²»ÊÇ0000 ÔòÎÞÐèÈ«²¿É¾³ý
  566   3                              {
- 567   4                                      IRcvStr(I2C_ADDRESS, ( CALL_DATA_START + (base_address*PAGE_LENGTH + offset_address) * 8), eeprom_buff
-             -, 8);//È¡³ö¶ÔÓ¦±êÖ¾Î»Ëù¶ÔÓ¦µÄÊý¾ÝÇøµÄÊý¾Ý
+ 567   4                                      IRcvStr(I2C_ADDRESS, ( CALL_DATA_START + (((base_address <<5) + offset_address)<<3)), eeprom_buff, 8);
+             -//È¡³ö¶ÔÓ¦±êÖ¾Î»Ëù¶ÔÓ¦µÄÊý¾ÝÇøµÄÊý¾Ý
  568   4                                      delay10ms();
  569   4                                      if ((*(eeprom_buff + 1) == *(buf + 0)) && (*(eeprom_buff + 2) == *(buf + 1)) && (*(eeprom_buff + 3) ==
              - *(buf + 2)) && (*(eeprom_buff + 4) == *(buf + 3)))
  570   4                                      {
  571   5                                              at24c64_buff[offset_address] = 0xff;
- 572   5                                              ISendStr(I2C_ADDRESS, base_address*PAGE_LENGTH, at24c64_buff, PAGE_LENGTH);
+ 572   5                                              ISendStr(I2C_ADDRESS, (base_address <<5), at24c64_buff, PAGE_LENGTH);
  573   5                                              delay10ms();
  574   5                                              //Çå³ý¶ÔÓ¦µÄ±êÖ¾Î» È»ºóÔÙ½«±êÖ¾Î»Ð´Èë±êÖ¾Çø
  575   5      #ifdef DEBUG
                                                       uart_printf("call is %02x %02x %02x .\r\n", (unsigned int)(*(eeprom_buff + 5)), (unsigned int)(*(eepr
              -om_buff + 6)), (unsigned int)(*(eeprom_buff + 7)) ); //
                                                       uart_printf("call is %02x %02x %02x %02x.\r\n", (unsigned int)(*(eeprom_buff + 1)), (unsigned int)(*(
-C51 COMPILER V9.00   AT24C256                                                              10/24/2015 12:40:35 PAGE 11  
-
              -eeprom_buff + 2)), (unsigned int)(*(eeprom_buff + 3)), (unsigned int)(*(eeprom_buff + 4)) );
                                                       uart_printf("caller is delete success \r\n");
               #endif          
@@ -647,7 +637,9 @@ line level    source
  581   4      
  582   4                              }
  583   3                      }
- 584   2                      ISendStr(I2C_ADDRESS, base_address*PAGE_LENGTH, at24c64_buff, PAGE_LENGTH);
+ 584   2                      ISendStr(I2C_ADDRESS, (base_address <<5), at24c64_buff, PAGE_LENGTH);
+C51 COMPILER V9.00   AT24C256                                                              10/24/2015 16:50:11 PAGE 11  
+
  585   2                      //×îºó½«32¸ö±êÖ¾Î»Ð´Èë±êÖ¾Çø
  586   2                      delay10ms();
  587   2              }
@@ -661,8 +653,7 @@ line level    source
  595   1      
  596   1              for (base_address = 0 ; base_address< HOST_TABLE_NUMBER ; base_address++)
  597   1              {
- 598   2                      IRcvStr(I2C_ADDRESS, HOST_TABLE_START + base_address*PAGE_LENGTH, at24c64_buff, PAGE_LENGTH); //È¡³ö32¸ö
-             -±êÖ¾Î»
+ 598   2                      IRcvStr(I2C_ADDRESS, HOST_TABLE_START + (base_address <<5), at24c64_buff, PAGE_LENGTH); //È¡³ö32¸ö±êÖ¾Î»
  599   2                      delay10ms();
  600   2                      for (offset_address = 0; offset_address<PAGE_LENGTH; offset_address++)//Ö÷Òª32¸ö×Ö½ÚÀïÃæÃ»ÓÐ0µÄ¾ÍOK
  601   2                      {
@@ -675,14 +666,14 @@ line level    source
  608   4                              }
  609   3                              else if (at24c64_buff[offset_address] == 0)//Èç¹û²»ÊÇ0000 ÔòÎÞÐèÈ«²¿É¾³ý
  610   3                              {
- 611   4                                      IRcvStr(I2C_ADDRESS, (HOST_DATA_START + (base_address*PAGE_LENGTH + offset_address) * 8), eeprom_buff,
-             - 8);//È¡³ö¶ÔÓ¦±êÖ¾Î»Ëù¶ÔÓ¦µÄÊý¾ÝÇøµÄÊý¾Ý
+ 611   4                                      IRcvStr(I2C_ADDRESS, (HOST_DATA_START + (((base_address <<5) + offset_address)<<3)), eeprom_buff, 8);/
+             -/È¡³ö¶ÔÓ¦±êÖ¾Î»Ëù¶ÔÓ¦µÄÊý¾ÝÇøµÄÊý¾Ý
  612   4                                      delay10ms();
  613   4                                      if ((*(eeprom_buff + 1) == *(buf + 0)) && (*(eeprom_buff + 2) == *(buf + 1)) && (*(eeprom_buff + 3) ==
              - *(buf + 2)) && (*(eeprom_buff + 4) == *(buf + 3)))
  614   4                                      {
  615   5                                              at24c64_buff[offset_address] = 0xff;
- 616   5                                              ISendStr(I2C_ADDRESS, HOST_TABLE_START+base_address*PAGE_LENGTH, at24c64_buff, PAGE_LENGTH);
+ 616   5                                              ISendStr(I2C_ADDRESS, HOST_TABLE_START+(base_address <<5), at24c64_buff, PAGE_LENGTH);
  617   5                                              delay10ms();
  618   5                                              //Çå³ý¶ÔÓ¦µÄ±êÖ¾Î» È»ºóÔÙ½«±êÖ¾Î»Ð´Èë±êÖ¾Çø
  619   5      #ifdef DEBUG
@@ -696,14 +687,12 @@ line level    source
  625   4      
  626   4                              }
  627   3                      }
- 628   2                      ISendStr(I2C_ADDRESS, HOST_TABLE_START + base_address*PAGE_LENGTH, at24c64_buff, PAGE_LENGTH);
+ 628   2                      ISendStr(I2C_ADDRESS, HOST_TABLE_START + (base_address <<5), at24c64_buff, PAGE_LENGTH);
  629   2                      //×îºó½«32¸ö±êÖ¾Î»Ð´Èë±êÖ¾Çø
  630   2                      delay10ms();
  631   2              }
  632   1              return 1;
  633   1      }
-C51 COMPILER V9.00   AT24C256                                                              10/24/2015 12:40:35 PAGE 12  
-
  634          
  635          bit delete_alarm_function(unsigned char *buf)//bufÎª×éÂëÊý×éµÄÖ¸Õë
  636          {
@@ -712,8 +701,10 @@ line level    source
  639   1      
  640   1              for (base_address = 0; base_address<ALARM_TABLE_NUMBER; base_address++)
  641   1              {
- 642   2                      IRcvStr(I2C_ADDRESS, ALARM_TABLE_START + base_address*PAGE_LENGTH, at24c64_buff, PAGE_LENGTH); //È¡³ö32¸
-             -ö±êÖ¾Î»
+ 642   2                      IRcvStr(I2C_ADDRESS, ALARM_TABLE_START + (base_address <<5), at24c64_buff, PAGE_LENGTH); //È¡³ö32¸ö±êÖ¾Î
+C51 COMPILER V9.00   AT24C256                                                              10/24/2015 16:50:11 PAGE 12  
+
+             -»
  643   2                      delay10ms();
  644   2                      for (offset_address = 0; offset_address<PAGE_LENGTH; offset_address++)//Ö÷Òª32¸ö×Ö½ÚÀïÃæÃ»ÓÐ0µÄ¾ÍOK
  645   2                      {
@@ -726,14 +717,14 @@ line level    source
  652   4                              }
  653   3                              else if (at24c64_buff[offset_address] == 0)//Èç¹û²»ÊÇ0000 ÔòÎÞÐèÈ«²¿É¾³ý
  654   3                              {
- 655   4                                      IRcvStr(I2C_ADDRESS, (ALARM_DATA_START + (base_address*PAGE_LENGTH + offset_address) * 8), eeprom_buff
-             -, 8);//È¡³ö¶ÔÓ¦±êÖ¾Î»Ëù¶ÔÓ¦µÄÊý¾ÝÇøµÄÊý¾Ý
+ 655   4                                      IRcvStr(I2C_ADDRESS, (ALARM_DATA_START + (((base_address <<5) + offset_address)<<3 )), eeprom_buff, 8)
+             -;//È¡³ö¶ÔÓ¦±êÖ¾Î»Ëù¶ÔÓ¦µÄÊý¾ÝÇøµÄÊý¾Ý
  656   4                                      delay10ms();
  657   4                                      if ((*(eeprom_buff + 1) == *(buf + 0)) && (*(eeprom_buff + 2) == *(buf + 1)) && (*(eeprom_buff + 3) ==
              - *(buf + 2)) && (*(eeprom_buff + 4) == *(buf + 3)))
  658   4                                      {
  659   5                                              at24c64_buff[offset_address] = 0xff;
- 660   5                                              ISendStr(I2C_ADDRESS, ALARM_TABLE_START + base_address*PAGE_LENGTH, at24c64_buff, PAGE_LENGTH);
+ 660   5                                              ISendStr(I2C_ADDRESS, ALARM_TABLE_START + (base_address <<5), at24c64_buff, PAGE_LENGTH);
  661   5                                              delay10ms();
  662   5                                              //Çå³ý¶ÔÓ¦µÄ±êÖ¾Î» È»ºóÔÙ½«±êÖ¾Î»Ð´Èë±êÖ¾Çø
  663   5      #ifdef DEBUG
@@ -747,7 +738,7 @@ line level    source
  669   4      
  670   4                              }
  671   3                      }
- 672   2                      ISendStr(I2C_ADDRESS, ALARM_TABLE_START + base_address*PAGE_LENGTH, at24c64_buff, PAGE_LENGTH);
+ 672   2                      ISendStr(I2C_ADDRESS, ALARM_TABLE_START + (base_address <<5), at24c64_buff, PAGE_LENGTH);
  673   2                      //×îºó½«32¸ö±êÖ¾Î»Ð´Èë±êÖ¾Çø
  674   2                      delay10ms();
  675   2              }
@@ -761,13 +752,11 @@ line level    source
  683   1      
  684   1              for (base_address = 0; base_address<CANCEL_TABLE_NUMBER; base_address++)
  685   1              {
- 686   2                      IRcvStr(I2C_ADDRESS, CANCEL_TABLE_START + base_address*PAGE_LENGTH, at24c64_buff, PAGE_LENGTH); //È¡³ö32
-             -¸ö±êÖ¾Î»
+ 686   2                      IRcvStr(I2C_ADDRESS, CANCEL_TABLE_START + (base_address <<5), at24c64_buff, PAGE_LENGTH); //È¡³ö32¸ö±êÖ¾
+             -Î»
  687   2                      delay10ms();
  688   2                      for (offset_address = 0; offset_address<PAGE_LENGTH; offset_address++)//Ö÷Òª32¸ö×Ö½ÚÀïÃæÃ»ÓÐ0µÄ¾ÍOK
  689   2                      {
-C51 COMPILER V9.00   AT24C256                                                              10/24/2015 12:40:35 PAGE 13  
-
  690   3                              if (*(buf) == 0 && *(buf + 1) == 0 && *(buf + 2) == 0 && *(buf + 3) == 0) //È«²¿É¾³ý
  691   3                              {
  692   4                                      at24c64_buff[offset_address] = 0xff;//±êÖ¾Î»ÉèÖÃÎª·Ç0
@@ -777,14 +766,16 @@ line level    source
  696   4                              }
  697   3                              else if (at24c64_buff[offset_address] == 0)//Èç¹û²»ÊÇ0000 ÔòÎÞÐèÈ«²¿É¾³ý
  698   3                              {
- 699   4                                      IRcvStr(I2C_ADDRESS, (CANCEL_DATA_START + (base_address*PAGE_LENGTH + offset_address) * 8), eeprom_buf
-             -f, 8);//È¡³ö¶ÔÓ¦±êÖ¾Î»Ëù¶ÔÓ¦µÄÊý¾ÝÇøµÄÊý¾Ý
+C51 COMPILER V9.00   AT24C256                                                              10/24/2015 16:50:11 PAGE 13  
+
+ 699   4                                      IRcvStr(I2C_ADDRESS, (CANCEL_DATA_START + (((base_address <<5) + offset_address)<<3)), eeprom_buff, 8)
+             -;//È¡³ö¶ÔÓ¦±êÖ¾Î»Ëù¶ÔÓ¦µÄÊý¾ÝÇøµÄÊý¾Ý
  700   4                                      delay10ms();
  701   4                                      if ((*(eeprom_buff + 1) == *(buf + 0)) && (*(eeprom_buff + 2) == *(buf + 1)) && (*(eeprom_buff + 3) ==
              - *(buf + 2)) && (*(eeprom_buff + 4) == *(buf + 3)))
  702   4                                      {
  703   5                                              at24c64_buff[offset_address] = 0xff;
- 704   5                                              ISendStr(I2C_ADDRESS, CANCEL_TABLE_START + base_address*PAGE_LENGTH, at24c64_buff, PAGE_LENGTH);
+ 704   5                                              ISendStr(I2C_ADDRESS, CANCEL_TABLE_START + (base_address <<5), at24c64_buff, PAGE_LENGTH);
  705   5                                              delay10ms();
  706   5                                              //Çå³ý¶ÔÓ¦µÄ±êÖ¾Î» È»ºóÔÙ½«±êÖ¾Î»Ð´Èë±êÖ¾Çø
  707   5      #ifdef DEBUG
@@ -798,7 +789,7 @@ line level    source
  713   4      
  714   4                              }
  715   3                      }
- 716   2                      ISendStr(I2C_ADDRESS, CANCEL_TABLE_START + base_address*PAGE_LENGTH, at24c64_buff, PAGE_LENGTH);
+ 716   2                      ISendStr(I2C_ADDRESS, CANCEL_TABLE_START + (base_address <<5), at24c64_buff, PAGE_LENGTH);
  717   2                      //×îºó½«32¸ö±êÖ¾Î»Ð´Èë±êÖ¾Çø
  718   2                      delay10ms();
  719   2              }
@@ -812,14 +803,14 @@ line level    source
  726   1              unsigned int k;
  727   1              for (k = CALL_TABLE_START ; k<ALL_TABLE_NUMBER; k++)
  728   1              {
- 729   2                      ISendStr(I2C_ADDRESS, k * 32, dofly, PAGE_LENGTH);                   //Ð´Èë24c02
+ 729   2                      ISendStr(I2C_ADDRESS, k<<5, dofly, PAGE_LENGTH);                   //Ð´Èë24c02
  730   2                      delay10ms();
  731   2              }
  732   1      }
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =   3600    ----
+   CODE SIZE        =   3570    ----
    CONSTANT SIZE    =     32    ----
    XDATA SIZE       =     55      88
    PDATA SIZE       =   ----    ----
