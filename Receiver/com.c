@@ -52,9 +52,9 @@ void mcu_to_computer(unsigned char call_type, unsigned char* number,unsigned cha
 	Usart1_SendData(0);
 	Usart1_SendData(0);
 
-	hour  =  (time_buf1[4] / 10) * 6 + time_buf1[4];
-	min =  (time_buf1[5] / 10) * 6 + time_buf1[5];
-	sec  =  (time_buf1[6] / 10) * 6 + time_buf1[6];
+	hour  =  ((time_buf1[4] / 10)*6) + time_buf1[4];
+	min =    ((time_buf1[5] / 10)*6) + time_buf1[5];
+	sec  =   ((time_buf1[6] / 10)*6) + time_buf1[6];
 
 	Usart1_SendData(hour);
 	Usart1_SendData(min);

@@ -13,7 +13,7 @@ unsigned char const CODE[] = { 0x3F, 0x06, 0x5B, 0x4F, 0x66, 0x6D, 0x7D, 0x07, 0
 unsigned char const INIT_CODE[] = { 0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80 };//Öğ¶ÎµãÁÁÊıÂë¹ÜÊı×é
 unsigned char const SHANGSHUO[] = { 0x40, 0x00 }; // µãÁÁÊıÂë¹ÜÖĞ¼ä¶ÎÒÔ¼°Ãğ
 unsigned char buf_display[6][8] = { 0 }; //3¸öTM1629ÏÔ´æÊı×é
-unsigned char display_ram[600] = { 0 }; //³ÌĞòÔËĞĞÊ±¼ÇÂ¼ÏÔÊ¾Êı¾İµÄÄÚ´æ 
+unsigned char display_ram[800] = { 0 }; //³ÌĞòÔËĞĞÊ±¼ÇÂ¼ÏÔÊ¾Êı¾İµÄÄÚ´æ 
 unsigned char await_time_table= 0 ;//ÓÃÓÚ¼ÇÂ¼´ı»úÏÔÊ¾ºá¸ÜÊıÂë¹Ü´ÎÊı 
 unsigned char Two_Menu_F8_E1_save =0;
 
@@ -351,28 +351,28 @@ void Show_four_number(unsigned char* temp)
 void tm1629_load(void)
 {
 	tm1629_clear();
-	if (*(display_ram + 66) != 0)
-		mcuram_to_displayram(buf_display[5] + 7, display_ram + 66);
-	if (*(display_ram + 60) != 0)
-		mcuram_to_displayram(buf_display[5] + 3, display_ram + 60);
-	if (*(display_ram + 54) != 0)
-		mcuram_to_displayram(buf_display[4] + 7, display_ram + 54);
+	if (*(display_ram + 88) != 0)
+		mcuram_to_displayram(buf_display[5] + 7, display_ram + 88);
+	if (*(display_ram + 80) != 0)
+		mcuram_to_displayram(buf_display[5] + 3, display_ram + 80);
+	if (*(display_ram + 72) != 0)
+		mcuram_to_displayram(buf_display[4] + 7, display_ram + 72);
+	if (*(display_ram + 64) != 0)
+		mcuram_to_displayram(buf_display[4] + 3, display_ram + 64);
+	if (*(display_ram + 56) != 0)
+		mcuram_to_displayram(buf_display[3] + 7, display_ram + 56);
 	if (*(display_ram + 48) != 0)
-		mcuram_to_displayram(buf_display[4] + 3, display_ram + 48);
-	if (*(display_ram + 42) != 0)
-		mcuram_to_displayram(buf_display[3] + 7, display_ram + 42);
-	if (*(display_ram + 36) != 0)
-		mcuram_to_displayram(buf_display[3] + 3, display_ram + 36);
-	if (*(display_ram + 30) != 0)
-		mcuram_to_displayram(buf_display[2] + 7, display_ram + 30);
+		mcuram_to_displayram(buf_display[3] + 3, display_ram + 48);
+	if (*(display_ram + 40) != 0)
+		mcuram_to_displayram(buf_display[2] + 7, display_ram + 40);
+	if (*(display_ram + 32) != 0)
+		mcuram_to_displayram(buf_display[2] + 3, display_ram + 32);
 	if (*(display_ram + 24) != 0)
-		mcuram_to_displayram(buf_display[2] + 3, display_ram + 24);
-	if (*(display_ram + 18) != 0)
-		mcuram_to_displayram(buf_display[1] + 7, display_ram + 18);
-	if (*(display_ram + 12) != 0)
-		mcuram_to_displayram(buf_display[1] + 3, display_ram + 12);
-	if (*(display_ram + 6) != 0)
-		mcuram_to_displayram(buf_display[0] + 7, display_ram + 6);
+		mcuram_to_displayram(buf_display[1] + 7, display_ram + 24);
+	if (*(display_ram + 16) != 0)
+		mcuram_to_displayram(buf_display[1] + 3, display_ram + 16);
+	if (*(display_ram + 8) != 0)
+		mcuram_to_displayram(buf_display[0] + 7, display_ram + 8);
 	if (*(display_ram + 0) != 0)
 		mcuram_to_displayram(buf_display[0] + 3, display_ram);
 }
@@ -430,30 +430,30 @@ void decoder_temp_to_mcuram(unsigned char* a, unsigned char* index)//aÎªMCU»º´æÇ
 
 void mcuram_to_mcuram_down(unsigned char* a) //aÎªMCURAM»º´æÇøÇø   ÏòÏÂÑ¹Ò»×éÊı¾İ
 {
-	*(a + 6) = *(a);		//ramÇøÔªËØÏÂÒÆ6¸ö
-	*(a + 7) = *(a + 1);
-	*(a + 8) = *(a + 2);
-	*(a + 9) = *(a + 3);
-	*(a + 10) = *(a + 4);
-	*(a + 11) = *(a + 5);
+	*(a + 8) = *(a);		//ramÇøÔªËØÏÂÒÆ6¸ö
+	*(a + 9) = *(a + 1);
+	*(a + 10) = *(a + 2);
+	*(a + 11) = *(a + 3);
+	*(a + 12) = *(a + 4);
+	*(a + 13) = *(a + 5);
 
 }
 
 void mcuram_to_mcuram_up(unsigned char* a) //aÎªMCURAM»º´æÇøÇø   ÏòÉÏÑ¹Ò»×éÊı¾İ
 {
-	*(a) = *(a + 6);   //ramÇøÔªËØÉÏÒÆ6¸ö
-	*(a + 1) = *(a + 7);
-	*(a + 2) = *(a + 8);
-	*(a + 3) = *(a + 9);
-	*(a + 4) = *(a + 10);
-	*(a + 5) = *(a + 11);
+	*(a) = *(a + 8);   //ramÇøÔªËØÉÏÒÆ6¸ö
+	*(a + 1) = *(a + 9);
+	*(a + 2) = *(a + 10);
+	*(a + 3) = *(a + 11);
+	*(a + 4) = *(a + 12);
+	*(a + 5) = *(a + 13);
 }
 
 void CycleProcess(void)
 {
 	unsigned char i, index;
 	unsigned char f5_xunhuan, f4_xiaohao, logout_cycle_table_temp;
-	unsigned char temp[6] = { 0 };
+	unsigned char temp[8] = { 0 };
 	unsigned char Two_Menu_F6_E3_temp = 0;
 	unsigned char Two_Menu_F6_E1_temp = 0;
 
@@ -468,7 +468,7 @@ void CycleProcess(void)
 	{
 		for (i = 0; i<10; i++)
 		{
-			if (display_ram[i * 6 ] == 0)
+			if (display_ram[i<<3] == 0)
 			{
 				index = i;
 				break;
@@ -477,12 +477,12 @@ void CycleProcess(void)
 
 		for (i = 0; i<6; i++)
 		{
-			temp[i] = display_ram[(index - 1) * 6 + i];
+			temp[i] = display_ram[((index - 1)<<3) + i];
 		}
 
 		for (i = index; i>1; i--)
 		{
-			mcuram_to_mcuram_down(display_ram + (i - 2) * 6);
+			mcuram_to_mcuram_down(display_ram + ((i - 2)<<3));
 		}
 		for (i = 0; i<6; i++)
 		{
@@ -516,9 +516,9 @@ void LogoutProcess(void)
 	{
 		for (i = 0; i<(Two_Menu_F3_E2_temp - 1); i++)
 		{
-			mcuram_to_mcuram_up(display_ram + i * 6);
+			mcuram_to_mcuram_up(display_ram + (i<<3));
 		}
-		for (i = (Two_Menu_F3_E2_temp - 1) * 6; i<Two_Menu_F3_E2_temp * 6; i++)
+		for (i = ((Two_Menu_F3_E2_temp - 1)<<3); i<(Two_Menu_F3_E2_temp<<3); i++)
 		{
 			display_ram[i] = 0;
 		}
@@ -551,9 +551,9 @@ void Logout(void)
 	/*ÏúºÅ´¦Àíº¯Êı*/
 	for (i = 0; i<(Two_Menu_F3_E2_temp - 1); i++)
 	{
-		mcuram_to_mcuram_up(display_ram + i * 6);
+		mcuram_to_mcuram_up(display_ram + (i<<3));
 	}
-	for (i = (Two_Menu_F3_E2_temp - 1) * 6; i<Two_Menu_F3_E2_temp * 6; i++)
+	for (i = ((Two_Menu_F3_E2_temp - 1) <<3); i<(Two_Menu_F3_E2_temp<<3); i++)
 	{
 		display_ram[i] = 0;
 	}
@@ -574,7 +574,7 @@ void CycleUp(void)
 	/*Ñ­»·´¦Àíº¯Êı*/
 	for (i = 0; i<Two_Menu_F3_E2_temp; i++)
 	{
-		if (display_ram[i * 6 ] == 0)
+		if (display_ram[i<<3] == 0)
 		{
 			index = i;
 			break;
@@ -586,11 +586,11 @@ void CycleUp(void)
 	}
 	for (i = 0; i<index; i++)
 	{
-		mcuram_to_mcuram_up(display_ram + i * 6);
+		mcuram_to_mcuram_up(display_ram + (i<<3));
 	}
 	for (i = 0; i<6; i++)
 	{
-		display_ram[(index - 1) * 6 + i] = temp[i];
+		display_ram[((index - 1)<<3) + i] = temp[i];
 	}
 	tm1629_load();
 	display();
@@ -605,7 +605,7 @@ void CycleDown(void)
 	/*Ñ­»·´¦Àíº¯Êı*/
 	for (i = 0; i<Two_Menu_F3_E2_temp; i++)
 	{
-		if (display_ram[i * 6 ] == 0)
+		if (display_ram[i<<3] == 0)
 		{
 			index = i;
 			break;
@@ -614,12 +614,12 @@ void CycleDown(void)
 
 	for (i = 0; i<6; i++)
 	{
-		temp[i] = display_ram[(index - 1) * 6 + i];
+		temp[i] = display_ram[((index - 1)<<3) + i];
 	}
 
 	for (i = index; i>1; i--)
 	{
-		mcuram_to_mcuram_down(display_ram + (i - 2) * 6);
+		mcuram_to_mcuram_down(display_ram + ((i - 2)<<3));
 	}
 	for (i = 0; i<6; i++)
 	{
@@ -643,7 +643,7 @@ void Cancel_funtion(unsigned char* id_number, unsigned char* buff)//id_numberÎª½
 
 	for (i = 0; i<Two_Menu_F3_E2_temp; i++)
 	{
-		if (*(id_number + 1) == *(buff + i * 6 + 1) && *(id_number + 2) == *(buff + i * 6 + 2) && *(id_number + 3) == *(buff + i * 6 + 3) && *(id_number + 4) == *(buff + i * 6 + 4))
+		if (*(id_number + 1) == *(buff + (i << 3) + 1) && *(id_number + 2) == *(buff + (i << 3) + 2) && *(id_number + 3) == *(buff + (i << 3) + 3) && *(id_number + 4) == *(buff + (i << 3) + 4))
 		{
 			index = i;
 			break;
@@ -655,13 +655,13 @@ void Cancel_funtion(unsigned char* id_number, unsigned char* buff)//id_numberÎª½
 	}
 	for (i = index; i<Two_Menu_F3_E2_temp; i++)
 	{
-		mcuram_to_mcuram_up(buff + i * 6);
+		mcuram_to_mcuram_up(buff + (i << 3));
 	}
 	if (index != Two_Menu_F3_E2_temp)
 	{
 		for (i = 0; i<6; i++)
 		{
-			*(buff + (Two_Menu_F3_E2_temp - 1) * 6 + i) = 0;
+			*(buff + ((Two_Menu_F3_E2_temp - 1)<<3) + i) = 0;
 		}
 	}
 	if (*(buff) == 0)
@@ -684,7 +684,7 @@ void Search_funtion(unsigned char* id_number, unsigned char* buff)//id_numberÎª½
 
 	for (i = 0; i<Two_Menu_F3_E2_temp; i++)
 	{
-		if (*(id_number + 1) == *(buff + i * 6 + 1) && *(id_number + 2) == *(buff + i * 6 + 2) && *(id_number + 3) == *(buff + i * 6 + 3) && *(id_number + 4) == *(buff + i * 6 + 4))
+		if (*(id_number + 1) == *(buff + (i << 3) + 1) && *(id_number + 2) == *(buff + (i << 3) + 2) && *(id_number + 3) == *(buff + (i << 3) + 3) && *(id_number + 4) == *(buff + (i << 3) + 4))
 		{
 			index = i;
 			break;
@@ -693,13 +693,13 @@ void Search_funtion(unsigned char* id_number, unsigned char* buff)//id_numberÎª½
 
 	for (i = index; i<Two_Menu_F3_E2_temp; i++)
 	{
-		mcuram_to_mcuram_up(buff + i * 6);
+		mcuram_to_mcuram_up(buff + (i << 3));
 	}
 	if (index != Two_Menu_F3_E2_temp)
 	{
 		for (i = 0; i<6; i++)
 		{
-			*(buff + (Two_Menu_F3_E2_temp - 1) * 6 + i) = 0;
+			*(buff + ((Two_Menu_F3_E2_temp - 1)<<3) + i) = 0;
 		}
 	}
 }

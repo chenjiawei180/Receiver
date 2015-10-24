@@ -217,7 +217,7 @@ standby:
 
 					for (l = Two_Menu_F3_E2_temp; l>1; l--) //整体往下移一组数据
 					{
-						mcuram_to_mcuram_down(display_ram + (l - 2) * 6);
+						mcuram_to_mcuram_down(display_ram + ((l - 2)<<3));
 					}
 					for (l = 0; l<6; l++) //讲第一组数据清0
 					{
@@ -240,10 +240,10 @@ standby:
 					}
 					for (k = 0; k < Two_Menu_F3_E2_temp; k++)
 					{
-						if (display_ram[k * 6 + 1] == temp_buff[1] && display_ram[k * 6 + 2] == temp_buff[2] && display_ram[k * 6 + 3] == temp_buff[3] && display_ram[k * 6 + 4] == temp_buff[4])
+						if (display_ram[(k << 3) + 1] == temp_buff[1] && display_ram[(k << 3) + 2] == temp_buff[2] && display_ram[(k << 3) + 3] == temp_buff[3] && display_ram[(k << 3) + 4] == temp_buff[4])
 						{
 							index = k;
-							decoder_temp_to_mcuram(display_ram + k * 6, temp_buff);
+							decoder_temp_to_mcuram(display_ram + (k << 3), temp_buff);
 							tm1629_load();//单片机把数组内容载入数码管显存数组中
 							display();//显示数码管
 							break;
@@ -254,10 +254,10 @@ standby:
 					{
 						for (k = 0; k < Two_Menu_F3_E2_temp; k++)
 						{
-							if (display_ram[k * 6] == 0)//找出位于队列最后的那个点
+							if (display_ram[(k << 3)] == 0)//找出位于队列最后的那个点
 							{
 								mcu_to_computer(0x91, temp_buff, old2_RF_RECE_REG[2] & 0x0f);//上位机
-								decoder_temp_to_mcuram(display_ram + k * 6, temp_buff);
+								decoder_temp_to_mcuram(display_ram + (k << 3), temp_buff);
 								tm1629_load();//单片机把数组内容载入数码管显存数组中
 								display();//显示数码管
 								break;
@@ -330,7 +330,7 @@ standby:
 
 								for (l = Two_Menu_F3_E2_temp; l>1; l--) //整体往下移一组数据
 								{
-									mcuram_to_mcuram_down(display_ram + (l - 2) * 6);
+									mcuram_to_mcuram_down(display_ram + ((l - 2)<<3));
 								}
 								for (l = 0; l<6; l++) //讲第一组数据清0
 								{
@@ -354,10 +354,10 @@ standby:
 
 							for (k = 0; k < Two_Menu_F3_E2_temp; k++)
 							{
-								if (display_ram[k * 6 + 1] == temp_buff[1] && display_ram[k * 6 + 2] == temp_buff[2] && display_ram[k * 6 + 3] == temp_buff[3] && display_ram[k * 6 + 4] == temp_buff[4])
+								if (display_ram[(k << 3) + 1] == temp_buff[1] && display_ram[(k << 3) + 2] == temp_buff[2] && display_ram[(k << 3) + 3] == temp_buff[3] && display_ram[(k << 3) + 4] == temp_buff[4])
 								{
 									index = k;
-									decoder_temp_to_mcuram(display_ram + k * 6, temp_buff);
+									decoder_temp_to_mcuram(display_ram + (k << 3), temp_buff);
 									tm1629_load();//单片机把数组内容载入数码管显存数组中
 									display();//显示数码管
 									break;
@@ -368,10 +368,10 @@ standby:
 							{
 								for (k = 0; k < Two_Menu_F3_E2_temp; k++)
 								{
-									if (display_ram[k * 6] == 0)//找出位于队列最后的那个点
+									if (display_ram[(k << 3)] == 0)//找出位于队列最后的那个点
 									{
 										mcu_to_computer(0x91, temp_buff, old2_RF_RECE_REG[2] & 0x0f);//上位机
-										decoder_temp_to_mcuram(display_ram + k * 6, temp_buff);
+										decoder_temp_to_mcuram(display_ram + (k << 3), temp_buff);
 										tm1629_load();//单片机把数组内容载入数码管显存数组中
 										display();//显示数码管
 										break;
