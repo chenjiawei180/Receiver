@@ -226,7 +226,7 @@ unsigned char KeyDecoder(void)
 		if (register_manager_temp == 1)
 		{
 			
-			if (func_index == MENU_STANDBY )
+			if (func_index == MENU_STANDBY || func_index == ONE_MENU_FA || func_index == ONE_MENU_Fb || func_index == ONE_MENU_FC || func_index == ONE_MENU_Fd || func_index == TWO_MENU_F9_E2 || func_index == TWO_MENU_F9_E1)
 			{
 //				uart_printf("accumulate_decoder %d .\r\n", (unsigned int)accumulate_decoder);
 //				uart_printf("accumulate_decoder %d .\r\n", (unsigned int)old2_RF_RECE_REG[2] & 0x0f);
@@ -399,6 +399,7 @@ void KeyProcess(void)
 				if (main_press_time_temp >= 20)
 				{
 					func_index = TWO_MENU_FA_SET;
+					set_filter_main(6);//进入菜单后 3S内 呼叫器的菜单键无效
 					clear_main_press_time();
 				}
 			}
@@ -408,6 +409,7 @@ void KeyProcess(void)
 				if (main_press_time_temp >= 20)
 				{
 					func_index = TWO_MENU_Fb_SET;
+					set_filter_main(6);//进入菜单后 3S内 呼叫器的菜单键无效
 					clear_main_press_time();
 				}
 			}
@@ -417,6 +419,7 @@ void KeyProcess(void)
 				if (main_press_time_temp >= 20)
 				{
 					func_index = TWO_MENU_FC_SET;
+					set_filter_main(6);//进入菜单后 3S内 呼叫器的菜单键无效
 					clear_main_press_time();
 				}
 			}
@@ -426,6 +429,7 @@ void KeyProcess(void)
 				if (main_press_time_temp >= 20)
 				{
 					func_index = TWO_MENU_Fd_SET;
+					set_filter_main(6);//进入菜单后 3S内 呼叫器的菜单键无效
 					clear_main_press_time();
 				}
 			}
@@ -438,6 +442,7 @@ void KeyProcess(void)
 					var_init();
 					env_load();
 					IAP_CONTR = 0X20;
+					set_filter_main(6);//进入菜单后 3S内 呼叫器的菜单键无效
 					clear_main_press_time();
 				}
 			}
@@ -457,6 +462,7 @@ void KeyProcess(void)
 					Delete_all_data();
 					delay10ms();
 					IAP_CONTR = 0X20;
+					set_filter_main(6);//进入菜单后 3S内 呼叫器的菜单键无效
 					clear_main_press_time();
 				}
 			}
