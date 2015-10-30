@@ -87,6 +87,7 @@
     <ClInclude Include="menu.h" />
     <ClInclude Include="timer.h" />
     <ClInclude Include="tm1629.h" />
+    <ClInclude Include="tpyedef.h" />
     <ClInclude Include="usart.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

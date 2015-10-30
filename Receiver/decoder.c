@@ -14,9 +14,11 @@ unsigned char Two_menu_set_success = 0;
 
 void DecoderProcess(void)
 {	
+	RF_def tmp;
+	RF_def RFtmp;
+	uint32_t dat;
 	unsigned char i, j ,l ,k ,index=0;
 	unsigned char temp_buff[8];//解码用临时数组
-	unsigned char temp_buff1[PAGE_LENGTH] = { 0 };//查询AT24C256临时数组
 
 	unsigned char func_index_temp = 0;		//创建临时变量，用于放回其他外部变量
 	unsigned char Two_Menu_F8_E1_temp = 0;	//创建临时变量，用于放回其他外部变量
@@ -44,6 +46,7 @@ void DecoderProcess(void)
 #ifdef DEBUG
 		uart_printf("decoder_val is %02x %02x %02x .\r\n", (unsigned int)old2_RF_RECE_REG[0], (unsigned int)old2_RF_RECE_REG[1], (unsigned int)old2_RF_RECE_REG[2]); //测试按键键值
 #endif
+		dat = ((uint32_t)old2_RF_RECE_REG[0]) << 16 | ((uint32_t)old2_RF_RECE_REG[1]) << 8 | ((uint32_t)old2_RF_RECE_REG[2]);
 		switch (func_index_temp)
 		{
 		case MENU_STANDBY://待机状态下
@@ -95,81 +98,77 @@ void DecoderProcess(void)
 				break;
 			}
 			//呼叫器注册,搜索所需要的呼叫器
-			 for (j = 0; j<(CALL_TABLE_NUMBER + CANCEL_TABLE_NUMBER + ALARM_TABLE_NUMBER); j++)//搜索标志位
+#ifdef DEBUG
+			uart_printf("dat is : %x %x \r\n", (unsigned int)(dat >> 16), (unsigned int)dat);
+#endif
+			if (Find_RF_EEPROM(&RFtmp, dat))
 			{
-				IRcvStr(I2C_ADDRESS, j<<5, temp_buff1, PAGE_LENGTH);//读出32个字节标志位
-				delay10ms();
-//				uart_printf("j = %02x \r\n",(unsigned int)j);
-				for (i = 0; i<PAGE_LENGTH; i++) //对读出的32字节标志位进行查看，看是否为0
+#ifdef DEBUG
+				uart_printf("Find_RF_EEPROM \r\n");
+#endif
+				memcpy(temp_buff+1, RFtmp.region, 4);
+				temp_buff[7] = old2_RF_RECE_REG[2];
+
+				if (temp_buff[0] < 50)
 				{
-					if (temp_buff1[i] == 0)//标志位为0代表该标志位所对应的数据区有数据
-					{	
 #ifdef DEBUG
-						uart_printf("发现一个标志位 \r\n");
+					uart_printf("temp_buff[0] < 50 \r\n");
 #endif
-						IRcvStr(I2C_ADDRESS, CALL_DATA_START + (((j<<5) + i) <<3), temp_buff, 8);//读出对应的8个字节的数据
-						delay10ms();
-						if (((Two_Menu_F8_E1_temp != 1) && temp_buff[5] == old2_RF_RECE_REG[0] && temp_buff[6] == old2_RF_RECE_REG[1] && ((temp_buff[7] >> 4) == (old2_RF_RECE_REG[2] >> 4))) || ((Two_Menu_F8_E1_temp == 1) && temp_buff[5] == old2_RF_RECE_REG[0] && temp_buff[6] == old2_RF_RECE_REG[1] && temp_buff[7] == old2_RF_RECE_REG[2]))// 进行对比，看看数据是否符合
-						{
-							temp_buff[7] = old2_RF_RECE_REG[2];
-							if (temp_buff[0] < 50)
-							{
-#ifdef DEBUG
-								uart_printf("temp_buff[0] < 50 \r\n");
-#endif
-								if (Two_Menu_F8_E1_temp == 1)  //为按键值
-								{
+					if (Two_Menu_F8_E1_temp == 1)  //为按键值
+					{
 
-									temp_buff[0] = single_key[old2_RF_RECE_REG[2] & 0x0f];
-								}
-								else
-								{
+						temp_buff[0] = single_key[old2_RF_RECE_REG[2] & 0x0f];
+					}
+					else
+					{
 
-									temp_buff[0] = multiple_key[old2_RF_RECE_REG[2] & 0x0f];
-								}
-							}
-#ifdef DEBUG
-							uart_printf("cancen funtion \r\n");
-#endif
-							//语音函数
-							if (temp_buff[0] != QUXIAO_1 && temp_buff[0])
-							{
-#ifdef DEBUG
-								uart_printf("cancen funtion fault \r\n");
-#endif
-								for (l = 0; l < Two_Menu_F6_E2_temp; l++)
-								{
-									submenuf6_1(Two_Menu_F6_E1_temp, temp_buff, temp_buff[0], old2_RF_RECE_REG[2] & 0x0f);
-								}
-							}
-							else
-							{
-#ifdef DEBUG
-								uart_printf("cancen funtion success \r\n");
-#endif
-								mcu_to_computer(0x92, temp_buff, old2_RF_RECE_REG[2] & 0x0f);//上位机
-								Cancel_funtion(temp_buff, display_ram);//取消函数
-								tm1629_load();
-								display();
-								goto standby;
-							}
-
-								tm1629_clear();//清屏
-								mcu_to_computer(0x91, temp_buff, old2_RF_RECE_REG[2] & 0x0f);//上位机
-								decoder_temp_to_mcuram(display_ram, temp_buff);//如果符合的话  将临时数组的数据移入单片机暂存数组 8字节转6字节
-								tm1629_load();//单片机把数组内容载入数码管显存数组中
-								display();//显示数码管
-#ifdef DEBUG
-								uart_printf("decoder success!"); 
-#endif
-
-								set_func_index(DECODER_MENU);;//此时跳入解码菜单，为下一次解码做准备
-								clear_again_receive_rf_decoder_finished();//清除解码完成标志位
-								goto standby;
-						}
+						temp_buff[0] = multiple_key[old2_RF_RECE_REG[2] & 0x0f];
 					}
 				}
-			}	
+
+
+
+
+#ifdef DEBUG
+				uart_printf("cancen funtion \r\n");
+#endif
+				//语音函数
+				if (temp_buff[0] != QUXIAO_1 && temp_buff[0])
+				{
+#ifdef DEBUG
+					uart_printf("cancen funtion fault \r\n");
+#endif
+					for (l = 0; l < Two_Menu_F6_E2_temp; l++)
+					{
+						submenuf6_1(Two_Menu_F6_E1_temp, temp_buff, temp_buff[0], old2_RF_RECE_REG[2] & 0x0f);
+					}
+				}
+				else
+				{
+#ifdef DEBUG
+					uart_printf("cancen funtion success \r\n");
+#endif
+					mcu_to_computer(0x92, temp_buff, old2_RF_RECE_REG[2] & 0x0f);//上位机
+					Cancel_funtion(temp_buff, display_ram);//取消函数
+					tm1629_load();
+					display();
+					goto standby;
+				}
+
+				tm1629_clear();//清屏
+				mcu_to_computer(0x91, temp_buff, old2_RF_RECE_REG[2] & 0x0f);//上位机
+				decoder_temp_to_mcuram(display_ram, temp_buff);//如果符合的话  将临时数组的数据移入单片机暂存数组 8字节转6字节
+				tm1629_load();//单片机把数组内容载入数码管显存数组中
+				display();//显示数码管
+#ifdef DEBUG
+				uart_printf("decoder success!");
+#endif
+
+				set_func_index(DECODER_MENU);;//此时跳入解码菜单，为下一次解码做准备
+				clear_again_receive_rf_decoder_finished();//清除解码完成标志位
+				goto standby;
+
+			}
 standby:
 			 break;
 		}
@@ -270,129 +269,121 @@ standby:
 				break;
 			}
 			//呼叫器注册,搜索所需要的呼叫器
-			for (j = 0; j<CALL_TABLE_NUMBER + ALARM_TABLE_NUMBER + CANCEL_TABLE_NUMBER; j++)//搜索标志位
+			if (Find_RF_EEPROM(&RFtmp, dat))
 			{
-				IRcvStr(I2C_ADDRESS, j<<5, temp_buff1, PAGE_LENGTH);//读出32个字节标志位
-				delay10ms();
-				for (i = 0; i<PAGE_LENGTH; i++)
+#ifdef DEBUG
+				uart_printf("Find_RF_EEPROM \r\n");
+#endif
+				memcpy(temp_buff + 1, RFtmp.region, 4);
+
+				temp_buff[7] = old2_RF_RECE_REG[2];
+				if (temp_buff[0] < 50)
 				{
-					if (temp_buff1[i] == 0)//对读出的32字节标志位进行查看，看是否为0
+					if (Two_Menu_F8_E1_temp == 1)  //为按键值
 					{
-						IRcvStr(I2C_ADDRESS, CALL_DATA_START +( ( (j<<5) + i) <<3 ), temp_buff, 8);//读出对应的8个字节的数据
-						delay10ms();
-						if (((Two_Menu_F8_E1_temp != 1) && temp_buff[5] == old2_RF_RECE_REG[0] && temp_buff[6] == old2_RF_RECE_REG[1] && ((temp_buff[7] >> 4) == (old2_RF_RECE_REG[2] >> 4))) || ((Two_Menu_F8_E1_temp == 1) && temp_buff[5] == old2_RF_RECE_REG[0] && temp_buff[6] == old2_RF_RECE_REG[1] && temp_buff[7] == old2_RF_RECE_REG[2]))
+
+						temp_buff[0] = single_key[old2_RF_RECE_REG[2] & 0x0f];
+					}
+					else
+					{
+
+						temp_buff[0] = multiple_key[old2_RF_RECE_REG[2] & 0x0f];
+					}
+				}
+
+				if (Two_Menu_F3_E1_temp == 1)//为即时模式
+				{
+
+					if (temp_buff[0] != QUXIAO_1 && temp_buff[0])
+					{
+#ifdef DEBUG
+						uart_printf("cancen funtion fault \r\n");
+#endif
+						for (l = 0; l < Two_Menu_F6_E2_temp; l++)
 						{
+							submenuf6_1(Two_Menu_F6_E1_temp, temp_buff, temp_buff[0], old2_RF_RECE_REG[2] & 0x0f);
+						}
+					}
+					else
+					{
 #ifdef DEBUG
-							uart_printf("你好 \r\n");
+						uart_printf("cancen funtion success \r\n");
 #endif
-							temp_buff[7] = old2_RF_RECE_REG[2];
-							if (temp_buff[0] < 50)
+						mcu_to_computer(0x92, temp_buff, old2_RF_RECE_REG[2] & 0x0f);//上位机
+						Cancel_funtion(temp_buff, display_ram);//取消函数
+						tm1629_load();
+						display();
+						goto decoder;
+					}
+
+					mcu_to_computer(0x91, temp_buff, old2_RF_RECE_REG[2] & 0x0f);//上位机
+					Search_funtion(temp_buff, display_ram);
+
+					for (l = Two_Menu_F3_E2_temp; l > 1; l--) //整体往下移一组数据
+					{
+						mcuram_to_mcuram_down(display_ram + ((l - 2) << 3));
+					}
+					for (l = 0; l < 6; l++) //讲第一组数据清0
+					{
+						display_ram[l] = 0;
+					}
+
+					decoder_temp_to_mcuram(display_ram, temp_buff); //如果符合的话  将临时数组的数据移入单片机暂存数组 8字节转6字节
+					tm1629_load();//单片机把数组内容载入数码管显存数组中
+					display();//显示数码管
+				}
+				else if (Two_Menu_F3_E1_temp == 2)//为循环模式
+				{
+					if (temp_buff[0] == QUXIAO_1 || temp_buff[0] == 0)
+					{
+						mcu_to_computer(0x92, temp_buff, old2_RF_RECE_REG[2] & 0x0f);//上位机
+						Cancel_funtion(temp_buff, display_ram);//取消函数
+						tm1629_load();
+						display();
+						break;
+					}
+
+					for (k = 0; k < Two_Menu_F3_E2_temp; k++)
+					{
+						if (display_ram[(k << 3) + 1] == temp_buff[1] && display_ram[(k << 3) + 2] == temp_buff[2] && display_ram[(k << 3) + 3] == temp_buff[3] && display_ram[(k << 3) + 4] == temp_buff[4])
+						{
+							index = k;
+							decoder_temp_to_mcuram(display_ram + (k << 3), temp_buff);
+							tm1629_load();//单片机把数组内容载入数码管显存数组中
+							display();//显示数码管
+							break;
+						}
+					}
+
+					if (index == Two_Menu_F3_E2_temp)
+					{
+						for (k = 0; k < Two_Menu_F3_E2_temp; k++)
+						{
+							if (display_ram[(k << 3)] == 0)//找出位于队列最后的那个点
 							{
-								if (Two_Menu_F8_E1_temp == 1)  //为按键值
-								{
-
-									temp_buff[0] = single_key[old2_RF_RECE_REG[2] & 0x0f];
-								}
-								else
-								{
-
-									temp_buff[0] = multiple_key[old2_RF_RECE_REG[2] & 0x0f];
-								}
-							}
-			
-							if (Two_Menu_F3_E1_temp == 1)//为即时模式
-							{
-
-								if (temp_buff[0] != QUXIAO_1 && temp_buff[0])
-								{
-#ifdef DEBUG
-									uart_printf("cancen funtion fault \r\n");
-#endif
-									for (l = 0; l < Two_Menu_F6_E2_temp; l++)
-									{
-										submenuf6_1(Two_Menu_F6_E1_temp, temp_buff, temp_buff[0], old2_RF_RECE_REG[2] & 0x0f);
-									}
-								}
-								else
-								{
-#ifdef DEBUG
-									uart_printf("cancen funtion success \r\n");
-#endif
-									mcu_to_computer(0x92, temp_buff, old2_RF_RECE_REG[2] & 0x0f);//上位机
-									Cancel_funtion(temp_buff, display_ram);//取消函数
-									tm1629_load();
-									display();
-									goto decoder;
-								}
-
 								mcu_to_computer(0x91, temp_buff, old2_RF_RECE_REG[2] & 0x0f);//上位机
-								Search_funtion(temp_buff, display_ram);
-
-								for (l = Two_Menu_F3_E2_temp; l>1; l--) //整体往下移一组数据
-								{
-									mcuram_to_mcuram_down(display_ram + ((l - 2)<<3));
-								}
-								for (l = 0; l<6; l++) //讲第一组数据清0
-								{
-									display_ram[l] = 0;
-								}
-
-								decoder_temp_to_mcuram(display_ram, temp_buff); //如果符合的话  将临时数组的数据移入单片机暂存数组 8字节转6字节
+								decoder_temp_to_mcuram(display_ram + (k << 3), temp_buff);
 								tm1629_load();//单片机把数组内容载入数码管显存数组中
 								display();//显示数码管
-							}
-						else if (Two_Menu_F3_E1_temp == 2)//为循环模式
-						{
-							if (temp_buff[0] == QUXIAO_1 || temp_buff[0] == 0)
-							{
-								mcu_to_computer(0x92, temp_buff, old2_RF_RECE_REG[2] & 0x0f);//上位机
-								Cancel_funtion(temp_buff, display_ram);//取消函数
-								tm1629_load();
-								display();
 								break;
+
 							}
-
-							for (k = 0; k < Two_Menu_F3_E2_temp; k++)
-							{
-								if (display_ram[(k << 3) + 1] == temp_buff[1] && display_ram[(k << 3) + 2] == temp_buff[2] && display_ram[(k << 3) + 3] == temp_buff[3] && display_ram[(k << 3) + 4] == temp_buff[4])
-								{
-									index = k;
-									decoder_temp_to_mcuram(display_ram + (k << 3), temp_buff);
-									tm1629_load();//单片机把数组内容载入数码管显存数组中
-									display();//显示数码管
-									break;
-								}
-							}
-
-							if (index == Two_Menu_F3_E2_temp)
-							{
-								for (k = 0; k < Two_Menu_F3_E2_temp; k++)
-								{
-									if (display_ram[(k << 3)] == 0)//找出位于队列最后的那个点
-									{
-										mcu_to_computer(0x91, temp_buff, old2_RF_RECE_REG[2] & 0x0f);//上位机
-										decoder_temp_to_mcuram(display_ram + (k << 3), temp_buff);
-										tm1629_load();//单片机把数组内容载入数码管显存数组中
-										display();//显示数码管
-										break;
-
-									}
-								}
-							}
-						}
-#ifdef DEBUG
-							uart_printf("decoder success!");
-#endif
-
-#ifdef DEBUG
-							uart_printf("display_ram is %02x %02x %02x %02x.\r\n", (unsigned int)display_ram[0], (unsigned int)display_ram[1], (unsigned int)display_ram[2], (unsigned int)display_ram[3]); //测试按键键值
-#endif
-							clear_again_receive_rf_decoder_finished();
-							goto decoder;
 						}
 					}
 				}
+#ifdef DEBUG
+				uart_printf("decoder success!");
+#endif
+
+#ifdef DEBUG
+				uart_printf("display_ram is %02x %02x %02x %02x.\r\n", (unsigned int)display_ram[0], (unsigned int)display_ram[1], (unsigned int)display_ram[2], (unsigned int)display_ram[3]); //测试按键键值
+#endif
+				clear_again_receive_rf_decoder_finished();
+				goto decoder;
+
 			}
+				
+			
 decoder:
 			break;
 		}
@@ -403,26 +394,13 @@ decoder:
 		case TWO_MENU_F1_E1_D4:
 		{
 			set_func_index(TWO_MENU_F1_E1_D4);
-			buf_eeprom[0] = old2_RF_RECE_REG[2] & 0x0f;//按键值保存到0字节
-			buf_eeprom[1] = Two_Menu_F1_E1[0];/*数值存入1 2 3 4字节*/
-			buf_eeprom[2] = Two_Menu_F1_E1[1];
-			buf_eeprom[3] = Two_Menu_F1_E1[2];
-			buf_eeprom[4] = Two_Menu_F1_E1[3];
-			buf_eeprom[5] = old2_RF_RECE_REG[0];// ID码存入 5 6 7 字节
-			buf_eeprom[6] = old2_RF_RECE_REG[1];
-			if (Two_Menu_F8_E1_temp == 1)
-			{
-				buf_eeprom[7] = old2_RF_RECE_REG[2];
-			}
-			else
-			{
-				buf_eeprom[7] = old2_RF_RECE_REG[2] & 0xf0;
-			}
 
-			if (register_call_function(buf_eeprom))//数值自动加1
+			memcpy(tmp.region, Two_Menu_F1_E1, 4);
+			tmp.rf = ((uint32_t)old2_RF_RECE_REG[0]) << 16 | ((uint32_t)old2_RF_RECE_REG[1]) << 8 | ((uint32_t)old2_RF_RECE_REG[2]);
+			if (!(register_call_function(&tmp)))//数值自动加1
 			{
 #ifdef DEBUG
-				uart_printf("call is %02x %02x %02x .\r\n", (unsigned int)buf_eeprom[5], (unsigned int)buf_eeprom[6], (unsigned int)buf_eeprom[7]); //测试按键键值
+				uart_printf("dat is : %x %x \r\n", (unsigned int)(tmp.rf >> 16), (unsigned int)tmp.rf);
 				uart_printf("call is %02x %02x %02x %02x.\r\n", (unsigned int)Two_Menu_F1_E1[0], (unsigned int)Two_Menu_F1_E1[1], (unsigned int)Two_Menu_F1_E1[2], (unsigned int)Two_Menu_F1_E1[3]);
 				uart_printf("caller is rigister success \r\n");
 #endif					
@@ -471,16 +449,10 @@ decoder:
 		case TWO_MENU_F1_E2_D4:
 		{
 								  set_func_index(TWO_MENU_F1_E2_D4);
-								  buf_eeprom[0] = old2_RF_RECE_REG[2] & 0x0f;//按键值保存到0字节
-								  buf_eeprom[1] = Two_Menu_F1_E2[0];/*数值存入1 2 3 4字节*/
-								  buf_eeprom[2] = Two_Menu_F1_E2[1];
-								  buf_eeprom[3] = Two_Menu_F1_E2[2];
-								  buf_eeprom[4] = Two_Menu_F1_E2[3];
-								  buf_eeprom[5] = old2_RF_RECE_REG[0];// ID码存入 5 6 7 字节
-								  buf_eeprom[6] = old2_RF_RECE_REG[1];
-								  buf_eeprom[7] = old2_RF_RECE_REG[2] & 0xf0;
+								  memcpy(tmp.region, Two_Menu_F1_E2, 4);
+								  tmp.rf = ((uint32_t)old2_RF_RECE_REG[0]) << 16 | ((uint32_t)old2_RF_RECE_REG[1]) << 8 | ((uint32_t)old2_RF_RECE_REG[2]);
 
-								  if (register_host_function(buf_eeprom))//数值自动加1
+								  if (!register_host_function(&tmp))//数值自动加1
 								  {
 #ifdef DEBUG
 									  uart_printf("host is %02x %02x %02x .\r\n", (unsigned int)buf_eeprom[5], (unsigned int)buf_eeprom[6], (unsigned int)buf_eeprom[7]); //测试按键键值
@@ -534,16 +506,11 @@ decoder:
 		case TWO_MENU_F1_E3_D4:
 		{
 			set_func_index(TWO_MENU_F1_E3_D4);
-			buf_eeprom[0] = BAOJING_1;//按键值保存到0字节
-			buf_eeprom[1] = Two_Menu_F1_E3[0];/*数值存入1 2 3 4字节*/
-			buf_eeprom[2] = Two_Menu_F1_E3[1];
-			buf_eeprom[3] = Two_Menu_F1_E3[2];
-			buf_eeprom[4] = Two_Menu_F1_E3[3];
-			buf_eeprom[5] = old2_RF_RECE_REG[0];// ID码存入 5 6 7 字节
-			buf_eeprom[6] = old2_RF_RECE_REG[1];
-			buf_eeprom[7] = old2_RF_RECE_REG[2] & 0xf0;
 
-			if (register_alarm_function(buf_eeprom))//数值自动加1
+			memcpy(tmp.region, Two_Menu_F1_E3, 4);
+			tmp.rf = ((uint32_t)old2_RF_RECE_REG[0]) << 16 | ((uint32_t)old2_RF_RECE_REG[1]) << 8 | ((uint32_t)old2_RF_RECE_REG[2]);
+
+			if (!register_alarm_function(&tmp))//数值自动加1
 			{
 #ifdef DEBUG
 				uart_printf("alarm is %02x %02x %02x .\r\n", (unsigned int)buf_eeprom[5], (unsigned int)buf_eeprom[6], (unsigned int)buf_eeprom[7]); //测试按键键值
@@ -594,16 +561,12 @@ decoder:
 		case TWO_MENU_F1_E4_D4:
 		{
 			set_func_index(TWO_MENU_F1_E4_D4);
-			buf_eeprom[0] = QUXIAO_1;//按键值保存到0字节
-			buf_eeprom[1] = Two_Menu_F1_E4[0];/*数值存入1 2 3 4字节*/
-			buf_eeprom[2] = Two_Menu_F1_E4[1];
-			buf_eeprom[3] = Two_Menu_F1_E4[2];
-			buf_eeprom[4] = Two_Menu_F1_E4[3];
-			buf_eeprom[5] = old2_RF_RECE_REG[0];// ID码存入 5 6 7 字节
-			buf_eeprom[6] = old2_RF_RECE_REG[1];
-			buf_eeprom[7] = old2_RF_RECE_REG[2] & 0xf0;
 
-			if (register_cancel_function(buf_eeprom))//数值自动加1
+			memcpy(tmp.region, Two_Menu_F1_E4, 4);
+			tmp.rf = ((uint32_t)old2_RF_RECE_REG[0]) << 16 | ((uint32_t)old2_RF_RECE_REG[1]) << 8 | ((uint32_t)old2_RF_RECE_REG[2]);
+
+
+			if (!register_cancel_function(&tmp))//数值自动加1
 			{
 #ifdef DEBUG
 				uart_printf("cancel is %02x %02x %02x .\r\n", (unsigned int)buf_eeprom[5], (unsigned int)buf_eeprom[6], (unsigned int)buf_eeprom[7]); //测试按键键值

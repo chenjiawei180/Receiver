@@ -14,14 +14,14 @@ unsigned char accumulate_decoder = 0;
 unsigned char func_index = 0; //多级菜单索引变量
 void(*current_operation_index)();// 多级菜单函数指针
 
-unsigned char Two_Menu_F1_E1[4] = { 0, 0, 0, 1 }; //F1_E1
-unsigned char Two_Menu_F1_E2[4] = { 0, 0, 0, 1 }; //F1_E2
-unsigned char Two_Menu_F1_E3[4] = { 0, 0, 0, 1 }; //F1_E3
-unsigned char Two_Menu_F1_E4[4] = { 0, 0, 0, 1 }; //F1_E4
-unsigned char Two_Menu_F2_E1[4] = { 0, 0, 0, 1 }; //F2_E1
-unsigned char Two_Menu_F2_E2[4] = { 0, 0, 0, 1 }; //F2_E2
-unsigned char Two_Menu_F2_E3[4] = { 0, 0, 0, 1 }; //F2_E3
-unsigned char Two_Menu_F2_E4[4] = { 0, 0, 0, 1 }; //F2_E4
+unsigned char Two_Menu_F1_E1[5] = { 0, 0, 0, 1 }; //F1_E1
+unsigned char Two_Menu_F1_E2[5] = { 0, 0, 0, 1 }; //F1_E2
+unsigned char Two_Menu_F1_E3[5] = { 0, 0, 0, 1 }; //F1_E3
+unsigned char Two_Menu_F1_E4[5] = { 0, 0, 0, 1 }; //F1_E4
+unsigned char Two_Menu_F2_E1[5] = { 0, 0, 0, 1 }; //F2_E1
+unsigned char Two_Menu_F2_E2[5] = { 0, 0, 0, 1 }; //F2_E2
+unsigned char Two_Menu_F2_E3[5] = { 0, 0, 0, 1 }; //F2_E3
+unsigned char Two_Menu_F2_E4[5] = { 0, 0, 0, 1 }; //F2_E4
 
 unsigned char Two_Menu_F3_E1 = 1; //即时模式或者排队显示
 unsigned char Two_Menu_F3_E2 = 1; //呼叫时候存储数量
@@ -299,7 +299,7 @@ void KeyProcess(void)
 				main_press_time_temp = return_main_press_time();
 				if (main_press_time_temp >= 10)
 				{
-					if (delete_call_function(Two_Menu_F2_E1))
+					if (!delete_call_function(Two_Menu_F2_E1))
 					{
 						if (return_sound_table() == 1)
 						{
@@ -317,9 +317,9 @@ void KeyProcess(void)
 			else if (func_index == TWO_MENU_F2_E2_D1 || func_index == TWO_MENU_F2_E2_D2 || func_index == TWO_MENU_F2_E2_D3 || func_index == TWO_MENU_F2_E2_D4)
 			{
 				main_press_time_temp = return_main_press_time();
-				if (main_press_time_temp >= 10)
+				if ( main_press_time_temp >= 10)
 				{
-					if (delete_host_function(Two_Menu_F2_E2))
+					if (!delete_host_function(Two_Menu_F2_E2))
 					{
 						if (return_sound_table() == 1)
 						{
@@ -339,7 +339,7 @@ void KeyProcess(void)
 				main_press_time_temp = return_main_press_time();
 				if (main_press_time_temp >= 10)
 				{
-					if (delete_alarm_function(Two_Menu_F2_E3))
+					if (!delete_alarm_function(Two_Menu_F2_E3))
 					{
 						if (return_sound_table() == 1)
 						{
@@ -359,7 +359,7 @@ void KeyProcess(void)
 				main_press_time_temp = return_main_press_time();
 				if (main_press_time_temp >= 10)
 				{
-					if (delete_cancel_function(Two_Menu_F2_E4))
+					if (!delete_cancel_function(Two_Menu_F2_E4))
 					{
 						if (return_sound_table() == 1)
 						{
@@ -1122,7 +1122,7 @@ void env_load(void)
 	EEPROM.Two_Menu_Fb_E1 = Two_Menu_Fb_E1;
 	EEPROM.Two_Menu_FC_E1 = Two_Menu_FC_E1;
 
-	ISendStr(I2C_ADDRESS, BACK, &EEPROM, 15);
+	ISendStr(I2C_ADDRESS, BACK, (uint8_t *)&EEPROM, 15);
 	delay10ms();
 }
 
@@ -1132,7 +1132,7 @@ void env_init(void)
 	delay10ms();
 	IRcvStr(I2C_ADDRESS, MUL_KEY, multiple_key, 16);
 	delay10ms();
-	IRcvStr(I2C_ADDRESS, BACK, &EEPROM, 15);
+	IRcvStr(I2C_ADDRESS, BACK, (uint8_t *)&EEPROM, 15);
 	delay10ms();
 
 	Two_Menu_F3_E1 =  EEPROM.Two_Menu_F3_E1 ;

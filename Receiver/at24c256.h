@@ -3,6 +3,8 @@
 
 #include "STC15F2K60S2.H"
 #include "intrins.h"
+#include "tpyedef.h"
+#include "string.h"
 
 #define  _Nop()  _nop_()        //定义空指令
 
@@ -27,39 +29,27 @@ typedef struct Env_struct{
 	unsigned char Two_Menu_FC_E1;    //万年历待机与----
 }Env_t;
 
+//RF存储在EE中的位置为0X0000~0X1C00
+typedef struct {
+	uint8_t region[4];      //区号0~9~A~Z; //存放的ASCII码
+	uint32_t rf;            //RF地址码，高8位为0表示此块已经被使用。其它为未使用 
+}RF_def;
+
 
 #define  _Nop()  _nop_()        //定义空指令
 #define  I2C_ADDRESS 0xa0
-#define  PAGE_LENGTH 32
 
-#define  CALL_TABLE_NUMBER   16
-#define  HOST_TABLE_NUMBER   1
-#define  ALARM_TABLE_NUMBER  2
-#define  CANCEL_TABLE_NUMBER 2
-#define  ALL_TABLE_NUMBER    21
-#define  VARIA_NUMBER        15
-//标志位地址
-#define CALL_TABLE_START    0x0000
-#define CALL_TABLE_END      0x01FF
-#define ALARM_TABLE_START   0X0200
-#define ALARM_TABLE_END     0x023F
-#define CANCEL_TABLE_START  0X0240
-#define CANCEL_TABLE_END    0x027F
-#define HOST_TABLE_START    0X0280
-#define HOST_TABLE_END      0x029F
-
-//数据存储地址
-#define CALL_DATA_START    0x02A0
-#define CALL_DATA_END      0x129F // 1024*8=8192 =2000H
-#define ALARM_DATA_START   0X12A0
-#define ALARM_DATA_END     0x159F // 256*8 =2048 =800H
-#define CANCEL_DATA_START  0X14A0
-#define CANCEL_DATA_END    0x179F // 256*8 =2048 =800H
-#define HOST_DATA_START    0X16A0
-#define HOST_DATA_END      0x179F // 256*8 =2048 =800H
-#define SIN_KEY            0X17A0
-#define MUL_KEY            0X17B0
-#define BACK               0X17C0
+#define  CALL_NUMBER   512	
+#define  ALARM_NUMBER  64
+#define  CANCEL_NUMBER 64
+#define  HOST_NUMBER   32
+#define  CALL_DATA_START   0X0000
+#define  ALARM_DATA_START  0X1000
+#define  CANCEL_DATA_START 0X1200
+#define  HOST_DATA_START   0X1400
+#define  SIN_KEY           0X1500
+#define  MUL_KEY           0X1510
+#define  BACK              0X1520
 
 extern Env_t	EEPROM;
 
@@ -74,14 +64,15 @@ extern bit IRcvStr(unsigned char sla, unsigned int suba, unsigned char *s, unsig
 extern void Ack_I2c(void);
 extern void NoAck_I2c(void);
 
-extern bit register_call_function(unsigned char *buf);
+extern bit register_call_function(RF_def *pRF);
 extern bit delete_call_function(unsigned char *buf);
-extern bit register_host_function(unsigned char *buf);
+extern bit register_host_function(RF_def *pRF);
 extern bit delete_host_function(unsigned char *buf);
-extern bit register_alarm_function(unsigned char *buf);
+extern bit register_alarm_function(RF_def *pRF);
 extern bit delete_alarm_function(unsigned char *buf);
-extern bit register_cancel_function(unsigned char *buf);
+extern bit register_cancel_function(RF_def *pRF);
 extern bit delete_cancel_function(unsigned char *buf);
 extern void Delete_all_data(void);
+extern int8_t Find_RF_EEPROM(RF_def *p, uint32_t dat);
 
 #endif

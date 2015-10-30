@@ -5,8 +5,6 @@
 #include "gd5800.h"
 
 bit ack;	              //应答标志位
-unsigned char xdata at24c64_buff[PAGE_LENGTH] = { 0 }; //24C256页面存储缓存
-unsigned char xdata eeprom_buff[8] = { 0 };			   //注册数组缓存
 Env_t	EEPROM;
 void DelayUs2x(unsigned char t)
 {
@@ -254,479 +252,438 @@ bit IRcvStr(unsigned char sla, unsigned int suba, unsigned char *s, unsigned cha
 	return(1);
 }
 
-bit register_call_function(unsigned char *buf)
+bit register_call_function(RF_def *pRF)
 {
-		unsigned char base_address = 0;//基准地址   
-		unsigned char offset_address = 0;//偏移地址
-		//地址=  基准地址*32 +偏移地址
-		/*先寻找这个ID码是否存在*/
-		for (base_address = CALL_TABLE_START; base_address<ALL_TABLE_NUMBER; base_address++)	//32*32 =1024个标志位
-		{
-			IRcvStr(I2C_ADDRESS, base_address<<5, at24c64_buff, PAGE_LENGTH);//从AT24C256里面读出32个字节的标志位
-			delay10ms();
-			for (offset_address = 0; offset_address<PAGE_LENGTH; offset_address++)//主要32个字节标志位里面没有0的就OK
-			{
-				if (at24c64_buff[offset_address] == 0) //如果标志位等于0  则找找看 这个ID码是否注册过
-				{
-					IRcvStr(I2C_ADDRESS, (CALL_DATA_START + ( ( (base_address<<5) + offset_address)<<3 ) ), eeprom_buff, 8);
-					delay10ms();
+	uint16_t addr;
+	uint16_t i;
+	RF_def RFtmp;
+	uint16_t tmp = 0;
+	addr = CALL_DATA_START;
 
-					if ((*(eeprom_buff + 5) == *(buf + 5)) && (*(eeprom_buff + 6) == *(buf + 6)) && (*(eeprom_buff + 7) == *(buf + 7)))
-					{
-						//IF条件成立 则这个ID码注册过
-						Two_Menu_F1_E1[0] = *(eeprom_buff + 1);
-						Two_Menu_F1_E1[1] = *(eeprom_buff + 2);
-						Two_Menu_F1_E1[2] = *(eeprom_buff + 3);
-						Two_Menu_F1_E1[3] = *(eeprom_buff + 4);
-#ifdef DEBUG
-						uart_printf("caller register is old! \n\r"); 
-#endif
-
-						if (return_sound_table() == 1)
-						{
-							GD5800_select_chapter(SHIBAI);
-
-							set_sound_table(0);
-						}
-						return 0;
-					}
-				}
-			}
-		}
-		//如果程序执行到这里，则代表ID码没有注册过
-		for (base_address = 0; base_address<CALL_TABLE_NUMBER; base_address++)
-		{
-			IRcvStr(I2C_ADDRESS, CALL_TABLE_START + ( base_address<<5 ), at24c64_buff, PAGE_LENGTH);//从AT24C64里面读出32个字节的标志位
-			delay10ms();
-			for (offset_address = 0; offset_address<PAGE_LENGTH; offset_address++)//主要32个字节标志位里面没有0的就OK
-			{
-				if (at24c64_buff[offset_address] != 0)
-				{
-					ISendStr(I2C_ADDRESS, (CALL_DATA_START +( ((base_address<<5) + offset_address)<<3 )), buf, 8);
-					delay10ms();
-					at24c64_buff[offset_address] = 0;
-					ISendStr(I2C_ADDRESS, CALL_TABLE_START+(base_address<<5), at24c64_buff, PAGE_LENGTH);
-					delay10ms();
-					//将标志位以及数据分别写到标志区跟数据区
-#ifdef DEBUG
-					uart_printf("caller register is new! \n\r");
-					uart_printf("标志地址为 %x ! \n\r", (unsigned int)(CALL_TABLE_START + base_address*PAGE_LENGTH) );
-					uart_printf("存储地址为 %x ! \n\r", CALL_DATA_START + ((base_address*PAGE_LENGTH) + offset_address) * 8);
-#endif
-					if (return_sound_table() == 1)
-					{
-						GD5800_select_chapter(CHENGGONG);
-
-						set_sound_table(0);
-					}
-					return 1;
-					//提示成功				
-				}
-			}
-		}
-		return 0;
-}
-
-bit register_host_function(unsigned char *buf)
-{
-	unsigned char base_address = 0;//基准地址   
-	unsigned char offset_address = 0;//偏移地址
-	//地址=  基准地址*32 +偏移地址
-	/*先寻找这个ID码是否存在*/
-	for (base_address = CALL_TABLE_START; base_address<ALL_TABLE_NUMBER; base_address++)	//32*32 =1024个标志位
+	for (i = 0; i < CALL_NUMBER; i++)
 	{
-		IRcvStr(I2C_ADDRESS, base_address<<5, at24c64_buff, PAGE_LENGTH);//从AT24C256里面读出32个字节的标志位
-		delay10ms();
-		for (offset_address = 0; offset_address<PAGE_LENGTH; offset_address++)//主要32个字节标志位里面没有0的就OK
+		IRcvStr(I2C_ADDRESS, addr, (uint8_t *)&RFtmp, sizeof(RF_def));
+
+		if (!(RFtmp.rf & 0xff000000))
 		{
-			if (at24c64_buff[offset_address] == 0) //如果标志位等于0  则找找看 这个ID码是否注册过
+
+			if (return_Two_Menu_F8_E1() == 2)      //多键模式低位为0
 			{
-				IRcvStr(I2C_ADDRESS, (CALL_DATA_START + (((base_address<<5) + offset_address)<<3)), eeprom_buff, 8);
-				delay10ms();
-
-				if ((*(eeprom_buff + 5) == *(buf + 5)) && (*(eeprom_buff + 6) == *(buf + 6)) && (*(eeprom_buff + 7) == *(buf + 7)))
-				{
-					//IF条件成立 则这个ID码注册过
-					Two_Menu_F1_E2[0] = *(eeprom_buff + 1);
-					Two_Menu_F1_E2[1] = *(eeprom_buff + 2);
-					Two_Menu_F1_E2[2] = *(eeprom_buff + 3);
-					Two_Menu_F1_E2[3] = *(eeprom_buff + 4);
-#ifdef DEBUG
-					uart_printf("host register is old! \n\r");
-#endif
-
-					if (return_sound_table() == 1)
-					{
-						GD5800_select_chapter(SHIBAI);
-
-						set_sound_table(0);
-					}
-					return 0;
-				}
+				RFtmp.rf &= 0x00fffff0;
+				pRF->rf &= 0x00fffff0;
 			}
-		}
-	}
-	//如果程序执行到这里，则代表ID码没有注册过
-	for (base_address = 0; base_address<HOST_TABLE_NUMBER; base_address++)
-	{
-		IRcvStr(I2C_ADDRESS, HOST_TABLE_START + (base_address<<5), at24c64_buff, PAGE_LENGTH);//从AT24C64里面读出32个字节的标志位
-		delay10ms();
-		for (offset_address = 0; offset_address<PAGE_LENGTH; offset_address++)//主要32个字节标志位里面没有0的就OK
-		{
-			if (at24c64_buff[offset_address] != 0)
+
+			if (RFtmp.rf == pRF->rf)    //有相等RF在里面，重新覆盖
 			{
-				ISendStr(I2C_ADDRESS, (HOST_DATA_START + (((base_address<<5) + offset_address)<<3)), buf, 8);
-				delay10ms();
-				at24c64_buff[offset_address] = 0;
-				ISendStr(I2C_ADDRESS, HOST_TABLE_START + (base_address << 5), at24c64_buff, PAGE_LENGTH);
-				delay10ms();
-				//将标志位以及数据分别写到标志区跟数据区
-#ifdef DEBUG
-				uart_printf("host register is new! \n\r");
-#endif
+				memcpy(Two_Menu_F1_E1, RFtmp.region, 4);
+				Two_Menu_F1_E1[4] = 0;
 				if (return_sound_table() == 1)
 				{
-					GD5800_select_chapter(CHENGGONG);
+					GD5800_select_chapter(SHIBAI);
 
 					set_sound_table(0);
 				}
 				return 1;
-				//提示成功				
 			}
 		}
+		else
+		{
+			if (!tmp) tmp = addr;
+		}
+		addr += sizeof(RF_def);
+	}
+	ISendStr(I2C_ADDRESS, tmp, (uint8_t *)pRF, sizeof(RF_def));
+	if (return_sound_table() == 1)
+	{
+		GD5800_select_chapter(CHENGGONG);
+
+		set_sound_table(0);
+	}
+	//EEP_WriteBytes(tmp, (uint8_t *)pRF, sizeof(RF_def));
+	return 0;
+}
+
+
+bit register_host_function(RF_def *pRF)
+{
+	uint16_t addr;
+	uint16_t i;
+	RF_def RFtmp;
+	uint16_t tmp = 0;
+	addr = HOST_DATA_START;
+
+	for (i = 0; i < HOST_NUMBER; i++)
+	{
+		IRcvStr(I2C_ADDRESS, addr, (uint8_t *)&RFtmp, sizeof(RF_def));
+		//EEP_ReadBytes(addr, (uint8_t *)&RFtmp, sizeof(RF_def));
+
+		if (!(RFtmp.rf & 0xff000000))
+		{
+
+			if (return_Two_Menu_F8_E1() == 2)      //多键模式低位为0
+			{
+				RFtmp.rf &= 0x00fffff0;
+				pRF->rf &= 0x00fffff0;
+			}
+
+			if (RFtmp.rf == pRF->rf)    //有相等RF在里面，重新覆盖
+			{
+				memcpy(Two_Menu_F1_E2, RFtmp.region, 4);
+				Two_Menu_F1_E2[4] = 0;
+				if (return_sound_table() == 1)
+				{
+					GD5800_select_chapter(SHIBAI);
+
+					set_sound_table(0);
+				}
+				return 1;
+			}
+		}
+		else
+		{
+			if (!tmp) tmp = addr;
+		}
+		addr += sizeof(RF_def);
+	}
+	ISendStr(I2C_ADDRESS, tmp, (uint8_t *)pRF, sizeof(RF_def));
+	//EEP_WriteBytes(tmp, (uint8_t *)pRF, sizeof(RF_def));
+	if (return_sound_table() == 1)
+	{
+		GD5800_select_chapter(CHENGGONG);
+
+		set_sound_table(0);
 	}
 	return 0;
 }
 
-bit register_alarm_function(unsigned char *buf)
+bit register_alarm_function(RF_def *pRF)
 {
-	unsigned char base_address = 0;//基准地址   
-	unsigned char offset_address = 0;//偏移地址
-	//地址=  基准地址*32 +偏移地址
-	/*先寻找这个ID码是否存在*/
-	for (base_address = CALL_TABLE_START; base_address<ALL_TABLE_NUMBER; base_address++)	//32*32 =1024个标志位
+	uint16_t addr;
+	uint16_t i;
+	RF_def RFtmp;
+	uint16_t tmp = 0;
+	addr = ALARM_DATA_START;
+
+	for (i = 0; i < ALARM_NUMBER; i++)
 	{
-		IRcvStr(I2C_ADDRESS, base_address<<5, at24c64_buff, PAGE_LENGTH);//从AT24C256里面读出32个字节的标志位
-		delay10ms();
-		for (offset_address = 0; offset_address<PAGE_LENGTH; offset_address++)//主要32个字节标志位里面没有0的就OK
+		IRcvStr(I2C_ADDRESS, addr, (uint8_t *)&RFtmp, sizeof(RF_def));
+		//EEP_ReadBytes(addr, (uint8_t *)&RFtmp, sizeof(RF_def));
+
+		if (!(RFtmp.rf & 0xff000000))
 		{
-			if (at24c64_buff[offset_address] == 0) //如果标志位等于0  则找找看 这个ID码是否注册过
+
+			if (return_Two_Menu_F8_E1() == 2)      //多键模式低位为0
 			{
-				IRcvStr(I2C_ADDRESS, (CALL_DATA_START + (((base_address<<5) + offset_address) <<3 )), eeprom_buff, 8);
-				delay10ms();
-
-				if ((*(eeprom_buff + 5) == *(buf + 5)) && (*(eeprom_buff + 6) == *(buf + 6)) && (*(eeprom_buff + 7) == *(buf + 7)))
-				{
-					//IF条件成立 则这个ID码注册过
-					Two_Menu_F1_E3[0] = *(eeprom_buff + 1);
-					Two_Menu_F1_E3[1] = *(eeprom_buff + 2);
-					Two_Menu_F1_E3[2] = *(eeprom_buff + 3);
-					Two_Menu_F1_E3[3] = *(eeprom_buff + 4);
-#ifdef DEBUG
-					uart_printf("alarmer register is old! \n\r");
-#endif
-
-					if (return_sound_table() == 1)
-					{
-						GD5800_select_chapter(SHIBAI);
-
-						set_sound_table(0);
-					}
-					return 0;
-				}
+				RFtmp.rf &= 0x00fffff0;
+				pRF->rf &= 0x00fffff0;
 			}
-		}
-	}
-	//如果程序执行到这里，则代表ID码没有注册过
-	for (base_address = 0; base_address<ALARM_TABLE_NUMBER; base_address++)
-	{
-		IRcvStr(I2C_ADDRESS, ALARM_TABLE_START + (base_address<<5), at24c64_buff, PAGE_LENGTH);//从AT24C64里面读出32个字节的标志位
-		delay10ms();
-		for (offset_address = 0; offset_address<PAGE_LENGTH; offset_address++)//主要32个字节标志位里面没有0的就OK
-		{
-			if (at24c64_buff[offset_address] != 0)
+
+			if (RFtmp.rf == pRF->rf)    //有相等RF在里面，重新覆盖
 			{
-				ISendStr(I2C_ADDRESS, (ALARM_DATA_START +( ((base_address<<5) + offset_address) <<3 )), buf, 8);
-				delay10ms();
-				at24c64_buff[offset_address] = 0;
-				ISendStr(I2C_ADDRESS,ALARM_TABLE_START+(base_address <<5), at24c64_buff, PAGE_LENGTH);
-				delay10ms();
-				//将标志位以及数据分别写到标志区跟数据区
-#ifdef DEBUG
-				uart_printf("alarmer register is new! \n\r");
-				uart_printf("标志地址为 %x ! \n\r", ALARM_TABLE_START + base_address*PAGE_LENGTH);
-				uart_printf("存储地址为 %x ! \n\r", ALARM_DATA_START + ((base_address*PAGE_LENGTH) + offset_address) * 8);
-#endif
+				memcpy(Two_Menu_F1_E3, RFtmp.region, 4);
+				Two_Menu_F1_E3[4] = 0;
 				if (return_sound_table() == 1)
 				{
-					GD5800_select_chapter(CHENGGONG);
+					GD5800_select_chapter(SHIBAI);
 
 					set_sound_table(0);
 				}
 				return 1;
-				//提示成功				
 			}
 		}
+		else
+		{
+			if (!tmp) tmp = addr;
+		}
+		addr += sizeof(RF_def);
+	}
+	ISendStr(I2C_ADDRESS, tmp, (uint8_t *)pRF, sizeof(RF_def));
+	//EEP_WriteBytes(tmp, (uint8_t *)pRF, sizeof(RF_def));
+	if (return_sound_table() == 1)
+	{
+		GD5800_select_chapter(CHENGGONG);
+
+		set_sound_table(0);
 	}
 	return 0;
 }
 
-bit register_cancel_function(unsigned char *buf)
+bit register_cancel_function(RF_def *pRF)
 {
-	unsigned char base_address = 0;//基准地址   
-	unsigned char offset_address = 0;//偏移地址
-	//地址=  基准地址*32 +偏移地址
-	/*先寻找这个ID码是否存在*/
-	for (base_address = CALL_TABLE_START; base_address<ALL_TABLE_NUMBER; base_address++)	//32*32 =1024个标志位
+	uint16_t addr;
+	uint16_t i;
+	RF_def RFtmp;
+	uint16_t tmp = 0;
+	addr = CANCEL_DATA_START;
+
+	for (i = 0; i < CANCEL_NUMBER; i++)
 	{
-		IRcvStr(I2C_ADDRESS, (base_address <<5), at24c64_buff, PAGE_LENGTH);//从AT24C256里面读出32个字节的标志位
-		delay10ms();
-		for (offset_address = 0; offset_address<PAGE_LENGTH; offset_address++)//主要32个字节标志位里面没有0的就OK
+		IRcvStr(I2C_ADDRESS, addr, (uint8_t *)&RFtmp, sizeof(RF_def));
+		//EEP_ReadBytes(addr, (uint8_t *)&RFtmp, sizeof(RF_def));
+
+		if (!(RFtmp.rf & 0xff000000))
 		{
-			if (at24c64_buff[offset_address] == 0) //如果标志位等于0  则找找看 这个ID码是否注册过
+
+			if (return_Two_Menu_F8_E1() == 2)      //多键模式低位为0
 			{
-				IRcvStr(I2C_ADDRESS, (CALL_DATA_START + (((base_address <<5) + offset_address)<<3)), eeprom_buff, 8);
-				delay10ms();
-
-				if ((*(eeprom_buff + 5) == *(buf + 5)) && (*(eeprom_buff + 6) == *(buf + 6)) && (*(eeprom_buff + 7) == *(buf + 7)))
-				{
-					//IF条件成立 则这个ID码注册过
-					Two_Menu_F1_E4[0] = *(eeprom_buff + 1);
-					Two_Menu_F1_E4[1] = *(eeprom_buff + 2);
-					Two_Menu_F1_E4[2] = *(eeprom_buff + 3);
-					Two_Menu_F1_E4[3] = *(eeprom_buff + 4);
-#ifdef DEBUG
-					uart_printf("canceler register is old! \n\r");
-#endif
-
-					if (return_sound_table() == 1)
-					{
-						GD5800_select_chapter(SHIBAI);
-
-						set_sound_table(0);
-					}
-					return 0;
-				}
+				RFtmp.rf &= 0x00fffff0;
+				pRF->rf &= 0x00fffff0;
 			}
-		}
-	}
-	//如果程序执行到这里，则代表ID码没有注册过
-	for (base_address = 0; base_address<CANCEL_TABLE_NUMBER; base_address++)
-	{
-		IRcvStr(I2C_ADDRESS, CANCEL_TABLE_START + (base_address <<5), at24c64_buff, PAGE_LENGTH);//从AT24C64里面读出32个字节的标志位
-		delay10ms();
-		for (offset_address = 0; offset_address<PAGE_LENGTH; offset_address++)//主要32个字节标志位里面没有0的就OK
-		{
-			if (at24c64_buff[offset_address] != 0)
+
+			if (RFtmp.rf == pRF->rf)    //有相等RF在里面，重新覆盖
 			{
-				ISendStr(I2C_ADDRESS, (CANCEL_DATA_START + (((base_address <<5) + offset_address) <<3)), buf, 8);
-				delay10ms();
-				at24c64_buff[offset_address] = 0;
-				ISendStr(I2C_ADDRESS,CANCEL_TABLE_START+(base_address <<5), at24c64_buff, PAGE_LENGTH);
-				delay10ms();
-				//将标志位以及数据分别写到标志区跟数据区
-#ifdef DEBUG
-				uart_printf("canceler register is new! \n\r");
-				uart_printf("标志地址为 %x ! \n\r", CANCEL_TABLE_START + base_address*PAGE_LENGTH);
-				uart_printf("存储地址为 %x ! \n\r", CANCEL_DATA_START + ((base_address*PAGE_LENGTH) + offset_address) * 8);
-#endif
+				memcpy(Two_Menu_F1_E4, RFtmp.region, 4);
+				Two_Menu_F1_E4[4] = 0;
 				if (return_sound_table() == 1)
 				{
-					GD5800_select_chapter(CHENGGONG);
+					GD5800_select_chapter(SHIBAI);
 
 					set_sound_table(0);
 				}
 				return 1;
-				//提示成功				
 			}
 		}
+		else
+		{
+			if (!tmp) tmp = addr;
+		}
+		addr += sizeof(RF_def);
+	}
+	ISendStr(I2C_ADDRESS, tmp, (uint8_t *)pRF, sizeof(RF_def));
+	//EEP_WriteBytes(tmp, (uint8_t *)pRF, sizeof(RF_def));
+	if (return_sound_table() == 1)
+	{
+		GD5800_select_chapter(CHENGGONG);
+
+		set_sound_table(0);
 	}
 	return 0;
 }
 
 bit delete_call_function(unsigned char *buf)//buf为组码数组的指针
 {
-	unsigned char base_address = 0;
-	unsigned char offset_address = 0;
-
-	for (base_address = 0; base_address<CALL_TABLE_NUMBER; base_address++)
+	RF_def RFtmp;
+	uint16_t addr = CALL_DATA_START;
+	uint16_t i;
+	unsigned char dofly[32] = { 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff };
+	if (*(volatile uint32_t*)buf == 0x00000000ul)
 	{
-		IRcvStr(I2C_ADDRESS, (base_address <<5), at24c64_buff, PAGE_LENGTH); //取出32个标志位
-		delay10ms();
-		for (offset_address = 0; offset_address<PAGE_LENGTH; offset_address++)//主要32个字节里面没有0的就OK
+		for (i = 0; i<128; i++)
 		{
-			if (*(buf) == 0 && *(buf + 1) == 0 && *(buf + 2) == 0 && *(buf + 3) == 0) //全部删除
-			{
-				at24c64_buff[offset_address] = 0xff;//标志位设置为非0
-#ifdef DEBUG
-				uart_printf("caller is delete success \r\n");
-#endif		
-			}
-			else if (at24c64_buff[offset_address] == 0)//如果不是0000 则无需全部删除
-			{
-				IRcvStr(I2C_ADDRESS, ( CALL_DATA_START + (((base_address <<5) + offset_address)<<3)), eeprom_buff, 8);//取出对应标志位所对应的数据区的数据
-				delay10ms();
-				if ((*(eeprom_buff + 1) == *(buf + 0)) && (*(eeprom_buff + 2) == *(buf + 1)) && (*(eeprom_buff + 3) == *(buf + 2)) && (*(eeprom_buff + 4) == *(buf + 3)))
-				{
-					at24c64_buff[offset_address] = 0xff;
-					ISendStr(I2C_ADDRESS, (base_address <<5), at24c64_buff, PAGE_LENGTH);
-					delay10ms();
-					//清除对应的标志位 然后再将标志位写入标志区
-#ifdef DEBUG
-					uart_printf("call is %02x %02x %02x .\r\n", (unsigned int)(*(eeprom_buff + 5)), (unsigned int)(*(eeprom_buff + 6)), (unsigned int)(*(eeprom_buff + 7)) ); //
-					uart_printf("call is %02x %02x %02x %02x.\r\n", (unsigned int)(*(eeprom_buff + 1)), (unsigned int)(*(eeprom_buff + 2)), (unsigned int)(*(eeprom_buff + 3)), (unsigned int)(*(eeprom_buff + 4)) );
-					uart_printf("caller is delete success \r\n");
-#endif		
-				}
-
-			}
+			ISendStr(I2C_ADDRESS, i << 5, dofly, 32);                   //写入24c02
+			delay10ms();
 		}
-		ISendStr(I2C_ADDRESS, (base_address <<5), at24c64_buff, PAGE_LENGTH);
-		//最后将32个标志位写入标志区
-		delay10ms();
+
 	}
-	return 1;
+	else
+	{
+		for (i = 0; i < CALL_NUMBER; i++)
+		{
+			IRcvStr(I2C_ADDRESS, addr, (uint8_t *)&RFtmp, sizeof(RF_def));
+			//EEP_ReadBytes(addr, (uint8_t *)&RFtmp, sizeof(RF_def));
+			if (!(RFtmp.rf & 0xff000000ul))
+			{
+				if (*(volatile uint32_t*)buf == *(volatile uint32_t*)(RFtmp.region))
+				{
+					memset(&RFtmp, 0xff, sizeof(RF_def));
+					ISendStr(I2C_ADDRESS, addr, (uint8_t *)&RFtmp, sizeof(RF_def));
+					//EEP_WriteBytes(addr, (uint8_t *)&RFtmp, sizeof(RF_def));
+					break;
+				}
+			}
+			addr += sizeof(RF_def);
+		}
+	}
+	return 0;
 }
 
 bit delete_host_function(unsigned char *buf)//buf为组码数组的指针
 {
-	unsigned char base_address = 0;
-	unsigned char offset_address = 0;
-
-	for (base_address = 0 ; base_address< HOST_TABLE_NUMBER ; base_address++)
+	RF_def RFtmp;
+	uint16_t addr = HOST_DATA_START;
+	uint16_t i;
+	unsigned char dofly[32] = { 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff };
+	if (*(volatile uint32_t*)buf == 0x00000000ul)
 	{
-		IRcvStr(I2C_ADDRESS, HOST_TABLE_START + (base_address <<5), at24c64_buff, PAGE_LENGTH); //取出32个标志位
-		delay10ms();
-		for (offset_address = 0; offset_address<PAGE_LENGTH; offset_address++)//主要32个字节里面没有0的就OK
+		for (i = 0; i<8; i++)
 		{
-			if (*(buf) == 0 && *(buf + 1) == 0 && *(buf + 2) == 0 && *(buf + 3) == 0) //全部删除
-			{
-				at24c64_buff[offset_address] = 0xff;//标志位设置为非0
-#ifdef DEBUG
-				uart_printf("hoster is delete success \r\n");
-#endif		
-			}
-			else if (at24c64_buff[offset_address] == 0)//如果不是0000 则无需全部删除
-			{
-				IRcvStr(I2C_ADDRESS, (HOST_DATA_START + (((base_address <<5) + offset_address)<<3)), eeprom_buff, 8);//取出对应标志位所对应的数据区的数据
-				delay10ms();
-				if ((*(eeprom_buff + 1) == *(buf + 0)) && (*(eeprom_buff + 2) == *(buf + 1)) && (*(eeprom_buff + 3) == *(buf + 2)) && (*(eeprom_buff + 4) == *(buf + 3)))
-				{
-					at24c64_buff[offset_address] = 0xff;
-					ISendStr(I2C_ADDRESS, HOST_TABLE_START+(base_address <<5), at24c64_buff, PAGE_LENGTH);
-					delay10ms();
-					//清除对应的标志位 然后再将标志位写入标志区
-#ifdef DEBUG
-					uart_printf("host is %02x %02x %02x .\r\n", (unsigned int)(*(eeprom_buff + 5)), (unsigned int)(*(eeprom_buff + 6)), (unsigned int)(*(eeprom_buff + 7))); //
-					uart_printf("host is %02x %02x %02x %02x.\r\n", (unsigned int)(*(eeprom_buff + 1)), (unsigned int)(*(eeprom_buff + 2)), (unsigned int)(*(eeprom_buff + 3)), (unsigned int)(*(eeprom_buff + 4)));
-					uart_printf("host is delete success \r\n");
-#endif		
-				}
-
-			}
+			ISendStr(I2C_ADDRESS, addr+( i << 5), dofly, 32);                   //写入24c02
+			delay10ms();
 		}
-		ISendStr(I2C_ADDRESS, HOST_TABLE_START + (base_address <<5), at24c64_buff, PAGE_LENGTH);
-		//最后将32个标志位写入标志区
-		delay10ms();
+
 	}
-	return 1;
+	else
+	{
+		for (i = 0; i < HOST_NUMBER; i++)
+		{
+			IRcvStr(I2C_ADDRESS, addr, (uint8_t *)&RFtmp, sizeof(RF_def));
+			//EEP_ReadBytes(addr, (uint8_t *)&RFtmp, sizeof(RF_def));
+			if (!(RFtmp.rf & 0xff000000ul))
+			{
+				if (*(volatile uint32_t*)buf == *(volatile uint32_t*)(RFtmp.region))
+				{
+					memset(&RFtmp, 0xff, sizeof(RF_def));
+					ISendStr(I2C_ADDRESS, addr, (uint8_t *)&RFtmp, sizeof(RF_def));
+					//EEP_WriteBytes(addr, (uint8_t *)&RFtmp, sizeof(RF_def));
+					break;
+				}
+			}
+			addr += sizeof(RF_def);
+		}
+	}
+	return 0;
 }
 
 bit delete_alarm_function(unsigned char *buf)//buf为组码数组的指针
 {
-	unsigned char base_address = 0;
-	unsigned char offset_address = 0;
-
-	for (base_address = 0; base_address<ALARM_TABLE_NUMBER; base_address++)
+	RF_def RFtmp;
+	uint16_t addr = ALARM_DATA_START;
+	uint16_t i;
+	unsigned char dofly[32] = { 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff };
+	if (*(volatile uint32_t*)buf == 0x00000000ul)
 	{
-		IRcvStr(I2C_ADDRESS, ALARM_TABLE_START + (base_address <<5), at24c64_buff, PAGE_LENGTH); //取出32个标志位
-		delay10ms();
-		for (offset_address = 0; offset_address<PAGE_LENGTH; offset_address++)//主要32个字节里面没有0的就OK
+		for (i = 0; i<16; i++)
 		{
-			if (*(buf) == 0 && *(buf + 1) == 0 && *(buf + 2) == 0 && *(buf + 3) == 0) //全部删除
-			{
-				at24c64_buff[offset_address] = 0xff;//标志位设置为非0
-#ifdef DEBUG
-				uart_printf("alarmer is delete success \r\n");
-#endif		
-			}
-			else if (at24c64_buff[offset_address] == 0)//如果不是0000 则无需全部删除
-			{
-				IRcvStr(I2C_ADDRESS, (ALARM_DATA_START + (((base_address <<5) + offset_address)<<3 )), eeprom_buff, 8);//取出对应标志位所对应的数据区的数据
-				delay10ms();
-				if ((*(eeprom_buff + 1) == *(buf + 0)) && (*(eeprom_buff + 2) == *(buf + 1)) && (*(eeprom_buff + 3) == *(buf + 2)) && (*(eeprom_buff + 4) == *(buf + 3)))
-				{
-					at24c64_buff[offset_address] = 0xff;
-					ISendStr(I2C_ADDRESS, ALARM_TABLE_START + (base_address <<5), at24c64_buff, PAGE_LENGTH);
-					delay10ms();
-					//清除对应的标志位 然后再将标志位写入标志区
-#ifdef DEBUG
-					uart_printf("alarm is %02x %02x %02x .\r\n", (unsigned int)(*(eeprom_buff + 5)), (unsigned int)(*(eeprom_buff + 6)), (unsigned int)(*(eeprom_buff + 7))); //
-					uart_printf("alarm is %02x %02x %02x %02x.\r\n", (unsigned int)(*(eeprom_buff + 1)), (unsigned int)(*(eeprom_buff + 2)), (unsigned int)(*(eeprom_buff + 3)), (unsigned int)(*(eeprom_buff + 4)));
-					uart_printf("alarm is delete success \r\n");
-#endif		
-				}
-
-			}
+			ISendStr(I2C_ADDRESS, addr + (i << 5), dofly, 32);                   //写入24c02
+			delay10ms();
 		}
-		ISendStr(I2C_ADDRESS, ALARM_TABLE_START + (base_address <<5), at24c64_buff, PAGE_LENGTH);
-		//最后将32个标志位写入标志区
-		delay10ms();
+
 	}
-	return 1;
+	else
+	{
+		for (i = 0; i < ALARM_NUMBER; i++)
+		{
+			IRcvStr(I2C_ADDRESS, addr, (uint8_t *)&RFtmp, sizeof(RF_def));
+			//	EEP_ReadBytes(addr, (uint8_t *)&RFtmp, sizeof(RF_def));
+			if (!(RFtmp.rf & 0xff000000ul))
+			{
+				if (*(volatile uint32_t*)buf == *(volatile uint32_t*)(RFtmp.region))
+				{
+					memset(&RFtmp, 0xff, sizeof(RF_def));
+					ISendStr(I2C_ADDRESS, addr, (uint8_t *)&RFtmp, sizeof(RF_def));
+					//EEP_WriteBytes(addr, (uint8_t *)&RFtmp, sizeof(RF_def));
+					break;
+				}
+			}
+			addr += sizeof(RF_def);
+		}
+	}
+	return 0;
 }
 
 bit delete_cancel_function(unsigned char *buf)//buf为组码数组的指针
 {
-	unsigned char base_address = 0;
-	unsigned char offset_address = 0;
-
-	for (base_address = 0; base_address<CANCEL_TABLE_NUMBER; base_address++)
+	RF_def RFtmp;
+	uint16_t addr = CANCEL_DATA_START;
+	uint16_t i;
+	unsigned char dofly[32] = { 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff };
+	if (*(volatile uint32_t*)buf == 0x00000000ul)
 	{
-		IRcvStr(I2C_ADDRESS, CANCEL_TABLE_START + (base_address <<5), at24c64_buff, PAGE_LENGTH); //取出32个标志位
-		delay10ms();
-		for (offset_address = 0; offset_address<PAGE_LENGTH; offset_address++)//主要32个字节里面没有0的就OK
+		for (i = 0; i<16; i++)
 		{
-			if (*(buf) == 0 && *(buf + 1) == 0 && *(buf + 2) == 0 && *(buf + 3) == 0) //全部删除
-			{
-				at24c64_buff[offset_address] = 0xff;//标志位设置为非0
-#ifdef DEBUG
-				uart_printf("canceler is delete success \r\n");
-#endif		
-			}
-			else if (at24c64_buff[offset_address] == 0)//如果不是0000 则无需全部删除
-			{
-				IRcvStr(I2C_ADDRESS, (CANCEL_DATA_START + (((base_address <<5) + offset_address)<<3)), eeprom_buff, 8);//取出对应标志位所对应的数据区的数据
-				delay10ms();
-				if ((*(eeprom_buff + 1) == *(buf + 0)) && (*(eeprom_buff + 2) == *(buf + 1)) && (*(eeprom_buff + 3) == *(buf + 2)) && (*(eeprom_buff + 4) == *(buf + 3)))
-				{
-					at24c64_buff[offset_address] = 0xff;
-					ISendStr(I2C_ADDRESS, CANCEL_TABLE_START + (base_address <<5), at24c64_buff, PAGE_LENGTH);
-					delay10ms();
-					//清除对应的标志位 然后再将标志位写入标志区
-#ifdef DEBUG
-					uart_printf("cancel is %02x %02x %02x .\r\n", (unsigned int)(*(eeprom_buff + 5)), (unsigned int)(*(eeprom_buff + 6)), (unsigned int)(*(eeprom_buff + 7))); //
-					uart_printf("cancel is %02x %02x %02x %02x.\r\n", (unsigned int)(*(eeprom_buff + 1)), (unsigned int)(*(eeprom_buff + 2)), (unsigned int)(*(eeprom_buff + 3)), (unsigned int)(*(eeprom_buff + 4)));
-					uart_printf("cancel is delete success \r\n");
-#endif		
-				}
-
-			}
+			ISendStr(I2C_ADDRESS, addr + (i << 5), dofly, 32);                   //写入24c02
+			delay10ms();
 		}
-		ISendStr(I2C_ADDRESS, CANCEL_TABLE_START + (base_address <<5), at24c64_buff, PAGE_LENGTH);
-		//最后将32个标志位写入标志区
-		delay10ms();
+
 	}
-	return 1;
+	else
+	{
+		for (i = 0; i < CANCEL_NUMBER; i++)
+		{
+			IRcvStr(I2C_ADDRESS, addr, (uint8_t *)&RFtmp, sizeof(RF_def));
+			//EEP_ReadBytes(addr, (uint8_t *)&RFtmp, sizeof(RF_def));
+			if (!(RFtmp.rf & 0xff000000ul))
+			{
+				if (*(volatile uint32_t*)buf == *(volatile uint32_t*)(RFtmp.region))
+				{
+					memset(&RFtmp, 0xff, sizeof(RF_def));
+					ISendStr(I2C_ADDRESS, addr, (uint8_t *)&RFtmp, sizeof(RF_def));
+					//EEP_WriteBytes(addr, (uint8_t *)&RFtmp, sizeof(RF_def));
+					break;
+				}
+			}
+			addr += sizeof(RF_def);
+		}
+	}
+	return 0;
 }
 
 void Delete_all_data(void)
 {
+//	uint8_t i,j;
+//	int8_t buf[32] = { 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff };
+//	uint16_t addr = 0;
+//	int8_t buf1[32];
+////	memset(buf, 0xff, sizeof(buf));
+//	addr = 0;
+//	for (i = 0; i<168; i++)
+//	{	
+//		addr = i << 5;
+//		ISendStr(I2C_ADDRESS, addr, buf, 32);
+//		delay10ms();
+//		//EEP_WriteBytes(addr, buf, sizeof(buf));
+//		//addr += 32;
+//	}
+//	uart_printf("24c read:");
+//	for (i = 0; i<168; i++)
+//	{
+//		IRcvStr(I2C_ADDRESS, addr, buf, 32);
+//		delay10ms();
+//		for (j = 0; j < 32; j++)
+//		{
+//			uart_printf("%02x ", (unsigned int)buf[j]);
+//		}
+//		uart_printf("\n\r");
+//		//EEP_WriteBytes(addr, buf, sizeof(buf));
+//		addr += sizeof(buf);
+//	}
+
 	unsigned char dofly[32] = { 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff };
 	unsigned int k;
-	for (k = CALL_TABLE_START ; k<ALL_TABLE_NUMBER; k++)
+	for (k = 0; k<168; k++)
 	{
-		ISendStr(I2C_ADDRESS, k<<5, dofly, PAGE_LENGTH);                   //写入24c02
+		ISendStr(I2C_ADDRESS, k << 5, dofly, 32);                   //写入24c02
 		delay10ms();
 	}
+#ifdef DEBUG	
+	uart_printf("24c read:");
+	for (k = 0; k<168; k++)
+	{
+		IRcvStr(I2C_ADDRESS, k << 5, dofly, 32);                   //写入24c02
+		for (i = 0; i < 32; i++)
+		{
+			uart_printf("%02x ", (unsigned int)dofly[i]);
+		}
+		delay10ms();
+	}
+#endif
+}
+
+
+int8_t Find_RF_EEPROM(RF_def *p, uint32_t dat)
+{
+	RF_def RFtmp;
+	uint16_t addr;
+	uint16_t i;
+	addr = CALL_DATA_START;
+
+	for (i = 0; i<CALL_NUMBER; i++)
+	{
+		IRcvStr(I2C_ADDRESS, addr, (uint8_t *)&RFtmp, sizeof(RF_def));
+		//EEP_ReadBytes(addr, (uint8_t *)&RFtmp, sizeof(RF_def));
+
+		if (return_Two_Menu_F8_E1() == 2)      //多键模式低位为0
+		{
+			RFtmp.rf &= 0x00fffff0;
+			dat &= 0x00fffff0;
+		}
+
+		if (RFtmp.rf == dat)
+		{
+			memcpy(p, &RFtmp, sizeof(RF_def));
+			return 1;
+		}
+		addr += sizeof(RF_def);
+	}
+	return 0;
 }

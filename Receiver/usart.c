@@ -168,16 +168,16 @@ void UsartInit(void)
 	
 }
 
-//void uart_printf(const char *fmt, ...)
-//{
-//	va_list ap;
-//	char xdata string[256];//访问内部拓展RAM，非访问外部RAM，不能超过内部拓展RAM大小(此处为1024)  
-//
-//	va_start(ap, fmt);
-//	vsprintf(string, fmt, ap);//此处也可以使用sprintf函数，用法差不多，稍加修改即可，此处略去  
-//	Usart1_SendString(string);
-//	va_end(ap);
-//}
+void uart_printf(const char *fmt, ...)
+{
+	va_list ap;
+	char xdata string[256];//访问内部拓展RAM，非访问外部RAM，不能超过内部拓展RAM大小(此处为1024)  
+
+	va_start(ap, fmt);
+	vsprintf(string, fmt, ap);//此处也可以使用sprintf函数，用法差不多，稍加修改即可，此处略去  
+	Usart1_SendString(string);
+	va_end(ap);
+}
 
 ///*Switch to uart2 port by hardware*/
 //void usart2_SendData(void)
