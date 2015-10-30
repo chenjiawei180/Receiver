@@ -288,8 +288,8 @@
       <Focus>0</Focus>
       <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>483</TopLine>
-      <CurrentLine>497</CurrentLine>
+      <TopLine>536</TopLine>
+      <CurrentLine>569</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>.\Receiver\at24c256.c</PathWithFileName>
       <FilenameWithoutPath>at24c256.c</FilenameWithoutPath>
@@ -1712,8 +1712,8 @@
         <Doc>
           <Name>.\Receiver\at24c256.c</Name>
           <ColumnNumber>0</ColumnNumber>
-          <TopLine>483</TopLine>
-          <CurrentLine>497</CurrentLine>
+          <TopLine>536</TopLine>
+          <CurrentLine>569</CurrentLine>
         </Doc>
         <Doc>
           <Name>.\Receiver\main.c</Name>

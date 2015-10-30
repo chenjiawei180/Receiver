@@ -174,7 +174,7 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>49</ColumnNumber>
+      <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
       <TopLine>1</TopLine>
       <CurrentLine>23</CurrentLine>
@@ -260,8 +260,8 @@
       <Focus>0</Focus>
       <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>337</TopLine>
-      <CurrentLine>356</CurrentLine>
+      <TopLine>239</TopLine>
+      <CurrentLine>261</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>.\Receiver\ev1527.c</PathWithFileName>
       <FilenameWithoutPath>ev1527.c</FilenameWithoutPath>
@@ -286,10 +286,10 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>0</ColumnNumber>
+      <ColumnNumber>153</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>536</TopLine>
-      <CurrentLine>569</CurrentLine>
+      <TopLine>640</TopLine>
+      <CurrentLine>668</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>.\Receiver\at24c256.c</PathWithFileName>
       <FilenameWithoutPath>at24c256.c</FilenameWithoutPath>
@@ -1665,13 +1665,13 @@
     <ActiveMDIGroup>0</ActiveMDIGroup>
     <MDIGroup>
       <Size>100</Size>
-      <ActiveTab>7</ActiveTab>
+      <ActiveTab>0</ActiveTab>
       <Documents>
         <Doc>
           <Name>.\Receiver\ev1527.c</Name>
           <ColumnNumber>0</ColumnNumber>
-          <TopLine>337</TopLine>
-          <CurrentLine>356</CurrentLine>
+          <TopLine>239</TopLine>
+          <CurrentLine>261</CurrentLine>
         </Doc>
         <Doc>
           <Name>.\Receiver\key.c</Name>
@@ -1711,13 +1711,13 @@
         </Doc>
         <Doc>
           <Name>.\Receiver\at24c256.c</Name>
-          <ColumnNumber>0</ColumnNumber>
-          <TopLine>536</TopLine>
-          <CurrentLine>569</CurrentLine>
+          <ColumnNumber>153</ColumnNumber>
+          <TopLine>640</TopLine>
+          <CurrentLine>668</CurrentLine>
         </Doc>
         <Doc>
           <Name>.\Receiver\main.c</Name>
-          <ColumnNumber>49</ColumnNumber>
+          <ColumnNumber>0</ColumnNumber>
           <TopLine>1</TopLine>
           <CurrentLine>23</CurrentLine>
         </Doc>

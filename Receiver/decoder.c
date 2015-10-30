@@ -17,6 +17,7 @@ void DecoderProcess(void)
 	RF_def tmp;
 	RF_def RFtmp;
 	uint32_t dat;
+	int state = 0;
 	unsigned char i, j ,l ,k ,index=0;
 	unsigned char temp_buff[8];//解码用临时数组
 
@@ -101,10 +102,27 @@ void DecoderProcess(void)
 #ifdef DEBUG
 			uart_printf("dat is : %x %x \r\n", (unsigned int)(dat >> 16), (unsigned int)dat);
 #endif
-			if (Find_RF_EEPROM(&RFtmp, dat))
+			if (state = Find_RF_EEPROM(&RFtmp, dat))
 			{
 #ifdef DEBUG
 				uart_printf("Find_RF_EEPROM \r\n");
+				uart_printf("state is : %x \r\n", (unsigned int)state);
+#endif
+				if (state == 1)
+				{
+					temp_buff[0] = QUXIAO_1;
+				}
+				else if (state == 2)
+				{
+					temp_buff[0] = BAOJING_1;
+				}
+				else
+				{
+					temp_buff[0] = old2_RF_RECE_REG[2] & 0x0f;
+				}
+
+#ifdef DEBUG
+				uart_printf("temp[0] is : %x \r\n", (unsigned int)temp_buff[0]);
 #endif
 				memcpy(temp_buff+1, RFtmp.region, 4);
 				temp_buff[7] = old2_RF_RECE_REG[2];
@@ -126,7 +144,9 @@ void DecoderProcess(void)
 					}
 				}
 
-
+#ifdef DEBUG
+				uart_printf("temp[0] is : %x \r\n", (unsigned int)temp_buff[0]);
+#endif
 
 
 #ifdef DEBUG
@@ -269,14 +289,27 @@ standby:
 				break;
 			}
 			//呼叫器注册,搜索所需要的呼叫器
-			if (Find_RF_EEPROM(&RFtmp, dat))
+			if (state = Find_RF_EEPROM(&RFtmp, dat))
 			{
 #ifdef DEBUG
 				uart_printf("Find_RF_EEPROM \r\n");
 #endif
-				memcpy(temp_buff + 1, RFtmp.region, 4);
+				if (state == 1)
+				{
+					temp_buff[0] = QUXIAO_1;
+				}
+				else if (state == 2)
+				{
+					temp_buff[0] = BAOJING_1;
+				}
+				else
+				{
+					temp_buff[0] = old2_RF_RECE_REG[2] & 0x0f;
+				}
 
+				memcpy(temp_buff + 1, RFtmp.region, 4);
 				temp_buff[7] = old2_RF_RECE_REG[2];
+
 				if (temp_buff[0] < 50)
 				{
 					if (Two_Menu_F8_E1_temp == 1)  //为按键值
@@ -373,10 +406,6 @@ standby:
 				}
 #ifdef DEBUG
 				uart_printf("decoder success!");
-#endif
-
-#ifdef DEBUG
-				uart_printf("display_ram is %02x %02x %02x %02x.\r\n", (unsigned int)display_ram[0], (unsigned int)display_ram[1], (unsigned int)display_ram[2], (unsigned int)display_ram[3]); //测试按键键值
 #endif
 				clear_again_receive_rf_decoder_finished();
 				goto decoder;

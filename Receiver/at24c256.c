@@ -645,22 +645,10 @@ void Delete_all_data(void)
 		ISendStr(I2C_ADDRESS, k << 5, dofly, 32);                   //写入24c02
 		delay10ms();
 	}
-#ifdef DEBUG	
-	uart_printf("24c read:");
-	for (k = 0; k<168; k++)
-	{
-		IRcvStr(I2C_ADDRESS, k << 5, dofly, 32);                   //写入24c02
-		for (i = 0; i < 32; i++)
-		{
-			uart_printf("%02x ", (unsigned int)dofly[i]);
-		}
-		delay10ms();
-	}
-#endif
 }
 
 
-int8_t Find_RF_EEPROM(RF_def *p, uint32_t dat)
+int8_t Find_RF_EEPROM_Call(RF_def *p, uint32_t dat)
 {
 	RF_def RFtmp;
 	uint16_t addr;
@@ -686,4 +674,108 @@ int8_t Find_RF_EEPROM(RF_def *p, uint32_t dat)
 		addr += sizeof(RF_def);
 	}
 	return 0;
+}
+
+int8_t Find_RF_EEPROM_Host(RF_def *p, uint32_t dat)
+{
+	RF_def RFtmp;
+	uint16_t addr;
+	uint16_t i;
+	addr = HOST_DATA_START;
+
+	for (i = 0; i<HOST_NUMBER; i++)
+	{
+		IRcvStr(I2C_ADDRESS, addr, (uint8_t *)&RFtmp, sizeof(RF_def));
+		//EEP_ReadBytes(addr, (uint8_t *)&RFtmp, sizeof(RF_def));
+
+		if (return_Two_Menu_F8_E1() == 2)      //多键模式低位为0
+		{
+			RFtmp.rf &= 0x00fffff0;
+			dat &= 0x00fffff0;
+		}
+
+		if (RFtmp.rf == dat)
+		{
+			memcpy(p, &RFtmp, sizeof(RF_def));
+			return 1;
+		}
+		addr += sizeof(RF_def);
+	}
+	return 0;
+}
+
+int8_t Find_RF_EEPROM_Alarm(RF_def *p, uint32_t dat)
+{
+	RF_def RFtmp;
+	uint16_t addr;
+	uint16_t i;
+	addr = ALARM_DATA_START;
+
+	for (i = 0; i<ALARM_NUMBER; i++)
+	{
+		IRcvStr(I2C_ADDRESS, addr, (uint8_t *)&RFtmp, sizeof(RF_def));
+		//EEP_ReadBytes(addr, (uint8_t *)&RFtmp, sizeof(RF_def));
+
+		if (return_Two_Menu_F8_E1() == 2)      //多键模式低位为0
+		{
+			RFtmp.rf &= 0x00fffff0;
+			dat &= 0x00fffff0;
+		}
+
+		if (RFtmp.rf == dat)
+		{
+			memcpy(p, &RFtmp, sizeof(RF_def));
+			return 1;
+		}
+		addr += sizeof(RF_def);
+	}
+	return 0;
+}
+
+int8_t Find_RF_EEPROM_Cancel(RF_def *p, uint32_t dat)
+{
+	RF_def RFtmp;
+	uint16_t addr;
+	uint16_t i;
+	addr = CANCEL_DATA_START;
+
+	for (i = 0; i<CANCEL_NUMBER; i++)
+	{
+		IRcvStr(I2C_ADDRESS, addr, (uint8_t *)&RFtmp, sizeof(RF_def));
+		//EEP_ReadBytes(addr, (uint8_t *)&RFtmp, sizeof(RF_def));
+
+		if (return_Two_Menu_F8_E1() == 2)      //多键模式低位为0
+		{
+			RFtmp.rf &= 0x00fffff0;
+			dat &= 0x00fffff0;
+		}
+
+		if (RFtmp.rf == dat)
+		{
+			memcpy(p, &RFtmp, sizeof(RF_def));
+			return 1;
+		}
+		addr += sizeof(RF_def);
+	}
+	return 0;
+}
+
+int8_t Find_RF_EEPROM(RF_def *p, uint32_t dat)
+{
+	if (Find_RF_EEPROM_Cancel(p, dat))
+	{
+		return 1;
+	}
+	else if (Find_RF_EEPROM_Alarm(p, dat))
+	{
+		return 2;
+	}
+	else if (Find_RF_EEPROM_Call(p, dat))
+	{
+		return 3;
+	}
+	else
+	{
+		return 0;
+	}
 }

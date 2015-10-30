@@ -217,6 +217,8 @@ void receive_rf_decoder(void)
 	unsigned char temp_buff[8];
 	unsigned char temp_buff1[32];
 	unsigned char func_index_temp = 0;
+	uint32_t dat;
+	RF_def RFtmp;
 	func_index_temp = return_func_index();
 
 	if (receive_rf_decoder_finished == 1)
@@ -254,28 +256,13 @@ void receive_rf_decoder(void)
 				}
 				again_and_again_decoder_table = 1;
 				clear_return_standby_time();
+				dat = ((uint32_t)old2_RF_RECE_REG[0]) << 16 | ((uint32_t)old2_RF_RECE_REG[1]) << 8 | ((uint32_t)old2_RF_RECE_REG[2]);
 
-
-				//for (j = 0; j<HOST_TABLE_NUMBER; j++)
-				//{
-				//	IRcvStr(0xa0, HOST_TABLE_START + j*PAGE_LENGTH, temp_buff1, PAGE_LENGTH);
-				//	delay10ms();
-				//	for (i = 0; i<PAGE_LENGTH; i++)
-				//	{
-				//		if (temp_buff1[i] == 0)
-				//		{
-				//			IRcvStr(0xa0, HOST_DATA_START + (j*PAGE_LENGTH + i) * 8, temp_buff, 8);
-				//			delay10ms();
-				//			if (temp_buff[5] == old2_RF_RECE_REG[0] && temp_buff[6] == old2_RF_RECE_REG[1] && ((temp_buff[7] >> 4) == (old2_RF_RECE_REG[2] >> 4)) )
-				//			{
-				//				register_manager = 1;
-				//				clear_return_standby_time();
-				//				break;
-				//				break;
-				//			}
-				//		}
-				//	}
-				//}
+				if (Find_RF_EEPROM_Host(&RFtmp, dat))
+				{
+					register_manager = 1;
+					clear_return_standby_time();
+				}
 
 				RF_RECE_REG[0] = 0;
 				RF_RECE_REG[1] = 0;

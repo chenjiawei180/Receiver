@@ -74,5 +74,9 @@ extern bit register_cancel_function(RF_def *pRF);
 extern bit delete_cancel_function(unsigned char *buf);
 extern void Delete_all_data(void);
 extern int8_t Find_RF_EEPROM(RF_def *p, uint32_t dat);
+extern int8_t Find_RF_EEPROM_Call(RF_def *p, uint32_t dat);
+extern int8_t Find_RF_EEPROM_Host(RF_def *p, uint32_t dat);
+extern int8_t Find_RF_EEPROM_Alarm(RF_def *p, uint32_t dat);
+extern int8_t Find_RF_EEPROM_Cancel(RF_def *p, uint32_t dat);
 
 #endif
