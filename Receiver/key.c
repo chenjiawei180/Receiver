@@ -248,13 +248,32 @@ unsigned char KeyDecoder(void)
 
 			switch (old2_RF_RECE_REG[2] & 0x0f)
 			{
-			case 0x01:key_val = 0x001c; break;
-			case 0x02:key_val = 0x0034; break;
-			case 0x04:key_val = 0x002c; break;
+			case 0x01:
+				if (return_filter_other() == 0)
+				{
+					key_val = 0x001c;
+					set_filter_other(5);
+				}
+				 break;
+			case 0x02:
+				if (return_filter_other() == 0)
+				{
+					key_val = 0x0034;
+					set_filter_other(5);
+				}
+				 break;
+			case 0x04:
+				if (return_filter_other() == 0)
+				{
+					key_val = 0x002c;
+					set_filter_other(5);
+				}
+				 break;
 			case 0x08:
-				if (return_filter_main() == 0)
+				if (return_filter_main() == 0 && return_filter_other() == 0)
 				{
 					key_val = 0x0038;
+					set_filter_other(5);
 				}
 				break;
 			default:break;

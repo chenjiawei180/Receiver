@@ -27,5 +27,7 @@ extern void set_fd_table(unsigned char temp);
 extern unsigned char return_filter_main(void);
 extern void set_filter_main(unsigned char temp);
 
+extern unsigned char return_filter_other(void);
+extern void set_filter_other(unsigned char temp);
 
 #endif

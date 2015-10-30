@@ -21,6 +21,7 @@ unsigned char second_times = 0;
 unsigned char fd_table = 0;
 
 unsigned char filter_main = 0;
+unsigned char filter_other = 0;
 
 void Init_Timer0(void)
 {
@@ -69,6 +70,7 @@ void Timer0_isr(void) interrupt 1  //定时器0中断服务程序
 			{
 				filter_main--;
 			}
+
 		}
 		if (await_number_table >= 4)//确保程序正确延时
 		{
@@ -77,6 +79,10 @@ void Timer0_isr(void) interrupt 1  //定时器0中断服务程序
 		if (fd_table >= 24)
 		{
 			fd_table = 0;
+		}
+		if (filter_other != 0)
+		{
+			filter_other--;
 		}
 	}
 
@@ -207,6 +213,7 @@ unsigned char return_fd_table(void)	//返回fd_table变量的值
 void set_fd_table(unsigned char temp) //设置fd_table变量的值
 {
 	fd_table = temp;
+	await_number = 0;
 }
 
 unsigned char return_filter_main(void)	//返回filter_main变量的值
@@ -219,4 +226,17 @@ unsigned char return_filter_main(void)	//返回filter_main变量的值
 void set_filter_main(unsigned char temp) //设置filter_main变量的值
 {
 	filter_main = temp;
+	await_number = 0;
+}
+
+unsigned char return_filter_other(void)	//返回filter_main变量的值
+{
+	unsigned char filter_other_temp = 0;
+	filter_other_temp = filter_other;
+	return filter_other_temp;
+}
+
+void set_filter_other(unsigned char temp) //设置filter_main变量的值
+{
+	filter_other = temp;
 }
