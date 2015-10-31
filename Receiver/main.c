@@ -1,4 +1,4 @@
-#include "STC15F2K60S2.H"
++#include "STC15F2K60S2.H"
 #include "usart.h"
 #include "key.h"
 #include "tm1629.h"

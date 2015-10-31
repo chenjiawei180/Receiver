@@ -1252,7 +1252,6 @@ void var_init(void)
 	Two_Menu_F6_E4 = 6; //音量大小调整
 	Two_Menu_F6_E5 = 3; //显示屏LED亮度调整
 	Two_Menu_F6_E6 = 1; //语音导航调整
-	Two_Menu_F6_E7 = 0; //语音导航调整
 
 	Two_Menu_F7_E1 = 11; // E1默认键盘规则 999*9
 	Two_Menu_F7_E2 = 0; // E2其他键盘规则 9999*9
@@ -1263,9 +1262,6 @@ void var_init(void)
 
 	Two_Menu_F8_E2 = 0; // 键位设置
 
-	Two_Menu_Fb_E1 = 1; // 设置主机有没有销号功能
-	Two_Menu_FC_E1 = 1; // 设置万年历待机与----待机的切换
-	Two_Menu_Fd_E1 = 1; // E1 E2 E3 E4 E5 E6
 
 }
 

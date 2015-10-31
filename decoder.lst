@@ -1,4 +1,4 @@
-C51 COMPILER V9.00   DECODER                                                               10/30/2015 17:38:15 PAGE 1   
+C51 COMPILER V9.00   DECODER                                                               10/31/2015 10:46:07 PAGE 1   
 
 
 C51 COMPILER V9.00, COMPILATION OF MODULE DECODER
@@ -62,7 +62,7 @@ line level    source
              -RECE_REG[2]);
   51   2                      switch (func_index_temp)
   52   2                      {
-C51 COMPILER V9.00   DECODER                                                               10/30/2015 17:38:15 PAGE 2   
+C51 COMPILER V9.00   DECODER                                                               10/31/2015 10:46:07 PAGE 2   
 
   53   3                      case MENU_STANDBY://待机状态下
   54   3                      {
@@ -126,7 +126,7 @@ line level    source
               #endif
  111   5                                      if (state == 1)
  112   5                                      {
-C51 COMPILER V9.00   DECODER                                                               10/30/2015 17:38:15 PAGE 3   
+C51 COMPILER V9.00   DECODER                                                               10/31/2015 10:46:07 PAGE 3   
 
  113   6                                              temp_buff[0] = QUXIAO_1;
  114   6                                      }
@@ -190,7 +190,7 @@ line level    source
  172   6                                              Cancel_funtion(temp_buff, display_ram);//取消函数
  173   6                                              tm1629_load();
  174   6                                              display();
-C51 COMPILER V9.00   DECODER                                                               10/30/2015 17:38:15 PAGE 4   
+C51 COMPILER V9.00   DECODER                                                               10/31/2015 10:46:07 PAGE 4   
 
  175   6                                              goto standby;
  176   6                                      }
@@ -254,7 +254,7 @@ line level    source
  231   7                                                      display();
  232   7                                                      break;
  233   7                                              }
-C51 COMPILER V9.00   DECODER                                                               10/30/2015 17:38:15 PAGE 5   
+C51 COMPILER V9.00   DECODER                                                               10/31/2015 10:46:07 PAGE 5   
 
  234   6                                              mcu_to_computer(0x91, temp_buff, old2_RF_RECE_REG[2] & 0x0f);//上位机
  235   6                                              Search_funtion(temp_buff, display_ram);
@@ -318,7 +318,7 @@ line level    source
  291   4                              //呼叫器注册,搜索所需要的呼叫器
  292   4                              if (state = Find_RF_EEPROM(&RFtmp, dat))
  293   4                              {
-C51 COMPILER V9.00   DECODER                                                               10/30/2015 17:38:15 PAGE 6   
+C51 COMPILER V9.00   DECODER                                                               10/31/2015 10:46:07 PAGE 6   
 
  294   5      #ifdef DEBUG
                                               uart_printf("Find_RF_EEPROM \r\n");
@@ -382,7 +382,7 @@ line level    source
  353   6                                              Search_funtion(temp_buff, display_ram);
  354   6      
  355   6                                              for (l = Two_Menu_F3_E2_temp; l > 1; l--) //整体往下移一组数据
-C51 COMPILER V9.00   DECODER                                                               10/30/2015 17:38:15 PAGE 7   
+C51 COMPILER V9.00   DECODER                                                               10/31/2015 10:46:07 PAGE 7   
 
  356   6                                              {
  357   7                                                      mcuram_to_mcuram_down(display_ram + ((l - 2) << 3));
@@ -446,7 +446,7 @@ line level    source
  413   5                              }
  414   4                                      
  415   4                              
-C51 COMPILER V9.00   DECODER                                                               10/30/2015 17:38:15 PAGE 8   
+C51 COMPILER V9.00   DECODER                                                               10/31/2015 10:46:07 PAGE 8   
 
  416   4      decoder:
  417   4                              break;
@@ -510,7 +510,7 @@ line level    source
  473   4                      }
  474   3      
  475   3                      case TWO_MENU_F1_E2_D1:
-C51 COMPILER V9.00   DECODER                                                               10/30/2015 17:38:15 PAGE 9   
+C51 COMPILER V9.00   DECODER                                                               10/31/2015 10:46:07 PAGE 9   
 
  476   3                      case TWO_MENU_F1_E2_D2:
  477   3                      case TWO_MENU_F1_E2_D3:
@@ -574,7 +574,7 @@ line level    source
  532   3                      case TWO_MENU_F1_E3_D1:
  533   3                      case TWO_MENU_F1_E3_D2:
  534   3                      case TWO_MENU_F1_E3_D3:
-C51 COMPILER V9.00   DECODER                                                               10/30/2015 17:38:15 PAGE 10  
+C51 COMPILER V9.00   DECODER                                                               10/31/2015 10:46:07 PAGE 10  
 
  535   3                      case TWO_MENU_F1_E3_D4:
  536   3                      {
@@ -638,7 +638,7 @@ line level    source
  591   3                      {
  592   4                              set_func_index(TWO_MENU_F1_E4_D4);
  593   4      
-C51 COMPILER V9.00   DECODER                                                               10/30/2015 17:38:15 PAGE 11  
+C51 COMPILER V9.00   DECODER                                                               10/31/2015 10:46:07 PAGE 11  
 
  594   4                              memcpy(tmp.region, Two_Menu_F1_E4, 4);
  595   4                              tmp.rf = ((uint32_t)old2_RF_RECE_REG[0]) << 16 | ((uint32_t)old2_RF_RECE_REG[1]) << 8 | ((uint32_t)old2
@@ -702,7 +702,7 @@ line level    source
  650   4                              }
  651   3                              else
  652   3                              {
-C51 COMPILER V9.00   DECODER                                                               10/30/2015 17:38:15 PAGE 12  
+C51 COMPILER V9.00   DECODER                                                               10/31/2015 10:46:07 PAGE 12  
 
  653   4                                      multiple_key[old2_RF_RECE_REG[2] & 0x0f] = Two_Menu_F8_E2_temp;
  654   4                                      ISendStr(I2C_ADDRESS, MUL_KEY, multiple_key, 16);
