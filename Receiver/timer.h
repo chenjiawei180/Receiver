@@ -30,4 +30,9 @@ extern void set_filter_main(unsigned char temp);
 extern unsigned char return_filter_other(void);
 extern void set_filter_other(unsigned char temp);
 
+extern void clear_again_and_again_time(void);
+extern void clear_second_filter_time(void);
+extern void set_second_filter_table(unsigned char temp); //设置second_filter_table变量的值
+extern unsigned char return_second_filter_table(void);
+
 #endif

@@ -23,6 +23,9 @@ unsigned char fd_table = 0;
 unsigned char filter_main = 0;
 unsigned char filter_other = 0;
 
+unsigned char second_filter_time = 0;
+unsigned char second_filter_table = 0;
+
 void Init_Timer0(void)
 {
 	TMOD |= 0x01;	  //使用模式1，16位定时器，使用"|"符号可以在使用多个定时器时不受影响	
@@ -98,6 +101,16 @@ void Timer0_isr(void) interrupt 1  //定时器0中断服务程序
 		{
 			clear_again_and_again_decoder_table();
 			again_and_again_time = 0;
+		}
+	}
+
+	if (second_filter_table == 1)
+	{
+		second_filter_time++;
+		if (second_filter_time >120)
+		{
+			second_filter_table = 0;
+			second_filter_time = 0;
 		}
 	}
 
@@ -240,3 +253,26 @@ void set_filter_other(unsigned char temp) //设置filter_main变量的值
 {
 	filter_other = temp;
 }
+
+void clear_again_and_again_time(void)
+{
+	again_and_again_time = 0;
+}
+
+void clear_second_filter_time(void)
+{
+	second_filter_time = 0;
+}
+
+void set_second_filter_table(unsigned char temp) //设置second_filter_table变量的值
+{
+	second_filter_table = temp;
+}
+
+unsigned char return_second_filter_table(void)	//返回second_filter_table变量的值
+{
+	unsigned char second_filter_table_temp = 0;
+	second_filter_table_temp = second_filter_table;
+	return second_filter_table_temp;
+}
+

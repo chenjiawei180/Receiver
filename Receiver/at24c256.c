@@ -277,12 +277,7 @@ bit register_call_function(RF_def *pRF)
 			{
 				memcpy(Two_Menu_F1_E1, RFtmp.region, 4);
 				Two_Menu_F1_E1[4] = 0;
-				if (return_sound_table() == 1)
-				{
-					GD5800_select_chapter(SHIBAI);
-
-					set_sound_table(0);
-				}
+				GD5800_select_chapter(SHIBAI);
 				return 1;
 			}
 		}
@@ -293,12 +288,8 @@ bit register_call_function(RF_def *pRF)
 		addr += sizeof(RF_def);
 	}
 	ISendStr(I2C_ADDRESS, tmp, (uint8_t *)pRF, sizeof(RF_def));
-	if (return_sound_table() == 1)
-	{
-		GD5800_select_chapter(CHENGGONG);
+	GD5800_select_chapter(CHENGGONG);
 
-		set_sound_table(0);
-	}
 	//EEP_WriteBytes(tmp, (uint8_t *)pRF, sizeof(RF_def));
 	return 0;
 }
@@ -330,12 +321,7 @@ bit register_host_function(RF_def *pRF)
 			{
 				memcpy(Two_Menu_F1_E2, RFtmp.region, 4);
 				Two_Menu_F1_E2[4] = 0;
-				if (return_sound_table() == 1)
-				{
-					GD5800_select_chapter(SHIBAI);
-
-					set_sound_table(0);
-				}
+				GD5800_select_chapter(SHIBAI);
 				return 1;
 			}
 		}
@@ -347,12 +333,7 @@ bit register_host_function(RF_def *pRF)
 	}
 	ISendStr(I2C_ADDRESS, tmp, (uint8_t *)pRF, sizeof(RF_def));
 	//EEP_WriteBytes(tmp, (uint8_t *)pRF, sizeof(RF_def));
-	if (return_sound_table() == 1)
-	{
-		GD5800_select_chapter(CHENGGONG);
-
-		set_sound_table(0);
-	}
+	GD5800_select_chapter(CHENGGONG);
 	return 0;
 }
 
@@ -382,12 +363,7 @@ bit register_alarm_function(RF_def *pRF)
 			{
 				memcpy(Two_Menu_F1_E3, RFtmp.region, 4);
 				Two_Menu_F1_E3[4] = 0;
-				if (return_sound_table() == 1)
-				{
-					GD5800_select_chapter(SHIBAI);
-
-					set_sound_table(0);
-				}
+				GD5800_select_chapter(SHIBAI);
 				return 1;
 			}
 		}
@@ -399,12 +375,7 @@ bit register_alarm_function(RF_def *pRF)
 	}
 	ISendStr(I2C_ADDRESS, tmp, (uint8_t *)pRF, sizeof(RF_def));
 	//EEP_WriteBytes(tmp, (uint8_t *)pRF, sizeof(RF_def));
-	if (return_sound_table() == 1)
-	{
-		GD5800_select_chapter(CHENGGONG);
-
-		set_sound_table(0);
-	}
+	GD5800_select_chapter(CHENGGONG);
 	return 0;
 }
 
@@ -434,12 +405,7 @@ bit register_cancel_function(RF_def *pRF)
 			{
 				memcpy(Two_Menu_F1_E4, RFtmp.region, 4);
 				Two_Menu_F1_E4[4] = 0;
-				if (return_sound_table() == 1)
-				{
-					GD5800_select_chapter(SHIBAI);
-
-					set_sound_table(0);
-				}
+				GD5800_select_chapter(SHIBAI);
 				return 1;
 			}
 		}
@@ -451,12 +417,7 @@ bit register_cancel_function(RF_def *pRF)
 	}
 	ISendStr(I2C_ADDRESS, tmp, (uint8_t *)pRF, sizeof(RF_def));
 	//EEP_WriteBytes(tmp, (uint8_t *)pRF, sizeof(RF_def));
-	if (return_sound_table() == 1)
-	{
-		GD5800_select_chapter(CHENGGONG);
-
-		set_sound_table(0);
-	}
+	GD5800_select_chapter(CHENGGONG);
 	return 0;
 }
 

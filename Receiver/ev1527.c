@@ -244,6 +244,7 @@ void receive_rf_decoder(void)
 						old2_RF_RECE_REG[1] = RF_RECE_REG[1];
 						old2_RF_RECE_REG[2] = RF_RECE_REG[2];
 						again_receive_rf_decoder_finished = 1;
+						clear_again_and_again_time();
 					}
 
 				}
@@ -253,7 +254,9 @@ void receive_rf_decoder(void)
 					old2_RF_RECE_REG[1] = RF_RECE_REG[1];
 					old2_RF_RECE_REG[2] = RF_RECE_REG[2];
 					again_receive_rf_decoder_finished = 1;
+					clear_again_and_again_time();
 				}
+				
 				again_and_again_decoder_table = 1;
 				clear_return_standby_time();
 				dat = ((uint32_t)old2_RF_RECE_REG[0]) << 16 | ((uint32_t)old2_RF_RECE_REG[1]) << 8 | ((uint32_t)old2_RF_RECE_REG[2]);
@@ -272,7 +275,7 @@ void receive_rf_decoder(void)
 				old1_RF_RECE_REG[2] = 0;
 				if (func_index_temp != TWO_MENU_F8_E2_SET)
 				{
-					set_sound_table(1);
+					//set_sound_table(1);
 				}
 				//func_f1_1_4_table = 1;
 				rx_table = 0;

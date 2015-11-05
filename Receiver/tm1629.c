@@ -1734,10 +1734,6 @@ void fun89(void) //F7_E1 999*9
 	{
 		Show_one_number(temp);
 	}
-	else if (temp<11)
-	{
-		Show_on();
-	}
 	else
 	{
 		Show_off();

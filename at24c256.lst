@@ -1,4 +1,4 @@
-C51 COMPILER V9.00   AT24C256                                                              10/31/2015 10:46:07 PAGE 1   
+C51 COMPILER V9.00   AT24C256                                                              11/05/2015 14:58:07 PAGE 1   
 
 
 C51 COMPILER V9.00, COMPILATION OF MODULE AT24C256
@@ -62,7 +62,7 @@ line level    source
   52          /*------------------------------------------------
   53          结束总线
   54          ------------------------------------------------*/
-C51 COMPILER V9.00   AT24C256                                                              10/31/2015 10:46:07 PAGE 2   
+C51 COMPILER V9.00   AT24C256                                                              11/05/2015 14:58:07 PAGE 2   
 
   55          void Stop_I2c()
   56          {
@@ -126,7 +126,7 @@ line level    source
  114          字节数据传送函数
  115          函数原型: unsigned char  RcvByte();
  116          功能:  用来接收从器件传来的数据,并判断总线错误(不发应答信号)，
-C51 COMPILER V9.00   AT24C256                                                              10/31/2015 10:46:07 PAGE 3   
+C51 COMPILER V9.00   AT24C256                                                              11/05/2015 14:58:07 PAGE 3   
 
  117          发完后请用应答函数。
  118          ------------------------------------------------------------------*/
@@ -190,7 +190,7 @@ line level    source
  176          void NoAck_I2c(void)
  177          {
  178   1              SDA = 1;
-C51 COMPILER V9.00   AT24C256                                                              10/31/2015 10:46:07 PAGE 4   
+C51 COMPILER V9.00   AT24C256                                                              11/05/2015 14:58:07 PAGE 4   
 
  179   1              _Nop();
  180   1              _Nop();
@@ -254,7 +254,7 @@ line level    source
  238   1              SendByte(suba);            //发送器件子地址
  239   1              if (ack == 0)return(0);
  240   1              Start_I2c();
-C51 COMPILER V9.00   AT24C256                                                              10/31/2015 10:46:07 PAGE 5   
+C51 COMPILER V9.00   AT24C256                                                              11/05/2015 14:58:07 PAGE 5   
 
  241   1              SendByte(sla + 1);
  242   1              if (ack == 0)return(0);
@@ -295,534 +295,495 @@ line level    source
  277   3                              {
  278   4                                      memcpy(Two_Menu_F1_E1, RFtmp.region, 4);
  279   4                                      Two_Menu_F1_E1[4] = 0;
- 280   4                                      if (return_sound_table() == 1)
- 281   4                                      {
- 282   5                                              GD5800_select_chapter(SHIBAI);
- 283   5      
- 284   5                                              set_sound_table(0);
- 285   5                                      }
- 286   4                                      return 1;
- 287   4                              }
- 288   3                      }
- 289   2                      else
- 290   2                      {
- 291   3                              if (!tmp) tmp = addr;
- 292   3                      }
- 293   2                      addr += sizeof(RF_def);
- 294   2              }
- 295   1              ISendStr(I2C_ADDRESS, tmp, (uint8_t *)pRF, sizeof(RF_def));
- 296   1              if (return_sound_table() == 1)
- 297   1              {
- 298   2                      GD5800_select_chapter(CHENGGONG);
- 299   2      
- 300   2                      set_sound_table(0);
- 301   2              }
- 302   1              //EEP_WriteBytes(tmp, (uint8_t *)pRF, sizeof(RF_def));
-C51 COMPILER V9.00   AT24C256                                                              10/31/2015 10:46:07 PAGE 6   
+ 280   4                                      GD5800_select_chapter(SHIBAI);
+ 281   4                                      return 1;
+ 282   4                              }
+ 283   3                      }
+ 284   2                      else
+ 285   2                      {
+ 286   3                              if (!tmp) tmp = addr;
+ 287   3                      }
+ 288   2                      addr += sizeof(RF_def);
+ 289   2              }
+ 290   1              ISendStr(I2C_ADDRESS, tmp, (uint8_t *)pRF, sizeof(RF_def));
+ 291   1              GD5800_select_chapter(CHENGGONG);
+ 292   1      
+ 293   1              //EEP_WriteBytes(tmp, (uint8_t *)pRF, sizeof(RF_def));
+ 294   1              return 0;
+ 295   1      }
+ 296          
+ 297          
+ 298          bit register_host_function(RF_def *pRF)
+ 299          {
+ 300   1              uint16_t addr;
+ 301   1              uint16_t i;
+ 302   1              RF_def RFtmp;
+C51 COMPILER V9.00   AT24C256                                                              11/05/2015 14:58:07 PAGE 6   
 
- 303   1              return 0;
- 304   1      }
- 305          
- 306          
- 307          bit register_host_function(RF_def *pRF)
- 308          {
- 309   1              uint16_t addr;
- 310   1              uint16_t i;
- 311   1              RF_def RFtmp;
- 312   1              uint16_t tmp = 0;
- 313   1              addr = HOST_DATA_START;
- 314   1      
- 315   1              for (i = 0; i < HOST_NUMBER; i++)
- 316   1              {
- 317   2                      IRcvStr(I2C_ADDRESS, addr, (uint8_t *)&RFtmp, sizeof(RF_def));
- 318   2                      //EEP_ReadBytes(addr, (uint8_t *)&RFtmp, sizeof(RF_def));
- 319   2      
- 320   2                      if (!(RFtmp.rf & 0xff000000))
- 321   2                      {
- 322   3      
- 323   3                              if (return_Two_Menu_F8_E1() == 2)      //多键模式低位为0
- 324   3                              {
- 325   4                                      RFtmp.rf &= 0x00fffff0;
- 326   4                                      pRF->rf &= 0x00fffff0;
- 327   4                              }
- 328   3      
- 329   3                              if (RFtmp.rf == pRF->rf)    //有相等RF在里面，重新覆盖
- 330   3                              {
- 331   4                                      memcpy(Two_Menu_F1_E2, RFtmp.region, 4);
- 332   4                                      Two_Menu_F1_E2[4] = 0;
- 333   4                                      if (return_sound_table() == 1)
- 334   4                                      {
- 335   5                                              GD5800_select_chapter(SHIBAI);
- 336   5      
- 337   5                                              set_sound_table(0);
- 338   5                                      }
- 339   4                                      return 1;
- 340   4                              }
- 341   3                      }
- 342   2                      else
- 343   2                      {
- 344   3                              if (!tmp) tmp = addr;
- 345   3                      }
- 346   2                      addr += sizeof(RF_def);
- 347   2              }
- 348   1              ISendStr(I2C_ADDRESS, tmp, (uint8_t *)pRF, sizeof(RF_def));
- 349   1              //EEP_WriteBytes(tmp, (uint8_t *)pRF, sizeof(RF_def));
- 350   1              if (return_sound_table() == 1)
- 351   1              {
- 352   2                      GD5800_select_chapter(CHENGGONG);
- 353   2      
- 354   2                      set_sound_table(0);
- 355   2              }
- 356   1              return 0;
- 357   1      }
- 358          
- 359          bit register_alarm_function(RF_def *pRF)
- 360          {
- 361   1              uint16_t addr;
- 362   1              uint16_t i;
- 363   1              RF_def RFtmp;
- 364   1              uint16_t tmp = 0;
-C51 COMPILER V9.00   AT24C256                                                              10/31/2015 10:46:07 PAGE 7   
+ 303   1              uint16_t tmp = 0;
+ 304   1              addr = HOST_DATA_START;
+ 305   1      
+ 306   1              for (i = 0; i < HOST_NUMBER; i++)
+ 307   1              {
+ 308   2                      IRcvStr(I2C_ADDRESS, addr, (uint8_t *)&RFtmp, sizeof(RF_def));
+ 309   2                      //EEP_ReadBytes(addr, (uint8_t *)&RFtmp, sizeof(RF_def));
+ 310   2      
+ 311   2                      if (!(RFtmp.rf & 0xff000000))
+ 312   2                      {
+ 313   3      
+ 314   3                              if (return_Two_Menu_F8_E1() == 2)      //多键模式低位为0
+ 315   3                              {
+ 316   4                                      RFtmp.rf &= 0x00fffff0;
+ 317   4                                      pRF->rf &= 0x00fffff0;
+ 318   4                              }
+ 319   3      
+ 320   3                              if (RFtmp.rf == pRF->rf)    //有相等RF在里面，重新覆盖
+ 321   3                              {
+ 322   4                                      memcpy(Two_Menu_F1_E2, RFtmp.region, 4);
+ 323   4                                      Two_Menu_F1_E2[4] = 0;
+ 324   4                                      GD5800_select_chapter(SHIBAI);
+ 325   4                                      return 1;
+ 326   4                              }
+ 327   3                      }
+ 328   2                      else
+ 329   2                      {
+ 330   3                              if (!tmp) tmp = addr;
+ 331   3                      }
+ 332   2                      addr += sizeof(RF_def);
+ 333   2              }
+ 334   1              ISendStr(I2C_ADDRESS, tmp, (uint8_t *)pRF, sizeof(RF_def));
+ 335   1              //EEP_WriteBytes(tmp, (uint8_t *)pRF, sizeof(RF_def));
+ 336   1              GD5800_select_chapter(CHENGGONG);
+ 337   1              return 0;
+ 338   1      }
+ 339          
+ 340          bit register_alarm_function(RF_def *pRF)
+ 341          {
+ 342   1              uint16_t addr;
+ 343   1              uint16_t i;
+ 344   1              RF_def RFtmp;
+ 345   1              uint16_t tmp = 0;
+ 346   1              addr = ALARM_DATA_START;
+ 347   1      
+ 348   1              for (i = 0; i < ALARM_NUMBER; i++)
+ 349   1              {
+ 350   2                      IRcvStr(I2C_ADDRESS, addr, (uint8_t *)&RFtmp, sizeof(RF_def));
+ 351   2                      //EEP_ReadBytes(addr, (uint8_t *)&RFtmp, sizeof(RF_def));
+ 352   2      
+ 353   2                      if (!(RFtmp.rf & 0xff000000))
+ 354   2                      {
+ 355   3      
+ 356   3                              if (return_Two_Menu_F8_E1() == 2)      //多键模式低位为0
+ 357   3                              {
+ 358   4                                      RFtmp.rf &= 0x00fffff0;
+ 359   4                                      pRF->rf &= 0x00fffff0;
+ 360   4                              }
+ 361   3      
+ 362   3                              if (RFtmp.rf == pRF->rf)    //有相等RF在里面，重新覆盖
+ 363   3                              {
+ 364   4                                      memcpy(Two_Menu_F1_E3, RFtmp.region, 4);
+C51 COMPILER V9.00   AT24C256                                                              11/05/2015 14:58:07 PAGE 7   
 
- 365   1              addr = ALARM_DATA_START;
- 366   1      
- 367   1              for (i = 0; i < ALARM_NUMBER; i++)
- 368   1              {
- 369   2                      IRcvStr(I2C_ADDRESS, addr, (uint8_t *)&RFtmp, sizeof(RF_def));
- 370   2                      //EEP_ReadBytes(addr, (uint8_t *)&RFtmp, sizeof(RF_def));
- 371   2      
- 372   2                      if (!(RFtmp.rf & 0xff000000))
- 373   2                      {
- 374   3      
- 375   3                              if (return_Two_Menu_F8_E1() == 2)      //多键模式低位为0
- 376   3                              {
- 377   4                                      RFtmp.rf &= 0x00fffff0;
- 378   4                                      pRF->rf &= 0x00fffff0;
- 379   4                              }
- 380   3      
- 381   3                              if (RFtmp.rf == pRF->rf)    //有相等RF在里面，重新覆盖
- 382   3                              {
- 383   4                                      memcpy(Two_Menu_F1_E3, RFtmp.region, 4);
- 384   4                                      Two_Menu_F1_E3[4] = 0;
- 385   4                                      if (return_sound_table() == 1)
- 386   4                                      {
- 387   5                                              GD5800_select_chapter(SHIBAI);
- 388   5      
- 389   5                                              set_sound_table(0);
- 390   5                                      }
- 391   4                                      return 1;
- 392   4                              }
- 393   3                      }
- 394   2                      else
- 395   2                      {
- 396   3                              if (!tmp) tmp = addr;
- 397   3                      }
- 398   2                      addr += sizeof(RF_def);
- 399   2              }
- 400   1              ISendStr(I2C_ADDRESS, tmp, (uint8_t *)pRF, sizeof(RF_def));
- 401   1              //EEP_WriteBytes(tmp, (uint8_t *)pRF, sizeof(RF_def));
- 402   1              if (return_sound_table() == 1)
- 403   1              {
- 404   2                      GD5800_select_chapter(CHENGGONG);
- 405   2      
- 406   2                      set_sound_table(0);
- 407   2              }
- 408   1              return 0;
- 409   1      }
- 410          
- 411          bit register_cancel_function(RF_def *pRF)
- 412          {
- 413   1              uint16_t addr;
- 414   1              uint16_t i;
- 415   1              RF_def RFtmp;
- 416   1              uint16_t tmp = 0;
- 417   1              addr = CANCEL_DATA_START;
- 418   1      
- 419   1              for (i = 0; i < CANCEL_NUMBER; i++)
- 420   1              {
- 421   2                      IRcvStr(I2C_ADDRESS, addr, (uint8_t *)&RFtmp, sizeof(RF_def));
- 422   2                      //EEP_ReadBytes(addr, (uint8_t *)&RFtmp, sizeof(RF_def));
- 423   2      
- 424   2                      if (!(RFtmp.rf & 0xff000000))
- 425   2                      {
- 426   3      
-C51 COMPILER V9.00   AT24C256                                                              10/31/2015 10:46:07 PAGE 8   
+ 365   4                                      Two_Menu_F1_E3[4] = 0;
+ 366   4                                      GD5800_select_chapter(SHIBAI);
+ 367   4                                      return 1;
+ 368   4                              }
+ 369   3                      }
+ 370   2                      else
+ 371   2                      {
+ 372   3                              if (!tmp) tmp = addr;
+ 373   3                      }
+ 374   2                      addr += sizeof(RF_def);
+ 375   2              }
+ 376   1              ISendStr(I2C_ADDRESS, tmp, (uint8_t *)pRF, sizeof(RF_def));
+ 377   1              //EEP_WriteBytes(tmp, (uint8_t *)pRF, sizeof(RF_def));
+ 378   1              GD5800_select_chapter(CHENGGONG);
+ 379   1              return 0;
+ 380   1      }
+ 381          
+ 382          bit register_cancel_function(RF_def *pRF)
+ 383          {
+ 384   1              uint16_t addr;
+ 385   1              uint16_t i;
+ 386   1              RF_def RFtmp;
+ 387   1              uint16_t tmp = 0;
+ 388   1              addr = CANCEL_DATA_START;
+ 389   1      
+ 390   1              for (i = 0; i < CANCEL_NUMBER; i++)
+ 391   1              {
+ 392   2                      IRcvStr(I2C_ADDRESS, addr, (uint8_t *)&RFtmp, sizeof(RF_def));
+ 393   2                      //EEP_ReadBytes(addr, (uint8_t *)&RFtmp, sizeof(RF_def));
+ 394   2      
+ 395   2                      if (!(RFtmp.rf & 0xff000000))
+ 396   2                      {
+ 397   3      
+ 398   3                              if (return_Two_Menu_F8_E1() == 2)      //多键模式低位为0
+ 399   3                              {
+ 400   4                                      RFtmp.rf &= 0x00fffff0;
+ 401   4                                      pRF->rf &= 0x00fffff0;
+ 402   4                              }
+ 403   3      
+ 404   3                              if (RFtmp.rf == pRF->rf)    //有相等RF在里面，重新覆盖
+ 405   3                              {
+ 406   4                                      memcpy(Two_Menu_F1_E4, RFtmp.region, 4);
+ 407   4                                      Two_Menu_F1_E4[4] = 0;
+ 408   4                                      GD5800_select_chapter(SHIBAI);
+ 409   4                                      return 1;
+ 410   4                              }
+ 411   3                      }
+ 412   2                      else
+ 413   2                      {
+ 414   3                              if (!tmp) tmp = addr;
+ 415   3                      }
+ 416   2                      addr += sizeof(RF_def);
+ 417   2              }
+ 418   1              ISendStr(I2C_ADDRESS, tmp, (uint8_t *)pRF, sizeof(RF_def));
+ 419   1              //EEP_WriteBytes(tmp, (uint8_t *)pRF, sizeof(RF_def));
+ 420   1              GD5800_select_chapter(CHENGGONG);
+ 421   1              return 0;
+ 422   1      }
+ 423          
+ 424          bit delete_call_function(unsigned char *buf)//buf为组码数组的指针
+ 425          {
+ 426   1              RF_def RFtmp;
+C51 COMPILER V9.00   AT24C256                                                              11/05/2015 14:58:07 PAGE 8   
 
- 427   3                              if (return_Two_Menu_F8_E1() == 2)      //多键模式低位为0
- 428   3                              {
- 429   4                                      RFtmp.rf &= 0x00fffff0;
- 430   4                                      pRF->rf &= 0x00fffff0;
- 431   4                              }
- 432   3      
- 433   3                              if (RFtmp.rf == pRF->rf)    //有相等RF在里面，重新覆盖
- 434   3                              {
- 435   4                                      memcpy(Two_Menu_F1_E4, RFtmp.region, 4);
- 436   4                                      Two_Menu_F1_E4[4] = 0;
- 437   4                                      if (return_sound_table() == 1)
- 438   4                                      {
- 439   5                                              GD5800_select_chapter(SHIBAI);
- 440   5      
- 441   5                                              set_sound_table(0);
- 442   5                                      }
- 443   4                                      return 1;
- 444   4                              }
- 445   3                      }
- 446   2                      else
- 447   2                      {
- 448   3                              if (!tmp) tmp = addr;
- 449   3                      }
- 450   2                      addr += sizeof(RF_def);
- 451   2              }
- 452   1              ISendStr(I2C_ADDRESS, tmp, (uint8_t *)pRF, sizeof(RF_def));
- 453   1              //EEP_WriteBytes(tmp, (uint8_t *)pRF, sizeof(RF_def));
- 454   1              if (return_sound_table() == 1)
- 455   1              {
- 456   2                      GD5800_select_chapter(CHENGGONG);
- 457   2      
- 458   2                      set_sound_table(0);
- 459   2              }
- 460   1              return 0;
- 461   1      }
- 462          
- 463          bit delete_call_function(unsigned char *buf)//buf为组码数组的指针
- 464          {
- 465   1              RF_def RFtmp;
- 466   1              uint16_t addr = CALL_DATA_START;
- 467   1              uint16_t i;
- 468   1              unsigned char dofly[32] = { 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
+ 427   1              uint16_t addr = CALL_DATA_START;
+ 428   1              uint16_t i;
+ 429   1              unsigned char dofly[32] = { 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
              - 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff };
- 469   1              if (*(volatile uint32_t*)buf == 0x00000000ul)
- 470   1              {
- 471   2                      for (i = 0; i<128; i++)
- 472   2                      {
- 473   3                              ISendStr(I2C_ADDRESS, i << 5, dofly, 32);                   //写入24c02
- 474   3                              delay10ms();
- 475   3                      }
- 476   2      
- 477   2              }
- 478   1              else
- 479   1              {
- 480   2                      for (i = 0; i < CALL_NUMBER; i++)
- 481   2                      {
- 482   3                              IRcvStr(I2C_ADDRESS, addr, (uint8_t *)&RFtmp, sizeof(RF_def));
- 483   3                              //EEP_ReadBytes(addr, (uint8_t *)&RFtmp, sizeof(RF_def));
- 484   3                              if (!(RFtmp.rf & 0xff000000ul))
- 485   3                              {
- 486   4                                      if (*(volatile uint32_t*)buf == *(volatile uint32_t*)(RFtmp.region))
- 487   4                                      {
-C51 COMPILER V9.00   AT24C256                                                              10/31/2015 10:46:07 PAGE 9   
-
- 488   5                                              memset(&RFtmp, 0xff, sizeof(RF_def));
- 489   5                                              ISendStr(I2C_ADDRESS, addr, (uint8_t *)&RFtmp, sizeof(RF_def));
- 490   5                                              //EEP_WriteBytes(addr, (uint8_t *)&RFtmp, sizeof(RF_def));
- 491   5                                              break;
- 492   5                                      }
- 493   4                              }
- 494   3                              addr += sizeof(RF_def);
- 495   3                      }
- 496   2              }
- 497   1              return 0;
- 498   1      }
- 499          
- 500          bit delete_host_function(unsigned char *buf)//buf为组码数组的指针
- 501          {
- 502   1              RF_def RFtmp;
- 503   1              uint16_t addr = HOST_DATA_START;
- 504   1              uint16_t i;
- 505   1              unsigned char dofly[32] = { 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
+ 430   1              if (*(volatile uint32_t*)buf == 0x00000000ul)
+ 431   1              {
+ 432   2                      for (i = 0; i<128; i++)
+ 433   2                      {
+ 434   3                              ISendStr(I2C_ADDRESS, i << 5, dofly, 32);                   //写入24c02
+ 435   3                              delay10ms();
+ 436   3                      }
+ 437   2      
+ 438   2              }
+ 439   1              else
+ 440   1              {
+ 441   2                      for (i = 0; i < CALL_NUMBER; i++)
+ 442   2                      {
+ 443   3                              IRcvStr(I2C_ADDRESS, addr, (uint8_t *)&RFtmp, sizeof(RF_def));
+ 444   3                              //EEP_ReadBytes(addr, (uint8_t *)&RFtmp, sizeof(RF_def));
+ 445   3                              if (!(RFtmp.rf & 0xff000000ul))
+ 446   3                              {
+ 447   4                                      if (*(volatile uint32_t*)buf == *(volatile uint32_t*)(RFtmp.region))
+ 448   4                                      {
+ 449   5                                              memset(&RFtmp, 0xff, sizeof(RF_def));
+ 450   5                                              ISendStr(I2C_ADDRESS, addr, (uint8_t *)&RFtmp, sizeof(RF_def));
+ 451   5                                              //EEP_WriteBytes(addr, (uint8_t *)&RFtmp, sizeof(RF_def));
+ 452   5                                              break;
+ 453   5                                      }
+ 454   4                              }
+ 455   3                              addr += sizeof(RF_def);
+ 456   3                      }
+ 457   2              }
+ 458   1              return 0;
+ 459   1      }
+ 460          
+ 461          bit delete_host_function(unsigned char *buf)//buf为组码数组的指针
+ 462          {
+ 463   1              RF_def RFtmp;
+ 464   1              uint16_t addr = HOST_DATA_START;
+ 465   1              uint16_t i;
+ 466   1              unsigned char dofly[32] = { 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
              - 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff };
- 506   1              if (*(volatile uint32_t*)buf == 0x00000000ul)
- 507   1              {
- 508   2                      for (i = 0; i<8; i++)
- 509   2                      {
- 510   3                              ISendStr(I2C_ADDRESS, addr+( i << 5), dofly, 32);                   //写入24c02
- 511   3                              delay10ms();
- 512   3                      }
- 513   2      
- 514   2              }
- 515   1              else
- 516   1              {
- 517   2                      for (i = 0; i < HOST_NUMBER; i++)
- 518   2                      {
- 519   3                              IRcvStr(I2C_ADDRESS, addr, (uint8_t *)&RFtmp, sizeof(RF_def));
- 520   3                              //EEP_ReadBytes(addr, (uint8_t *)&RFtmp, sizeof(RF_def));
- 521   3                              if (!(RFtmp.rf & 0xff000000ul))
- 522   3                              {
- 523   4                                      if (*(volatile uint32_t*)buf == *(volatile uint32_t*)(RFtmp.region))
- 524   4                                      {
- 525   5                                              memset(&RFtmp, 0xff, sizeof(RF_def));
- 526   5                                              ISendStr(I2C_ADDRESS, addr, (uint8_t *)&RFtmp, sizeof(RF_def));
- 527   5                                              //EEP_WriteBytes(addr, (uint8_t *)&RFtmp, sizeof(RF_def));
- 528   5                                              break;
- 529   5                                      }
- 530   4                              }
- 531   3                              addr += sizeof(RF_def);
- 532   3                      }
- 533   2              }
- 534   1              return 0;
- 535   1      }
- 536          
- 537          bit delete_alarm_function(unsigned char *buf)//buf为组码数组的指针
- 538          {
- 539   1              RF_def RFtmp;
- 540   1              uint16_t addr = ALARM_DATA_START;
- 541   1              uint16_t i;
- 542   1              unsigned char dofly[32] = { 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
-             - 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff };
- 543   1              if (*(volatile uint32_t*)buf == 0x00000000ul)
- 544   1              {
- 545   2                      for (i = 0; i<16; i++)
- 546   2                      {
- 547   3                              ISendStr(I2C_ADDRESS, addr + (i << 5), dofly, 32);                   //写入24c02
-C51 COMPILER V9.00   AT24C256                                                              10/31/2015 10:46:07 PAGE 10  
+ 467   1              if (*(volatile uint32_t*)buf == 0x00000000ul)
+ 468   1              {
+ 469   2                      for (i = 0; i<8; i++)
+ 470   2                      {
+ 471   3                              ISendStr(I2C_ADDRESS, addr+( i << 5), dofly, 32);                   //写入24c02
+ 472   3                              delay10ms();
+ 473   3                      }
+ 474   2      
+ 475   2              }
+ 476   1              else
+ 477   1              {
+ 478   2                      for (i = 0; i < HOST_NUMBER; i++)
+ 479   2                      {
+ 480   3                              IRcvStr(I2C_ADDRESS, addr, (uint8_t *)&RFtmp, sizeof(RF_def));
+ 481   3                              //EEP_ReadBytes(addr, (uint8_t *)&RFtmp, sizeof(RF_def));
+ 482   3                              if (!(RFtmp.rf & 0xff000000ul))
+ 483   3                              {
+ 484   4                                      if (*(volatile uint32_t*)buf == *(volatile uint32_t*)(RFtmp.region))
+ 485   4                                      {
+ 486   5                                              memset(&RFtmp, 0xff, sizeof(RF_def));
+C51 COMPILER V9.00   AT24C256                                                              11/05/2015 14:58:07 PAGE 9   
 
- 548   3                              delay10ms();
- 549   3                      }
- 550   2      
- 551   2              }
- 552   1              else
- 553   1              {
- 554   2                      for (i = 0; i < ALARM_NUMBER; i++)
- 555   2                      {
- 556   3                              IRcvStr(I2C_ADDRESS, addr, (uint8_t *)&RFtmp, sizeof(RF_def));
- 557   3                              //      EEP_ReadBytes(addr, (uint8_t *)&RFtmp, sizeof(RF_def));
- 558   3                              if (!(RFtmp.rf & 0xff000000ul))
- 559   3                              {
- 560   4                                      if (*(volatile uint32_t*)buf == *(volatile uint32_t*)(RFtmp.region))
- 561   4                                      {
- 562   5                                              memset(&RFtmp, 0xff, sizeof(RF_def));
- 563   5                                              ISendStr(I2C_ADDRESS, addr, (uint8_t *)&RFtmp, sizeof(RF_def));
- 564   5                                              //EEP_WriteBytes(addr, (uint8_t *)&RFtmp, sizeof(RF_def));
- 565   5                                              break;
- 566   5                                      }
- 567   4                              }
- 568   3                              addr += sizeof(RF_def);
- 569   3                      }
- 570   2              }
- 571   1              return 0;
- 572   1      }
- 573          
- 574          bit delete_cancel_function(unsigned char *buf)//buf为组码数组的指针
- 575          {
- 576   1              RF_def RFtmp;
- 577   1              uint16_t addr = CANCEL_DATA_START;
- 578   1              uint16_t i;
- 579   1              unsigned char dofly[32] = { 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
+ 487   5                                              ISendStr(I2C_ADDRESS, addr, (uint8_t *)&RFtmp, sizeof(RF_def));
+ 488   5                                              //EEP_WriteBytes(addr, (uint8_t *)&RFtmp, sizeof(RF_def));
+ 489   5                                              break;
+ 490   5                                      }
+ 491   4                              }
+ 492   3                              addr += sizeof(RF_def);
+ 493   3                      }
+ 494   2              }
+ 495   1              return 0;
+ 496   1      }
+ 497          
+ 498          bit delete_alarm_function(unsigned char *buf)//buf为组码数组的指针
+ 499          {
+ 500   1              RF_def RFtmp;
+ 501   1              uint16_t addr = ALARM_DATA_START;
+ 502   1              uint16_t i;
+ 503   1              unsigned char dofly[32] = { 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
              - 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff };
- 580   1              if (*(volatile uint32_t*)buf == 0x00000000ul)
- 581   1              {
- 582   2                      for (i = 0; i<16; i++)
- 583   2                      {
- 584   3                              ISendStr(I2C_ADDRESS, addr + (i << 5), dofly, 32);                   //写入24c02
- 585   3                              delay10ms();
- 586   3                      }
- 587   2      
- 588   2              }
- 589   1              else
- 590   1              {
- 591   2                      for (i = 0; i < CANCEL_NUMBER; i++)
- 592   2                      {
- 593   3                              IRcvStr(I2C_ADDRESS, addr, (uint8_t *)&RFtmp, sizeof(RF_def));
- 594   3                              //EEP_ReadBytes(addr, (uint8_t *)&RFtmp, sizeof(RF_def));
- 595   3                              if (!(RFtmp.rf & 0xff000000ul))
- 596   3                              {
- 597   4                                      if (*(volatile uint32_t*)buf == *(volatile uint32_t*)(RFtmp.region))
- 598   4                                      {
- 599   5                                              memset(&RFtmp, 0xff, sizeof(RF_def));
- 600   5                                              ISendStr(I2C_ADDRESS, addr, (uint8_t *)&RFtmp, sizeof(RF_def));
- 601   5                                              //EEP_WriteBytes(addr, (uint8_t *)&RFtmp, sizeof(RF_def));
- 602   5                                              break;
- 603   5                                      }
- 604   4                              }
- 605   3                              addr += sizeof(RF_def);
- 606   3                      }
- 607   2              }
- 608   1              return 0;
-C51 COMPILER V9.00   AT24C256                                                              10/31/2015 10:46:07 PAGE 11  
+ 504   1              if (*(volatile uint32_t*)buf == 0x00000000ul)
+ 505   1              {
+ 506   2                      for (i = 0; i<16; i++)
+ 507   2                      {
+ 508   3                              ISendStr(I2C_ADDRESS, addr + (i << 5), dofly, 32);                   //写入24c02
+ 509   3                              delay10ms();
+ 510   3                      }
+ 511   2      
+ 512   2              }
+ 513   1              else
+ 514   1              {
+ 515   2                      for (i = 0; i < ALARM_NUMBER; i++)
+ 516   2                      {
+ 517   3                              IRcvStr(I2C_ADDRESS, addr, (uint8_t *)&RFtmp, sizeof(RF_def));
+ 518   3                              //      EEP_ReadBytes(addr, (uint8_t *)&RFtmp, sizeof(RF_def));
+ 519   3                              if (!(RFtmp.rf & 0xff000000ul))
+ 520   3                              {
+ 521   4                                      if (*(volatile uint32_t*)buf == *(volatile uint32_t*)(RFtmp.region))
+ 522   4                                      {
+ 523   5                                              memset(&RFtmp, 0xff, sizeof(RF_def));
+ 524   5                                              ISendStr(I2C_ADDRESS, addr, (uint8_t *)&RFtmp, sizeof(RF_def));
+ 525   5                                              //EEP_WriteBytes(addr, (uint8_t *)&RFtmp, sizeof(RF_def));
+ 526   5                                              break;
+ 527   5                                      }
+ 528   4                              }
+ 529   3                              addr += sizeof(RF_def);
+ 530   3                      }
+ 531   2              }
+ 532   1              return 0;
+ 533   1      }
+ 534          
+ 535          bit delete_cancel_function(unsigned char *buf)//buf为组码数组的指针
+ 536          {
+ 537   1              RF_def RFtmp;
+ 538   1              uint16_t addr = CANCEL_DATA_START;
+ 539   1              uint16_t i;
+ 540   1              unsigned char dofly[32] = { 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
+             - 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff };
+ 541   1              if (*(volatile uint32_t*)buf == 0x00000000ul)
+ 542   1              {
+ 543   2                      for (i = 0; i<16; i++)
+ 544   2                      {
+ 545   3                              ISendStr(I2C_ADDRESS, addr + (i << 5), dofly, 32);                   //写入24c02
+ 546   3                              delay10ms();
+C51 COMPILER V9.00   AT24C256                                                              11/05/2015 14:58:07 PAGE 10  
 
+ 547   3                      }
+ 548   2      
+ 549   2              }
+ 550   1              else
+ 551   1              {
+ 552   2                      for (i = 0; i < CANCEL_NUMBER; i++)
+ 553   2                      {
+ 554   3                              IRcvStr(I2C_ADDRESS, addr, (uint8_t *)&RFtmp, sizeof(RF_def));
+ 555   3                              //EEP_ReadBytes(addr, (uint8_t *)&RFtmp, sizeof(RF_def));
+ 556   3                              if (!(RFtmp.rf & 0xff000000ul))
+ 557   3                              {
+ 558   4                                      if (*(volatile uint32_t*)buf == *(volatile uint32_t*)(RFtmp.region))
+ 559   4                                      {
+ 560   5                                              memset(&RFtmp, 0xff, sizeof(RF_def));
+ 561   5                                              ISendStr(I2C_ADDRESS, addr, (uint8_t *)&RFtmp, sizeof(RF_def));
+ 562   5                                              //EEP_WriteBytes(addr, (uint8_t *)&RFtmp, sizeof(RF_def));
+ 563   5                                              break;
+ 564   5                                      }
+ 565   4                              }
+ 566   3                              addr += sizeof(RF_def);
+ 567   3                      }
+ 568   2              }
+ 569   1              return 0;
+ 570   1      }
+ 571          
+ 572          void Delete_all_data(void)
+ 573          {
+ 574   1      //      uint8_t i,j;
+ 575   1      //      int8_t buf[32] = { 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 
+             -0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff };
+ 576   1      //      uint16_t addr = 0;
+ 577   1      //      int8_t buf1[32];
+ 578   1      ////    memset(buf, 0xff, sizeof(buf));
+ 579   1      //      addr = 0;
+ 580   1      //      for (i = 0; i<168; i++)
+ 581   1      //      {       
+ 582   1      //              addr = i << 5;
+ 583   1      //              ISendStr(I2C_ADDRESS, addr, buf, 32);
+ 584   1      //              delay10ms();
+ 585   1      //              //EEP_WriteBytes(addr, buf, sizeof(buf));
+ 586   1      //              //addr += 32;
+ 587   1      //      }
+ 588   1      //      uart_printf("24c read:");
+ 589   1      //      for (i = 0; i<168; i++)
+ 590   1      //      {
+ 591   1      //              IRcvStr(I2C_ADDRESS, addr, buf, 32);
+ 592   1      //              delay10ms();
+ 593   1      //              for (j = 0; j < 32; j++)
+ 594   1      //              {
+ 595   1      //                      uart_printf("%02x ", (unsigned int)buf[j]);
+ 596   1      //              }
+ 597   1      //              uart_printf("\n\r");
+ 598   1      //              //EEP_WriteBytes(addr, buf, sizeof(buf));
+ 599   1      //              addr += sizeof(buf);
+ 600   1      //      }
+ 601   1      
+ 602   1              unsigned char dofly[32] = { 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
+             - 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff };
+ 603   1              unsigned int k;
+ 604   1              for (k = 0; k<168; k++)
+ 605   1              {
+ 606   2                      ISendStr(I2C_ADDRESS, k << 5, dofly, 32);                   //写入24c02
+C51 COMPILER V9.00   AT24C256                                                              11/05/2015 14:58:07 PAGE 11  
+
+ 607   2                      delay10ms();
+ 608   2              }
  609   1      }
  610          
- 611          void Delete_all_data(void)
- 612          {
- 613   1      //      uint8_t i,j;
- 614   1      //      int8_t buf[32] = { 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 
-             -0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff };
- 615   1      //      uint16_t addr = 0;
- 616   1      //      int8_t buf1[32];
- 617   1      ////    memset(buf, 0xff, sizeof(buf));
- 618   1      //      addr = 0;
- 619   1      //      for (i = 0; i<168; i++)
- 620   1      //      {       
- 621   1      //              addr = i << 5;
- 622   1      //              ISendStr(I2C_ADDRESS, addr, buf, 32);
- 623   1      //              delay10ms();
- 624   1      //              //EEP_WriteBytes(addr, buf, sizeof(buf));
- 625   1      //              //addr += 32;
- 626   1      //      }
- 627   1      //      uart_printf("24c read:");
- 628   1      //      for (i = 0; i<168; i++)
- 629   1      //      {
- 630   1      //              IRcvStr(I2C_ADDRESS, addr, buf, 32);
- 631   1      //              delay10ms();
- 632   1      //              for (j = 0; j < 32; j++)
- 633   1      //              {
- 634   1      //                      uart_printf("%02x ", (unsigned int)buf[j]);
- 635   1      //              }
- 636   1      //              uart_printf("\n\r");
- 637   1      //              //EEP_WriteBytes(addr, buf, sizeof(buf));
- 638   1      //              addr += sizeof(buf);
- 639   1      //      }
- 640   1      
- 641   1              unsigned char dofly[32] = { 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
-             - 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff };
- 642   1              unsigned int k;
- 643   1              for (k = 0; k<168; k++)
- 644   1              {
- 645   2                      ISendStr(I2C_ADDRESS, k << 5, dofly, 32);                   //写入24c02
- 646   2                      delay10ms();
- 647   2              }
- 648   1      }
- 649          
- 650          
- 651          int8_t Find_RF_EEPROM_Call(RF_def *p, uint32_t dat)
- 652          {
- 653   1              RF_def RFtmp;
- 654   1              uint16_t addr;
- 655   1              uint16_t i;
- 656   1              addr = CALL_DATA_START;
- 657   1      
- 658   1              for (i = 0; i<CALL_NUMBER; i++)
- 659   1              {
- 660   2                      IRcvStr(I2C_ADDRESS, addr, (uint8_t *)&RFtmp, sizeof(RF_def));
- 661   2                      //EEP_ReadBytes(addr, (uint8_t *)&RFtmp, sizeof(RF_def));
- 662   2      
- 663   2                      if (return_Two_Menu_F8_E1() == 2)      //多键模式低位为0
- 664   2                      {
- 665   3                              RFtmp.rf &= 0x00fffff0;
- 666   3                              dat &= 0x00fffff0;
- 667   3                      }
- 668   2      
-C51 COMPILER V9.00   AT24C256                                                              10/31/2015 10:46:07 PAGE 12  
+ 611          
+ 612          int8_t Find_RF_EEPROM_Call(RF_def *p, uint32_t dat)
+ 613          {
+ 614   1              RF_def RFtmp;
+ 615   1              uint16_t addr;
+ 616   1              uint16_t i;
+ 617   1              addr = CALL_DATA_START;
+ 618   1      
+ 619   1              for (i = 0; i<CALL_NUMBER; i++)
+ 620   1              {
+ 621   2                      IRcvStr(I2C_ADDRESS, addr, (uint8_t *)&RFtmp, sizeof(RF_def));
+ 622   2                      //EEP_ReadBytes(addr, (uint8_t *)&RFtmp, sizeof(RF_def));
+ 623   2      
+ 624   2                      if (return_Two_Menu_F8_E1() == 2)      //多键模式低位为0
+ 625   2                      {
+ 626   3                              RFtmp.rf &= 0x00fffff0;
+ 627   3                              dat &= 0x00fffff0;
+ 628   3                      }
+ 629   2      
+ 630   2                      if (RFtmp.rf == dat)
+ 631   2                      {
+ 632   3                              memcpy(p, &RFtmp, sizeof(RF_def));
+ 633   3                              return 1;
+ 634   3                      }
+ 635   2                      addr += sizeof(RF_def);
+ 636   2              }
+ 637   1              return 0;
+ 638   1      }
+ 639          
+ 640          int8_t Find_RF_EEPROM_Host(RF_def *p, uint32_t dat)
+ 641          {
+ 642   1              RF_def RFtmp;
+ 643   1              uint16_t addr;
+ 644   1              uint16_t i;
+ 645   1              addr = HOST_DATA_START;
+ 646   1      
+ 647   1              for (i = 0; i<HOST_NUMBER; i++)
+ 648   1              {
+ 649   2                      IRcvStr(I2C_ADDRESS, addr, (uint8_t *)&RFtmp, sizeof(RF_def));
+ 650   2                      //EEP_ReadBytes(addr, (uint8_t *)&RFtmp, sizeof(RF_def));
+ 651   2      
+ 652   2                      if (return_Two_Menu_F8_E1() == 2)      //多键模式低位为0
+ 653   2                      {
+ 654   3                              RFtmp.rf &= 0x00fffff0;
+ 655   3                              dat &= 0x00fffff0;
+ 656   3                      }
+ 657   2      
+ 658   2                      if (RFtmp.rf == dat)
+ 659   2                      {
+ 660   3                              memcpy(p, &RFtmp, sizeof(RF_def));
+ 661   3                              return 1;
+ 662   3                      }
+ 663   2                      addr += sizeof(RF_def);
+ 664   2              }
+ 665   1              return 0;
+ 666   1      }
+ 667          
+ 668          int8_t Find_RF_EEPROM_Alarm(RF_def *p, uint32_t dat)
+C51 COMPILER V9.00   AT24C256                                                              11/05/2015 14:58:07 PAGE 12  
 
- 669   2                      if (RFtmp.rf == dat)
- 670   2                      {
- 671   3                              memcpy(p, &RFtmp, sizeof(RF_def));
- 672   3                              return 1;
- 673   3                      }
- 674   2                      addr += sizeof(RF_def);
- 675   2              }
- 676   1              return 0;
- 677   1      }
- 678          
- 679          int8_t Find_RF_EEPROM_Host(RF_def *p, uint32_t dat)
- 680          {
- 681   1              RF_def RFtmp;
- 682   1              uint16_t addr;
- 683   1              uint16_t i;
- 684   1              addr = HOST_DATA_START;
- 685   1      
- 686   1              for (i = 0; i<HOST_NUMBER; i++)
- 687   1              {
- 688   2                      IRcvStr(I2C_ADDRESS, addr, (uint8_t *)&RFtmp, sizeof(RF_def));
- 689   2                      //EEP_ReadBytes(addr, (uint8_t *)&RFtmp, sizeof(RF_def));
- 690   2      
- 691   2                      if (return_Two_Menu_F8_E1() == 2)      //多键模式低位为0
- 692   2                      {
- 693   3                              RFtmp.rf &= 0x00fffff0;
- 694   3                              dat &= 0x00fffff0;
- 695   3                      }
- 696   2      
- 697   2                      if (RFtmp.rf == dat)
- 698   2                      {
- 699   3                              memcpy(p, &RFtmp, sizeof(RF_def));
- 700   3                              return 1;
- 701   3                      }
- 702   2                      addr += sizeof(RF_def);
- 703   2              }
- 704   1              return 0;
- 705   1      }
- 706          
- 707          int8_t Find_RF_EEPROM_Alarm(RF_def *p, uint32_t dat)
- 708          {
- 709   1              RF_def RFtmp;
- 710   1              uint16_t addr;
- 711   1              uint16_t i;
- 712   1              addr = ALARM_DATA_START;
- 713   1      
- 714   1              for (i = 0; i<ALARM_NUMBER; i++)
- 715   1              {
- 716   2                      IRcvStr(I2C_ADDRESS, addr, (uint8_t *)&RFtmp, sizeof(RF_def));
- 717   2                      //EEP_ReadBytes(addr, (uint8_t *)&RFtmp, sizeof(RF_def));
- 718   2      
- 719   2                      if (return_Two_Menu_F8_E1() == 2)      //多键模式低位为0
- 720   2                      {
- 721   3                              RFtmp.rf &= 0x00fffff0;
- 722   3                              dat &= 0x00fffff0;
- 723   3                      }
- 724   2      
- 725   2                      if (RFtmp.rf == dat)
- 726   2                      {
- 727   3                              memcpy(p, &RFtmp, sizeof(RF_def));
- 728   3                              return 1;
- 729   3                      }
- 730   2                      addr += sizeof(RF_def);
-C51 COMPILER V9.00   AT24C256                                                              10/31/2015 10:46:07 PAGE 13  
+ 669          {
+ 670   1              RF_def RFtmp;
+ 671   1              uint16_t addr;
+ 672   1              uint16_t i;
+ 673   1              addr = ALARM_DATA_START;
+ 674   1      
+ 675   1              for (i = 0; i<ALARM_NUMBER; i++)
+ 676   1              {
+ 677   2                      IRcvStr(I2C_ADDRESS, addr, (uint8_t *)&RFtmp, sizeof(RF_def));
+ 678   2                      //EEP_ReadBytes(addr, (uint8_t *)&RFtmp, sizeof(RF_def));
+ 679   2      
+ 680   2                      if (return_Two_Menu_F8_E1() == 2)      //多键模式低位为0
+ 681   2                      {
+ 682   3                              RFtmp.rf &= 0x00fffff0;
+ 683   3                              dat &= 0x00fffff0;
+ 684   3                      }
+ 685   2      
+ 686   2                      if (RFtmp.rf == dat)
+ 687   2                      {
+ 688   3                              memcpy(p, &RFtmp, sizeof(RF_def));
+ 689   3                              return 1;
+ 690   3                      }
+ 691   2                      addr += sizeof(RF_def);
+ 692   2              }
+ 693   1              return 0;
+ 694   1      }
+ 695          
+ 696          int8_t Find_RF_EEPROM_Cancel(RF_def *p, uint32_t dat)
+ 697          {
+ 698   1              RF_def RFtmp;
+ 699   1              uint16_t addr;
+ 700   1              uint16_t i;
+ 701   1              addr = CANCEL_DATA_START;
+ 702   1      
+ 703   1              for (i = 0; i<CANCEL_NUMBER; i++)
+ 704   1              {
+ 705   2                      IRcvStr(I2C_ADDRESS, addr, (uint8_t *)&RFtmp, sizeof(RF_def));
+ 706   2                      //EEP_ReadBytes(addr, (uint8_t *)&RFtmp, sizeof(RF_def));
+ 707   2      
+ 708   2                      if (return_Two_Menu_F8_E1() == 2)      //多键模式低位为0
+ 709   2                      {
+ 710   3                              RFtmp.rf &= 0x00fffff0;
+ 711   3                              dat &= 0x00fffff0;
+ 712   3                      }
+ 713   2      
+ 714   2                      if (RFtmp.rf == dat)
+ 715   2                      {
+ 716   3                              memcpy(p, &RFtmp, sizeof(RF_def));
+ 717   3                              return 1;
+ 718   3                      }
+ 719   2                      addr += sizeof(RF_def);
+ 720   2              }
+ 721   1              return 0;
+ 722   1      }
+ 723          
+ 724          int8_t Find_RF_EEPROM(RF_def *p, uint32_t dat)
+ 725          {
+ 726   1              if (Find_RF_EEPROM_Cancel(p, dat))
+ 727   1              {
+ 728   2                      return 1;
+ 729   2              }
+ 730   1              else if (Find_RF_EEPROM_Alarm(p, dat))
+C51 COMPILER V9.00   AT24C256                                                              11/05/2015 14:58:07 PAGE 13  
 
- 731   2              }
- 732   1              return 0;
- 733   1      }
- 734          
- 735          int8_t Find_RF_EEPROM_Cancel(RF_def *p, uint32_t dat)
- 736          {
- 737   1              RF_def RFtmp;
- 738   1              uint16_t addr;
- 739   1              uint16_t i;
- 740   1              addr = CANCEL_DATA_START;
- 741   1      
- 742   1              for (i = 0; i<CANCEL_NUMBER; i++)
- 743   1              {
- 744   2                      IRcvStr(I2C_ADDRESS, addr, (uint8_t *)&RFtmp, sizeof(RF_def));
- 745   2                      //EEP_ReadBytes(addr, (uint8_t *)&RFtmp, sizeof(RF_def));
- 746   2      
- 747   2                      if (return_Two_Menu_F8_E1() == 2)      //多键模式低位为0
- 748   2                      {
- 749   3                              RFtmp.rf &= 0x00fffff0;
- 750   3                              dat &= 0x00fffff0;
- 751   3                      }
- 752   2      
- 753   2                      if (RFtmp.rf == dat)
- 754   2                      {
- 755   3                              memcpy(p, &RFtmp, sizeof(RF_def));
- 756   3                              return 1;
- 757   3                      }
- 758   2                      addr += sizeof(RF_def);
- 759   2              }
- 760   1              return 0;
- 761   1      }
- 762          
- 763          int8_t Find_RF_EEPROM(RF_def *p, uint32_t dat)
- 764          {
- 765   1              if (Find_RF_EEPROM_Cancel(p, dat))
- 766   1              {
- 767   2                      return 1;
- 768   2              }
- 769   1              else if (Find_RF_EEPROM_Alarm(p, dat))
- 770   1              {
- 771   2                      return 2;
- 772   2              }
- 773   1              else if (Find_RF_EEPROM_Call(p, dat))
- 774   1              {
- 775   2                      return 3;
- 776   2              }
- 777   1              else
- 778   1              {
- 779   2                      return 0;
- 780   2              }
- 781   1      }
+ 731   1              {
+ 732   2                      return 2;
+ 733   2              }
+ 734   1              else if (Find_RF_EEPROM_Call(p, dat))
+ 735   1              {
+ 736   2                      return 3;
+ 737   2              }
+ 738   1              else
+ 739   1              {
+ 740   2                      return 0;
+ 741   2              }
+ 742   1      }
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =   3811    ----
+   CODE SIZE        =   3707    ----
    CONSTANT SIZE    =    160    ----
    XDATA SIZE       =     15     387
    PDATA SIZE       =   ----    ----
@@ -830,8 +791,6 @@ MODULE INFORMATION:   STATIC OVERLAYABLE
    IDATA SIZE       =   ----    ----
    BIT SIZE         =      1    ----
 END OF MODULE INFORMATION.
-
-C51 COMPILER V9.00   AT24C256                                                              10/31/2015 10:46:07 PAGE 14  
 
 
 C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

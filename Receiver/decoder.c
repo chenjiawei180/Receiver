@@ -11,6 +11,7 @@
 
 unsigned char buf_eeprom[8] = { 0 };//写入EEPROM_buf
 unsigned char Two_menu_set_success = 0;
+uint32_t last_dat = 0;
 
 void DecoderProcess(void)
 {	
@@ -44,7 +45,7 @@ void DecoderProcess(void)
 
 	if (return_again_receive_rf_decoder_finished() == 1) //标志位等于1 说明在2次检验下通过,接收到有效码
 	{
-#ifdef DEBUG
+#ifdef DEBUG1
 		uart_printf("decoder_val is %02x %02x %02x .\r\n", (unsigned int)old2_RF_RECE_REG[0], (unsigned int)old2_RF_RECE_REG[1], (unsigned int)old2_RF_RECE_REG[2]); //测试按键键值
 #endif
 		dat = ((uint32_t)old2_RF_RECE_REG[0]) << 16 | ((uint32_t)old2_RF_RECE_REG[1]) << 8 | ((uint32_t)old2_RF_RECE_REG[2]);
@@ -54,7 +55,7 @@ void DecoderProcess(void)
 		{
 			set_logout_cycle_table(0);//循环跟销号重新计数
 			//键盘规则
-			if ((old2_RF_RECE_REG[2] & 0xf0) == 0x00 && ((((old2_RF_RECE_REG[0] >> 4) == Two_Menu_F7_E1_temp) && (old2_RF_RECE_REG[0] >> 4) < 10) ||  ((Two_Menu_F7_E1_temp == 10) && (old2_RF_RECE_REG[0] >> 4) < 10)) )//键盘规则，程序按默认的来编
+			if ((old2_RF_RECE_REG[2] & 0xf0) == 0x00 && ((old2_RF_RECE_REG[0] >> 4) == Two_Menu_F7_E1_temp) && (old2_RF_RECE_REG[0] >> 4) < 10)//键盘规则，程序按默认的来编
 			{
 				if (Two_Menu_F8_E1_temp == 1)  //为按键值
 				{
@@ -104,6 +105,21 @@ void DecoderProcess(void)
 #endif
 			if (state = Find_RF_EEPROM(&RFtmp, dat))
 			{
+				if (last_dat == dat)
+				{
+					if (return_second_filter_table() != 0)
+					{
+						goto standby;
+					}
+				
+				}
+				else
+				{
+					last_dat = dat;
+					clear_second_filter_time();
+					set_second_filter_table(1);
+				}
+
 #ifdef DEBUG
 				uart_printf("Find_RF_EEPROM \r\n");
 				uart_printf("state is : %x \r\n", (unsigned int)state);
@@ -197,7 +213,7 @@ standby:
 		{
 			set_logout_cycle_table(0);//循环跟销号重新计数
 			 //键盘规则
-			if ((old2_RF_RECE_REG[2] & 0xf0) == 0x00 && ((((old2_RF_RECE_REG[0] >> 4) == Two_Menu_F7_E1_temp) && (old2_RF_RECE_REG[0] >> 4) < 10) || ((Two_Menu_F7_E1_temp == 10) && (old2_RF_RECE_REG[0] >> 4) < 10)))//键盘规则，程序按默认的来编
+			if ((old2_RF_RECE_REG[2] & 0xf0) == 0x00 && ((old2_RF_RECE_REG[0] >> 4) == Two_Menu_F7_E1_temp) && (old2_RF_RECE_REG[0] >> 4) < 10)//键盘规则，程序按默认的来编
 			{
 				if (Two_Menu_F8_E1_temp == 1)  //为按键值
 				{
@@ -291,6 +307,20 @@ standby:
 			//呼叫器注册,搜索所需要的呼叫器
 			if (state = Find_RF_EEPROM(&RFtmp, dat))
 			{
+				if (last_dat == dat)
+				{
+					if (return_second_filter_table() != 0)
+					{
+						goto decoder;
+					}
+
+				}
+				else
+				{
+					last_dat = dat;
+					clear_second_filter_time();
+					set_second_filter_table(1);
+				}
 #ifdef DEBUG
 				uart_printf("Find_RF_EEPROM \r\n");
 #endif

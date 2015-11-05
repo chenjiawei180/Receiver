@@ -671,7 +671,7 @@ void KeyProcess(void)
 				else Two_Menu_F6_E5++;
 				break;
 			case TWO_MENU_F7_E1_SET:
-				if (Two_Menu_F7_E1 == 11) Two_Menu_F7_E1 = 0;	//F7_E1原始规则 999*9
+				if (Two_Menu_F7_E1 == 10) Two_Menu_F7_E1 = 0;	//F7_E1原始规则 999*9
 				else Two_Menu_F7_E1++;
 				break;
 			case TWO_MENU_F7_E2_SET:
@@ -909,7 +909,7 @@ void KeyProcess(void)
 				else Two_Menu_F6_E5--;
 				break;
 			case TWO_MENU_F7_E1_SET:
-				if (Two_Menu_F7_E1 == 0) Two_Menu_F7_E1 = 11;	//F7_E1原始规则 999*9
+				if (Two_Menu_F7_E1 == 0) Two_Menu_F7_E1 = 10;	//F7_E1原始规则 999*9
 				else Two_Menu_F7_E1--;
 				break;
 			case TWO_MENU_F7_E2_SET:
@@ -1220,9 +1220,9 @@ void env_init(void)
 	{
 		Two_Menu_F6_E7 = 0;
 	}
-	if (EEPROM.Two_Menu_F7_E1 > 11)
+	if (EEPROM.Two_Menu_F7_E1 > 10)
 	{
-		Two_Menu_F7_E1 = 11;
+		Two_Menu_F7_E1 = 10;
 	}
 	if (EEPROM.Two_Menu_F8_E1 > 2)
 	{
@@ -1253,7 +1253,7 @@ void var_init(void)
 	Two_Menu_F6_E5 = 3; //显示屏LED亮度调整
 	Two_Menu_F6_E6 = 1; //语音导航调整
 
-	Two_Menu_F7_E1 = 11; // E1默认键盘规则 999*9
+	Two_Menu_F7_E1 = 10; // E1默认键盘规则 999*9
 	Two_Menu_F7_E2 = 0; // E2其他键盘规则 9999*9
 	Two_Menu_F7_E3 = 0; // E3其他键盘规则 999*99
 	Two_Menu_F7_E4 = 0; // E4其他键盘规则 9999*99
