@@ -189,13 +189,7 @@ unsigned int KeyScan(void)  //Keyboard scan function
 		if ((HKeyPort & 0x3C) != 0x3C)   //Press button
 		{
 			clear_return_standby_time();
-			if (func_index != TWO_MENU_F8_E2_SET && ((return_Two_Menu_F6_E6()) ? func_index > ONE_MENU_Fd : 1))
-			{
-				GD5800_stop_music();
-				delay10ms();
-				GD5800_select_chapter(DI);
-			}
-				sound_table=1;
+				
 				Val = HKeyPort & 0x3C;
 				if (Val == 0x0038)
 				{
@@ -207,6 +201,11 @@ unsigned int KeyScan(void)  //Keyboard scan function
 				while ((HKeyPort & 0x3C) != 0x3C);
 				set_main_press_time_table(0);//按键释放，清除相应的标志位
 				set_logout_cycle_table(0);//循环跟销号重新计数
+				sound_table = 1;
+				if (func_index != TWO_MENU_F8_E2_SET && ((return_Two_Menu_F6_E6()) ? func_index > ONE_MENU_Fd : 1))
+				{
+					GD5800_select_chapter(DI);
+				}
 				return Val;
 		}
 	}
