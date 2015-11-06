@@ -260,8 +260,8 @@
       <Focus>0</Focus>
       <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>239</TopLine>
-      <CurrentLine>244</CurrentLine>
+      <TopLine>203</TopLine>
+      <CurrentLine>216</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>.\Receiver\ev1527.c</PathWithFileName>
       <FilenameWithoutPath>ev1527.c</FilenameWithoutPath>
@@ -286,10 +286,10 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>153</ColumnNumber>
+      <ColumnNumber>34</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>640</TopLine>
-      <CurrentLine>668</CurrentLine>
+      <TopLine>403</TopLine>
+      <CurrentLine>420</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>.\Receiver\at24c256.c</PathWithFileName>
       <FilenameWithoutPath>at24c256.c</FilenameWithoutPath>
@@ -314,7 +314,7 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>40</ColumnNumber>
+      <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
       <TopLine>42</TopLine>
       <CurrentLine>62</CurrentLine>
@@ -1665,13 +1665,13 @@
     <ActiveMDIGroup>0</ActiveMDIGroup>
     <MDIGroup>
       <Size>100</Size>
-      <ActiveTab>8</ActiveTab>
+      <ActiveTab>7</ActiveTab>
       <Documents>
         <Doc>
           <Name>.\Receiver\ev1527.c</Name>
           <ColumnNumber>0</ColumnNumber>
-          <TopLine>239</TopLine>
-          <CurrentLine>244</CurrentLine>
+          <TopLine>203</TopLine>
+          <CurrentLine>216</CurrentLine>
         </Doc>
         <Doc>
           <Name>.\Receiver\key.c</Name>
@@ -1687,7 +1687,7 @@
         </Doc>
         <Doc>
           <Name>.\Receiver\com.c</Name>
-          <ColumnNumber>40</ColumnNumber>
+          <ColumnNumber>0</ColumnNumber>
           <TopLine>42</TopLine>
           <CurrentLine>62</CurrentLine>
         </Doc>
@@ -1711,9 +1711,9 @@
         </Doc>
         <Doc>
           <Name>.\Receiver\at24c256.c</Name>
-          <ColumnNumber>153</ColumnNumber>
-          <TopLine>640</TopLine>
-          <CurrentLine>668</CurrentLine>
+          <ColumnNumber>34</ColumnNumber>
+          <TopLine>403</TopLine>
+          <CurrentLine>420</CurrentLine>
         </Doc>
         <Doc>
           <Name>.\Receiver\main.c</Name>

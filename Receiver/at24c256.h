@@ -43,13 +43,13 @@ typedef struct {
 #define  ALARM_NUMBER  64
 #define  CANCEL_NUMBER 64
 #define  HOST_NUMBER   32
-#define  CALL_DATA_START   0X0000
-#define  ALARM_DATA_START  0X1000
-#define  CANCEL_DATA_START 0X1200
-#define  HOST_DATA_START   0X1400
-#define  SIN_KEY           0X1500
-#define  MUL_KEY           0X1510
-#define  BACK              0X1520
+#define  CALL_DATA_START   0X0020
+#define  ALARM_DATA_START  0X1020
+#define  CANCEL_DATA_START 0X1220
+#define  HOST_DATA_START   0X1420
+#define  SIN_KEY           0X1520
+#define  MUL_KEY           0X1530
+#define  BACK              0X1540
 
 extern Env_t	EEPROM;
 
