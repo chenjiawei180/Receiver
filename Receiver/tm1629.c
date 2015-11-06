@@ -747,7 +747,7 @@ void fun3(void) //一级菜单F2
 	tm1629_f(0x02);
 	if (return_sound_table() == 1 && return_Two_Menu_F6_E6() == 1)
 	{
-		GD5800_select_chapter(SHANGCHUSHEZHI);
+		GD5800_select_chapter_new(SHANGCHUSHEZHI);
 		set_sound_table(0);
 	}
 }
@@ -757,7 +757,7 @@ void fun4(void) //一级菜单F3
 	tm1629_f(0x03);
 	if (return_sound_table() == 1 && return_Two_Menu_F6_E6() == 1)
 	{
-		GD5800_select_chapter(XIANSHISHEZHI);
+		GD5800_select_chapter_new(XIANSHISHEZHI);
 		set_sound_table(0);
 	}
 }
@@ -767,7 +767,7 @@ void fun5(void) //一级菜单F4
 	tm1629_f(0x04);
 	if (return_sound_table() == 1 && return_Two_Menu_F6_E6() == 1)
 	{
-		GD5800_select_chapter(XIAOHAOSHEZHI);
+		GD5800_select_chapter_new(XIAOHAOSHEZHI);
 		set_sound_table(0);
 	}
 }
@@ -777,7 +777,7 @@ void fun6(void) //一级菜单F5
 	tm1629_f(0x05);
 	if (return_sound_table() == 1 && return_Two_Menu_F6_E6() == 1)
 	{
-		GD5800_select_chapter(XUNHUANSHEZHI);
+		GD5800_select_chapter_new(XUNHUANSHEZHI);
 		set_sound_table(0);
 	}
 }
@@ -787,7 +787,7 @@ void fun7(void) //一级菜单F6
 	tm1629_f(0x06);
 	if (return_sound_table() == 1 && return_Two_Menu_F6_E6() == 1)
 	{
-		GD5800_select_chapter(YUYINSHEZHI);
+		GD5800_select_chapter_new(YUYINSHEZHI);
 		set_sound_table(0);
 	}
 }
@@ -797,7 +797,7 @@ void fun8(void) //一级菜单F7
 	tm1629_f(0x07);
 	if (return_sound_table() == 1 && return_Two_Menu_F6_E6() == 1)
 	{
-		GD5800_select_chapter(JIANPANSHEZHI);
+		GD5800_select_chapter_new(JIANPANSHEZHI);
 		set_sound_table(0);
 	}
 }
@@ -807,7 +807,7 @@ void fun9(void) //一级菜单F8
 	tm1629_f(0x08);
 	if (return_sound_table() == 1 && return_Two_Menu_F6_E6() == 1)
 	{
-		GD5800_select_chapter(ANJIANSHEZHI);
+		GD5800_select_chapter_new(ANJIANSHEZHI);
 		set_sound_table(0);
 	}
 }
@@ -817,7 +817,7 @@ void fun10(void) //一级菜单F9
 	tm1629_f(0x09);
 	if(return_sound_table() == 1 && return_Two_Menu_F6_E6() == 1)
 	{
-		GD5800_select_chapter(HUIFUSHEZHI);
+		GD5800_select_chapter_new(HUIFUSHEZHI);
 		set_sound_table(0);
 	}
 }
@@ -1768,14 +1768,13 @@ void fun94(void) //F8_E2键位设置
 	Show_two_number(temp);
 	if (return_sound_table() == 1 )
 	{
-		GD5800_select_chapter(temp + QUXIAO);
-		set_sound_table(0);
+		GD5800_select_chapter_new(temp + QUXIAO);
 	}
-	//if (return_Two_menu_set_success() == 1)
-	//{
-	//	GD5800_select_chapter(CHENGGONG);
-	//	set_Two_menu_set_success(0);
-	//}
+	if (return_Two_menu_set_success() == 1)
+	{
+		GD5800_select_chapter_new(CHENGGONG);
+		set_Two_menu_set_success(0);
+	}
 }
 
 void fun95(void) //解码菜单

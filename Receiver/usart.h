@@ -8,6 +8,8 @@ this file will define all  usart  function
 #include "STC15F2K60S2.h"
 #include<stdio.h>  
 #include<stdarg.h> 
+#include "tpyedef.h"
+#include "string.h"
 
 #define  BYTE unsigned char 
 
@@ -32,6 +34,11 @@ this file will define all  usart  function
 
 #define S1_S0 0x40              //P_SW1.6
 #define S1_S1 0x80              //P_SW1.7
+
+extern uint8_t usart2_enable;
+extern uint8_t usart2_data[4] ;
+extern uint8_t usart2_num;
+extern uint8_t usart2_right;
 
 void Usart1_SendData(BYTE dat);
 void Usart1_SendString(char *s);

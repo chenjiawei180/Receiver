@@ -267,3 +267,18 @@ void submenuf6_1(unsigned char report_mode, unsigned char *report_number, unsign
 	}
 }
 
+void GD5800_select_chapter_new(unsigned int chapter_number)
+{
+tofun94:
+	usart2_enable = 1;
+	usart2_num = 0;
+	usart2_right = 0;
+	GD5800_select_chapter(chapter_number);
+	delay10ms();
+	delay10ms();
+	delay10ms();
+	delay10ms();
+	if (usart2_right != 1)
+		goto tofun94;
+	set_sound_table(0);
+}

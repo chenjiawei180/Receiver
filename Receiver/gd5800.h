@@ -20,4 +20,5 @@ extern void GD5800_stop_music(void);
 extern void GD5800_play_music(void);
 extern void submenuf6_1(unsigned char report_mode, unsigned char *report_number, unsigned int call_type, unsigned char key_value);
 extern void submenuf6_1_voiceselect(unsigned char report_mode, unsigned char *report_number);
+extern void GD5800_select_chapter_new(unsigned int chapter_number);
 #endif

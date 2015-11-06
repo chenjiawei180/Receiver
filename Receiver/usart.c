@@ -2,7 +2,14 @@
 **************************************************************/
 #include "usart.h"
 bit busy;
-
+uint8_t usart2_enable = 0;
+uint8_t usart2_data[4] = { 0, 0, 0,'\0' };
+uint8_t usart2_num = 0;
+uint8_t usart2_right = 0;
+uint8_t usart2_begin = 0;
+static const unsigned char* OKSPI = "OKSPI";
+static const unsigned char* SPIOK = "SPIOK";
+static const unsigned char* SPI = "SPI";
 /*----------------------------
 UART 中断服务程序
 -----------------------------*/
@@ -28,9 +35,35 @@ UART2 中断服务程序
 -----------------------------*/
 void Uart2() interrupt 8 using 1
 {
+	uint8_t temp=0;
 	if (S2CON & S2RI)
 	{
 		S2CON &= ~S2RI;         //清除S2RI位
+		temp = S2BUF;
+		if (usart2_enable == 1 )
+		{
+			if (usart2_begin == 1)
+			{
+				usart2_data[usart2_num++] = temp;
+			}
+
+			if (temp == 'S'  &&  usart2_begin == 0)
+			{
+				usart2_begin = 1;
+				usart2_num = 1;
+				usart2_data[0] = temp;
+			}
+		}
+		if (usart2_num == 3)
+		{
+			usart2_enable = 0;
+			usart2_begin = 0;
+			if (strcmp(usart2_data, SPI) == 0)
+			{
+				usart2_right = 1;
+			}
+		}
+
 		//P0 = S2BUF;             //P0显示串口数据
 		//P2 = (S2CON & S2RB8);   //P2.2显示校验位
 	}
