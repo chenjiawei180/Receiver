@@ -546,7 +546,7 @@ void LogoutProcess(void)
 
 void Logout(void)
 {
-	unsigned char i;
+	unsigned int i;
 	unsigned char Two_Menu_F3_E2_temp= 0;
 	Two_Menu_F3_E2_temp = return_Two_Menu_F3_E2();
 	/*ÏúºÅ´¦Àíº¯Êı*/
@@ -558,6 +558,7 @@ void Logout(void)
 	{
 		display_ram[i] = 0;
 	}
+	decoder_num--;
 	tm1629_load();
 	display();
 	if (display_ram[0] == 0)
@@ -637,7 +638,7 @@ void Cancel_funtion(unsigned char* id_number, unsigned char* buff)//id_numberÎª½
 	buff	//		  ĞòºÅ¡¢Àà±ğ¡¢ÇøºÅ¡¢½ÓÊÕºÅ
 	*/
 
-	unsigned char i, index, Two_Menu_F3_E2_temp;
+	unsigned int i, index, Two_Menu_F3_E2_temp;
 	unsigned char temp[6] = { 0 };
 	index = return_Two_Menu_F3_E2();
 	Two_Menu_F3_E2_temp = return_Two_Menu_F3_E2();
@@ -688,6 +689,7 @@ void Search_funtion(unsigned char* id_number, unsigned char* buff)//id_numberÎª½
 	{
 		if (*(id_number + 1) == *(buff + (i << 3) + 1) && *(id_number + 2) == *(buff + (i << 3) + 2) && *(id_number + 3) == *(buff + (i << 3) + 3) && *(id_number + 4) == *(buff + (i << 3) + 4))
 		{
+			decoder_num--;
 			index = i;
 			break;
 		}
