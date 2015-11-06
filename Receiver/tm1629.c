@@ -351,30 +351,31 @@ void Show_four_number(unsigned char* temp)
 void tm1629_load(void)
 {
 	tm1629_clear();
-	if (*(display_ram + 88) != 0)
-		mcuram_to_displayram(buf_display[5] + 7, display_ram + 88);
 	if (*(display_ram + 80) != 0)
-		mcuram_to_displayram(buf_display[5] + 3, display_ram + 80);
+		mcuram_to_displayram(buf_display[5] + 7, display_ram + 80);
 	if (*(display_ram + 72) != 0)
-		mcuram_to_displayram(buf_display[4] + 7, display_ram + 72);
+		mcuram_to_displayram(buf_display[5] + 3, display_ram + 72);
 	if (*(display_ram + 64) != 0)
-		mcuram_to_displayram(buf_display[4] + 3, display_ram + 64);
+		mcuram_to_displayram(buf_display[4] + 7, display_ram + 64);
 	if (*(display_ram + 56) != 0)
-		mcuram_to_displayram(buf_display[3] + 7, display_ram + 56);
+		mcuram_to_displayram(buf_display[4] + 3, display_ram + 56);
 	if (*(display_ram + 48) != 0)
-		mcuram_to_displayram(buf_display[3] + 3, display_ram + 48);
+		mcuram_to_displayram(buf_display[3] + 7, display_ram + 48);
 	if (*(display_ram + 40) != 0)
-		mcuram_to_displayram(buf_display[2] + 7, display_ram + 40);
+		mcuram_to_displayram(buf_display[3] + 3, display_ram + 40);
 	if (*(display_ram + 32) != 0)
-		mcuram_to_displayram(buf_display[2] + 3, display_ram + 32);
+		mcuram_to_displayram(buf_display[2] + 7, display_ram + 32);
 	if (*(display_ram + 24) != 0)
-		mcuram_to_displayram(buf_display[1] + 7, display_ram + 24);
+		mcuram_to_displayram(buf_display[2] + 3, display_ram + 24);
 	if (*(display_ram + 16) != 0)
-		mcuram_to_displayram(buf_display[1] + 3, display_ram + 16);
+		mcuram_to_displayram(buf_display[1] + 7, display_ram + 16);
 	if (*(display_ram + 8) != 0)
-		mcuram_to_displayram(buf_display[0] + 7, display_ram + 8);
+		mcuram_to_displayram(buf_display[1] + 3, display_ram + 8);
 	if (*(display_ram + 0) != 0)
 		mcuram_to_displayram(buf_display[0] + 3, display_ram);
+
+	buf_display[0][5] = CODE[decoder_num / 10];
+	buf_display[0][4] = CODE[decoder_num % 10];
 }
 
 void mcuram_to_displayram(unsigned char a[48], unsigned char* b)  //¥”RAM«¯”Ú“∆µΩœ‘¥Ê«¯”Ú,À≥¥¯∑≠“Î≥… ˝¬Îπ‹œ‘ æµƒ¬Î
@@ -645,6 +646,7 @@ void Cancel_funtion(unsigned char* id_number, unsigned char* buff)//id_numberŒ™Ω
 	{
 		if (*(id_number + 1) == *(buff + (i << 3) + 1) && *(id_number + 2) == *(buff + (i << 3) + 2) && *(id_number + 3) == *(buff + (i << 3) + 3) && *(id_number + 4) == *(buff + (i << 3) + 4))
 		{
+			decoder_num--;
 			index = i;
 			break;
 		}
@@ -710,6 +712,7 @@ void fun0(void) //¥˝ª˙œ‘ æ∫Ø ˝
 {
 	unsigned char temp = 0;
 	temp = return_Two_Menu_FC_E1();
+	decoder_num = 0;
 	if (temp == 1)
 	{
 		P55 = 1;

@@ -12,6 +12,7 @@
 unsigned char buf_eeprom[8] = { 0 };//写入EEPROM_buf
 unsigned char Two_menu_set_success = 0;
 uint32_t last_dat = 0;
+uint8_t  decoder_num = 0;
 
 void DecoderProcess(void)
 {	
@@ -88,7 +89,8 @@ void DecoderProcess(void)
 					display();
 					break;
 				}		
-
+				if (decoder_num < Two_Menu_F3_E2_temp)
+					decoder_num++;
 				tm1629_clear();//清屏
 				mcu_to_computer(0x91, temp_buff, old2_RF_RECE_REG[2] & 0x0f);//上位机
 				decoder_temp_to_mcuram(display_ram, temp_buff);//将临时数组的数据移入单片机暂存数组 8字节转6字节
@@ -184,6 +186,8 @@ void DecoderProcess(void)
 #ifdef DEBUG
 					uart_printf("cancen funtion success \r\n");
 #endif
+					if (decoder_num < Two_Menu_F3_E2_temp)
+						decoder_num++;
 					mcu_to_computer(0x92, temp_buff, old2_RF_RECE_REG[2] & 0x0f);//上位机
 					Cancel_funtion(temp_buff, display_ram);//取消函数
 					tm1629_load();
@@ -247,6 +251,8 @@ standby:
 						display();
 						break;
 					}
+					if (decoder_num < Two_Menu_F3_E2_temp)
+						decoder_num++;
 					mcu_to_computer(0x91, temp_buff, old2_RF_RECE_REG[2] & 0x0f);//上位机
 					Search_funtion(temp_buff, display_ram);
 
@@ -291,6 +297,8 @@ standby:
 						{
 							if (display_ram[(k << 3)] == 0)//找出位于队列最后的那个点
 							{
+								if (decoder_num < Two_Menu_F3_E2_temp)
+									decoder_num++;
 								mcu_to_computer(0x91, temp_buff, old2_RF_RECE_REG[2] & 0x0f);//上位机
 								decoder_temp_to_mcuram(display_ram + (k << 3), temp_buff);
 								tm1629_load();//单片机把数组内容载入数码管显存数组中
@@ -378,7 +386,8 @@ standby:
 						display();
 						goto decoder;
 					}
-
+					if (decoder_num < Two_Menu_F3_E2_temp)
+						decoder_num++;
 					mcu_to_computer(0x91, temp_buff, old2_RF_RECE_REG[2] & 0x0f);//上位机
 					Search_funtion(temp_buff, display_ram);
 
@@ -424,6 +433,8 @@ standby:
 						{
 							if (display_ram[(k << 3)] == 0)//找出位于队列最后的那个点
 							{
+								if (decoder_num < Two_Menu_F3_E2_temp)
+									decoder_num++;
 								mcu_to_computer(0x91, temp_buff, old2_RF_RECE_REG[2] & 0x0f);//上位机
 								decoder_temp_to_mcuram(display_ram + (k << 3), temp_buff);
 								tm1629_load();//单片机把数组内容载入数码管显存数组中
