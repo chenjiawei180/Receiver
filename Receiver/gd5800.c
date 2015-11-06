@@ -167,49 +167,48 @@ void submenuf6_1(unsigned char report_mode, unsigned char *report_number, unsign
 	if (mode <= NOT_REPORT_C )
 	{
 		GD5800_select_chapter(DINGDONG);
-		if (key != 15)//防区号是否当前缀
-		{
-			if (Two_Menu_F6_E7_temp == 0 || (Two_Menu_F6_E7_temp == 1 && mode >= COMPLICATED_REPORT))
-			{
-				GD5800_select_chapter(HAO);
-			}
-				if (*(number + 1) <= 9)
-				{
-					if (report_mode <= NOT_REPORT)
-					{
-						GD5800_select_chapter(*(number + 1) + ZERO);
-					}
-					else
-					{
-						if (*(number + 1) != 0)
-						{
-							GD5800_select_chapter(*(number + 1) + ZERO);
-							GD5800_select_chapter(THOUSAND);
-						}
-					}
-
-				}
-				else if (*(number + 1) <= 15 && *(number + 1) >= 10)
-				{
-					GD5800_select_chapter(*(number + 1) + ZIMU_A - 10);
-				}
-				else
-				{
-					switch (*(number + 1))
-					{
-					case 16:GD5800_select_chapter(ZIMU_H); break;//H
-					case 17:GD5800_select_chapter(ZIMU_L); break;//L
-					case 18:GD5800_select_chapter(ZIMU_O); break;//O
-					case 19:GD5800_select_chapter(ZIMU_P); break;//P
-					case 20:GD5800_select_chapter(ZIMU_U); break;//U
-					default:break;
-					}
-				}
-		}
-		else
+		if (key == 15)//防区号是否当前缀
 		{
 			GD5800_select_chapter(QING);
 		}
+
+		if (Two_Menu_F6_E7_temp == 0 || (Two_Menu_F6_E7_temp == 1 && mode >= COMPLICATED_REPORT))
+		{
+			GD5800_select_chapter(HAO);
+		}
+		if (*(number + 1) <= 9)
+		{
+			if (report_mode <= NOT_REPORT)
+			{
+				GD5800_select_chapter(*(number + 1) + ZERO);
+			}
+			else
+			{
+				if (*(number + 1) != 0)
+				{
+					GD5800_select_chapter(*(number + 1) + ZERO);
+					GD5800_select_chapter(THOUSAND);
+				}
+			}
+
+		}
+		else if (*(number + 1) <= 15 && *(number + 1) >= 10)
+		{
+			GD5800_select_chapter(*(number + 1) + ZIMU_A - 10);
+		}
+		else
+		{
+			switch (*(number + 1))
+			{
+			case 16:GD5800_select_chapter(ZIMU_H); break;//H
+			case 17:GD5800_select_chapter(ZIMU_L); break;//L
+			case 18:GD5800_select_chapter(ZIMU_O); break;//O
+			case 19:GD5800_select_chapter(ZIMU_P); break;//P
+			case 20:GD5800_select_chapter(ZIMU_U); break;//U
+			default:break;
+			}
+		}
+		
 		submenuf6_1_voiceselect(mode, number);
 
 		if (Two_Menu_F6_E7_temp == 1 && report_mode <= NOT_REPORT)
@@ -220,26 +219,6 @@ void submenuf6_1(unsigned char report_mode, unsigned char *report_number, unsign
 		if (key == 15)
 		{
 			GD5800_select_chapter(DAO);
-				if (*(number + 1) <= 9)
-				{
-					GD5800_select_chapter(*(number + 1) + ZERO);
-				}
-				else if (*(number + 1) <= 15)
-				{
-					GD5800_select_chapter(*(number + 1) + ZIMU_A - 10);
-				}
-				else
-				{
-					switch (*(number + 1))
-					{
-					case 16:GD5800_select_chapter(ZIMU_H); break;//H
-					case 17:GD5800_select_chapter(ZIMU_L); break;//L
-					case 18:GD5800_select_chapter(ZIMU_O); break;//O
-					case 19:GD5800_select_chapter(ZIMU_P); break;//P
-					case 20:GD5800_select_chapter(ZIMU_U); break;//U
-					default:break;
-					}
-				}
 			GD5800_select_chapter(GUITAI);
 		}
 		else if (mode != NOT_REPORT && mode != NOT_REPORT_C)

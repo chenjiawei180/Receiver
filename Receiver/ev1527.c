@@ -264,6 +264,7 @@ void receive_rf_decoder(void)
 				if (Find_RF_EEPROM_Host(&RFtmp, dat))
 				{
 					register_manager = 1;
+					set_sound_table(1);
 					clear_return_standby_time();
 				}
 
