@@ -192,6 +192,8 @@ void tm1629_init(void) //TM1629开机初始化函数
 			}
 		}
 		display();
+		if (k == 1 )
+		GD5800_select_chapter(CHUSHIHUA);
 		Tm1629_delay(30);
 	}
 }
@@ -255,20 +257,20 @@ void Display_time(void)
 {
 	tm1629_clear();
 	Ds1302_Read_Time(); 
-	buf_display[1][7] = CODE[2];				//年
-	buf_display[1][6] = CODE[0];
-	buf_display[1][5] = CODE[time_buf1[1] / 10];
-	buf_display[1][4] = CODE[time_buf1[1] % 10];
+	buf_display[1][3] = CODE[2];				//年
+	buf_display[1][2] = CODE[0];
+	buf_display[1][1] = CODE[time_buf1[1] / 10];
+	buf_display[1][0] = CODE[time_buf1[1] % 10];
 
 	
-	buf_display[1][3] = CODE[time_buf1[2] / 10]; //月
-	buf_display[1][2] = CODE[time_buf1[2] % 10];
+	buf_display[0][7] = CODE[time_buf1[2] / 10]; //月
+	buf_display[0][6] = CODE[time_buf1[2] % 10];
 
 
-	buf_display[1][1] = CODE[time_buf1[3] / 10];
-	buf_display[1][0] = CODE[time_buf1[3] % 10];//日
+	buf_display[0][5] = CODE[time_buf1[3] / 10];
+	buf_display[0][4] = CODE[time_buf1[3] % 10];//日
 
-	buf_display[0][7] = CODE[time_buf1[7]];		//星期
+	buf_display[1][4] = CODE[time_buf1[7]];		//星期
 
 	buf_display[0][3] = CODE[time_buf1[4] / 10]; //小时
 	buf_display[0][2] = CODE[time_buf1[4] % 10];
@@ -349,31 +351,33 @@ void Show_four_number(unsigned char* temp)
 void tm1629_load(void)
 {
 	tm1629_clear();
+	if (*(display_ram + 88) != 0)
+		mcuram_to_displayram(buf_display[5] + 7, display_ram + 88);
 	if (*(display_ram + 80) != 0)
-		mcuram_to_displayram(buf_display[5] + 7, display_ram + 80);
+		mcuram_to_displayram(buf_display[5] + 3, display_ram + 80);
 	if (*(display_ram + 72) != 0)
-		mcuram_to_displayram(buf_display[5] + 3, display_ram + 72);
+		mcuram_to_displayram(buf_display[4] + 7, display_ram + 72);
 	if (*(display_ram + 64) != 0)
-		mcuram_to_displayram(buf_display[4] + 7, display_ram + 64);
+		mcuram_to_displayram(buf_display[4] + 3, display_ram + 64);
 	if (*(display_ram + 56) != 0)
-		mcuram_to_displayram(buf_display[4] + 3, display_ram + 56);
+		mcuram_to_displayram(buf_display[3] + 7, display_ram + 56);
 	if (*(display_ram + 48) != 0)
-		mcuram_to_displayram(buf_display[3] + 7, display_ram + 48);
+		mcuram_to_displayram(buf_display[3] + 3, display_ram + 48);
 	if (*(display_ram + 40) != 0)
-		mcuram_to_displayram(buf_display[3] + 3, display_ram + 40);
+		mcuram_to_displayram(buf_display[2] + 7, display_ram + 40);
 	if (*(display_ram + 32) != 0)
-		mcuram_to_displayram(buf_display[2] + 7, display_ram + 32);
+		mcuram_to_displayram(buf_display[2] + 3, display_ram + 32);
 	if (*(display_ram + 24) != 0)
-		mcuram_to_displayram(buf_display[2] + 3, display_ram + 24);
+		mcuram_to_displayram(buf_display[1] + 7, display_ram + 24);
 	if (*(display_ram + 16) != 0)
-		mcuram_to_displayram(buf_display[1] + 7, display_ram + 16);
+		mcuram_to_displayram(buf_display[1] + 3, display_ram + 16);
 	if (*(display_ram + 8) != 0)
-		mcuram_to_displayram(buf_display[1] + 3, display_ram + 8);
+		mcuram_to_displayram(buf_display[0] + 7, display_ram + 8);
 	if (*(display_ram + 0) != 0)
 		mcuram_to_displayram(buf_display[0] + 3, display_ram);
 
-	buf_display[0][5] = CODE[decoder_num / 10];
-	buf_display[0][4] = CODE[decoder_num % 10];
+	//buf_display[0][5] = CODE[decoder_num / 10];
+	//buf_display[0][4] = CODE[decoder_num % 10];
 }
 
 void mcuram_to_displayram(unsigned char a[48], unsigned char* b)  //从RAM区域移到显存区域,顺带翻译成数码管显示的码
@@ -864,10 +868,10 @@ void fun15(void) //设置年份
 		}
 		if (return_await_number_table() == 3)
 		{
-			buf_display[1][7] = 0;
-			buf_display[1][6] = 0;
-			buf_display[1][5] = 0;
-			buf_display[1][4] = 0;
+			buf_display[1][3] = 0;
+			buf_display[1][2] = 0;
+			buf_display[1][1] = 0;
+			buf_display[1][0] = 0;
 			display();
 			set_await_number_table(0);
 		}
@@ -884,8 +888,8 @@ void fun16(void) //设置月份
 	}
 	if (return_await_number_table() == 3)
 	{
-		buf_display[1][3] = 0;
-		buf_display[1][2] = 0;
+		buf_display[0][7] = 0;
+		buf_display[0][6] = 0;
 		display();
 		set_await_number_table(0);
 	}
@@ -901,8 +905,8 @@ void fun17(void) //设置日期
 	}
 	if (return_await_number_table() == 3)
 	{
-		buf_display[1][1] = 0;
-		buf_display[1][0] = 0;
+		buf_display[0][5] = 0;
+		buf_display[0][4] = 0;
 		display();
 		set_await_number_table(0);
 	}
@@ -918,7 +922,7 @@ void fun18(void) //设置星期
 	}
 	if (return_await_number_table() == 3)
 	{
-		buf_display[0][7] = 0;
+		buf_display[1][4] = 0;
 		display();
 		set_await_number_table(0);
 	}

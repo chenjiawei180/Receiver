@@ -462,7 +462,7 @@ bit delete_call_function(unsigned char *buf)//buf为组码数组的指针
 	{
 		for (i = 0; i<128; i++)
 		{
-			ISendStr(I2C_ADDRESS, i << 5, dofly, 32);                   //写入24c02
+			ISendStr(I2C_ADDRESS, addr + (i << 5), dofly, 32);                   //写入24c02
 			delay10ms();
 		}
 
@@ -634,7 +634,7 @@ void Delete_all_data(void)
 	unsigned int k;
 	for (k = 0; k<168; k++)
 	{
-		ISendStr(I2C_ADDRESS, k << 5, dofly, 32);                   //写入24c02
+		ISendStr(I2C_ADDRESS, CALL_DATA_START + (k << 5), dofly, 32);                   //写入24c02
 		delay10ms();
 	}
 }

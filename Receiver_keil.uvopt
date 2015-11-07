@@ -174,7 +174,7 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>15</ColumnNumber>
+      <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
       <TopLine>1</TopLine>
       <CurrentLine>9</CurrentLine>
@@ -232,8 +232,8 @@
       <Focus>0</Focus>
       <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>91</TopLine>
-      <CurrentLine>91</CurrentLine>
+      <TopLine>106</TopLine>
+      <CurrentLine>106</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>.\Receiver\timer.c</PathWithFileName>
       <FilenameWithoutPath>timer.c</FilenameWithoutPath>
@@ -325,7 +325,7 @@
   </Group>
 
   <AlienFiles>
-    <PathWithFilename>D:\github\Receiver\RECEIVER\DECODER.H</PathWithFilename>
+    <PathWithFilename>C:\Users\work\Desktop\Receiver\RECEIVER\DECODER.H</PathWithFilename>
     <TopLine>1</TopLine>
     <CurrentLine>5</CurrentLine>
     <Constant>0</Constant>
@@ -1743,15 +1743,15 @@
         </Doc>
         <Doc>
           <Name>.\Receiver\main.c</Name>
-          <ColumnNumber>15</ColumnNumber>
+          <ColumnNumber>0</ColumnNumber>
           <TopLine>1</TopLine>
           <CurrentLine>9</CurrentLine>
         </Doc>
         <Doc>
           <Name>.\Receiver\timer.c</Name>
           <ColumnNumber>0</ColumnNumber>
-          <TopLine>91</TopLine>
-          <CurrentLine>91</CurrentLine>
+          <TopLine>106</TopLine>
+          <CurrentLine>106</CurrentLine>
         </Doc>
         <Doc>
           <Name>.\Receiver\ds1302.c</Name>

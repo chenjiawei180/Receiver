@@ -174,10 +174,10 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>0</ColumnNumber>
+      <ColumnNumber>15</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
       <TopLine>1</TopLine>
-      <CurrentLine>1</CurrentLine>
+      <CurrentLine>9</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>.\Receiver\main.c</PathWithFileName>
       <FilenameWithoutPath>main.c</FilenameWithoutPath>
@@ -190,8 +190,8 @@
       <Focus>0</Focus>
       <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>1</TopLine>
-      <CurrentLine>7</CurrentLine>
+      <TopLine>192</TopLine>
+      <CurrentLine>192</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>.\Receiver\usart.c</PathWithFileName>
       <FilenameWithoutPath>usart.c</FilenameWithoutPath>
@@ -204,8 +204,8 @@
       <Focus>0</Focus>
       <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>886</TopLine>
-      <CurrentLine>899</CurrentLine>
+      <TopLine>1012</TopLine>
+      <CurrentLine>1012</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>.\Receiver\key.c</PathWithFileName>
       <FilenameWithoutPath>key.c</FilenameWithoutPath>
@@ -218,8 +218,8 @@
       <Focus>0</Focus>
       <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>37</TopLine>
-      <CurrentLine>37</CurrentLine>
+      <TopLine>217</TopLine>
+      <CurrentLine>217</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>.\Receiver\tm1629.c</PathWithFileName>
       <FilenameWithoutPath>tm1629.c</FilenameWithoutPath>
@@ -232,8 +232,8 @@
       <Focus>0</Focus>
       <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>1</TopLine>
-      <CurrentLine>1</CurrentLine>
+      <TopLine>106</TopLine>
+      <CurrentLine>106</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>.\Receiver\timer.c</PathWithFileName>
       <FilenameWithoutPath>timer.c</FilenameWithoutPath>
@@ -325,7 +325,7 @@
   </Group>
 
   <AlienFiles>
-    <PathWithFilename>D:\github\Receiver\RECEIVER\DECODER.H</PathWithFilename>
+    <PathWithFilename>C:\Users\work\Desktop\Receiver\RECEIVER\DECODER.H</PathWithFilename>
     <TopLine>1</TopLine>
     <CurrentLine>5</CurrentLine>
     <Constant>0</Constant>
@@ -1691,7 +1691,7 @@
     <ActiveMDIGroup>0</ActiveMDIGroup>
     <MDIGroup>
       <Size>100</Size>
-      <ActiveTab>11</ActiveTab>
+      <ActiveTab>9</ActiveTab>
       <Documents>
         <Doc>
           <Name>.\Receiver\ev1527.c</Name>
@@ -1702,8 +1702,8 @@
         <Doc>
           <Name>.\Receiver\key.c</Name>
           <ColumnNumber>0</ColumnNumber>
-          <TopLine>886</TopLine>
-          <CurrentLine>899</CurrentLine>
+          <TopLine>1012</TopLine>
+          <CurrentLine>1012</CurrentLine>
         </Doc>
         <Doc>
           <Name>.\Receiver\decoder.c</Name>
@@ -1720,14 +1720,14 @@
         <Doc>
           <Name>.\Receiver\tm1629.c</Name>
           <ColumnNumber>0</ColumnNumber>
-          <TopLine>37</TopLine>
-          <CurrentLine>37</CurrentLine>
+          <TopLine>217</TopLine>
+          <CurrentLine>217</CurrentLine>
         </Doc>
         <Doc>
           <Name>.\Receiver\usart.c</Name>
           <ColumnNumber>0</ColumnNumber>
-          <TopLine>1</TopLine>
-          <CurrentLine>7</CurrentLine>
+          <TopLine>192</TopLine>
+          <CurrentLine>192</CurrentLine>
         </Doc>
         <Doc>
           <Name>.\Receiver\gd5800.c</Name>
@@ -1743,15 +1743,15 @@
         </Doc>
         <Doc>
           <Name>.\Receiver\main.c</Name>
-          <ColumnNumber>0</ColumnNumber>
+          <ColumnNumber>15</ColumnNumber>
           <TopLine>1</TopLine>
-          <CurrentLine>1</CurrentLine>
+          <CurrentLine>9</CurrentLine>
         </Doc>
         <Doc>
           <Name>.\Receiver\timer.c</Name>
           <ColumnNumber>0</ColumnNumber>
-          <TopLine>1</TopLine>
-          <CurrentLine>1</CurrentLine>
+          <TopLine>106</TopLine>
+          <CurrentLine>106</CurrentLine>
         </Doc>
         <Doc>
           <Name>.\Receiver\ds1302.c</Name>
@@ -1764,6 +1764,12 @@
           <ColumnNumber>0</ColumnNumber>
           <TopLine>1</TopLine>
           <CurrentLine>5</CurrentLine>
+        </Doc>
+        <Doc>
+          <Name>.\STARTUP.A51</Name>
+          <ColumnNumber>0</ColumnNumber>
+          <TopLine>1</TopLine>
+          <CurrentLine>1</CurrentLine>
         </Doc>
       </Documents>
     </MDIGroup>

@@ -30,7 +30,7 @@ unsigned char Two_Menu_F4_E1 = 0; //销号时间
 unsigned char Two_Menu_F5_E1 = 0; //循环间隔时间
 
 unsigned char Two_Menu_F6_E1 = 0; //简单报读
-unsigned char Two_Menu_F6_E2 = 2; //语音报读次数
+unsigned char Two_Menu_F6_E2 = 1; //语音报读次数
 unsigned char Two_Menu_F6_E3 = 0; //循环时候是否报读
 unsigned char Two_Menu_F6_E4 = 6; //音量大小调整
 unsigned char Two_Menu_F6_E5 = 3; //显示屏LED亮度调整
@@ -69,11 +69,11 @@ key_table code table[100] =
 	{ ONE_MENU_FC, ONE_MENU_Fd, ONE_MENU_Fb, ONE_MENU_FC, MENU_STANDBY, (*fun13) }, //FC
 	{ ONE_MENU_Fd, ONE_MENU_F0, ONE_MENU_FC, ONE_MENU_Fd, MENU_STANDBY, (*fun14) }, //Fd
 
-	{ TWO_MENU_F0_YEAR  , TWO_MENU_F0_YEAR  , TWO_MENU_F0_YEAR  , TWO_MENU_F0_MINUTE , ONE_MENU_F0, (*fun15) }, //万年历 年
+	{ TWO_MENU_F0_YEAR  , TWO_MENU_F0_YEAR  , TWO_MENU_F0_YEAR  , TWO_MENU_F0_WEEK , ONE_MENU_F0, (*fun15) }, //万年历 年
 	{ TWO_MENU_F0_MOUTH , TWO_MENU_F0_MOUTH , TWO_MENU_F0_MOUTH , TWO_MENU_F0_YEAR   , ONE_MENU_F0, (*fun16) }, //万年历 月
 	{ TWO_MENU_F0_DAY   , TWO_MENU_F0_DAY   , TWO_MENU_F0_DAY   , TWO_MENU_F0_MOUTH  , ONE_MENU_F0, (*fun17) }, //万年历 日
-	{ TWO_MENU_F0_WEEK  , TWO_MENU_F0_WEEK  , TWO_MENU_F0_WEEK  , TWO_MENU_F0_DAY  , ONE_MENU_F0, (*fun18) }, //万年历 周
-	{ TWO_MENU_F0_HOUR  , TWO_MENU_F0_HOUR  , TWO_MENU_F0_HOUR  , TWO_MENU_F0_WEEK, ONE_MENU_F0, (*fun19) }, //万年历 小时
+	{ TWO_MENU_F0_WEEK  , TWO_MENU_F0_WEEK  , TWO_MENU_F0_WEEK  , TWO_MENU_F0_MINUTE  , ONE_MENU_F0, (*fun18) }, //万年历 周
+	{ TWO_MENU_F0_HOUR  , TWO_MENU_F0_HOUR  , TWO_MENU_F0_HOUR  , TWO_MENU_F0_DAY, ONE_MENU_F0, (*fun19) }, //万年历 小时
 	{ TWO_MENU_F0_MINUTE, TWO_MENU_F0_MINUTE, TWO_MENU_F0_MINUTE, TWO_MENU_F0_HOUR  , ONE_MENU_F0, (*fun20) }, //万年历 分钟
 
 	{ TWO_MENU_F1_E1, TWO_MENU_F1_E2, TWO_MENU_F1_E4, TWO_MENU_F1_E1_D4, ONE_MENU_F1, (*fun21) }, //F1子菜单E1
@@ -103,7 +103,7 @@ key_table code table[100] =
 	{ TWO_MENU_F7_E3, TWO_MENU_F7_E4, TWO_MENU_F7_E2, TWO_MENU_F7_E3_SET, ONE_MENU_F7, (*fun40) }, //F7子菜单E3
 	{ TWO_MENU_F7_E4, TWO_MENU_F7_E1, TWO_MENU_F7_E3, TWO_MENU_F7_E4_SET, ONE_MENU_F7, (*fun41) }, //F7子菜单E4	
 
-	{ TWO_MENU_F8_E1, TWO_MENU_F8_E2, TWO_MENU_F8_E2, TWO_MENU_F8_E1_SET, ONE_MENU_F8, (*fun42) }, //F8子菜单E1
+	{ TWO_MENU_F8_E1, TWO_MENU_F8_E2, TWO_MENU_F8_E2, TWO_MENU_F8_E1, ONE_MENU_F8, (*fun42) }, //F8子菜单E1
 	{ TWO_MENU_F8_E2, TWO_MENU_F8_E1, TWO_MENU_F8_E1, TWO_MENU_F8_E2_SET, ONE_MENU_F8, (*fun43) }, //F8子菜单E2
 
 	{ TWO_MENU_F9_E1, TWO_MENU_F9_E2, TWO_MENU_F9_E2, 0, ONE_MENU_F9, (*fun44) }, //F9子菜单E1
@@ -182,23 +182,24 @@ key_table code table[100] =
 unsigned int KeyScan(void)  //Keyboard scan function
 {
 	unsigned int Val = 0;
-	HKeyPort |= 0x3C;//Row height
-	if ((HKeyPort & 0x3C) != 0x3C)//Press button
+	if (!(P33&&P36&&P37&&P25))//Press button
 	{
 		delay10ms();  //Remove jitter
-		if ((HKeyPort & 0x3C) != 0x3C)   //Press button
+		if (!(P33&&P36&&P37&&P25))   //Press button
 		{
 			clear_return_standby_time();
-				
-				Val = HKeyPort & 0x3C;
+			if (!P33)  Val = 0x0038;
+			if (!P36)  Val = 0x0034;
+			if (!P37)  Val = 0x002c;
+			if (!P25)  Val = 0x001c;
 				if (Val == 0x0038)
 				{
 					clear_main_press_time();	//清除菜单键按下的时间计算变量
 					set_main_press_time_table(1); //设置相应的标志位，开始计算时间
 				}
-				while ((HKeyPort & 0x3C) != 0x3C);
+				while (!(P33&&P36&&P37&&P25));
 				delay10ms();
-				while ((HKeyPort & 0x3C) != 0x3C);
+				while (!(P33&&P36&&P37&&P25));
 				set_main_press_time_table(0);//按键释放，清除相应的标志位
 				set_logout_cycle_table(0);//循环跟销号重新计数
 				if (func_index != TWO_MENU_F8_E2_SET && ((return_Two_Menu_F6_E6()) ? func_index > ONE_MENU_Fd : 1))
@@ -432,6 +433,16 @@ void KeyProcess(void)
 					clear_main_press_time();
 				}
 			}
+			else if (func_index == TWO_MENU_F8_E1)  //如果索引==FA  则要1秒以上进入菜单
+			{
+				main_press_time_temp = return_main_press_time();
+				if (main_press_time_temp >= 20)
+				{
+					func_index = TWO_MENU_F8_E1_SET;
+					set_filter_main(6);//进入菜单后 3S内 呼叫器的菜单键无效
+					clear_main_press_time();
+				}
+			}
 			else if (func_index == TWO_MENU_F9_E2)  //如果索引==FA  则要1秒以上进入菜单
 			{
 				main_press_time_temp = return_main_press_time();
@@ -654,7 +665,7 @@ void KeyProcess(void)
 				else Two_Menu_F6_E1++;
 				break;
 			case TWO_MENU_F6_E2_SET:
-				if (Two_Menu_F6_E2 == 9) Two_Menu_F6_E2 = 1;	//F6_E2语音报读次数
+				if (Two_Menu_F6_E2 == 2) Two_Menu_F6_E2 = 1;	//F6_E2语音报读次数
 				else Two_Menu_F6_E2++;
 				break;
 			case TWO_MENU_F6_E3_SET:
@@ -892,7 +903,7 @@ void KeyProcess(void)
 				else Two_Menu_F6_E1--;
 				break;
 			case TWO_MENU_F6_E2_SET:
-				if (Two_Menu_F6_E2 == 1) Two_Menu_F6_E2 = 9;	//F6_E2语音报读次数调整
+				if (Two_Menu_F6_E2 == 1) Two_Menu_F6_E2 = 2;	//F6_E2语音报读次数调整
 				else Two_Menu_F6_E2--;
 				break;
 			case TWO_MENU_F6_E3_SET:
@@ -1195,9 +1206,9 @@ void env_init(void)
 	{
 		Two_Menu_F6_E1 = 0;
 	}
-	if (EEPROM.Two_Menu_F6_E2 > 9)
+	if (EEPROM.Two_Menu_F6_E2 > 2)
 	{
-		Two_Menu_F6_E2 = 2;
+		Two_Menu_F6_E2 = 1;
 	}
 	if (EEPROM.Two_Menu_F6_E3 > 1)
 	{
@@ -1246,7 +1257,7 @@ void var_init(void)
 	Two_Menu_F5_E1 = 0; //循环间隔时间
 
 	Two_Menu_F6_E1 = 0; //简单报读
-	Two_Menu_F6_E2 = 2; //语音报读次数
+	Two_Menu_F6_E2 = 1; //语音报读次数
 	Two_Menu_F6_E3 = 0; //循环时候是否报读
 	Two_Menu_F6_E4 = 6; //音量大小调整
 	Two_Menu_F6_E5 = 3; //显示屏LED亮度调整
