@@ -730,6 +730,7 @@ void fun0(void) //待机显示函数
 	{
 		tm1629_display_buff_clear();
 	}
+	P17 = 0;
 	
 }
 
@@ -741,6 +742,7 @@ void fun1(void) //一级菜单F0
 void fun2(void) //一级菜单F1
 {
 	P55 = 1;
+	P17 = 0;
 	tm1629_f(0x01);
 	if (return_sound_table() == 1 && return_Two_Menu_F6_E6()== 1)
 	{
@@ -1799,6 +1801,7 @@ void fun95(void) //解码菜单
 		}	
 	}
 	P55 = 1;//秒针灭
+	P17 = 1;
 	
 }
 
