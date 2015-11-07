@@ -260,17 +260,15 @@ void Display_time(void)
 	buf_display[1][5] = CODE[time_buf1[1] / 10];
 	buf_display[1][4] = CODE[time_buf1[1] % 10];
 
-	buf_display[1][3] = 0x40;					 // -
 	
-	buf_display[1][2] = CODE[time_buf1[2] / 10]; //月
-	buf_display[1][1] = CODE[time_buf1[2] % 10];
+	buf_display[1][3] = CODE[time_buf1[2] / 10]; //月
+	buf_display[1][2] = CODE[time_buf1[2] % 10];
 
-	buf_display[1][0] = 0x40;					 // -
 
-	buf_display[0][7] = CODE[time_buf1[3] / 10];
-	buf_display[0][6] = CODE[time_buf1[3] % 10];//日
+	buf_display[1][1] = CODE[time_buf1[3] / 10];
+	buf_display[1][0] = CODE[time_buf1[3] % 10];//日
 
-	buf_display[0][5] = CODE[time_buf1[7]];		//星期
+	buf_display[0][7] = CODE[time_buf1[7]];		//星期
 
 	buf_display[0][3] = CODE[time_buf1[4] / 10]; //小时
 	buf_display[0][2] = CODE[time_buf1[4] % 10];
@@ -886,8 +884,8 @@ void fun16(void) //设置月份
 	}
 	if (return_await_number_table() == 3)
 	{
+		buf_display[1][3] = 0;
 		buf_display[1][2] = 0;
-		buf_display[1][1] = 0;
 		display();
 		set_await_number_table(0);
 	}
@@ -903,8 +901,8 @@ void fun17(void) //设置日期
 	}
 	if (return_await_number_table() == 3)
 	{
-		buf_display[0][7] = 0;
-		buf_display[0][6] = 0;
+		buf_display[1][1] = 0;
+		buf_display[1][0] = 0;
 		display();
 		set_await_number_table(0);
 	}
@@ -920,7 +918,7 @@ void fun18(void) //设置星期
 	}
 	if (return_await_number_table() == 3)
 	{
-		buf_display[0][5] = 0;
+		buf_display[0][7] = 0;
 		display();
 		set_await_number_table(0);
 	}
