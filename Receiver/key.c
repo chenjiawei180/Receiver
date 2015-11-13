@@ -36,6 +36,7 @@ unsigned char Two_Menu_F6_E4 = 6; //音量大小调整
 unsigned char Two_Menu_F6_E5 = 3; //显示屏LED亮度调整
 unsigned char Two_Menu_F6_E6 = 1; //语音导航调整
 unsigned char Two_Menu_F6_E7 = 0; //语音导航调整
+unsigned char Two_Menu_F6_E8 = 0; //闪烁与常亮
 
 unsigned char Two_Menu_F7_E1 = 11; // E1默认键盘规则 999*9
 unsigned char Two_Menu_F7_E2 = 0; // E2其他键盘规则 9999*9
@@ -50,7 +51,7 @@ unsigned char Two_Menu_Fb_E1 = 1; // 设置主机有没有销号功能
 unsigned char Two_Menu_FC_E1 = 1; // 设置万年历待机与----待机的切换
 unsigned char Two_Menu_Fd_E1 = 1; // E1 E2 E3 E4 E5 E6
 
-key_table code table[100] =
+key_table code table[102] =
 {	// 目标索引		    上				下          确认		 退出         函数
 	{ MENU_STANDBY, MENU_STANDBY, MENU_STANDBY, MENU_STANDBY, MENU_STANDBY, (*fun0) }, //待机
 
@@ -92,7 +93,7 @@ key_table code table[100] =
 	{ TWO_MENU_F4_SET, TWO_MENU_F4_SET, TWO_MENU_F4_SET, TWO_MENU_F4_SET, ONE_MENU_F4, (*fun31) }, //F4子菜单
 	{ TWO_MENU_F5_SET, TWO_MENU_F5_SET, TWO_MENU_F5_SET, TWO_MENU_F5_SET, ONE_MENU_F5, (*fun32) }, //F5子菜单
 
-	{ TWO_MENU_F6_E1, TWO_MENU_F6_E2, TWO_MENU_F6_E7, TWO_MENU_F6_E1_SET, ONE_MENU_F6, (*fun33) }, //F6子菜单E1
+	{ TWO_MENU_F6_E1, TWO_MENU_F6_E2, TWO_MENU_F6_E8, TWO_MENU_F6_E1_SET, ONE_MENU_F6, (*fun33) }, //F6子菜单E1
 	{ TWO_MENU_F6_E2, TWO_MENU_F6_E3, TWO_MENU_F6_E1, TWO_MENU_F6_E2_SET, ONE_MENU_F6, (*fun34) }, //F6子菜单E2
 	{ TWO_MENU_F6_E3, TWO_MENU_F6_E4, TWO_MENU_F6_E2, TWO_MENU_F6_E3_SET, ONE_MENU_F6, (*fun35) }, //F6子菜单E3
 	{ TWO_MENU_F6_E4, TWO_MENU_F6_E5, TWO_MENU_F6_E3, TWO_MENU_F6_E4_SET, ONE_MENU_F6, (*fun36) }, //F6子菜单E4
@@ -175,8 +176,10 @@ key_table code table[100] =
 
 	{ TWO_MENU_F6_E6, TWO_MENU_F6_E7, TWO_MENU_F6_E5, TWO_MENU_F6_E6_SET, ONE_MENU_F6, (*fun96) },
 	{ TWO_MENU_F6_E6_SET, TWO_MENU_F6_E6_SET, TWO_MENU_F6_E6_SET, TWO_MENU_F6_E6_SET, TWO_MENU_F6_E6, (*fun97) },
-	{ TWO_MENU_F6_E7, TWO_MENU_F6_E1, TWO_MENU_F6_E6, TWO_MENU_F6_E7_SET, ONE_MENU_F6, (*fun98) },
+	{ TWO_MENU_F6_E7, TWO_MENU_F6_E8, TWO_MENU_F6_E6, TWO_MENU_F6_E7_SET, ONE_MENU_F6, (*fun98) },
 	{ TWO_MENU_F6_E7_SET, TWO_MENU_F6_E7_SET, TWO_MENU_F6_E7_SET, TWO_MENU_F6_E7_SET, TWO_MENU_F6_E7, (*fun99) },
+	{ TWO_MENU_F6_E8, TWO_MENU_F6_E1, TWO_MENU_F6_E7, TWO_MENU_F6_E8_SET, ONE_MENU_F6, (*fun100) },
+	{ TWO_MENU_F6_E8_SET, TWO_MENU_F6_E8_SET, TWO_MENU_F6_E8_SET, TWO_MENU_F6_E8_SET, TWO_MENU_F6_E8, (*fun101) },
 };
 
 unsigned int KeyScan(void)  //Keyboard scan function
@@ -723,6 +726,10 @@ void KeyProcess(void)
 				if (Two_Menu_F6_E7 == 1) Two_Menu_F6_E7 = 0;
 				else Two_Menu_F6_E7 = 1;
 				break;
+			case TWO_MENU_F6_E8_SET:
+				if (Two_Menu_F6_E8 == 1) Two_Menu_F6_E8 = 0;
+				else Two_Menu_F6_E8 = 1;
+				break;
 
 				default:break;
 			}	
@@ -961,6 +968,10 @@ void KeyProcess(void)
 				if (Two_Menu_F6_E7 == 1) Two_Menu_F6_E7 = 0;
 				else Two_Menu_F6_E7 = 1;
 				break;
+			case TWO_MENU_F6_E8_SET:
+				if (Two_Menu_F6_E8 == 1) Two_Menu_F6_E8 = 0;
+				else Two_Menu_F6_E8 = 1;
+				break;
 
 				default:break;
 			}
@@ -1069,6 +1080,12 @@ unsigned char return_Two_Menu_F6_E7(void)
 	return temp;
 }
 
+unsigned char return_Two_Menu_F6_E8(void)
+{
+	unsigned char temp = 0;
+	temp = Two_Menu_F6_E8;
+	return temp;
+}
 
 unsigned char return_Two_Menu_F7_E1(void)
 {
@@ -1152,6 +1169,7 @@ void env_load(void)
 	EEPROM.Two_Menu_F6_E5 = Two_Menu_F6_E5;
 	EEPROM.Two_Menu_F6_E6 = Two_Menu_F6_E6;
 	EEPROM.Two_Menu_F6_E7 = Two_Menu_F6_E7;
+	EEPROM.Two_Menu_F6_E8 = Two_Menu_F6_E8;
 	EEPROM.Two_Menu_F7_E1 = Two_Menu_F7_E1;
 	EEPROM.Two_Menu_F8_E1 = Two_Menu_F8_E1;
 	EEPROM.Two_Menu_Fb_E1 = Two_Menu_Fb_E1;
@@ -1181,10 +1199,11 @@ void env_init(void)
 	Two_Menu_F6_E5 =  EEPROM.Two_Menu_F6_E5 ;
 	Two_Menu_F6_E6 =  EEPROM.Two_Menu_F6_E6 ;
 	Two_Menu_F6_E7 =  EEPROM.Two_Menu_F6_E7 ;
+	Two_Menu_F6_E8 =  EEPROM.Two_Menu_F6_E8 ;
 	Two_Menu_F7_E1 =  EEPROM.Two_Menu_F7_E1 ;
-	Two_Menu_F8_E1 =  EEPROM.Two_Menu_F8_E1;
-	Two_Menu_Fb_E1 =  EEPROM.Two_Menu_Fb_E1;
-	Two_Menu_FC_E1 =  EEPROM.Two_Menu_FC_E1;
+	Two_Menu_F8_E1 =  EEPROM.Two_Menu_F8_E1 ;
+	Two_Menu_Fb_E1 =  EEPROM.Two_Menu_Fb_E1 ;
+	Two_Menu_FC_E1 =  EEPROM.Two_Menu_FC_E1 ;
 
 	if (EEPROM.Two_Menu_F3_E1 > 2)
 	{
@@ -1230,6 +1249,10 @@ void env_init(void)
 	{
 		Two_Menu_F6_E7 = 0;
 	}
+	if (EEPROM.Two_Menu_F6_E8 > 1)
+	{
+		Two_Menu_F6_E8 = 0;
+	}
 	if (EEPROM.Two_Menu_F7_E1 > 10)
 	{
 		Two_Menu_F7_E1 = 10;
@@ -1262,6 +1285,8 @@ void var_init(void)
 	Two_Menu_F6_E4 = 6; //音量大小调整
 	Two_Menu_F6_E5 = 3; //显示屏LED亮度调整
 	Two_Menu_F6_E6 = 1; //语音导航调整
+	Two_Menu_F6_E7 = 0; //语音导航调整
+	Two_Menu_F6_E8 = 0; //语音导航调整
 
 	Two_Menu_F7_E1 = 10; // E1默认键盘规则 999*9
 	Two_Menu_F7_E2 = 0; // E2其他键盘规则 9999*9

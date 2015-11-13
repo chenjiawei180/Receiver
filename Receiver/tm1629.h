@@ -150,6 +150,8 @@ extern void fun96(void);
 extern void fun97(void);
 extern void fun98(void);
 extern void fun99(void);
+extern void fun100(void);
+extern void fun101(void);
 
 extern void LogoutProcess(void);
 extern void CycleProcess(void);

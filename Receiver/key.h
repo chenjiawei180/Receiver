@@ -49,6 +49,7 @@ extern unsigned char return_Two_Menu_F6_E4(void);
 extern unsigned char return_Two_Menu_F6_E5(void);
 extern unsigned char return_Two_Menu_F6_E6(void);
 extern unsigned char return_Two_Menu_F6_E7(void);
+extern unsigned char return_Two_Menu_F6_E8(void);
 extern unsigned char return_Two_Menu_F7_E1(void);
 extern unsigned char return_Two_Menu_F7_E2(void);
 extern unsigned char return_Two_Menu_F7_E3(void);

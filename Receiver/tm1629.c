@@ -855,14 +855,6 @@ void fun14(void) //一级菜单Fd
 
 void fun15(void) //设置年份
 {
-	unsigned char temp;
-	temp = return_Two_Menu_FC_E1();
-	if (temp == 1)//如果为----  则不让进入F0
-	{
-		set_func_index(ONE_MENU_F0);
-	}
-	else
-	{
 		if (return_await_number_table() == 1)
 		{
 			Display_time();
@@ -878,7 +870,6 @@ void fun15(void) //设置年份
 			set_await_number_table(0);
 		}
 		Ds1302_Write_Time();
-	}
 }
 
 void fun16(void) //设置月份
@@ -950,19 +941,28 @@ void fun19(void) //设置小时
 
 void fun20(void) //设置分钟
 {
-	if (return_await_number_table() == 1)
+	unsigned char temp;
+	temp = return_Two_Menu_FC_E1();
+	if (temp == 1)//如果为----  则不让进入F0
 	{
-		Display_time();
-		set_await_number_table(2);
+		set_func_index(ONE_MENU_F0);
 	}
-	if (return_await_number_table() == 3)
+	else
 	{
-		buf_display[0][1] = 0;
-		buf_display[0][0] = 0;
-		display();
-		set_await_number_table(0);
+		if (return_await_number_table() == 1)
+		{
+			Display_time();
+			set_await_number_table(2);
+		}
+		if (return_await_number_table() == 3)
+		{
+			buf_display[0][1] = 0;
+			buf_display[0][0] = 0;
+			display();
+			set_await_number_table(0);
+		}
+		Ds1302_Write_Time();
 	}
-	Ds1302_Write_Time();
 }
 
 void fun21(void) //二级菜单F1-E1
@@ -1789,7 +1789,9 @@ void fun94(void) //F8_E2键位设置
 void fun95(void) //解码菜单
 {
 	unsigned char Two_Menu_F6_E1_temp = 0;
+	unsigned char Two_Menu_F6_E8_temp = 0;
 	Two_Menu_F6_E1_temp = return_Two_Menu_F6_E1();
+	Two_Menu_F6_E8_temp = return_Two_Menu_F6_E8();
 	//tm1629_load();
 	//display();
 
@@ -1801,7 +1803,24 @@ void fun95(void) //解码菜单
 		}	
 	}
 	P55 = 1;//秒针灭
-	P17 = 1;
+	if (Two_Menu_F6_E8_temp == 0)
+	{
+		P17 = 1;
+	}
+	else
+	{
+		if (return_await_number_table() == 1)
+		{
+			P17 = 1;
+			set_await_number_table(2);
+		}
+		if (return_await_number_table() == 3)
+		{
+			P17 = 0;
+			set_await_number_table(0);
+		}
+	}
+	
 	
 }
 
@@ -1826,6 +1845,18 @@ void fun99(void) //二级菜单F6-E7
 {
 	unsigned char temp = 0;
 	temp = return_Two_Menu_F6_E7();
+	Show_one_number(temp);
+}
+
+void fun100(void) //二级菜单F6-E8
+{
+	tm1629_E(0x08);
+}
+
+void fun101(void) //二级菜单F6-E8
+{
+	unsigned char temp = 0;
+	temp = return_Two_Menu_F6_E8();
 	Show_one_number(temp);
 }
 
