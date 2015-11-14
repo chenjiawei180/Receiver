@@ -218,8 +218,8 @@
       <Focus>0</Focus>
       <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>217</TopLine>
-      <CurrentLine>217</CurrentLine>
+      <TopLine>876</TopLine>
+      <CurrentLine>913</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>.\Receiver\tm1629.c</PathWithFileName>
       <FilenameWithoutPath>tm1629.c</FilenameWithoutPath>
@@ -1691,7 +1691,7 @@
     <ActiveMDIGroup>0</ActiveMDIGroup>
     <MDIGroup>
       <Size>100</Size>
-      <ActiveTab>9</ActiveTab>
+      <ActiveTab>4</ActiveTab>
       <Documents>
         <Doc>
           <Name>.\Receiver\ev1527.c</Name>
@@ -1720,8 +1720,8 @@
         <Doc>
           <Name>.\Receiver\tm1629.c</Name>
           <ColumnNumber>0</ColumnNumber>
-          <TopLine>217</TopLine>
-          <CurrentLine>217</CurrentLine>
+          <TopLine>876</TopLine>
+          <CurrentLine>913</CurrentLine>
         </Doc>
         <Doc>
           <Name>.\Receiver\usart.c</Name>

@@ -255,30 +255,59 @@ void tm1629_await(void)
 
 void Display_time(void)
 {
-	tm1629_clear();
-	Ds1302_Read_Time(); 
-	buf_display[1][3] = CODE[2];				//年
-	buf_display[1][2] = CODE[0];
-	buf_display[1][1] = CODE[time_buf1[1] / 10];
-	buf_display[1][0] = CODE[time_buf1[1] % 10];
-
-	
-	buf_display[0][7] = CODE[time_buf1[2] / 10]; //月
-	buf_display[0][6] = CODE[time_buf1[2] % 10];
+	if (return_Two_Menu_F6_E7() == 0)
+	{
+		tm1629_clear();
+		Ds1302_Read_Time();
+		buf_display[0][7] = CODE[2];				//年
+		buf_display[0][6] = CODE[0];
+		buf_display[0][5] = CODE[time_buf1[1] / 10];
+		buf_display[0][4] = CODE[time_buf1[1] % 10];
 
 
-	buf_display[0][5] = CODE[time_buf1[3] / 10];
-	buf_display[0][4] = CODE[time_buf1[3] % 10];//日
+		buf_display[1][1] = CODE[time_buf1[2] / 10]; //月
+		buf_display[1][0] = CODE[time_buf1[2] % 10];
 
-	buf_display[1][4] = CODE[time_buf1[7]];		//星期
 
-	buf_display[0][3] = CODE[time_buf1[4] / 10]; //小时
-	buf_display[0][2] = CODE[time_buf1[4] % 10];
-	buf_display[0][1] = CODE[time_buf1[5] / 10]; //小时
-	buf_display[0][0] = CODE[time_buf1[5] % 10];
+		buf_display[1][3] = CODE[time_buf1[3] / 10];
+		buf_display[1][2] = CODE[time_buf1[3] % 10];//日
 
-	display();
+		buf_display[1][4] = CODE[time_buf1[7]];		//星期
 
+		buf_display[0][3] = CODE[time_buf1[4] / 10]; //小时
+		buf_display[0][2] = CODE[time_buf1[4] % 10];
+		buf_display[0][1] = CODE[time_buf1[5] / 10]; //小时
+		buf_display[0][0] = CODE[time_buf1[5] % 10];
+
+		display();
+
+	}
+	else
+	{
+		tm1629_clear();
+		Ds1302_Read_Time();
+		buf_display[1][3] = CODE[2];				//年
+		buf_display[1][2] = CODE[0];
+		buf_display[1][1] = CODE[time_buf1[1] / 10];
+		buf_display[1][0] = CODE[time_buf1[1] % 10];
+
+
+		buf_display[0][7] = CODE[time_buf1[2] / 10]; //月
+		buf_display[0][6] = CODE[time_buf1[2] % 10];
+
+
+		buf_display[0][5] = CODE[time_buf1[3] / 10];
+		buf_display[0][4] = CODE[time_buf1[3] % 10];//日
+
+		buf_display[1][4] = CODE[time_buf1[7]];		//星期
+
+		buf_display[0][3] = CODE[time_buf1[4] / 10]; //小时
+		buf_display[0][2] = CODE[time_buf1[4] % 10];
+		buf_display[0][1] = CODE[time_buf1[5] / 10]; //小时
+		buf_display[0][0] = CODE[time_buf1[5] % 10];
+
+		display();
+	}
 }
 
 void tm1629_f(unsigned char f_number) //第一行倒数二个显示F,倒数第一个显示f_number
@@ -862,10 +891,20 @@ void fun15(void) //设置年份
 		}
 		if (return_await_number_table() == 3)
 		{
-			buf_display[1][3] = 0;
-			buf_display[1][2] = 0;
-			buf_display[1][1] = 0;
-			buf_display[1][0] = 0;
+			if (return_Two_Menu_F6_E7() == 0)
+			{
+				buf_display[0][7] = 0;
+				buf_display[0][6] = 0;
+				buf_display[0][5] = 0;
+				buf_display[0][4] = 0;
+			}
+			else
+			{
+				buf_display[1][3] = 0;
+				buf_display[1][2] = 0;
+				buf_display[1][1] = 0;
+				buf_display[1][0] = 0;
+			}
 			display();
 			set_await_number_table(0);
 		}
@@ -881,8 +920,16 @@ void fun16(void) //设置月份
 	}
 	if (return_await_number_table() == 3)
 	{
-		buf_display[0][7] = 0;
-		buf_display[0][6] = 0;
+		if (return_Two_Menu_F6_E7() == 0)
+		{
+			buf_display[1][1] = 0;
+			buf_display[1][0] = 0;
+		}
+		else
+		{
+			buf_display[0][7] = 0;
+			buf_display[0][6] = 0;
+		}
 		display();
 		set_await_number_table(0);
 	}
@@ -898,8 +945,16 @@ void fun17(void) //设置日期
 	}
 	if (return_await_number_table() == 3)
 	{
-		buf_display[0][5] = 0;
-		buf_display[0][4] = 0;
+		if (return_Two_Menu_F6_E7() == 0)
+		{
+			buf_display[1][3] = 0;
+			buf_display[1][2] = 0;
+		}
+		else
+		{
+			buf_display[0][5] = 0;
+			buf_display[0][4] = 0;
+		}
 		display();
 		set_await_number_table(0);
 	}
