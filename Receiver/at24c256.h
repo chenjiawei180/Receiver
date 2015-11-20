@@ -26,8 +26,7 @@ typedef struct Env_struct{
 	unsigned char Two_Menu_F6_E8;     //闪烁
 	unsigned char Two_Menu_F7_E1;     //防区设置
 	unsigned char Two_Menu_F8_E1;     //单键位还是多键位
-	unsigned char Two_Menu_Fb_E1;   //主机是否有销号功能
-	unsigned char Two_Menu_FC_E1;    //万年历待机与----
+
 }Env_t;
 
 //RF存储在EE中的位置为0X0000~0X1C00
