@@ -26,6 +26,8 @@ typedef struct Env_struct{
 	unsigned char Two_Menu_F6_E8;     //闪烁
 	unsigned char Two_Menu_F7_E1;     //防区设置
 	unsigned char Two_Menu_F8_E1;     //单键位还是多键位
+	unsigned char Two_Menu_Fb_E1;     //键盘销号
+	unsigned char Two_Menu_FC_E1;     //时间切换
 
 }Env_t;
 

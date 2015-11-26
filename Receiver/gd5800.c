@@ -167,10 +167,10 @@ void submenuf6_1(unsigned char report_mode, unsigned char *report_number, unsign
 	if (mode <= NOT_REPORT_C )
 	{
 		GD5800_select_chapter(DINGDONG);
-		if (key == 15)//防区号是否当前缀
-		{
-			GD5800_select_chapter(QING);
-		}
+		//if (key == 15)//防区号是否当前缀
+		//{
+		//	GD5800_select_chapter(QING);
+		//}
 
 		if (Two_Menu_F6_E7_temp == 0 || (Two_Menu_F6_E7_temp == 1 && mode >= COMPLICATED_REPORT))
 		{

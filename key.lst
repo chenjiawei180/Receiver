@@ -1,4 +1,4 @@
-C51 COMPILER V9.00   KEY                                                                   11/20/2015 15:15:19 PAGE 1   
+C51 COMPILER V9.00   KEY                                                                   11/26/2015 14:13:32 PAGE 1   
 
 
 C51 COMPILER V9.00, COMPILATION OF MODULE KEY
@@ -62,7 +62,7 @@ line level    source
   52          unsigned char Two_Menu_Fd_E1 = 1; // E1 E2 E3 E4 E5 E6
   53          
   54          key_table code table[102] =
-C51 COMPILER V9.00   KEY                                                                   11/20/2015 15:15:19 PAGE 2   
+C51 COMPILER V9.00   KEY                                                                   11/26/2015 14:13:32 PAGE 2   
 
   55          {       // 目标索引                 上                          下          确认                 退出         函数
   56                  { MENU_STANDBY, MENU_STANDBY, MENU_STANDBY, MENU_STANDBY, MENU_STANDBY, (*fun0) }, //待机
@@ -126,7 +126,7 @@ line level    source
   97                  { TWO_MENU_F6_E2, TWO_MENU_F6_E3, TWO_MENU_F6_E1, TWO_MENU_F6_E2_SET, ONE_MENU_F6, (*fun34) }, //F6子菜单
              -E2
   98                  { TWO_MENU_F6_E3, TWO_MENU_F6_E4, TWO_MENU_F6_E2, TWO_MENU_F6_E3_SET, ONE_MENU_F6, (*fun35) }, //F6子菜单
-C51 COMPILER V9.00   KEY                                                                   11/20/2015 15:15:19 PAGE 3   
+C51 COMPILER V9.00   KEY                                                                   11/26/2015 14:13:32 PAGE 3   
 
              -E3
   99                  { TWO_MENU_F6_E4, TWO_MENU_F6_E5, TWO_MENU_F6_E3, TWO_MENU_F6_E4_SET, ONE_MENU_F6, (*fun36) }, //F6子菜单
@@ -190,7 +190,7 @@ line level    source
              - //F1_E3注册取消器
  136                  { TWO_MENU_F1_E4_D4, TWO_MENU_F1_E4_D4, TWO_MENU_F1_E4_D4, TWO_MENU_F1_E4_D3, TWO_MENU_F1_E4, (*fun65) },
              - //F1_E3注册取消器
-C51 COMPILER V9.00   KEY                                                                   11/20/2015 15:15:19 PAGE 4   
+C51 COMPILER V9.00   KEY                                                                   11/26/2015 14:13:32 PAGE 4   
 
  137          
  138                  { TWO_MENU_F2_E1_D1, TWO_MENU_F2_E1_D1, TWO_MENU_F2_E1_D1, TWO_MENU_F2_E1_D4, TWO_MENU_F2_E1, (*fun66) },
@@ -254,7 +254,7 @@ line level    source
  170                  { TWO_MENU_F7_E4_SET, TWO_MENU_F7_E4_SET, TWO_MENU_F7_E4_SET, TWO_MENU_F7_E4_SET, TWO_MENU_F7_E4, (*fun92
              -) }, //F7_E4 9999*99
  171          
-C51 COMPILER V9.00   KEY                                                                   11/20/2015 15:15:19 PAGE 5   
+C51 COMPILER V9.00   KEY                                                                   11/26/2015 14:13:32 PAGE 5   
 
  172                  { TWO_MENU_F8_E1_SET, TWO_MENU_F8_E1_SET, TWO_MENU_F8_E1_SET, TWO_MENU_F8_E1_SET, TWO_MENU_F8_E1, (*fun93
              -) }, //F8_E1 单键位跟多键位切换
@@ -318,7 +318,7 @@ line level    source
  226   1              if (key_val == 0x0fff) /*do not key press*/
  227   1              {
  228   2                      /*sjz 有注册管理器标志*/
-C51 COMPILER V9.00   KEY                                                                   11/20/2015 15:15:19 PAGE 6   
+C51 COMPILER V9.00   KEY                                                                   11/26/2015 14:13:32 PAGE 6   
 
  229   2                      if (register_manager_temp == 1)
  230   2                      {
@@ -382,7 +382,7 @@ line level    source
  287   1      
  288   1      #ifdef DEBUG
                       if (key_val != 0x0fff)
-C51 COMPILER V9.00   KEY                                                                   11/20/2015 15:15:19 PAGE 7   
+C51 COMPILER V9.00   KEY                                                                   11/26/2015 14:13:32 PAGE 7   
 
                       uart_printf("key_val is %x .\r\n", key_val); //测试按键键值
               #endif
@@ -446,7 +446,7 @@ line level    source
  346   5                                                      if (return_sound_table() == 1)
  347   5                                                      {
  348   6                                                              GD5800_select_chapter(CHENGGONG);
-C51 COMPILER V9.00   KEY                                                                   11/20/2015 15:15:19 PAGE 8   
+C51 COMPILER V9.00   KEY                                                                   11/26/2015 14:13:32 PAGE 8   
 
  349   6      
  350   6                                                              set_sound_table(0);
@@ -510,7 +510,7 @@ line level    source
  406   4                                              clear_main_press_time();
  407   4                                      }
  408   3                              }
-C51 COMPILER V9.00   KEY                                                                   11/20/2015 15:15:19 PAGE 9   
+C51 COMPILER V9.00   KEY                                                                   11/26/2015 14:13:32 PAGE 9   
 
  409   2                              else if (func_index == ONE_MENU_Fb)  //如果索引==FA  则要1秒以上进入菜单
  410   2                              {
@@ -574,7 +574,7 @@ line level    source
  468   4                                              var_init();
  469   4                                              key_init();
  470   4                                              env_load();
-C51 COMPILER V9.00   KEY                                                                   11/20/2015 15:15:19 PAGE 10  
+C51 COMPILER V9.00   KEY                                                                   11/26/2015 14:13:32 PAGE 10  
 
  471   4                                              ISendStr(I2C_ADDRESS, SIN_KEY, single_key, 16);
  472   4                                              delay10ms();
@@ -638,7 +638,7 @@ line level    source
  530   3                                      break;
  531   3                              case TWO_MENU_F1_E1_D3:
  532   3                                      if (Two_Menu_F1_E1[2] == 9) Two_Menu_F1_E1[2] = 0;      //设置F1_E1十位
-C51 COMPILER V9.00   KEY                                                                   11/20/2015 15:15:19 PAGE 11  
+C51 COMPILER V9.00   KEY                                                                   11/26/2015 14:13:32 PAGE 11  
 
  533   3                                      else Two_Menu_F1_E1[2]++;
  534   3                                      break;
@@ -702,7 +702,7 @@ line level    source
  592   3                                      if (Two_Menu_F2_E1[1] == 9) Two_Menu_F2_E1[1] = 0;      //设置F2_E1百位
  593   3                                      else Two_Menu_F2_E1[1]++;
  594   3                                      break;
-C51 COMPILER V9.00   KEY                                                                   11/20/2015 15:15:19 PAGE 12  
+C51 COMPILER V9.00   KEY                                                                   11/26/2015 14:13:32 PAGE 12  
 
  595   3                              case TWO_MENU_F2_E1_D3:
  596   3                                      if (Two_Menu_F2_E1[2] == 9) Two_Menu_F2_E1[2] = 0;      //设置F2_E1十位
@@ -766,7 +766,7 @@ line level    source
  654   3                              case TWO_MENU_F3_E2_SET:
  655   3                                      if (Two_Menu_F3_E2 == 99) Two_Menu_F3_E2 = 1;   //存储队列个数
  656   3                                      else Two_Menu_F3_E2 ++;
-C51 COMPILER V9.00   KEY                                                                   11/20/2015 15:15:19 PAGE 13  
+C51 COMPILER V9.00   KEY                                                                   11/26/2015 14:13:32 PAGE 13  
 
  657   3                                      break;
  658   3                              case TWO_MENU_F4_SET:
@@ -830,7 +830,7 @@ line level    source
  716   3                                      break;
  717   3                              case TWO_MENU_Fb_SET:
  718   3                                      if (Two_Menu_Fb_E1 == 1) Two_Menu_Fb_E1 = 0;
-C51 COMPILER V9.00   KEY                                                                   11/20/2015 15:15:19 PAGE 14  
+C51 COMPILER V9.00   KEY                                                                   11/26/2015 14:13:32 PAGE 14  
 
  719   3                                      else Two_Menu_Fb_E1 = 1;
  720   3                                      break;
@@ -894,7 +894,7 @@ line level    source
  778   3                                      else Two_Menu_F1_E1[3]--;
  779   3                                      break;
  780   3                              case TWO_MENU_F1_E2_D1:
-C51 COMPILER V9.00   KEY                                                                   11/20/2015 15:15:19 PAGE 15  
+C51 COMPILER V9.00   KEY                                                                   11/26/2015 14:13:32 PAGE 15  
 
  781   3                                      if (Two_Menu_F1_E2[0] == 0) Two_Menu_F1_E2[0] = 20;     //设置F1_E2千位
  782   3                                      else Two_Menu_F1_E2[0]--;
@@ -958,7 +958,7 @@ line level    source
  840   3                              case TWO_MENU_F2_E1_D4:
  841   3                                      if (Two_Menu_F2_E1[3] == 0) Two_Menu_F2_E1[3] = 9;      //设置F2_E1个位
  842   3                                      else Two_Menu_F2_E1[3]--;
-C51 COMPILER V9.00   KEY                                                                   11/20/2015 15:15:19 PAGE 16  
+C51 COMPILER V9.00   KEY                                                                   11/26/2015 14:13:32 PAGE 16  
 
  843   3                                      break;
  844   3                              case TWO_MENU_F2_E2_D1:
@@ -1022,7 +1022,7 @@ line level    source
  902   3                                      else Two_Menu_F4_E1--;
  903   3                                      break;
  904   3                              case TWO_MENU_F5_SET:
-C51 COMPILER V9.00   KEY                                                                   11/20/2015 15:15:19 PAGE 17  
+C51 COMPILER V9.00   KEY                                                                   11/26/2015 14:13:32 PAGE 17  
 
  905   3                                      if (Two_Menu_F5_E1 == 0) Two_Menu_F5_E1 = 99;   //销号时间设置
  906   3                                      else Two_Menu_F5_E1--;
@@ -1086,7 +1086,7 @@ line level    source
  964   3                                      if (Two_Menu_F6_E6 == 1) Two_Menu_F6_E6 = 0;
  965   3                                      else Two_Menu_F6_E6 = 1;
  966   3                                      break;
-C51 COMPILER V9.00   KEY                                                                   11/20/2015 15:15:19 PAGE 18  
+C51 COMPILER V9.00   KEY                                                                   11/26/2015 14:13:32 PAGE 18  
 
  967   3                              case TWO_MENU_F6_E7_SET:
  968   3                                      if (Two_Menu_F6_E7 == 1) Two_Menu_F6_E7 = 0;
@@ -1150,7 +1150,7 @@ line level    source
 1026   1      }
 1027          
 1028          unsigned char return_Two_Menu_F5_E1(void)
-C51 COMPILER V9.00   KEY                                                                   11/20/2015 15:15:19 PAGE 19  
+C51 COMPILER V9.00   KEY                                                                   11/26/2015 14:13:32 PAGE 19  
 
 1029          {
 1030   1              unsigned char temp = 0;
@@ -1214,7 +1214,7 @@ line level    source
 1088   1      }
 1089          
 1090          unsigned char return_Two_Menu_F7_E1(void)
-C51 COMPILER V9.00   KEY                                                                   11/20/2015 15:15:19 PAGE 20  
+C51 COMPILER V9.00   KEY                                                                   11/26/2015 14:13:32 PAGE 20  
 
 1091          {
 1092   1              unsigned char temp = 0;
@@ -1278,7 +1278,7 @@ line level    source
 1150          
 1151          unsigned char return_Two_Menu_Fb_E1(void)
 1152          {
-C51 COMPILER V9.00   KEY                                                                   11/20/2015 15:15:19 PAGE 21  
+C51 COMPILER V9.00   KEY                                                                   11/26/2015 14:13:32 PAGE 21  
 
 1153   1              unsigned char temp = 0;
 1154   1              temp = Two_Menu_Fb_E1;
@@ -1302,155 +1302,167 @@ line level    source
 1172   1              EEPROM.Two_Menu_F6_E8 = Two_Menu_F6_E8;
 1173   1              EEPROM.Two_Menu_F7_E1 = Two_Menu_F7_E1;
 1174   1              EEPROM.Two_Menu_F8_E1 = Two_Menu_F8_E1;
-1175   1      
-1176   1              ISendStr(I2C_ADDRESS, BACK, (uint8_t *)&EEPROM, 14);
-1177   1              delay10ms();
-1178   1      }
-1179          
-1180          void env_init(void)
-1181          {
-1182   1              IRcvStr(I2C_ADDRESS, SIN_KEY, single_key, 16);
-1183   1              delay10ms();
-1184   1              IRcvStr(I2C_ADDRESS, MUL_KEY, multiple_key, 16);
+1175   1              EEPROM.Two_Menu_Fb_E1 = Two_Menu_Fb_E1;
+1176   1              EEPROM.Two_Menu_FC_E1 = Two_Menu_FC_E1;
+1177   1      
+1178   1              ISendStr(I2C_ADDRESS, BACK, (uint8_t *)&EEPROM, 16);
+1179   1              delay10ms();
+1180   1      }
+1181          
+1182          void env_init(void)
+1183          {
+1184   1              IRcvStr(I2C_ADDRESS, SIN_KEY, single_key, 16);
 1185   1              delay10ms();
-1186   1              IRcvStr(I2C_ADDRESS, BACK, (uint8_t *)&EEPROM, 14);
+1186   1              IRcvStr(I2C_ADDRESS, MUL_KEY, multiple_key, 16);
 1187   1              delay10ms();
-1188   1      
-1189   1              Two_Menu_F3_E1 =  EEPROM.Two_Menu_F3_E1 ;
-1190   1              Two_Menu_F3_E2 =  EEPROM.Two_Menu_F3_E2 ;
-1191   1              Two_Menu_F4_E1 =  EEPROM.Two_Menu_F4_E1 ;
-1192   1              Two_Menu_F5_E1 =  EEPROM.Two_Menu_F5_E1 ;
-1193   1              Two_Menu_F6_E1 =  EEPROM.Two_Menu_F6_E1 ;
-1194   1              Two_Menu_F6_E2 =  EEPROM.Two_Menu_F6_E2 ;
-1195   1              Two_Menu_F6_E3 =  EEPROM.Two_Menu_F6_E3 ;
-1196   1              Two_Menu_F6_E4 =  EEPROM.Two_Menu_F6_E4 ;
-1197   1              Two_Menu_F6_E5 =  EEPROM.Two_Menu_F6_E5 ;
-1198   1              Two_Menu_F6_E6 =  EEPROM.Two_Menu_F6_E6 ;
-1199   1              Two_Menu_F6_E7 =  EEPROM.Two_Menu_F6_E7 ;
-1200   1              Two_Menu_F6_E8 =  EEPROM.Two_Menu_F6_E8 ;
-1201   1              Two_Menu_F7_E1 =  EEPROM.Two_Menu_F7_E1 ;
-1202   1              Two_Menu_F8_E1 =  EEPROM.Two_Menu_F8_E1 ;
-1203   1      
-1204   1              if (EEPROM.Two_Menu_F3_E1 > 2)
-1205   1              {
-1206   2                      Two_Menu_F3_E1 = 1;
-1207   2              }
-1208   1              if (EEPROM.Two_Menu_F3_E2 > 99)
+1188   1              IRcvStr(I2C_ADDRESS, BACK, (uint8_t *)&EEPROM, 16);
+1189   1              delay10ms();
+1190   1      
+1191   1              Two_Menu_F3_E1 =  EEPROM.Two_Menu_F3_E1 ;
+1192   1              Two_Menu_F3_E2 =  EEPROM.Two_Menu_F3_E2 ;
+1193   1              Two_Menu_F4_E1 =  EEPROM.Two_Menu_F4_E1 ;
+1194   1              Two_Menu_F5_E1 =  EEPROM.Two_Menu_F5_E1 ;
+1195   1              Two_Menu_F6_E1 =  EEPROM.Two_Menu_F6_E1 ;
+1196   1              Two_Menu_F6_E2 =  EEPROM.Two_Menu_F6_E2 ;
+1197   1              Two_Menu_F6_E3 =  EEPROM.Two_Menu_F6_E3 ;
+1198   1              Two_Menu_F6_E4 =  EEPROM.Two_Menu_F6_E4 ;
+1199   1              Two_Menu_F6_E5 =  EEPROM.Two_Menu_F6_E5 ;
+1200   1              Two_Menu_F6_E6 =  EEPROM.Two_Menu_F6_E6 ;
+1201   1              Two_Menu_F6_E7 =  EEPROM.Two_Menu_F6_E7 ;
+1202   1              Two_Menu_F6_E8 =  EEPROM.Two_Menu_F6_E8 ;
+1203   1              Two_Menu_F7_E1 =  EEPROM.Two_Menu_F7_E1 ;
+1204   1              Two_Menu_F8_E1 =  EEPROM.Two_Menu_F8_E1 ;
+1205   1              Two_Menu_Fb_E1 =  EEPROM.Two_Menu_Fb_E1;
+1206   1              Two_Menu_FC_E1 =  EEPROM.Two_Menu_FC_E1;
+1207   1      
+1208   1              if (EEPROM.Two_Menu_F3_E1 > 2)
 1209   1              {
-1210   2                      Two_Menu_F3_E2 = 1;
+1210   2                      Two_Menu_F3_E1 = 1;
 1211   2              }
-1212   1              if (EEPROM.Two_Menu_F4_E1 > 99)
+1212   1              if (EEPROM.Two_Menu_F3_E2 > 99)
 1213   1              {
-1214   2                      Two_Menu_F4_E1 = 1;
-C51 COMPILER V9.00   KEY                                                                   11/20/2015 15:15:19 PAGE 22  
+1214   2                      Two_Menu_F3_E2 = 1;
+C51 COMPILER V9.00   KEY                                                                   11/26/2015 14:13:32 PAGE 22  
 
 1215   2              }
-1216   1              if (EEPROM.Two_Menu_F5_E1 > 99)
+1216   1              if (EEPROM.Two_Menu_F4_E1 > 99)
 1217   1              {
-1218   2                      Two_Menu_F5_E1 = 1;
+1218   2                      Two_Menu_F4_E1 = 1;
 1219   2              }
-1220   1              if (EEPROM.Two_Menu_F6_E1 > 7)
+1220   1              if (EEPROM.Two_Menu_F5_E1 > 99)
 1221   1              {
-1222   2                      Two_Menu_F6_E1 = 0;
+1222   2                      Two_Menu_F5_E1 = 1;
 1223   2              }
-1224   1              if (EEPROM.Two_Menu_F6_E2 > 2)
+1224   1              if (EEPROM.Two_Menu_F6_E1 > 7)
 1225   1              {
-1226   2                      Two_Menu_F6_E2 = 1;
+1226   2                      Two_Menu_F6_E1 = 0;
 1227   2              }
-1228   1              if (EEPROM.Two_Menu_F6_E3 > 1)
+1228   1              if (EEPROM.Two_Menu_F6_E2 > 2)
 1229   1              {
-1230   2                      Two_Menu_F6_E3 = 0;
+1230   2                      Two_Menu_F6_E2 = 1;
 1231   2              }
-1232   1              if (EEPROM.Two_Menu_F6_E4 > 9)
+1232   1              if (EEPROM.Two_Menu_F6_E3 > 1)
 1233   1              {
-1234   2                      Two_Menu_F6_E4 = 6;
+1234   2                      Two_Menu_F6_E3 = 0;
 1235   2              }
-1236   1              if (EEPROM.Two_Menu_F6_E5 > 7)
+1236   1              if (EEPROM.Two_Menu_F6_E4 > 9)
 1237   1              {
-1238   2                      Two_Menu_F6_E5 = 3;
+1238   2                      Two_Menu_F6_E4 = 6;
 1239   2              }
-1240   1              if (EEPROM.Two_Menu_F6_E6 > 1)
+1240   1              if (EEPROM.Two_Menu_F6_E5 > 7)
 1241   1              {
-1242   2                      Two_Menu_F6_E6 = 0;
+1242   2                      Two_Menu_F6_E5 = 3;
 1243   2              }
-1244   1              if (EEPROM.Two_Menu_F6_E7 > 1)
+1244   1              if (EEPROM.Two_Menu_F6_E6 > 1)
 1245   1              {
-1246   2                      Two_Menu_F6_E7 = 0;
+1246   2                      Two_Menu_F6_E6 = 0;
 1247   2              }
-1248   1              if (EEPROM.Two_Menu_F6_E8 > 1)
+1248   1              if (EEPROM.Two_Menu_F6_E7 > 1)
 1249   1              {
-1250   2                      Two_Menu_F6_E8 = 0;
+1250   2                      Two_Menu_F6_E7 = 0;
 1251   2              }
-1252   1              if (EEPROM.Two_Menu_F7_E1 > 10)
+1252   1              if (EEPROM.Two_Menu_F6_E8 > 1)
 1253   1              {
-1254   2                      Two_Menu_F7_E1 = 10;
+1254   2                      Two_Menu_F6_E8 = 0;
 1255   2              }
-1256   1              if (EEPROM.Two_Menu_F8_E1 > 2)
+1256   1              if (EEPROM.Two_Menu_F7_E1 > 10)
 1257   1              {
-1258   2                      Two_Menu_F8_E1 = 2;
+1258   2                      Two_Menu_F7_E1 = 10;
 1259   2              }
-1260   1      }
-1261          
-1262          void var_init(void)
-1263          {
-1264   1              Two_Menu_F3_E1 = 1; //即时模式或者排队显示
-1265   1              Two_Menu_F3_E2 = 1; //呼叫时候存储数量
-1266   1      
-1267   1              Two_Menu_F4_E1 = 0; //销号时间
-1268   1              Two_Menu_F5_E1 = 0; //循环间隔时间
-1269   1      
-1270   1              Two_Menu_F6_E1 = 0; //简单报读
-1271   1              Two_Menu_F6_E2 = 1; //语音报读次数
-1272   1              Two_Menu_F6_E3 = 0; //循环时候是否报读
-1273   1              Two_Menu_F6_E4 = 6; //音量大小调整
-1274   1              Two_Menu_F6_E5 = 3; //显示屏LED亮度调整
-1275   1              Two_Menu_F6_E6 = 1; //语音导航调整
-1276   1              Two_Menu_F6_E7 = 0; //语音导航调整
-C51 COMPILER V9.00   KEY                                                                   11/20/2015 15:15:19 PAGE 23  
+1260   1              if (EEPROM.Two_Menu_F8_E1 > 2)
+1261   1              {
+1262   2                      Two_Menu_F8_E1 = 2;
+1263   2              }
+1264   1              if (EEPROM.Two_Menu_Fb_E1 > 1)
+1265   1              {
+1266   2                      Two_Menu_Fb_E1 = 1;
+1267   2              }
+1268   1              if (EEPROM.Two_Menu_FC_E1 > 2)
+1269   1              {
+1270   2                      Two_Menu_FC_E1 = 1;
+1271   2              }
+1272   1      }
+1273          
+1274          void var_init(void)
+1275          {
+1276   1              Two_Menu_F3_E1 = 1; //即时模式或者排队显示
+C51 COMPILER V9.00   KEY                                                                   11/26/2015 14:13:32 PAGE 23  
 
-1277   1              Two_Menu_F6_E8 = 0; //语音导航调整
+1277   1              Two_Menu_F3_E2 = 1; //呼叫时候存储数量
 1278   1      
-1279   1              Two_Menu_F7_E1 = 10; // E1默认键盘规则 999*9
-1280   1              Two_Menu_F7_E2 = 0; // E2其他键盘规则 9999*9
-1281   1              Two_Menu_F7_E3 = 0; // E3其他键盘规则 999*99
-1282   1              Two_Menu_F7_E4 = 0; // E4其他键盘规则 9999*99
-1283   1      
-1284   1              Two_Menu_F8_E1 = 2; // 单按键与 多按键切换
-1285   1      
-1286   1              Two_Menu_F8_E2 = 0; // 键位设置
-1287   1      
-1288   1      
-1289   1      }
-1290          
-1291          void key_init(void)
-1292          {
-1293   1              unsigned char i;
-1294   1              for (i = 0; i < 16; i++)
-1295   1              {
-1296   2                      single_key[i] = 0x01;
-1297   2              }
-1298   1      
-1299   1              multiple_key[0] = 0X01;
-1300   1              multiple_key[1] = QUXIAO - QUXIAO;
-1301   1              multiple_key[2] = JIEZHANG - QUXIAO;
-1302   1              multiple_key[3] = DIANDANG - QUXIAO;
-1303   1              multiple_key[4] = JIUSHUI - QUXIAO;
-1304   1              multiple_key[5] = 0X01;
-1305   1              multiple_key[6] = 0x01;
-1306   1              multiple_key[7] = JIASHUI - QUXIAO;
-1307   1              multiple_key[8] = HUJIAO - QUXIAO;
-1308   1              multiple_key[9] =  0x01;
-1309   1              multiple_key[10] = 0x01;
-1310   1              multiple_key[11] = 0x01;
-1311   1              multiple_key[12] = 0x01;
-1312   1              multiple_key[13] = 0x01;
-1313   1              multiple_key[14] = 0x01;
-1314   1              multiple_key[15] = 0x01;
-1315   1      }
+1279   1              Two_Menu_F4_E1 = 0; //销号时间
+1280   1              Two_Menu_F5_E1 = 0; //循环间隔时间
+1281   1      
+1282   1              Two_Menu_F6_E1 = 0; //简单报读
+1283   1              Two_Menu_F6_E2 = 1; //语音报读次数
+1284   1              Two_Menu_F6_E3 = 0; //循环时候是否报读
+1285   1              Two_Menu_F6_E4 = 6; //音量大小调整
+1286   1              Two_Menu_F6_E5 = 3; //显示屏LED亮度调整
+1287   1              Two_Menu_F6_E6 = 1; //语音导航调整
+1288   1              Two_Menu_F6_E7 = 0; //语音导航调整
+1289   1              Two_Menu_F6_E8 = 0; //语音导航调整
+1290   1      
+1291   1              Two_Menu_F7_E1 = 10; // E1默认键盘规则 999*9
+1292   1              Two_Menu_F7_E2 = 0; // E2其他键盘规则 9999*9
+1293   1              Two_Menu_F7_E3 = 0; // E3其他键盘规则 999*99
+1294   1              Two_Menu_F7_E4 = 0; // E4其他键盘规则 9999*99
+1295   1      
+1296   1              Two_Menu_F8_E1 = 2; // 单按键与 多按键切换
+1297   1      
+1298   1              Two_Menu_F8_E2 = 0; // 键位设置
+1299   1      
+1300   1      
+1301   1      }
+1302          
+1303          void key_init(void)
+1304          {
+1305   1              unsigned char i;
+1306   1              for (i = 0; i < 16; i++)
+1307   1              {
+1308   2                      single_key[i] = 0x01;
+1309   2              }
+1310   1      
+1311   1              multiple_key[0] = 0X01;
+1312   1              multiple_key[1] = QUXIAO - QUXIAO;
+1313   1              multiple_key[2] = JIEZHANG - QUXIAO;
+1314   1              multiple_key[3] = DIANDANG - QUXIAO;
+1315   1              multiple_key[4] = JIUSHUI - QUXIAO;
+1316   1              multiple_key[5] = 0X01;
+1317   1              multiple_key[6] = 0x01;
+1318   1              multiple_key[7] = JIASHUI - QUXIAO;
+1319   1              multiple_key[8] = HUJIAO - QUXIAO;
+1320   1              multiple_key[9] =  0x01;
+1321   1              multiple_key[10] = 0x01;
+1322   1              multiple_key[11] = 0x01;
+1323   1              multiple_key[12] = 0x01;
+1324   1              multiple_key[13] = 0x01;
+1325   1              multiple_key[14] = 0x01;
+1326   1              multiple_key[15] = 0x01;
+1327   1      }
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =   4488    ----
+   CODE SIZE        =   4550    ----
    CONSTANT SIZE    =    816    ----
    XDATA SIZE       =     67       5
    PDATA SIZE       =   ----    ----
@@ -1458,6 +1470,8 @@ MODULE INFORMATION:   STATIC OVERLAYABLE
    IDATA SIZE       =   ----    ----
    BIT SIZE         =   ----    ----
 END OF MODULE INFORMATION.
+
+C51 COMPILER V9.00   KEY                                                                   11/26/2015 14:13:32 PAGE 24  
 
 
 C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

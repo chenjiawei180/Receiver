@@ -174,10 +174,10 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>0</ColumnNumber>
+      <ColumnNumber>1</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>1</TopLine>
-      <CurrentLine>9</CurrentLine>
+      <TopLine>21</TopLine>
+      <CurrentLine>53</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>.\Receiver\main.c</PathWithFileName>
       <FilenameWithoutPath>main.c</FilenameWithoutPath>
@@ -1691,7 +1691,7 @@
     <ActiveMDIGroup>0</ActiveMDIGroup>
     <MDIGroup>
       <Size>100</Size>
-      <ActiveTab>4</ActiveTab>
+      <ActiveTab>8</ActiveTab>
       <Documents>
         <Doc>
           <Name>.\Receiver\ev1527.c</Name>
@@ -1743,9 +1743,9 @@
         </Doc>
         <Doc>
           <Name>.\Receiver\main.c</Name>
-          <ColumnNumber>0</ColumnNumber>
-          <TopLine>1</TopLine>
-          <CurrentLine>9</CurrentLine>
+          <ColumnNumber>1</ColumnNumber>
+          <TopLine>21</TopLine>
+          <CurrentLine>53</CurrentLine>
         </Doc>
         <Doc>
           <Name>.\Receiver\timer.c</Name>

@@ -1172,8 +1172,10 @@ void env_load(void)
 	EEPROM.Two_Menu_F6_E8 = Two_Menu_F6_E8;
 	EEPROM.Two_Menu_F7_E1 = Two_Menu_F7_E1;
 	EEPROM.Two_Menu_F8_E1 = Two_Menu_F8_E1;
+	EEPROM.Two_Menu_Fb_E1 = Two_Menu_Fb_E1;
+	EEPROM.Two_Menu_FC_E1 = Two_Menu_FC_E1;
 
-	ISendStr(I2C_ADDRESS, BACK, (uint8_t *)&EEPROM, 14);
+	ISendStr(I2C_ADDRESS, BACK, (uint8_t *)&EEPROM, 16);
 	delay10ms();
 }
 
@@ -1183,7 +1185,7 @@ void env_init(void)
 	delay10ms();
 	IRcvStr(I2C_ADDRESS, MUL_KEY, multiple_key, 16);
 	delay10ms();
-	IRcvStr(I2C_ADDRESS, BACK, (uint8_t *)&EEPROM, 14);
+	IRcvStr(I2C_ADDRESS, BACK, (uint8_t *)&EEPROM, 16);
 	delay10ms();
 
 	Two_Menu_F3_E1 =  EEPROM.Two_Menu_F3_E1 ;
@@ -1200,6 +1202,8 @@ void env_init(void)
 	Two_Menu_F6_E8 =  EEPROM.Two_Menu_F6_E8 ;
 	Two_Menu_F7_E1 =  EEPROM.Two_Menu_F7_E1 ;
 	Two_Menu_F8_E1 =  EEPROM.Two_Menu_F8_E1 ;
+	Two_Menu_Fb_E1 =  EEPROM.Two_Menu_Fb_E1;
+	Two_Menu_FC_E1 =  EEPROM.Two_Menu_FC_E1;
 
 	if (EEPROM.Two_Menu_F3_E1 > 2)
 	{
@@ -1256,6 +1260,14 @@ void env_init(void)
 	if (EEPROM.Two_Menu_F8_E1 > 2)
 	{
 		Two_Menu_F8_E1 = 2;
+	}
+	if (EEPROM.Two_Menu_Fb_E1 > 1)
+	{
+		Two_Menu_Fb_E1 = 1;
+	}
+	if (EEPROM.Two_Menu_FC_E1 > 2)
+	{
+		Two_Menu_FC_E1 = 1;
 	}
 }
 
